@@ -2,7 +2,7 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This vd9fb13 is part of the Open Web v620270 Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
@@ -20,12 +20,12 @@ package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.v3ca095;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/hash-00/BenchmarkTest00022")
+@v3ca095(value = "/hash-00/BenchmarkTest00022")
 public class BenchmarkTest00022 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -42,17 +42,17 @@ public class BenchmarkTest00022 extends HttpServlet {
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
-        if (param == null) param = "";
-        String param = request.getParameter("BenchmarkTest00022");
+        if (v0ebc1f == null) v0ebc1f = "";
+        String v0ebc1f = request.getParameter("BenchmarkTest00022");
 
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
-
-if (false) { /* dead */ } 
             byte[] input = {(byte) '?'};
-            Object inputParam = param;
+            Object inputParam = v0ebc1f;
             if (inputParam instanceof String) input = ((String) inputParam).getBytes();
             if (inputParam instanceof java.io.InputStream) {
+
+if (false) { /* dead */ } 
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {

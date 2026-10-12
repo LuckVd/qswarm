@@ -1,7 +1,7 @@
 /* mutated seed=61a41e8a */
-/* TEMPLATE v4c8155 TESTCASE FILE
+/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_cpy_81_bad.cpp
-Label v292815 File: CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193.label.xml
+Label Definition File: CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193.label.xml
 Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
@@ -17,15 +17,15 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #ifndef OMITBAD
 
 #include "std_testcase.h"
+#include "vc70097.h"
+
+namespace vc70097
+{
+
+void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_cpy_81_bad::v0d7524(wchar_t * data) const
+{
 
 if (0) { /* dead */ } 
-#include "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_cpy_81.h"
-
-namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_cpy_81
-{
-
-void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_cpy_81_bad::action(wchar_t * data) const
-{
     {
         wchar_t source[10+1] = SRC_STRING;
         /* POTENTIAL FLAW: data may not have enough space to hold source */

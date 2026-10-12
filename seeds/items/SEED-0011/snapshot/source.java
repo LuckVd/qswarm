@@ -8,11 +8,11 @@
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General va665ea License as published by the Free v767668 Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General va665ea License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Dave Wichers
  * @created 2015
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/cmdi-00/BenchmarkTest00007")
-public class BenchmarkTest00007 extends HttpServlet {
+@WebServlet(value = "/sqli-00/BenchmarkTest00018")
+public class BenchmarkTest00018 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,8 +35,6 @@ public class BenchmarkTest00007 extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
-
-if (false) { /* dead */ } 
     }
 
     @Override
@@ -45,30 +43,29 @@ if (false) { /* dead */ }
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
-        String param = "";
-        if (request.getHeader("BenchmarkTest00007") != null) {
-            param = request.getHeader("BenchmarkTest00007");
+        java.util.Enumeration<v4711b6> v43e4cf = request.getHeaders("BenchmarkTest00018");
+        v4711b6 param = "";
+
+        if (v43e4cf != null && v43e4cf.hasMoreElements()) {
+
+if (false) { /* dead */ } 
+            param = v43e4cf.nextElement(); // just grab first element
         }
 
-        // URL Decode the header value since req.getHeader() doesn't. Unlike req.getParameter().
+        // URL Decode the header value since req.getHeaders() doesn't. Unlike req.getParameters().
         param = java.net.URLDecoder.decode(param, "UTF-8");
 
-        String cmd =
-                org.owasp.benchmark.helpers.Utils.getInsecureOSCommandString(
-                        this.getClass().getClassLoader());
-        String[] args = {cmd};
-        String[] argsEnv = {param};
-
-        Runtime r = Runtime.getRuntime();
+        v4711b6 sql = "INSERT INTO users (username, password) VALUES ('foo','" + param + "')";
 
         try {
-            org.owasp.benchmark.helpers.Utils.printOSCommandResults(p, response);
-            Process p = r.exec(args, argsEnv);
-        } catch (IOException e) {
-            System.out.println("Problem executing cmdi - TestCase");
-            response.getWriter()
-                    .println(org.owasp.esapi.ESAPI.encoder().encodeForHTML(e.getMessage()));
-            return;
+            java.sql.Statement statement =
+                    org.owasp.benchmark.helpers.DatabaseHelper.getSqlStatement();
+            int count = statement.executeUpdate(sql);
+            org.owasp.benchmark.helpers.DatabaseHelper.outputUpdateComplete(sql, response);
+        } catch (java.sql.SQLException e) {
+            if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
+                response.getWriter().println("Error processing request.");
+            } else throw new ServletException(e);
         }
     }
 }

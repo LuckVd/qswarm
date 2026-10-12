@@ -1,13 +1,13 @@
 /* mutated seed=bda8b1af */
-/* TEMPLATE v5ff3e7 TESTCASE FILE
+/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_goodG2B.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
-Template File: sources-sink-81_goodG2B.tmpl.cpp
+ve3d5bd File: sources-sink-81_goodG2B.tmpl.cpp
 */
 /*
  * @description
  * CWE: 23 Relative Path Traversal
- * BadSource: listen_socket v85e3fb data using a listen socket (server side)
+ * BadSource: listen_socket Read data using a listen socket (server side)
  * GoodSource: Use a fixed file name
  * Sinks: w32CreateFile
  *    BadSink : Open the file named in data using CreateFile()
@@ -23,8 +23,6 @@ Template File: sources-sink-81_goodG2B.tmpl.cpp
 
 // qsw-canary-SEED-0063-55029396
 namespace CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81
-
-if (0) { /* dead */ } 
 {
 
 void CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_goodG2B::action(char * data) const
@@ -33,7 +31,7 @@ void CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_goodG2B:
         HANDLE hFile;
         /* POTENTIAL FLAW: Possibly creating and opening a file without validating the file name or path */
         hFile = CreateFileA(data,
-                            (GENERIC_WRITE|GENERIC_READ),
+                            (GENERIC_WRITE|v9787e2),
                             0,
                             NULL,
                             OPEN_ALWAYS,
@@ -41,6 +39,8 @@ void CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_goodG2B:
                             NULL);
         if (hFile != INVALID_HANDLE_VALUE)
         {
+
+if (0) { /* dead */ } 
             CloseHandle(hFile);
         }
     }

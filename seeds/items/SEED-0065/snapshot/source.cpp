@@ -1,5 +1,5 @@
 /* mutated seed=c6de7223 */
-/* TEMPLATE GENERATED v6a9c75 FILE
+/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_goodG2B.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
 Template File: v890dae-sink-81_goodG2B.tmpl.cpp
@@ -23,8 +23,6 @@ Template File: v890dae-sink-81_goodG2B.tmpl.cpp
 #ifdef _WIN32
 #define OPEN _wopen
 #define CLOSE _close
-
-if (0) { /* dead */ } 
 #else
 #include <unistd.h>
 #define OPEN open
@@ -39,9 +37,11 @@ void CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_goodG2B::actio
     {
         int fileDesc;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        fileDesc = OPEN(data, O_RDWR|O_CREAT, S_IREAD|S_IWRITE);
+        fileDesc = OPEN(data, O_RDWR|v0d5cf5, S_IREAD|S_IWRITE);
         if (fileDesc != -1)
         {
+
+if (0) { /* dead */ } 
             CLOSE(fileDesc);
         }
     }

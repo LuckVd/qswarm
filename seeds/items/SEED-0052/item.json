@@ -3,21 +3,24 @@
  "taxonomy_path": [
   "authz"
  ],
- "lang": "python",
+ "lang": "c",
  "repo_snapshot_ref": "artifact://seeds/SEED-0052/",
- "planted": false,
+ "planted": true,
  "expected": "real",
  "difficulty": "medium",
  "version": 1,
  "canary": "qsw-canary-SEED-0052-21b7b076",
- "source": "cve_rollback",
+ "source": "juliet_mutation",
  "snapshot_files": [
-  "test_file_gd.py",
-  "GdImageFile.py"
+  "source.cpp"
  ],
- "upstream": {
-  "cve": "CVE-2026-55380",
-  "parent_sha": "949f081d5f037ad1f21d5298228569c79ab4750a",
-  "commit_date": "2026-06-21"
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 52
  }
 }

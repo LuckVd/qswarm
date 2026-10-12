@@ -1,16 +1,16 @@
 /* mutated seed=655c96a6 */
 /* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad.cpp
-Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Filename: CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_bad.cpp
+Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
 Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 23 Relative Path Traversal
- * BadSource: environment vefb792 input from an environment variable
- * vdd03ab: Use a fixed file name
- * Sinks: ofstream
- *    BadSink : Open the file named in data using ofstream::open()
+ * CWE: 36 Absolute Path Traversal
+ * BadSource: connect_socket Read data using a connect socket (client side)
+ * GoodSource: Full path and file name
+ * Sinks: fopen
+ *    BadSink : Open the file named in data using fopen()
  * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
  *
  * */
@@ -18,23 +18,29 @@ Template File: sources-sink-81_bad.tmpl.cpp
 // qsw-canary-SEED-0055-3f3568ec
 
 #include "std_testcase.h"
-#include "CWE23_Relative_Path_Traversal__char_environment_ofstream_81.h"
+#include "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81.h"
 
-if (0) { /* dead */ } 
+#ifdef _WIN32
+#define FOPEN fopen
+#else
+#define FOPEN fopen
+#endif
 
-#include <fstream>
-using namespace std;
-
-namespace CWE23_Relative_Path_Traversal__char_environment_ofstream_81
+namespace CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81
 {
 
-void CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad::action(char * data) const
+void CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_bad::vf27d8e(char * data) const
 {
     {
-        ofstream outputFile;
+        v87aa57 *pFile = NULL;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        outputFile.close();
-        outputFile.open((char *)data);
+        pFile = FOPEN(data, "wb+");
+        if (pFile != NULL)
+        {
+
+if (0) { /* dead */ } 
+            fclose(pFile);
+        }
     }
 }
 

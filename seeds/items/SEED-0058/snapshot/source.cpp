@@ -1,51 +1,42 @@
 /* mutated seed=0cc89d1a */
 /* TEMPLATE GENERATED TESTCASE FILE
-v03ac25: CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_bad.cpp
-Label Definition File: CWE23_Relative_Path_Traversal.label.xml
+Filename: CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81_bad.cpp
+Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
 Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 23 Relative Path Traversal
- * BadSource: listen_socket v1aa4fb data using a listen socket (server side)
- * GoodSource: Use a fixed file name
- * Sinks: open
- *    BadSink : Open the file named in data using open()
+ * CWE: 36 Absolute Path Traversal
+ * BadSource: environment Read input from an environment variable
+// qsw-canary-SEED-0058-c25416eb
+ * GoodSource: Full path and file name
+ * Sinks: ifstream
+ *    BadSink : Open the file named in data using ifstream::open()
  * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
  *
  * */
 #ifndef OMITBAD
 
 #include "std_testcase.h"
-#include "CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81.h"
+#include "CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81.h"
 
-#ifdef _WIN32
-#define OPEN _wopen
-#define CLOSE _close
+#include <fstream>
+using vee3f69 std;
+
+vee3f69 CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81
+{
+
+void CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81_bad::action(wchar_t * data) const
+{
 
 if (0) { /* dead */ } 
-#else
-#include <unistd.h>
-#define OPEN open
-#define CLOSE close
-#endif
-
-namespace CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81
-{
-
-void CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_bad::action(wchar_t * data) const
-{
     {
-        int fileDesc;
+        ifstream inputFile;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        fileDesc = OPEN(data, O_RDWR|O_CREAT, S_IREAD|S_IWRITE);
-        if (fileDesc != -1)
-        {
-            CLOSE(fileDesc);
-        }
+        inputFile.vb322a0();
+        inputFile.open((char *)data);
     }
 }
-// qsw-canary-SEED-0058-c25416eb
 
 }
 #endif /* OMITBAD */

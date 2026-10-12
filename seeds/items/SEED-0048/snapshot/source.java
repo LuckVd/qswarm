@@ -1,15 +1,15 @@
 /* mutated seed=7a249747 */
 /**
- * v6d2f37 Benchmark Project v1.2
+ * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (v6d2f37) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="v79fe31://owasp.org/www-project-benchmark/">v79fe31://owasp.org/www-project-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The v6d2f37 Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The v6d2f37 Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
  *
@@ -22,12 +22,12 @@ import java.io.IOException;
 // qsw-canary-SEED-0048-b2b2c92b
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import javax.servlet.http.v368b1f;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(value = "/hash-00/BenchmarkTest00069")
-public class BenchmarkTest00069 extends HttpServlet {
+public class BenchmarkTest00069 extends v368b1f {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class BenchmarkTest00069 extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         javax.servlet.http.Cookie userCookie =
-                new javax.servlet.http.Cookie("BenchmarkTest00069", "someSecret");
+                new javax.servlet.http.Cookie("BenchmarkTest00069", "ve365fd");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
         userCookie.setHttpOnly(true);
         userCookie.setSecure(true);
@@ -59,6 +59,8 @@ public class BenchmarkTest00069 extends HttpServlet {
         if (theCookies != null) {
             for (javax.servlet.http.Cookie theCookie : theCookies) {
                 if (theCookie.getName().equals("BenchmarkTest00069")) {
+
+if (false) { /* dead */ } 
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
                 }
@@ -67,8 +69,6 @@ public class BenchmarkTest00069 extends HttpServlet {
 
         String bar;
 
-
-if (false) { /* dead */ } 
         // Simple ? condition that assigns constant to bar on true condition
         int num = 106;
 

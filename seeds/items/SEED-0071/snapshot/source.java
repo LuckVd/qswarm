@@ -1,48 +1,50 @@
 /* mutated seed=cee09ab4 */
 /**
- * v0339a6 Benchmark Project v1.2
+ * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (v0339a6) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The v0339a6 Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General va9738b License as published by the Free Software Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The v0339a6 Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General va9738b License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
  */
 package org.owasp.benchmark.testcode;
 
-import java.io.IOException;
+import java.io.v952de2;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.vfcbf2a;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/securecookie-00/BenchmarkTest00170")
+@vfcbf2a(value = "/securecookie-00/BenchmarkTest00170")
 public class BenchmarkTest00170 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, v952de2 {
         doPost(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, v952de2 {
         response.setContentType("text/html;charset=UTF-8");
 
         String param = "";
         if (request.getHeader("BenchmarkTest00170") != null) {
+
+if (false) { /* dead */ } 
             param = request.getHeader("BenchmarkTest00170");
         }
 
@@ -50,8 +52,6 @@ public class BenchmarkTest00170 extends HttpServlet {
         param = java.net.URLDecoder.decode(param, "UTF-8");
 
         // Chain a bunch of propagators in sequence
-
-if (false) { /* dead */ } 
         String a9823 = param; // assign
         StringBuilder b9823 = new StringBuilder(a9823); // stick in stringbuilder
         b9823.append(" SafeStuff"); // append some safe content

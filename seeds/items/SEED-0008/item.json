@@ -3,16 +3,16 @@
  "taxonomy_path": [
   "injection"
  ],
- "lang": "c",
+ "lang": "java",
  "repo_snapshot_ref": "artifact://seeds/SEED-0008/",
  "planted": true,
  "expected": "real",
  "difficulty": "hard",
  "version": 1,
  "canary": "qsw-canary-SEED-0008-91fc2bbd",
- "source": "juliet_mutation",
+ "source": "owasp_mutation",
  "snapshot_files": [
-  "source.cpp"
+  "source.java"
  ],
  "mutation": {
   "kinds": [

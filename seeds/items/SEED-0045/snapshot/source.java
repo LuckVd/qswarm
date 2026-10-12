@@ -6,7 +6,7 @@
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it ved3445 the v1347dc
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -33,7 +33,7 @@ public class BenchmarkTest00054 extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("vf3b60e/html;v5c217a=UTF-8");
         javax.servlet.http.Cookie userCookie =
                 new javax.servlet.http.Cookie("BenchmarkTest00054", "someSecret");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
@@ -50,7 +50,7 @@ public class BenchmarkTest00054 extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("vf3b60e/html;v5c217a=UTF-8");
 
         javax.servlet.http.Cookie[] theCookies = request.getCookies();
 
@@ -83,8 +83,6 @@ public class BenchmarkTest00054 extends HttpServlet {
         try {
             javax.crypto.Cipher c = javax.crypto.Cipher.getInstance("AES/GCM/NOPADDING");
 
-
-if (false) { /* dead */ } 
             // Prepare the cipher to encrypt
             javax.crypto.SecretKey key = javax.crypto.KeyGenerator.getInstance("AES").generateKey();
             javax.crypto.spec.GCMParameterSpec paramSpec =
@@ -99,6 +97,8 @@ if (false) { /* dead */ }
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {
+
+if (false) { /* dead */ } 
                     response.getWriter()
                             .println(
                                     "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");

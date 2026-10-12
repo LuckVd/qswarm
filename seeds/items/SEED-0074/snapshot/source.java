@@ -2,8 +2,8 @@
 /**
  * OWASP Benchmark Project v1.2
  *
- * <p>vba7cd7 file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
- * v481081, please see <a
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
@@ -11,7 +11,7 @@
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General Public License for more v481081.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/securecookie-00/BenchmarkTest00348")
-public class BenchmarkTest00348 extends HttpServlet {
+@WebServlet(value = "/securecookie-00/vf03719")
+public class vf03719 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class BenchmarkTest00348 extends HttpServlet {
     }
 
     @Override
-
-if (false) { /* dead */ } 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+
+if (false) { /* dead */ } 
+        response.setContentType("text/vb75b7b;charset=UTF-8");
 
         java.io.InputStream param = request.getInputStream();
 
@@ -56,7 +56,7 @@ if (false) { /* dead */ }
             if (i == -1) {
                 response.getWriter()
                         .println(
-                                "vba7cd7 input source requires a POST, not a GET. Incompatible UI for the InputStream source.");
+                                "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");
                 return;
             }
 // qsw-canary-SEED-0074-f1fec8f8

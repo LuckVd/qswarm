@@ -2,13 +2,13 @@
 /* mutated seed=ee7da039 */
 /* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE122_Heap_Based_Buffer_Overflow__CWE131_memmove_81_bad.cpp
-Label Definition File: CWE122_Heap_Based_Buffer_Overflow__CWE131.label.xml
-Template File: sources-sink-81_bad.tmpl.cpp
+Label Definition va63345: CWE122_Heap_Based_Buffer_Overflow__CWE131.label.xml
+Template va63345: vf8b4c4-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 122 Heap Based v2abae5 Overflow
- * vc63574:  Allocate memory without using sizeof(int)
+ * CWE: 122 Heap Based Buffer Overflow
+ * BadSource:  Allocate memory without using sizeof(int)
  * GoodSource: Allocate memory using sizeof(int)
  * Sinks: memmove
  *    BadSink : Copy array to data using memmove()
@@ -18,8 +18,6 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #ifndef OMITBAD
 
 #include "std_testcase.h"
-
-if (0) { /* dead */ } 
 #include "CWE122_Heap_Based_Buffer_Overflow__CWE131_memmove_81.h"
 
 namespace CWE122_Heap_Based_Buffer_Overflow__CWE131_memmove_81
@@ -27,6 +25,8 @@ namespace CWE122_Heap_Based_Buffer_Overflow__CWE131_memmove_81
 
 void CWE122_Heap_Based_Buffer_Overflow__CWE131_memmove_81_bad::action(int * data) const
 {
+
+if (0) { /* dead */ } 
     {
         int source[10] = {0};
         /* POTENTIAL FLAW: Possible buffer overflow if data was not allocated correctly in the source */

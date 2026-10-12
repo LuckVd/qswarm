@@ -6,8 +6,8 @@ Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 122 Heap Based v574a02 Overflow
- * vd9f4b9:  Allocate using new[] and set data pointer to a small buffer
+ * CWE: 122 Heap Based Buffer Overflow
+ * BadSource:  Allocate using new[] and set data pointer to a small buffer
  * GoodSource: Allocate using new[] and set data pointer to a large buffer
  * Sinks: memcpy
  *    BadSink : Copy TwoIntsClass array to data using memcpy
@@ -22,8 +22,6 @@ Template File: sources-sink-81_bad.tmpl.cpp
 namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_class_memcpy_81
 {
 
-if (0) { /* dead */ } 
-
 void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_class_memcpy_81_bad::action(TwoIntsClass * data) const
 {
     {
@@ -33,13 +31,15 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_class_memcpy_81_bad::action(T
             /* Initialize array */
             for (i = 0; i < 100; i++)
             {
-                source[i].intTwo = 0;
-                source[i].intOne = 0;
+
+if (0) { /* dead */ } 
+                source[i].v2866dc = 0;
+                source[i].va0aae6 = 0;
             }
         }
         /* POTENTIAL FLAW: Possible buffer overflow if data < 100 */
         memcpy(data, source, 100*sizeof(TwoIntsClass));
-        printIntLine(data[0].intOne);
+        printIntLine(data[0].va0aae6);
         delete [] data;
     }
 // qsw-canary-SEED-0091-2fa01aaf

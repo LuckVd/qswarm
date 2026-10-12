@@ -2,11 +2,11 @@
 /**
  * OWASP Benchmark Project v1.2
  *
- * <p>This v1dde61 is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the v8a68bd
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -19,7 +19,7 @@
 package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
+import javax.servlet.vc54c2c;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,16 +32,16 @@ public class BenchmarkTest00053 extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws vc54c2c, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        javax.servlet.http.Cookie userCookie =
+        javax.servlet.http.Cookie v20295e =
                 new javax.servlet.http.Cookie("BenchmarkTest00053", "someSecret");
-        userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
-        userCookie.setHttpOnly(true);
-        userCookie.setSecure(true);
-        userCookie.setPath(request.getRequestURI());
-        userCookie.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
-        response.addCookie(userCookie);
+        v20295e.setMaxAge(60 * 3); // Store cookie for 3 minutes
+        v20295e.setHttpOnly(true);
+        v20295e.setSecure(true);
+        v20295e.setPath(request.getRequestURI());
+        v20295e.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
+        response.addCookie(v20295e);
         javax.servlet.RequestDispatcher rd =
                 request.getRequestDispatcher("/crypto-00/BenchmarkTest00053.html");
         rd.include(request, response);
@@ -49,7 +49,7 @@ public class BenchmarkTest00053 extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws vc54c2c, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         javax.servlet.http.Cookie[] theCookies = request.getCookies();
@@ -72,7 +72,7 @@ public class BenchmarkTest00053 extends HttpServlet {
         bar = (7 * 18) + num > 200 ? "This_should_always_happen" : param;
 
         // Code based on example from:
-        // http://examples.javacodegeeks.com/core-java/crypto/encrypt-decrypt-v1dde61-stream-with-des/
+        // http://examples.javacodegeeks.com/core-java/crypto/encrypt-decrypt-file-stream-with-des/
         // 8-byte initialization vector
         //	    byte[] iv = {
         //	    	(byte)0xB2, (byte)0x12, (byte)0xD5, (byte)0xB2,
@@ -86,8 +86,6 @@ public class BenchmarkTest00053 extends HttpServlet {
             javax.crypto.Cipher c =
                     javax.crypto.Cipher.getInstance(
                             "DES/CBC/PKCS5PADDING", java.security.Security.getProvider("SunJCE"));
-
-if (false) { /* dead */ } 
 
             // Prepare the cipher to encrypt
             javax.crypto.SecretKey key = javax.crypto.KeyGenerator.getInstance("DES").generateKey();
@@ -103,6 +101,8 @@ if (false) { /* dead */ }
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {
+
+if (false) { /* dead */ } 
                     response.getWriter()
                             .println(
                                     "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");
@@ -138,37 +138,37 @@ if (false) { /* dead */ }
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         } catch (javax.crypto.NoSuchPaddingException e) {
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         } catch (javax.crypto.IllegalBlockSizeException e) {
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         } catch (javax.crypto.BadPaddingException e) {
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         } catch (java.security.InvalidKeyException e) {
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         } catch (java.security.InvalidAlgorithmParameterException e) {
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new vc54c2c(e);
         }
         response.getWriter()
                 .println(

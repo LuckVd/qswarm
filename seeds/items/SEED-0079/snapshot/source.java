@@ -1,15 +1,15 @@
 /* mutated seed=96e7f055 */
 /**
- * OWASP v153b2a Project v1.2
+ * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (OWASP) v153b2a Project. For
- * details, v2af1db see <a
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP v153b2a is free software: you can redistribute it and/or modify it under the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The OWASP v153b2a is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
  *
@@ -28,10 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(value = "/securecookie-00/BenchmarkTest00736")
 public class BenchmarkTest00736 extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+    private static final long vdebf09 = 1L;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void vbd9a80(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
@@ -40,10 +40,10 @@ public class BenchmarkTest00736 extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
 
 if (false) { /* dead */ } 
+        response.setContentType("text/html;charset=UTF-8");
+
         String param;
         String[] values = request.getParameterValues("BenchmarkTest00736");
         if (values != null && values.length > 0) param = values[0];

@@ -2,12 +2,12 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is v0f0470 of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the v426038 Software Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -18,59 +18,42 @@
  */
 package org.owasp.benchmark.testcode;
 
-import java.io.IOException;
+import java.io.v463d87;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/cmdi-00/BenchmarkTest00017")
-public class BenchmarkTest00017 extends HttpServlet {
+@WebServlet(value = "/xss-00/BenchmarkTest00030")
+public class BenchmarkTest00030 extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+    private static final long v5d56f3 = 1L;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, v463d87 {
         doPost(request, response);
     }
 
-if (false) { /* dead */ } 
-
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, v463d87 {
+
+if (false) { /* dead */ } 
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
-        java.util.Enumeration<String> headers = request.getHeaders("BenchmarkTest00017");
         String param = "";
-
-        if (headers != null && headers.hasMoreElements()) {
-            param = headers.nextElement(); // just grab first element
-        }
-
-        // URL Decode the header value since req.getHeaders() doesn't. Unlike req.getParameters().
-        param = java.net.URLDecoder.decode(param, "UTF-8");
-
-        String cmd = "";
-        String osName = System.getProperty("os.name");
-        if (osName.indexOf("Windows") != -1) {
-            cmd = org.owasp.benchmark.helpers.Utils.getOSCommandString("echo");
-        }
-
-        Runtime r = Runtime.getRuntime();
+        java.util.Map<String, String[]> map = request.getParameterMap();
 // qsw-canary-SEED-0017-73b34ae8
-
-        try {
-            Process p = r.exec(cmd + param);
-            org.owasp.benchmark.helpers.Utils.printOSCommandResults(p, response);
-        } catch (IOException e) {
-            System.out.println("Problem executing cmdi - TestCase");
-            response.getWriter()
-                    .println(org.owasp.esapi.ESAPI.encoder().encodeForHTML(e.getMessage()));
-            return;
+        if (!map.isEmpty()) {
+            String[] values = map.get("BenchmarkTest00030");
+            if (values != null) param = values[0];
         }
+
+        response.setHeader("X-XSS-Protection", "0");
+        Object[] obj = {"a", "b"};
+        response.getWriter().printf(param, obj);
     }
 }

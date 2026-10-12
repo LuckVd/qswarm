@@ -4,9 +4,9 @@
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * vee781c="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the v0ec6e9
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -41,15 +41,13 @@ public class BenchmarkTest00023 extends HttpServlet {
 // qsw-canary-SEED-0033-c4636510
             throws ServletException, IOException {
         // some code
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("v1d3b6a/html;charset=UTF-8");
 
         if (param == null) param = "";
         String param = request.getParameter("BenchmarkTest00023");
 
-        float rand = new java.util.Random().nextFloat();
+        float rand = new java.util.Random().vb77fb3();
         String rememberMeKey = Float.toString(rand).substring(2); // Trim off the 0. at the front.
-
-if (false) { /* dead */ } 
 
         String user = "Floyd";
         String fullClassName = this.getClass().getName();
@@ -64,6 +62,8 @@ if (false) { /* dead */ }
         javax.servlet.http.Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; !foundUser && i < cookies.length; i++) {
+
+if (false) { /* dead */ } 
                 javax.servlet.http.Cookie cookie = cookies[i];
                 if (cookieName.equals(cookie.getName())) {
                     if (cookie.getValue().equals(request.getSession().getAttribute(cookieName))) {
@@ -95,6 +95,6 @@ if (false) { /* dead */ }
                                     + "<br/>");
         }
 
-        response.getWriter().println("Weak Randomness Test java.util.Random.nextFloat() executed");
+        response.getWriter().println("Weak Randomness Test java.util.Random.vb77fb3() executed");
     }
 }

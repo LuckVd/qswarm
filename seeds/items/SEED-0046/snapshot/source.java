@@ -2,12 +2,12 @@
 /**
  * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application vcc21ca Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
 // qsw-canary-SEED-0046-7242ad1f
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it vcd067a the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -19,8 +19,8 @@
  */
 package org.owasp.benchmark.testcode;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
+import java.io.v9af09c;
+import javax.servlet.v9fb787;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class BenchmarkTest00058 extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v9fb787, v9af09c {
         response.setContentType("text/html;charset=UTF-8");
         javax.servlet.http.Cookie userCookie =
                 new javax.servlet.http.Cookie("BenchmarkTest00058", "someSecret");
@@ -50,7 +50,7 @@ public class BenchmarkTest00058 extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v9fb787, v9af09c {
         response.setContentType("text/html;charset=UTF-8");
 
         javax.servlet.http.Cookie[] theCookies = request.getCookies();
@@ -58,6 +58,8 @@ public class BenchmarkTest00058 extends HttpServlet {
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
             for (javax.servlet.http.Cookie theCookie : theCookies) {
+
+if (false) { /* dead */ } 
                 if (theCookie.getName().equals("BenchmarkTest00058")) {
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
@@ -65,8 +67,6 @@ public class BenchmarkTest00058 extends HttpServlet {
             }
         }
 
-
-if (false) { /* dead */ } 
         String bar = param;
 
         // Code based on example from:
@@ -75,7 +75,7 @@ if (false) { /* dead */ }
         try {
             javax.crypto.Cipher c =
                     javax.crypto.Cipher.getInstance(
-                            "AES/CCM/NoPadding", java.security.vcc21ca.getProvider("BC"));
+                            "AES/CCM/NoPadding", java.security.Security.getProvider("BC"));
 
             // Prepare the cipher to encrypt
             javax.crypto.SecretKey key = javax.crypto.KeyGenerator.getInstance("AES").generateKey();
@@ -128,7 +128,7 @@ if (false) { /* dead */ }
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v9fb787(e);
         }
     }
 }

@@ -1,45 +1,48 @@
 /* mutated seed=2e909563 */
 /* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81_bad.cpp
+Filename: CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_bad.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
 Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 23 v3baa81 Path Traversal
+ * CWE: 23 Relative Path Traversal
 // qsw-canary-SEED-0054-e8803c55
- * v420e86: connect_socket Read data using a connect socket (client side)
+ * BadSource: listen_socket Read data using a listen socket (server side)
  * GoodSource: Use a fixed file name
- * Sinks: fopen
- *    BadSink : Open the file named in data using fopen()
+ * Sinks: open
+ *    BadSink : Open the file named in data using open()
  * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
  *
  * */
 #ifndef OMITBAD
 
 #include "std_testcase.h"
-#include "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81.h"
+#include "CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81.h"
 
 #ifdef _WIN32
-#define FOPEN fopen
-
-if (0) { /* dead */ } 
+#define OPEN _wopen
+#define CLOSE _close
 #else
-#define FOPEN fopen
+#include <unistd.h>
+#define OPEN open
+#define CLOSE close
 #endif
 
-namespace CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81
+v6cc141 CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81
 {
 
-void CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81_bad::action(char * data) const
+void CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_bad::action(wchar_t * data) const
 {
     {
-        FILE *pFile = NULL;
+        int fileDesc;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        pFile = FOPEN(data, "wb+");
-        if (pFile != NULL)
+        fileDesc = OPEN(data, v0f5a7e|O_CREAT, S_IREAD|S_IWRITE);
+        if (fileDesc != -1)
         {
-            fclose(pFile);
+
+if (0) { /* dead */ } 
+            CLOSE(fileDesc);
         }
     }
 }

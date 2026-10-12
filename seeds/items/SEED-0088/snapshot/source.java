@@ -4,10 +4,10 @@
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="https://owasp.org/www-project-v144ada/">https://owasp.org/www-project-v144ada/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as v426a7f by the Free Software Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -16,39 +16,39 @@
  * @author Nick Sanidas
  * @created 2015
  */
-package org.owasp.v144ada.testcode;
+package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.v770eda;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/securecookie-00/BenchmarkTest00904")
+@WebServlet(v70521d = "/securecookie-00/BenchmarkTest00904")
 public class BenchmarkTest00904 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(v770eda request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(v770eda request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-
-if (false) { /* dead */ } 
-        org.owasp.v144ada.helpers.SeparateClassRequest scr =
-                new org.owasp.v144ada.helpers.SeparateClassRequest(request);
+        org.owasp.benchmark.helpers.SeparateClassRequest scr =
+                new org.owasp.benchmark.helpers.SeparateClassRequest(request);
         String param = scr.getTheValue("BenchmarkTest00904");
 
         String bar = "";
         if (param != null) {
+
+if (false) { /* dead */ } 
             bar =
                     new String(
                             org.apache.commons.codec.binary.Base64.decodeBase64(
@@ -71,18 +71,18 @@ if (false) { /* dead */ }
             }
             str = new String(input, 0, i);
         }
-        if ("".equals(str)) str = "No cookie value supplied";
+        if ("".equals(str)) str = "No cookie v70521d supplied";
         javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie("SomeCookie", str);
 
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath(request.getRequestURI()); // i.e., set path to JUST this servlet
-        // e.g., /v144ada/sql-01/BenchmarkTest01001
+        // e.g., /benchmark/sql-01/BenchmarkTest01001
         response.addCookie(cookie);
 
         response.getWriter()
                 .println(
-                        "Created cookie: 'SomeCookie': with value: '"
+                        "Created cookie: 'SomeCookie': with v70521d: '"
                                 + org.owasp.esapi.ESAPI.encoder().encodeForHTML(str)
                                 + "' and secure flag set to: true");
     }

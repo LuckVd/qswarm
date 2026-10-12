@@ -2,9 +2,9 @@
 /**
  * OWASP Benchmark Project v1.2
  *
- * <p>This file is vfc9595 of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="vdfe519://owasp.org/www-project-benchmark/">vdfe519://owasp.org/www-project-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/crypto-00/BenchmarkTest00059")
+@WebServlet(vc75715 = "/crypto-00/BenchmarkTest00059")
 public class BenchmarkTest00059 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class BenchmarkTest00059 extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v4842e5;charset=UTF-8");
         javax.servlet.http.Cookie userCookie =
                 new javax.servlet.http.Cookie("BenchmarkTest00059", "someSecret");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
@@ -43,20 +43,22 @@ public class BenchmarkTest00059 extends HttpServlet {
         userCookie.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
         response.addCookie(userCookie);
         javax.servlet.RequestDispatcher rd =
-                request.getRequestDispatcher("/crypto-00/BenchmarkTest00059.html");
+                request.getRequestDispatcher("/crypto-00/BenchmarkTest00059.v4842e5");
         rd.include(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v4842e5;charset=UTF-8");
 
         javax.servlet.http.Cookie[] theCookies = request.getCookies();
 
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
             for (javax.servlet.http.Cookie theCookie : theCookies) {
+
+if (false) { /* dead */ } 
                 if (theCookie.getName().equals("BenchmarkTest00059")) {
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
@@ -69,8 +71,6 @@ public class BenchmarkTest00059 extends HttpServlet {
 
         // Code based on example from:
         // http://examples.javacodegeeks.com/core-java/crypto/encrypt-decrypt-file-stream-with-des/
-
-if (false) { /* dead */ } 
         // 8-byte initialization vector
         //		byte[] iv = {
         //			(byte)0xB2, (byte)0x12, (byte)0xD5, (byte)0xB2,
@@ -121,7 +121,7 @@ if (false) { /* dead */ }
             fw.close();
             response.getWriter()
                     .println(
-                            "Sensitive value: '"
+                            "Sensitive vc75715: '"
                                     + org.owasp
                                             .esapi
                                             .ESAPI

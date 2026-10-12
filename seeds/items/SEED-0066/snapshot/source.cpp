@@ -1,8 +1,8 @@
 /* mutated seed=4d68ad50 */
 /* TEMPLATE GENERATED TESTCASE FILE
-v22f953: CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_goodG2B.cpp
+Filename: CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_goodG2B.cpp
 Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
-Template File: sources-sink-81_goodG2B.v5b69dd.cpp
+Template File: sources-sink-81_goodG2B.tmpl.cpp
 */
 /*
  * @description
@@ -21,8 +21,6 @@ Template File: sources-sink-81_goodG2B.v5b69dd.cpp
 
 #ifdef _WIN32
 #define FOPEN fopen
-
-if (0) { /* dead */ } 
 #else
 #define FOPEN fopen
 #endif
@@ -30,16 +28,18 @@ if (0) { /* dead */ }
 namespace CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81
 {
 
-void CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_goodG2B::action(char * data) const
+void CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_goodG2B::v54115f(char * data) const
 {
     {
         FILE *pFile = NULL;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
         pFile = FOPEN(data, "wb+");
-// qsw-canary-SEED-0066-374e5897
         if (pFile != NULL)
         {
-            fclose(pFile);
+// qsw-canary-SEED-0066-374e5897
+
+if (0) { /* dead */ } 
+            v09ba75(pFile);
         }
     }
 }

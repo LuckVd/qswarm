@@ -1,15 +1,15 @@
 /* mutated seed=8ac9f26e */
 /**
- * OWASP v93689d v1.2
+ * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (OWASP) v93689d Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP v93689d is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free v2496fc Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The OWASP v93689d is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
  *
@@ -20,31 +20,31 @@ package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.v270a0e;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/crypto-00/BenchmarkTest00020")
+@v270a0e(value = "/crypto-00/BenchmarkTest00020")
 public class BenchmarkTest00020 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 // qsw-canary-SEED-0032-687bd8e6
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest v7f45cf, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        doPost(v7f45cf, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest v7f45cf, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
         if (param == null) param = "";
-        String param = request.getParameter("BenchmarkTest00020");
+        String param = v7f45cf.getParameter("BenchmarkTest00020");
 
         // Code based on example from:
         // http://examples.javacodegeeks.com/core-java/crypto/encrypt-decrypt-file-stream-with-des/
@@ -75,8 +75,6 @@ public class BenchmarkTest00020 extends HttpServlet {
                 if (i == -1) {
                     response.getWriter()
                             .println(
-
-if (false) { /* dead */ } 
                                     "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");
                     return;
                 }
@@ -112,6 +110,8 @@ if (false) { /* dead */ }
             e.printStackTrace(response.getWriter());
             throw new ServletException(e);
         } catch (java.security.NoSuchProviderException e) {
+
+if (false) { /* dead */ } 
             response.getWriter()
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");

@@ -17,9 +17,10 @@
 3. **定稿**：canary 植入（qsw-canary-<item_id>-<8hex>，无害注释形态）→ item.json /
    快照落盘 → bank.yaml 签发（sha256 清单）→ validate_bank 全绿。
 
-家族配额：SPEC-6 §1.2 v0.1 表（2026-10-11 修订；100 题 = 34 CVE 回滚真 + 28 Juliet/OWASP
-真 + 38 变异雷；deser 家族退出 v0 题库——Juliet Java v1.3 无 CWE502 且 OWASP 无 deser
-类目，fp 面无源，DECISIONS 同日行）。
+家族配额：SPEC-6 §1.2 v0.2 表 + v0.3 来源拆分修订（V03_PLAN；100 题 = 7 CVE 回滚真 +
+55 Juliet/OWASP 真 + 38 变异雷；deser 家族退出 v0 题库——Juliet Java v1.3 无 CWE502 且
+OWASP 无 deser 类目，fp 面无源，DECISIONS 2026-10-11 行；v0.3 authz cve 5→1——4 道
+BROKEN_FAMILY retire，RETIRED_CVES 排除表，jo_real 同额回补，2026-10-12 行）。
 ``--family-quota`` 降级模式：外网取材受限（CVE 段产出不足）时按家族级 real/fp 配额
 出库，逐源计数如实写入 bank.yaml（source_counts），逐源配额偏离记 DECISIONS——
 不伪造来源、不放宽红线。
@@ -78,6 +79,37 @@ KNOWLEDGE_CUTOFF = "2025-03-31"
 
 #: 快照规模约束（S2；与 bank.py 常量一致，构建器执行）。
 MAX_FILES, MAX_LINES = 8, 500
+
+#: v0.3 retire 排除表（2026-10-12 负责人拍板，DECISIONS 同日行）：答案键人工复核判
+#: BROKEN_FAMILY 的 4 道 cve_rollback——解压炸弹/DoS 漏洞真实存在（post-cutoff 修复），
+#: 但其形态在六家族树无归宿（taxonomy 缺 resource_exhaustion 家族），authz 标注无法
+#: 由代码真值推出，强行保留会制造不可判分题。题库 v0.3 起剔除不入库；CVE 段取材为
+#: 确定性缓存重放，无排除表则四道原样再入池。来源：results/_answers_key_audit.json
+#: （disposition 字段）。
+RETIRED_CVES: frozenset[str] = frozenset({
+    "CVE-2026-40192",   # SEED-0050
+    "CVE-2026-54059",   # SEED-0051
+    "CVE-2026-55380",   # SEED-0052
+    "CVE-2026-59203",   # SEED-0053
+})
+
+#: 题库版本（bank.yaml bank_version；bank.py 语义「单调递增，跨版本不可混卷」——
+#: 出卷 derive_seed 含 bank_version，换版本才换卷）。v0.3 重建 = 2（v0.2 = 1）；
+#: 重考必须新 DB（exam_results 幂等键 + deposit_exists 守卫，同库重跑静默复用旧判定）。
+BANK_VERSION = 2
+
+#: v0.3 家族配额装配（SPEC-6 §1.2 v0.2 表 + v0.3 来源拆分修订）：逐家族
+#: cve_real / jo_real / fp（deser 已退出 v0 题库）。硬约束：cve + jo_real 与 fp 必须
+#: 与 qswarm.exams.bank.V0_QUOTA 的 (real, fp) 精确相等（validate_bank 逐家族相等
+#: 校验，多一题少一题都拒签）。v0.3 变更仅 authz 来源拆分：cve 5→1（4 道
+#: BROKEN_FAMILY retire，见 RETIRED_CVES）、jo_real 7→11 同额回补，家族配额表不变。
+V03_PLAN: dict[str, dict[str, int]] = {
+    "injection": {"cve": 2, "jo_real": 16, "fp": 10},
+    "crypto": {"cve": 0, "jo_real": 12, "fp": 8},
+    "authz": {"cve": 1, "jo_real": 11, "fp": 8},
+    "config_dep": {"cve": 0, "jo_real": 12, "fp": 8},
+    "mem_safety": {"cve": 0, "jo_real": 8, "fp": 4},
+}
 
 UA = {"User-Agent": "qswarm-build-seeds/1.0 (M2 seed bank v0)"}
 
@@ -497,6 +529,14 @@ def _parent_file_contents(
     return out, True
 
 
+def vuln_retired(cve_ids: list[str]) -> bool:
+    """v0.3 retire 排除判定：公告任一 CVE alias 命中排除表即弃。
+
+    在 aliases 面拦截（OSV 的 primary id 可能是 GHSA，CVE 在 aliases 任意位），
+    缓存命中与新鲜取材两条路同覆盖（判定先于缓存查找）。"""
+    return any(c in RETIRED_CVES for c in cve_ids)
+
+
 def fetch_cve_items(
     cache: Path, *, offline: bool, family_need: dict[str, int], rng: random.Random,
     api_budget: int,
@@ -538,6 +578,9 @@ def fetch_cve_items(
                 break
             cve_ids = [a for a in (vuln.get("aliases") or []) if a.startswith("CVE-")]
             if not cve_ids:
+                continue
+            # v0.3 retire 排除（2026-10-12 拍板）：BROKEN_FAMILY 四道不再入池。
+            if vuln_retired(cve_ids):
                 continue
             # 公告发布日期预过滤（v0.1 修复⑥）：fix commit 几乎总不晚于公告发布，
             # published < 截止线前 3 个月的公告不可能产出 post-cutoff 修复——跳过
@@ -805,17 +848,9 @@ def build_bank(out: Path, cache: Path, *, offline: bool, family_quota_only: bool
     items_dir.mkdir(parents=True, exist_ok=True)
     master_seed = 0
 
-    # 家族配额装配（§1.2 v0.2）：逐家族 cve_real / jo_real / fp（deser 已退出 v0 题库）；
+    # 家族配额装配（SPEC-6 §1.2 v0.2 表 + v0.3 修订，见 V03_PLAN 注）；
     # plan 须在段一之前——CVE 取材按其 cve 列逐家族计量（family_need）。
-    # v0.2（2026-10-11，负责人拍板）：cve 列按全池实测供给定稿（99 包穷尽 = 7 条
-    # post-cutoff 修复，injection 2 + authz 5），缺口 27 题由 Juliet/OWASP 真面回补。
-    plan = {
-        "injection": {"cve": 2, "jo_real": 16, "fp": 10},
-        "crypto": {"cve": 0, "jo_real": 12, "fp": 8},
-        "authz": {"cve": 5, "jo_real": 7, "fp": 8},
-        "config_dep": {"cve": 0, "jo_real": 12, "fp": 8},
-        "mem_safety": {"cve": 0, "jo_real": 8, "fp": 4},
-    }
+    plan = V03_PLAN
 
     print("== 段一：CVE 回滚取材（OSV → GitHub parent 快照）==")
     cve_material = fetch_cve_items(
@@ -936,7 +971,7 @@ def build_bank(out: Path, cache: Path, *, offline: bool, family_quota_only: bool
 
     print("== 段三：bank.yaml 签发 + 校验器全绿 ==")
     bank_meta = {
-        "bank_version": 1,
+        "bank_version": BANK_VERSION,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "items": [
             {"item_id": p["item_id"], "sha256": dir_sha256(items_dir / p["item_id"])}
@@ -951,7 +986,7 @@ def build_bank(out: Path, cache: Path, *, offline: bool, family_quota_only: bool
     bank = load_bank(out / "bank.yaml")
     validate_bank(bank)
     print(
-        f"[done] bank_version=1 items={len(bank.items)} quota={bank.quota_table()} "
+        f"[done] bank_version={BANK_VERSION} items={len(bank.items)} quota={bank.quota_table()} "
         f"sources={source_counts}"
     )
 

@@ -1,15 +1,15 @@
 /* mutated seed=29427fc7 */
 /**
- * OWASP vcd7cb7 v1.2
+ * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (OWASP) vcd7cb7 Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP vcd7cb7 is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free v63334b Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The OWASP vcd7cb7 is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
  *
@@ -19,7 +19,7 @@
 package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
+import javax.servlet.v0316fb;
 import javax.servlet.annotation.WebServlet;
 // qsw-canary-SEED-0037-0e6ab1e4
 import javax.servlet.http.HttpServlet;
@@ -33,19 +33,19 @@ public class BenchmarkTest00050 extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v0316fb, IOException {
         doPost(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v0316fb, IOException {
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
         org.owasp.benchmark.helpers.SeparateClassRequest scr =
                 new org.owasp.benchmark.helpers.SeparateClassRequest(request);
-        String param = scr.getTheValue("BenchmarkTest00050");
+        va6621d param = scr.getTheValue("BenchmarkTest00050");
 
         // Code based on example from:
         // http://examples.javacodegeeks.com/core-java/crypto/encrypt-decrypt-file-stream-with-des/
@@ -68,7 +68,7 @@ public class BenchmarkTest00050 extends HttpServlet {
 
             // encrypt and store the results
             byte[] input = {(byte) '?'};
-            if (inputParam instanceof String) input = ((String) inputParam).getBytes();
+            if (inputParam instanceof va6621d) input = ((va6621d) inputParam).getBytes();
             Object inputParam = param;
             if (inputParam instanceof java.io.InputStream) {
                 byte[] strInput = new byte[1000];
@@ -76,8 +76,6 @@ public class BenchmarkTest00050 extends HttpServlet {
                 if (i == -1) {
                     response.getWriter()
                             .println(
-
-if (false) { /* dead */ } 
                                     "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");
                     return;
                 }
@@ -103,54 +101,56 @@ if (false) { /* dead */ }
                                             .esapi
                                             .ESAPI
                                             .encoder()
-                                            .encodeForHTML(new String(input))
+                                            .encodeForHTML(new va6621d(input))
                                     + "' encrypted and stored<br/>");
 
         } catch (java.security.NoSuchAlgorithmException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (java.security.NoSuchProviderException e) {
+
+if (false) { /* dead */ } 
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (javax.crypto.NoSuchPaddingException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (javax.crypto.IllegalBlockSizeException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (javax.crypto.BadPaddingException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (java.security.InvalidKeyException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         } catch (java.security.InvalidAlgorithmParameterException e) {
             response.getWriter()
                     .println(
-                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
+                            "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.va6621d,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v0316fb(e);
         }
         response.getWriter()
                 .println(
-                        "Crypto Test javax.crypto.Cipher.getInstance(java.lang.String,java.lang.String) executed");
+                        "Crypto Test javax.crypto.Cipher.getInstance(java.lang.va6621d,java.lang.va6621d) executed");
     }
 }

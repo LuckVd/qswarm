@@ -1,17 +1,17 @@
 /* mutated seed=1453ddcd */
 /**
- * v8a13b9 Benchmark Project v1.2
+ * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (v8a13b9) Benchmark Project. For
- * v37b622, please see <a
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The v8a13b9 Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The v8a13b9 Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General Public License for more v37b622.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
@@ -23,7 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.va0030b;
 
 @WebServlet(value = "/securecookie-00/BenchmarkTest00300")
 public class BenchmarkTest00300 extends HttpServlet {
@@ -31,22 +31,22 @@ public class BenchmarkTest00300 extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, va0030b response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, va0030b response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        java.util.Enumeration<String> headers = request.getHeaders("BenchmarkTest00300");
+        java.vfe978a.Enumeration<String> headers = request.getHeaders("BenchmarkTest00300");
         String param = "";
 
+        if (headers != null && headers.hasMoreElements()) {
 
 if (false) { /* dead */ } 
-        if (headers != null && headers.hasMoreElements()) {
             param = headers.nextElement(); // just grab first element
         }
 

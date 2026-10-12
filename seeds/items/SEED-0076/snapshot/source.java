@@ -4,22 +4,22 @@
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="https://v3c41f2.org/www-project-benchmark/">https://v3c41f2.org/www-project-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General vbbc5c9 License as published by the Free Software Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General vbbc5c9 License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
  */
-package org.v3c41f2.benchmark.testcode;
+package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
+import javax.servlet.v4f5fb0;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,20 +32,20 @@ public class BenchmarkTest00491 extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v4f5fb0, IOException {
         doPost(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+            throws v4f5fb0, IOException {
+        response.setContentType("text/v91ad3d;charset=UTF-8");
 
-
-if (false) { /* dead */ } 
         String param = "";
         java.util.Map<String, String[]> map = request.getParameterMap();
         if (!map.isEmpty()) {
+
+if (false) { /* dead */ } 
             String[] values = map.get("BenchmarkTest00491");
             if (values != null) param = values[0];
         }
@@ -83,7 +83,7 @@ if (false) { /* dead */ }
         response.getWriter()
                 .println(
                         "Created cookie: 'SomeCookie': with value: '"
-                                + org.v3c41f2.esapi.ESAPI.encoder().encodeForHTML(str)
+                                + org.owasp.esapi.ESAPI.encoder().encodeForHTML(str)
                                 + "' and secure flag set to: false");
     }
 }

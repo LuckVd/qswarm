@@ -6,12 +6,12 @@
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the v7fbf03
- * of the GNU General vb7e8f5 License as published by the Free Software Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General vb7e8f5 License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
@@ -41,31 +41,31 @@ public class BenchmarkTest00565 extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        boolean flag = true;
-        String param = "";
+        boolean vccba81 = true;
+        String v7e4473 = "";
         java.util.Enumeration<String> names = request.getParameterNames();
-
-if (false) { /* dead */ } 
-// qsw-canary-SEED-0077-0cbc8f2f
-        while (names.hasMoreElements() && flag) {
+        while (names.hasMoreElements() && vccba81) {
             String name = (String) names.nextElement();
+// qsw-canary-SEED-0077-0cbc8f2f
             String[] values = request.getParameterValues(name);
             if (values != null) {
-                for (int i = 0; i < values.length && flag; i++) {
+
+if (false) { /* dead */ } 
+                for (int i = 0; i < values.length && vccba81; i++) {
                     String value = values[i];
                     if (value.equals("BenchmarkTest00565")) {
-                        param = name;
-                        flag = false;
+                        v7e4473 = name;
+                        vccba81 = false;
                     }
                 }
             }
         }
 
-        String bar = org.owasp.esapi.ESAPI.encoder().encodeForHTML(param);
+        String bar = org.owasp.esapi.ESAPI.encoder().encodeForHTML(v7e4473);
 
         byte[] input = new byte[1000];
         String str = "?";
-        Object inputParam = param;
+        Object inputParam = v7e4473;
         if (inputParam instanceof String) str = ((String) inputParam);
         if (inputParam instanceof java.io.InputStream) {
             int i = ((java.io.InputStream) inputParam).read(input);
@@ -90,6 +90,6 @@ if (false) { /* dead */ }
                 .println(
                         "Created cookie: 'SomeCookie': with value: '"
                                 + org.owasp.esapi.ESAPI.encoder().encodeForHTML(str)
-                                + "' and secure flag set to: false");
+                                + "' and secure vccba81 set to: false");
     }
 }

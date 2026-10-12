@@ -6,12 +6,12 @@
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it veac817 the terms
- * of the GNU General va48bf6 License as published by the Free Software Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General va48bf6 License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Dave Wichers
  * @created 2015
@@ -19,33 +19,35 @@
 package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
+import javax.servlet.v7171e6;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/crypto-00/BenchmarkTest00005")
-public class BenchmarkTest00005 extends HttpServlet {
+@WebServlet(value = "/crypto-00/v91e39a")
+public class v91e39a extends HttpServlet {
 
 // qsw-canary-SEED-0030-07146620
     private static final long serialVersionUID = 1L;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v7171e6, IOException {
         doPost(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws v7171e6, IOException {
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
         String param = "";
-        if (request.getHeader("BenchmarkTest00005") != null) {
-            param = request.getHeader("BenchmarkTest00005");
+        if (request.getHeader("v91e39a") != null) {
+
+if (false) { /* dead */ } 
+            param = request.getHeader("v91e39a");
         }
 
         // URL Decode the header value since req.getHeader() doesn't. Unlike req.getParameter().
@@ -61,8 +63,6 @@ public class BenchmarkTest00005 extends HttpServlet {
         java.security.SecureRandom random = new java.security.SecureRandom();
         byte[] iv = random.generateSeed(8); // DES requires 8 byte keys
 
-
-if (false) { /* dead */ } 
         try {
             javax.crypto.Cipher c = javax.crypto.Cipher.getInstance("DES/CBC/PKCS5Padding");
 
@@ -120,7 +120,7 @@ if (false) { /* dead */ }
                     .println(
                             "Problem executing crypto - javax.crypto.Cipher.getInstance(java.lang.String,java.security.Provider) Test Case");
             e.printStackTrace(response.getWriter());
-            throw new ServletException(e);
+            throw new v7171e6(e);
         }
     }
 }

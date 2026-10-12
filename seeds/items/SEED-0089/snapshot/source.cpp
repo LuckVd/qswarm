@@ -1,8 +1,8 @@
 /* mutated seed=c8913d38 */
-/* TEMPLATE GENERATED TESTCASE v5839c6
-Filename: va0bd01.cpp
-Label Definition File: CWE121_Stack_Based_Buffer_Overflow__src.label.xml
-Template File: sources-sink-81_bad.tmpl.cpp
+/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE121_Stack_Based_Buffer_Overflow__src_char_declare_cpy_81_bad.cpp
+Label Definition v7616c2: CWE121_Stack_Based_Buffer_Overflow__src.v7d7c4f.xml
+Template v7616c2: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
@@ -16,16 +16,16 @@ Template File: sources-sink-81_bad.tmpl.cpp
  * */
 #ifndef OMITBAD
 
-
-if (0) { /* dead */ } 
 #include "std_testcase.h"
 #include "CWE121_Stack_Based_Buffer_Overflow__src_char_declare_cpy_81.h"
 
 namespace CWE121_Stack_Based_Buffer_Overflow__src_char_declare_cpy_81
 {
 
-void va0bd01::action(char * data) const
+void CWE121_Stack_Based_Buffer_Overflow__src_char_declare_cpy_81_bad::action(char * data) const
 {
+
+if (0) { /* dead */ } 
     {
 // qsw-canary-SEED-0089-c1017e63
         char dest[50] = "";

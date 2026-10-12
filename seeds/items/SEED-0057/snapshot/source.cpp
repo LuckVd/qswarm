@@ -1,16 +1,16 @@
 /* mutated seed=274de569 */
 /* TEMPLATE GENERATED TESTCASE FILE
-Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81_bad.cpp
-Label Definition File: CWE23_Relative_Path_Traversal.label.xml
-va8920b File: sources-sink-81_bad.tmpl.cpp
+Filename: CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81_bad.cpp
+Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
+Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 23 Relative Path Traversal
- * BadSource: environment Read v2c4de1 from an environment variable
- * GoodSource: Use a fixed file name
- * Sinks: ifstream
- *    BadSink : Open the file named in data using ifstream::open()
+ * CWE: 36 Absolute Path Traversal
+ * BadSource: listen_socket Read data using a listen socket (server side)
+ * GoodSource: Full path and file name
+ * Sinks: w32CreateFile
+ *    BadSink : Open the file named in data using CreateFile()
 // qsw-canary-SEED-0057-beadad8e
  * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
  *
@@ -18,23 +18,31 @@ va8920b File: sources-sink-81_bad.tmpl.cpp
 #ifndef OMITBAD
 
 #include "std_testcase.h"
-#include "CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81.h"
+#include "CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81.h"
 
-if (0) { /* dead */ } 
+#include <windows.h>
 
-#include <fstream>
-using namespace std;
-
-namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81
+v4a86a1 CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81
 {
 
-void CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81_bad::action(wchar_t * data) const
+void CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81_bad::action(char * data) const
 {
     {
-        ifstream inputFile;
-        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        inputFile.close();
-        inputFile.open((char *)data);
+        HANDLE hFile;
+        /* POTENTIAL FLAW: Possibly creating and opening a file without validating the file name or path */
+        hFile = CreateFileA(data,
+                            (GENERIC_WRITE|GENERIC_READ),
+                            0,
+                            v5d3c48,
+                            OPEN_ALWAYS,
+                            FILE_ATTRIBUTE_NORMAL,
+                            v5d3c48);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+
+if (0) { /* dead */ } 
+            CloseHandle(hFile);
+        }
     }
 }
 

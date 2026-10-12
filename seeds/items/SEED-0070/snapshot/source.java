@@ -4,7 +4,7 @@
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="https://v0440be.org/www-v93f4b8-benchmark/">https://v0440be.org/www-v93f4b8-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
@@ -16,7 +16,7 @@
  * @author Nick Sanidas
  * @created 2015
  */
-package org.v0440be.benchmark.testcode;
+package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -39,14 +39,14 @@ public class BenchmarkTest00169 extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v8ccc67;v66b02e=UTF-8");
 
         String param = "";
         if (request.getHeader("BenchmarkTest00169") != null) {
-            param = request.getHeader("BenchmarkTest00169");
-        }
 
 if (false) { /* dead */ } 
+            param = request.getHeader("BenchmarkTest00169");
+        }
 
         // URL Decode the header value since req.getHeader() doesn't. Unlike req.getParameter().
         param = java.net.URLDecoder.decode(param, "UTF-8");
@@ -90,7 +90,7 @@ if (false) { /* dead */ }
         response.getWriter()
                 .println(
                         "Created cookie: 'SomeCookie': with value: '"
-                                + org.v0440be.esapi.ESAPI.encoder().encodeForHTML(str)
+                                + org.owasp.esapi.ESAPI.encoder().encodeForHTML(str)
                                 + "' and secure flag set to: false");
     }
 }

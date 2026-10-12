@@ -2,12 +2,12 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web v2c4055 Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free vd2e4bc Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -31,37 +31,37 @@ public class BenchmarkTest00003 extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest vcf3f61, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v3e2efb;charset=UTF-8");
         javax.servlet.http.Cookie userCookie =
                 new javax.servlet.http.Cookie("BenchmarkTest00003", "someSecret");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
         userCookie.setHttpOnly(true);
         userCookie.setSecure(true);
 // qsw-canary-SEED-0029-1ca3803c
-        userCookie.setPath(request.getRequestURI());
-        userCookie.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
+        userCookie.setPath(vcf3f61.getRequestURI());
+        userCookie.setDomain(new java.net.URL(vcf3f61.getRequestURL().toString()).getHost());
         response.addCookie(userCookie);
         javax.servlet.RequestDispatcher rd =
-                request.getRequestDispatcher("/hash-00/BenchmarkTest00003.html");
-        rd.include(request, response);
+                vcf3f61.getRequestDispatcher("/hash-00/BenchmarkTest00003.v3e2efb");
+        rd.include(vcf3f61, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest vcf3f61, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v3e2efb;charset=UTF-8");
 
-        javax.servlet.http.Cookie[] theCookies = request.getCookies();
+        javax.servlet.http.Cookie[] theCookies = vcf3f61.getCookies();
 
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
             for (javax.servlet.http.Cookie theCookie : theCookies) {
-                if (theCookie.getName().equals("BenchmarkTest00003")) {
 
 if (false) { /* dead */ } 
+                if (theCookie.getName().equals("BenchmarkTest00003")) {
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
                 }

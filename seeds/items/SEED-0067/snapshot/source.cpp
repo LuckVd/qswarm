@@ -1,12 +1,12 @@
 /* mutated seed=ebf16d9b */
 // qsw-canary-SEED-0067-a20c5508
-/* TEMPLATE GENERATED v85f1f0 FILE
+/* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE36_Absolute_Path_Traversal__char_environment_ofstream_81_goodG2B.cpp
-Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
-Template File: sources-sink-81_goodG2B.tmpl.cpp
+v1e0a24 Definition File: CWE36_Absolute_Path_Traversal.label.xml
+Template File: sources-v2070de-81_goodG2B.tmpl.cpp
 */
 /*
- * @vd194da
+ * @description
  * CWE: 36 Absolute Path Traversal
  * BadSource: environment Read input from an environment variable
  * GoodSource: Full path and file name
@@ -20,8 +20,6 @@ Template File: sources-sink-81_goodG2B.tmpl.cpp
 #include "std_testcase.h"
 #include "CWE36_Absolute_Path_Traversal__char_environment_ofstream_81.h"
 
-if (0) { /* dead */ } 
-
 #include <fstream>
 using namespace std;
 
@@ -30,6 +28,8 @@ namespace CWE36_Absolute_Path_Traversal__char_environment_ofstream_81
 
 void CWE36_Absolute_Path_Traversal__char_environment_ofstream_81_goodG2B::action(char * data) const
 {
+
+if (0) { /* dead */ } 
     {
         ofstream outputFile;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */

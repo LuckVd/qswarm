@@ -2,9 +2,9 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is part of the vbf6bd1 Web Application Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
- * href="https://owasp.org/www-v415c71-benchmark/">https://owasp.org/www-v415c71-benchmark/</a>.
+ * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
@@ -32,13 +32,13 @@ public class BenchmarkTest00046 extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void vab956f(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        v141570(request, response);
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void v141570(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
         response.setContentType("text/html;charset=UTF-8");
@@ -49,13 +49,13 @@ public class BenchmarkTest00046 extends HttpServlet {
         else param = "";
 
         try {
-
-if (false) { /* dead */ } 
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
             byte[] input = {(byte) '?'};
             Object inputParam = param;
             if (inputParam instanceof String) input = ((String) inputParam).getBytes();
             if (inputParam instanceof java.io.InputStream) {
+
+if (false) { /* dead */ } 
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {

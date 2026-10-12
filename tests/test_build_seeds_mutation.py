@@ -176,3 +176,44 @@ class TestMutationPreservesTaint:
         assert re.search(r"FOPEN\(\s*(data|v[0-9a-f]{6})\s*,", out), (
             "rename 必须全局一致，污点链不得断"
         )
+
+
+class TestV03RetireAndQuota:
+    """v0.3 重建三件套（2026-10-12）：retire 排除表 / bank_version 提升 / 配额联动。
+
+    背景见 docs/answers_key_audit_20261012.md（BROKEN_FAMILY 4 道）与
+    docs/spec/DECISIONS.md 2026-10-12 行（SEED-0050~0053 retire，负责人拍板）。"""
+
+    def test_retired_cve_set_literal(self):
+        """排除表恰为 audit BROKEN_FAMILY 四道 CVE（字面钉死，防误改）。"""
+        assert build.RETIRED_CVES == frozenset({
+            "CVE-2026-40192",   # SEED-0050
+            "CVE-2026-54059",   # SEED-0051
+            "CVE-2026-55380",   # SEED-0052
+            "CVE-2026-59203",   # SEED-0053
+        })
+
+    def test_vuln_retired_matches_any_alias(self):
+        """OSV primary id 可能是 GHSA——CVE 在 aliases 任意位都命中。"""
+        assert build.vuln_retired(["CVE-2026-40192"]) is True
+        assert build.vuln_retired(["GHSA-xxxx-yyyy", "CVE-2026-54059"]) is True
+        assert build.vuln_retired(["CVE-2026-12345"]) is False
+        assert build.vuln_retired([]) is False
+
+    def test_v03_plan_matches_v0_quota_exactly(self):
+        """plan 逐家族与 bank.V0_QUOTA 精确相等（validate_bank 相等校验的构建侧镜像）。
+
+        v0.3 仅 authz 来源拆分变化：cve 5→1（retire 4 道）、jo_real 7→11 同额回补；
+        家族 (real, fp) 配额表不得动。"""
+        from qswarm.exams.bank import V0_QUOTA
+
+        assert build.V03_PLAN["authz"] == {"cve": 1, "jo_real": 11, "fp": 8}
+        assert set(build.V03_PLAN) == set(V0_QUOTA), "五家族必须齐备（deser 已退出）"
+        for fam, q in build.V03_PLAN.items():
+            real, fp = V0_QUOTA[fam]
+            assert q["cve"] + q["jo_real"] == real, f"{fam} real 拆分不符"
+            assert q["fp"] == fp, f"{fam} fp 不符"
+
+    def test_bank_version_bumped_to_2(self):
+        """v0.3 重建 bank_version=2：出卷 derive_seed 含 bank_version，不换版本不换卷。"""
+        assert build.BANK_VERSION == 2

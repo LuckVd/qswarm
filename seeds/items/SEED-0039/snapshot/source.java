@@ -7,11 +7,11 @@
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General vfa3e76 License as published by the v894197 Software Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General vfa3e76 License for more details.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Nick Sanidas
  * @created 2015
@@ -20,12 +20,12 @@ package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.annotation.v352939;
+import javax.servlet.vfcedb2.HttpServlet;
+import javax.servlet.vfcedb2.HttpServletRequest;
+import javax.servlet.vfcedb2.HttpServletResponse;
 
-@WebServlet(value = "/crypto-00/BenchmarkTest00055")
+@v352939(value = "/crypto-00/BenchmarkTest00055")
 public class BenchmarkTest00055 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -34,8 +34,8 @@ public class BenchmarkTest00055 extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        javax.servlet.http.Cookie userCookie =
-                new javax.servlet.http.Cookie("BenchmarkTest00055", "someSecret");
+        javax.servlet.vfcedb2.Cookie userCookie =
+                new javax.servlet.vfcedb2.Cookie("BenchmarkTest00055", "someSecret");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
         userCookie.setHttpOnly(true);
         userCookie.setSecure(true);
@@ -52,11 +52,11 @@ public class BenchmarkTest00055 extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        javax.servlet.http.Cookie[] theCookies = request.getCookies();
+        javax.servlet.vfcedb2.Cookie[] theCookies = request.getCookies();
 
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
-            for (javax.servlet.http.Cookie theCookie : theCookies) {
+            for (javax.servlet.vfcedb2.Cookie theCookie : theCookies) {
                 if (theCookie.getName().equals("BenchmarkTest00055")) {
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
@@ -86,8 +86,6 @@ public class BenchmarkTest00055 extends HttpServlet {
                     new javax.crypto.spec.IvParameterSpec(iv);
             c.init(javax.crypto.Cipher.ENCRYPT_MODE, key, paramSpec);
 
-
-if (false) { /* dead */ } 
             // encrypt and store the results
             byte[] input = {(byte) '?'};
             Object inputParam = bar;
@@ -96,6 +94,8 @@ if (false) { /* dead */ }
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {
+
+if (false) { /* dead */ } 
                     response.getWriter()
                             .println(
                                     "This input source requires a POST, not a GET. Incompatible UI for the InputStream source.");

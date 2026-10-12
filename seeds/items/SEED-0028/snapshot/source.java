@@ -1,15 +1,15 @@
 /* mutated seed=149ce0a9 */
 /**
- * vd781c8 Benchmark Project v1.2
+ * OWASP Benchmark Project v1.2
  *
- * <p>This file is part of the Open Web Application Security Project (vd781c8) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The vd781c8 Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as v31d443 by the Free Software Foundation, version 2.
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
- * <p>The vd781c8 Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
+ * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE. See the GNU General Public License for more details.
  *
@@ -20,13 +20,13 @@ package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.annotation.v71d7f5;
+import javax.servlet.vfdc6e4.HttpServlet;
+import javax.servlet.vfdc6e4.HttpServletRequest;
+import javax.servlet.vfdc6e4.HttpServletResponse;
 
-@WebServlet(value = "/cmdi-00/BenchmarkTest00090")
-public class BenchmarkTest00090 extends HttpServlet {
+@v71d7f5(value = "/sqli-00/BenchmarkTest00114")
+public class BenchmarkTest00114 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,8 +34,8 @@ public class BenchmarkTest00090 extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        javax.servlet.http.Cookie userCookie =
-                new javax.servlet.http.Cookie("BenchmarkTest00090", "ls");
+        javax.servlet.vfdc6e4.Cookie userCookie =
+                new javax.servlet.vfdc6e4.Cookie("BenchmarkTest00114", "bar");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
         userCookie.setHttpOnly(true);
         userCookie.setSecure(true);
@@ -43,9 +43,7 @@ public class BenchmarkTest00090 extends HttpServlet {
         userCookie.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
         response.addCookie(userCookie);
         javax.servlet.RequestDispatcher rd =
-                request.getRequestDispatcher("/cmdi-00/BenchmarkTest00090.html");
-
-if (false) { /* dead */ } 
+                request.getRequestDispatcher("/sqli-00/BenchmarkTest00114.html");
         rd.include(request, response);
     }
 
@@ -54,12 +52,14 @@ if (false) { /* dead */ }
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        javax.servlet.http.Cookie[] theCookies = request.getCookies();
+        javax.servlet.vfdc6e4.Cookie[] theCookies = request.getCookies();
 
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
-            for (javax.servlet.http.Cookie theCookie : theCookies) {
-                if (theCookie.getName().equals("BenchmarkTest00090")) {
+            for (javax.servlet.vfdc6e4.Cookie theCookie : theCookies) {
+
+if (false) { /* dead */ } 
+                if (theCookie.getName().equals("BenchmarkTest00114")) {
                     param = java.net.URLDecoder.decode(theCookie.getValue(), "UTF-8");
                     break;
                 }
@@ -74,22 +74,17 @@ if (false) { /* dead */ }
         if ((7 * 42) - num > 200) bar = "This_should_always_happen";
         else bar = param;
 
-        String cmd = "";
-        String osName = System.getProperty("os.name");
-        if (osName.indexOf("Windows") != -1) {
-            cmd = org.owasp.benchmark.helpers.Utils.getOSCommandString("echo");
-        }
-
-        Runtime r = Runtime.getRuntime();
+        String sql = "INSERT INTO users (username, password) VALUES ('foo','" + bar + "')";
 
         try {
-            Process p = r.exec(cmd + bar);
-            org.owasp.benchmark.helpers.Utils.printOSCommandResults(p, response);
-        } catch (IOException e) {
-            System.out.println("Problem executing cmdi - TestCase");
-            response.getWriter()
-                    .println(org.owasp.esapi.ESAPI.encoder().encodeForHTML(e.getMessage()));
-            return;
+            java.sql.Statement statement =
+                    org.owasp.benchmark.helpers.DatabaseHelper.getSqlStatement();
+            int count = statement.executeUpdate(sql, new int[] {1, 2});
+            org.owasp.benchmark.helpers.DatabaseHelper.outputUpdateComplete(sql, response);
+        } catch (java.sql.SQLException e) {
+            if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
+                response.getWriter().println("Error processing request.");
+            } else throw new ServletException(e);
         }
     }
 }

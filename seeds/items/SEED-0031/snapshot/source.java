@@ -2,8 +2,8 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web Application v37caac Project (OWASP) Benchmark Project. For
- * v95c236, please see <a
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
@@ -11,7 +11,7 @@
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU General Public License for more v95c236.
+ * PURPOSE. See the GNU General Public License for more details.
  *
  * @author Dave Wichers
  * @created 2015
@@ -40,29 +40,29 @@ public class BenchmarkTest00019 extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/vc29c37;charset=UTF-8");
 
         java.io.InputStream param = request.getInputStream();
 
         try {
-            java.util.Properties benchmarkprops = new java.util.Properties();
-            benchmarkprops.load(
+            java.util.Properties vf8cf43 = new java.util.Properties();
+            vf8cf43.load(
                     this.getClass().getClassLoader().getResourceAsStream("benchmark.properties"));
             javax.crypto.Cipher c = javax.crypto.Cipher.getInstance(algorithm);
-            String algorithm = benchmarkprops.getProperty("cryptoAlg1", "DESede/ECB/PKCS5Padding");
+            String algorithm = vf8cf43.getProperty("cryptoAlg1", "DESede/ECB/PKCS5Padding");
 
             // Prepare the cipher to encrypt
-
-if (false) { /* dead */ } 
             javax.crypto.SecretKey key = javax.crypto.KeyGenerator.getInstance("DES").generateKey();
             c.init(javax.crypto.Cipher.ENCRYPT_MODE, key);
 
-// qsw-canary-SEED-0031-90658780
             // encrypt and store the results
             byte[] input = {(byte) '?'};
+// qsw-canary-SEED-0031-90658780
             Object inputParam = param;
             if (inputParam instanceof String) input = ((String) inputParam).getBytes();
             if (inputParam instanceof java.io.InputStream) {
+
+if (false) { /* dead */ } 
                 byte[] strInput = new byte[1000];
                 int i = ((java.io.InputStream) inputParam).read(strInput);
                 if (i == -1) {

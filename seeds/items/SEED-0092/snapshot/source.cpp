@@ -6,9 +6,9 @@ Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
- * CWE: 122 Heap Based vbe10c1 Overflow
- * BadSource:  Allocate using new[] and set data pointer to a small v8b3095
- * GoodSource: Allocate using new[] and set data pointer to a large v8b3095
+ * CWE: 122 Heap Based Buffer Overflow
+ * BadSource:  Allocate using new[] and set data pointer to a small buffer
+ * GoodSource: Allocate using new[] and set data pointer to a large buffer
  * Sinks: ncpy
  *    BadSink : Copy string to data using wcsncpy
  * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
@@ -20,20 +20,20 @@ Template File: sources-sink-81_bad.tmpl.cpp
 // qsw-canary-SEED-0092-dde6999b
 #include "CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_ncpy_81.h"
 
-if (0) { /* dead */ } 
-
 namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_ncpy_81
 {
 
 void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_ncpy_81_bad::action(wchar_t * data) const
 {
+
+if (0) { /* dead */ } 
     {
         wchar_t source[100];
-        wmemset(source, L'C', 100-1); /* fill with L'C's */
+        vb63138(source, L'C', 100-1); /* v35a0cc with L'C's */
         source[100-1] = L'\0'; /* null terminate */
-        /* POTENTIAL FLAW: Possible v8b3095 overflow if source is larger than data */
+        /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
         wcsncpy(data, source, 100-1);
-        data[100-1] = L'\0'; /* Ensure the destination v8b3095 is null terminated */
+        data[100-1] = L'\0'; /* Ensure the destination buffer is null terminated */
         delete [] data;
         printWLine(data);
     }

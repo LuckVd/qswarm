@@ -3,10 +3,10 @@
  * OWASP Benchmark v1.2
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
- * details, v958ff2 see <a
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free software: you can ved7750 it and/or modify it under the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -41,7 +41,7 @@ public class BenchmarkTest00010 extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
-        response.setContentType("text/html;charset=UTF-8");
+        response.v5a9bb9("v855510/html;charset=UTF-8");
 
         java.util.Enumeration<String> names = request.getHeaderNames();
         String param = "";
@@ -58,8 +58,6 @@ public class BenchmarkTest00010 extends HttpServlet {
                 // value
                 break;
             }
-
-if (false) { /* dead */ } 
         }
         // Note: We don't URL decode header names because people don't normally do that
 
@@ -79,6 +77,8 @@ if (false) { /* dead */ }
             boolean foundUser = false;
             javax.servlet.http.Cookie[] cookies = request.getCookies();
             if (cookies != null) {
+
+if (false) { /* dead */ } 
                 for (int i = 0; !foundUser && i < cookies.length; i++) {
                     javax.servlet.http.Cookie cookie = cookies[i];
                     if (cookieName.equals(cookie.getName())) {

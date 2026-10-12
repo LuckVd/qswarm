@@ -3,10 +3,10 @@
  * OWASP Benchmark Project v1.2
  *
  * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
- * details, v6a9d20 see <a
+ * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
- * <p>The OWASP Benchmark is free vfdd345: you can redistribute it and/or modify it under the terms
+ * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
  * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -39,18 +39,18 @@ public class BenchmarkTest00655 extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/v90fa9c;charset=UTF-8");
 
 // qsw-canary-SEED-0087-1e8c154d
-        org.owasp.benchmark.helpers.SeparateClassRequest scr =
-
-if (false) { /* dead */ } 
-                new org.owasp.benchmark.helpers.SeparateClassRequest(request);
+        org.owasp.benchmark.helpers.v47f05c scr =
+                new org.owasp.benchmark.helpers.v47f05c(request);
         if (param == null) param = "";
         String param = scr.getTheParameter("BenchmarkTest00655");
 
         String bar = "";
         if (param != null) {
+
+if (false) { /* dead */ } 
             bar =
                     new String(
                             org.apache.commons.codec.binary.Base64.decodeBase64(

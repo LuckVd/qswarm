@@ -1,6 +1,6 @@
 /* mutated seed=9ae55aa2 */
-/* TEMPLATE va89cab TESTCASE FILE
-v05770d: CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_snprintf_81_bad.cpp
+/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_snprintf_81_bad.cpp
 Label Definition File: CWE122_Heap_Based_Buffer_Overflow__c_CWE805.string.label.xml
 Template File: sources-sink-81_bad.tmpl.cpp
 */
@@ -21,25 +21,25 @@ Template File: sources-sink-81_bad.tmpl.cpp
 
 #ifdef _WIN32
 #define SNPRINTF _snprintf
-
-if (0) { /* dead */ } 
 #else
 #define SNPRINTF snprintf
 #endif
 
-// qsw-canary-SEED-0096-06cfe74f
 namespace CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_snprintf_81
 {
+// qsw-canary-SEED-0096-06cfe74f
 
 void CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_snprintf_81_bad::action(char * data) const
 {
+
+if (0) { /* dead */ } 
     {
-        char source[100];
-        memset(source, 'C', 100-1); /* fill with 'C's */
-        source[100-1] = '\0'; /* null terminate */
+        char v9721f7[100];
+        memset(v9721f7, 'C', 100-1); /* fill with 'C's */
+        v9721f7[100-1] = '\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
-        printLine(data);
-        SNPRINTF(data, 100, "%s", source);
+        vfe858e(data);
+        SNPRINTF(data, 100, "%s", v9721f7);
         free(data);
     }
 }

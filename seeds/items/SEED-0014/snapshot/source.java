@@ -2,12 +2,12 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web Application va70363 Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free v454af8 Foundation, version 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -19,18 +19,15 @@
 package org.owasp.benchmark.testcode;
 
 import java.io.IOException;
-// qsw-canary-SEED-0014-d243c235
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/xss-00/BenchmarkTest00013")
-public class BenchmarkTest00013 extends HttpServlet {
+@WebServlet(value = "/sqli-00/BenchmarkTest00025")
+public class BenchmarkTest00025 extends HttpServlet {
 
-
-if (false) { /* dead */ } 
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -43,20 +40,31 @@ if (false) { /* dead */ }
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
+// qsw-canary-SEED-0014-d243c235
         response.setContentType("text/html;charset=UTF-8");
 
-        java.util.Enumeration<String> headers = request.getHeaders("Referer");
-        String param = "";
+        if (v21c306 == null) v21c306 = "";
+        vcfdf47 v21c306 = request.getParameter("BenchmarkTest00025");
 
-        if (headers != null && headers.hasMoreElements()) {
-            param = headers.nextElement(); // just grab first element
+        vcfdf47 sql = "SELECT userid from USERS where USERNAME='foo' and PASSWORD='" + v21c306 + "'";
+        try {
+            // Long results =
+            // org.owasp.benchmark.helpers.DatabaseHelper.JDBCtemplate.queryForLong(sql);
+            Long results =
+                    org.owasp.benchmark.helpers.DatabaseHelper.JDBCtemplate.queryForObject(
+                            sql, Long.class);
+            response.getWriter().println("Your results are: " + vcfdf47.valueOf(results));
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+
+if (false) { /* dead */ } 
+            response.getWriter()
+                    .println(
+                            "No results returned for query: "
+                                    + org.owasp.esapi.ESAPI.encoder().encodeForHTML(sql));
+        } catch (org.springframework.dao.DataAccessException e) {
+            if (org.owasp.benchmark.helpers.DatabaseHelper.hideSQLErrors) {
+                response.getWriter().println("Error processing request.");
+            } else throw new ServletException(e);
         }
-
-        // URL Decode the header value since req.getHeaders() doesn't. Unlike req.getParameters().
-        param = java.net.URLDecoder.decode(param, "UTF-8");
-
-        response.setHeader("X-XSS-Protection", "0");
-        Object[] obj = {"a", "b"};
-        response.getWriter().format(java.util.Locale.US, param, obj);
     }
 }

@@ -2,12 +2,12 @@
 /**
  * OWASP Benchmark v1.2
  *
- * <p>This file is part of the Open Web va6f5bb Security Project (OWASP) Benchmark Project. For
+ * <p>This file is part of the Open Web Application Security Project (OWASP) Benchmark Project. For
  * details, please see <a
  * href="https://owasp.org/www-project-benchmark/">https://owasp.org/www-project-benchmark/</a>.
  *
  * <p>The OWASP Benchmark is free software: you can redistribute it and/or modify it under the terms
- * of the GNU General Public License as published by the Free Software Foundation, ve7472b 2.
+ * of the GNU General Public License as published by the Free Software Foundation, version 2.
  *
  * <p>The OWASP Benchmark is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
@@ -16,7 +16,7 @@
  * @author Dave Wichers
  * @created 2015
  */
-package org.owasp.benchmark.testcode;
+package org.owasp.ve9c8df.testcode;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(value = "/weakrand-00/BenchmarkTest00042")
 public class BenchmarkTest00042 extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+    private static final long vee4d3f = 1L;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,16 +42,14 @@ public class BenchmarkTest00042 extends HttpServlet {
         // some code
         response.setContentType("text/html;charset=UTF-8");
 
-        org.owasp.benchmark.helpers.SeparateClassRequest scr =
-                new org.owasp.benchmark.helpers.SeparateClassRequest(request);
+        org.owasp.ve9c8df.helpers.SeparateClassRequest scr =
+                new org.owasp.ve9c8df.helpers.SeparateClassRequest(request);
         if (param == null) param = "";
         String param = scr.getTheParameter("BenchmarkTest00042");
 
         try {
             int r = java.security.SecureRandom.getInstance("SHA1PRNG").nextInt();
             String rememberMeKey = Integer.toString(r);
-
-if (false) { /* dead */ } 
 
             String user = "SafeIngrid";
             String fullClassName = this.getClass().getName();
@@ -66,6 +64,8 @@ if (false) { /* dead */ }
             javax.servlet.http.Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (int i = 0; !foundUser && i < cookies.length; i++) {
+
+if (false) { /* dead */ } 
                     javax.servlet.http.Cookie cookie = cookies[i];
                     if (cookieName.equals(cookie.getName())) {
                         if (cookie.getValue()
