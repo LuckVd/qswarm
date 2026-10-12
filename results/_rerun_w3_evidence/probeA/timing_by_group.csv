@@ -1,0 +1,2 @@
+experiment,arm,group_id,n_days,n_runs,N,DELTA,T_BASE,exam_weight_high,verify_error,elapsed_s_mean,elapsed_s_max,elapsed_s_sum,within_budget_5min
+matrix,tune,N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,30,3,6,0.05,0.6,0.3,0.2,22.984728146033984,24.825777193997055,68.95418443810195,True

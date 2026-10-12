@@ -1,0 +1,35 @@
+{
+ "argv": [
+  "--round",
+  "10",
+  "--workers",
+  "3",
+  "--seeds",
+  "11",
+  "--n-days",
+  "30",
+  "--replay-every",
+  "10",
+  "--dims",
+  "N=10 delta=0.10 t_base=0.7 exam_wh=0.5 ve=0.2 entry_direct=0.55 entry_frac=0.2 type_entry=0.55 quiz=12 grace=3 corrob=3 fc_net=1 fc_days=2 fc_items=20 fc_pass=0.55 m_prorate=1 unique=1 wadv=2 rscout=12 rauditor=10 rreviewer=8 rverifier=6",
+  "--out",
+  "results/_mech-x2"
+ ],
+ "mode": "tune",
+ "n_units": 1,
+ "n_rows": 1,
+ "workers": 3,
+ "seeds": [
+  11
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-09T14:27:10+00:00",
+ "finished_at_utc": "2026-10-09T14:27:39.012874+00:00",
+ "wall_s": 28.57359148422256,
+ "per_run_elapsed_s": {
+  "min": 28.24481489881873,
+  "median": 28.24481489881873,
+  "max": 28.24481489881873
+ },
+ "python": "3.12.3"
+}

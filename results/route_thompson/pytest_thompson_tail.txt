@@ -1,0 +1,7 @@
+......                                                                   [100%]
+============================= slowest 5 durations ==============================
+28.64s setup    tests/test_kernel_route_thompson.py::test_regret_curves_comparable_same_world_same_seed
+0.29s call     tests/test_kernel_route_thompson.py::test_evidence_dominates_and_pool_semantics
+0.18s call     tests/test_kernel_route_thompson.py::test_cold_start_explores_symmetrically
+0.17s call     tests/test_kernel_route_thompson.py::test_engine_same_seed_ts_rerun_bitwise
+0.16s call     tests/test_kernel_route_thompson.py::test_same_seed_route_thompson_bitwise_reproducible

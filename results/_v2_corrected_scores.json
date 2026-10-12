@@ -1,0 +1,176 @@
+{
+ "source": "out/m2-seeding-v2",
+ "audit": "answers-key-audit-20261012",
+ "agents": {
+  "cheap:zhipu/glm-4.5-air@cv1": {
+   "v2": {
+    "correct": 37,
+    "n": 40,
+    "accuracy": 0.925
+   },
+   "corrected": {
+    "correct": 33,
+    "n": 38,
+    "accuracy": 0.8684,
+    "excluded_n": 2
+   },
+   "qc_v2": true,
+   "qc_corrected": true,
+   "flips": [
+    {
+     "item": "SEED-0004",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    },
+    {
+     "item": "SEED-0006",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    },
+    {
+     "item": "SEED-0007",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    },
+    {
+     "item": "SEED-0009",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    }
+   ]
+  },
+  "cheap:zhipu/glm-4.6@cv1": {
+   "v2": {
+    "correct": 35,
+    "n": 40,
+    "accuracy": 0.875
+   },
+   "corrected": {
+    "correct": 34,
+    "n": 38,
+    "accuracy": 0.8947,
+    "excluded_n": 2
+   },
+   "qc_v2": true,
+   "qc_corrected": true,
+   "flips": [
+    {
+     "item": "SEED-0004",
+     "v2": 0,
+     "corrected": 1,
+     "note": "scout起疑翻转"
+    },
+    {
+     "item": "SEED-0005",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    },
+    {
+     "item": "SEED-0006",
+     "v2": 1,
+     "corrected": 0,
+     "note": "scout起疑翻转"
+    }
+   ]
+  },
+  "strong:zhipu/glm-5.2@cv1": {
+   "v2": {
+    "correct": 30,
+    "n": 40,
+    "accuracy": 0.75
+   },
+   "corrected": {
+    "correct": 35,
+    "n": 38,
+    "accuracy": 0.9211,
+    "excluded_n": 2
+   },
+   "qc_v2": false,
+   "qc_corrected": true,
+   "flips": [
+    {
+     "item": "SEED-0003",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0005",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0006",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0007",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0009",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    }
+   ]
+  },
+  "strong:zhipu/glm-5@cv1": {
+   "v2": {
+    "correct": 28,
+    "n": 40,
+    "accuracy": 0.7
+   },
+   "corrected": {
+    "correct": 33,
+    "n": 38,
+    "accuracy": 0.8684,
+    "excluded_n": 2
+   },
+   "qc_v2": false,
+   "qc_corrected": true,
+   "flips": [
+    {
+     "item": "SEED-0004",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0005",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0007",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0008",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    },
+    {
+     "item": "SEED-0009",
+     "v2": 0,
+     "corrected": 1,
+     "note": "declined→对"
+    }
+   ]
+  }
+ }
+}

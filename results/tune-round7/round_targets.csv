@@ -1,0 +1,13 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p2,3,FAIL(0.0770),FAIL(0.9220),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.9066309950225131
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p35,3,FAIL(0.0770),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.9035446213096364
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p5,3,FAIL(0.0770),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.8975759246598648
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p2,3,FAIL(0.0359),FAIL(0.9220),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.9112610382257359
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p35,3,FAIL(0.0359),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.9061325014150502
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p5,3,FAIL(0.0359),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.8990644707883083
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p2,3,FAIL(0.0329),FAIL(0.9220),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.8989554811053623
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p35,3,FAIL(0.0329),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.8950868754371216
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p5,3,FAIL(0.0329),FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,3,1,0.88825319367694
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,3,PASS,FAIL(0.9220),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,2,1,0.9018571295297244
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p35,3,PASS,FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,2,1,0.8954054438227441
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p5,3,PASS,FAIL(0.9218),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,2,1,0.8887718881956324

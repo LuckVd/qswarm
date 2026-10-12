@@ -1,0 +1,126 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.5
+  ],
+  "window": [
+   7.0
+  ],
+  "cooldown": [
+   7.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.05
+  ],
+  "t_base": [
+   0.6
+  ],
+  "exam_wh": [
+   0.3
+  ],
+  "ve": [
+   0.5
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": 7.0,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.3,
+   "verify_error": 0.5,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.6923076923076923,
+   "promotion_recall": 0.0,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.0,
+   "degradation_response": null,
+   "regret_total": 367.2706259778303,
+   "regret_per_task": 0.2323027362288617,
+   "regret_late_over_early": 0.775550854783389,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "e253d28bb04bce60b5feb83a96f7f88c8a4518257f5bf5567dcd70521efb4b2c"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.3,
+   "verify_error": 0.5,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.6666666666666666,
+   "promotion_recall": 0.0,
+   "median_time_to_active": 615.0,
+   "wrong_extinguish_rate": 0.0,
+   "degradation_response": null,
+   "regret_total": 395.60338747624814,
+   "regret_per_task": 0.2544073231358509,
+   "regret_late_over_early": 0.9519130399691773,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "f7783ff0accbefd401ce4967d824e3393926428b8f7c6f713ea2db743f869c94"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.3,
+   "verify_error": 0.5,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.6923076923076923,
+   "promotion_recall": 0.0,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.0,
+   "degradation_response": null,
+   "regret_total": 324.5578497263519,
+   "regret_per_task": 0.2192958444096972,
+   "regret_late_over_early": 0.8936716292644058,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "ce88c668195b72118da32086c02167b156a89bace543fb8c305748ddee58dfdc"
+  }
+ ]
+}

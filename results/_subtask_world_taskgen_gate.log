@@ -1,0 +1,51 @@
+# world+taskgen 子任务门禁证据（2026-10-09，返工轮 R2）
+
+## 1) 验收测试逐名（tests/test_world_taskgen.py）
+$ python -m pytest tests/test_world_taskgen.py -o addopts= -v
+...
+tests/test_world_taskgen.py::test_same_seed_pool_bit_identical PASSED
+tests/test_world_taskgen.py::test_same_seed_tasks_bit_identical PASSED
+tests/test_world_taskgen.py::test_different_seed_pool_differs PASSED
+tests/test_world_taskgen.py::test_different_seed_tasks_differs PASSED
+tests/test_world_taskgen.py::test_substreams_independent_and_named PASSED
+tests/test_world_taskgen.py::test_cross_process_bit_identical_and_seed_sensitive PASSED
+tests/test_world_taskgen.py::test_roster_and_ids PASSED
+tests/test_world_taskgen.py::test_mechanism_cannot_see_ground_truth PASSED
+tests/test_world_taskgen.py::test_hidden_setting_proportions PASSED
+tests/test_world_taskgen.py::test_hidden_setting_proportions_multiseed PASSED
+tests/test_world_taskgen.py::test_family_q_beta22_moments_on_normal PASSED
+tests/test_world_taskgen.py::test_degraded_drift_exact_quarter PASSED
+tests/test_world_taskgen.py::test_degraded_t_drift_configurable PASSED
+tests/test_world_taskgen.py::test_type_capability_clip_formula PASSED
+tests/test_world_taskgen.py::test_family_weights_normalized_from_v1_weight PASSED
+tests/test_world_taskgen.py::test_family_mix_empirical PASSED
+tests/test_world_taskgen.py::test_mode_ratio_50_35_15 PASSED
+tests/test_world_taskgen.py::test_taskmix_validation PASSED
+tests/test_world_taskgen.py::test_arrival_poisson_rate PASSED
+tests/test_world_taskgen.py::test_difficulty_beta_23 PASSED
+tests/test_world_taskgen.py::test_rescan_cache_hit_semantics PASSED
+============================== 21 passed in 4.78s ==============================
+
+## 2) 跨进程逐位一致（两个独立解释器，PYTHONHASHSEED=0 vs random）
+载荷：18 只 agent 全量 repr + 18×6×3 能力视图（t=0/499/500 横跨 T_drift）+ 60 日任务流记录，共 3329 行。
+lines: 3329
+sha256 seed=42/PYTHONHASHSEED=0      : 4ee7265aefb0580730493418303298d054873f8589f2e48cee78184421d94a56
+sha256 seed=42/PYTHONHASHSEED=random : 4ee7265aefb0580730493418303298d054873f8589f2e48cee78184421d94a56
+sha256 seed=43/PYTHONHASHSEED=0      : 6da1faf02f45f8ceb93729ee60b3f697c81fad749a7f5d1e746b8e6ce4e21e81
+BIT-IDENTICAL across processes (seed 42): True
+DIFFERENT seed gives different output   : True
+
+## 3) 统计断言实测值
+[ac_muz07uljnna36xqq] archetype proportions over 9000 agents, 5 seeds:
+  expert=0.1066 lucky=0.1013 degraded=0.0506 normal=0.7416（目标 0.10/0.10/0.05/0.75）
+[ac_muz07uljnna36xqq] degraded agents=82, drift q-diff distinct values across all (agent,family):
+  {0.25}（目标恰 0.25，逐格断言）
+[ac_muz07uljnna36xqq] NORMAL 型 q_f 矩（Beta(2,2)）：mean≈0.5（±0.01）、var≈0.05（±0.005）→ 测试通过
+[ac_muz07ulj33wgm80z] family weights（v1_weight/5.3 归一化）:
+  injection/deser/crypto/authz/config_dep=0.188679, mem_safety=0.056604=0.3/5.3, sum=1.0
+[ac_muz07ulj33wgm80z] mode ratios over 50089 tasks:
+  fast=0.5024 pr=0.3459 full=0.1516（目标 0.50/0.35/0.15）
+
+## 4) 全套回归（最终代码）
+$ python -m pytest tests/ -o addopts= -q
+287 passed in 366.58s (0:06:06)   [exit 0]

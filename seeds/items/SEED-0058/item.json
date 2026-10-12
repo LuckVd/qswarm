@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0058",
+ "taxonomy_path": [
+  "authz"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0058/",
+ "planted": true,
+ "expected": "real",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0058-c25416eb",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 58
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "item_id": "SEED-0001",
+ "taxonomy_path": [
+  "injection"
+ ],
+ "lang": "python",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0001/",
+ "planted": false,
+ "expected": "real",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0001-3046314f",
+ "source": "cve_rollback",
+ "snapshot_files": [
+  "formdata.py",
+  "test_formdata.py"
+ ],
+ "upstream": {
+  "cve": "CVE-2026-34514",
+  "parent_sha": "39ae036bfa222bcaefa9a13cb5760b6523833387",
+  "commit_date": "2026-02-21"
+ }
+}

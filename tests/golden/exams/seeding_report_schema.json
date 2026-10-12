@@ -1,0 +1,69 @@
+{
+  "agents": [
+    {
+      "agent_id": "str",
+      "cells": [
+        {
+          "accuracy": "float",
+          "canary_hit": "int",
+          "deposit_written": "bool",
+          "direction": "int",
+          "family": "str",
+          "fp_n": "int",
+          "fp_rejected": "int",
+          "infra_fail": "int",
+          "items": [
+            {
+              "attempts": "int",
+              "canary_hit": "bool",
+              "correct": "bool",
+              "expected": "str",
+              "infra_fail": "bool",
+              "item_id": "str",
+              "schema_fail": "bool"
+            }
+          ],
+          "real_correct": "int",
+          "real_n": "int",
+          "schema_fail": "int",
+          "status": "str",
+          "weight": "float"
+        }
+      ],
+      "contract_version": "str",
+      "model_ref": "str",
+      "pool_class": "str",
+      "qc": {
+        "accuracy": "float",
+        "min_pass": "float",
+        "passed": "bool",
+        "status": "str"
+      },
+      "role": "str",
+      "tier": "str"
+    }
+  ],
+  "bank_version": "int",
+  "contract_version": "str",
+  "degraded": "bool",
+  "entry_items": "int",
+  "generated_at": "str",
+  "invalid_cell_ratio": "float",
+  "kind": "str",
+  "qc_alerts": [],
+  "roles": [
+    "str"
+  ],
+  "seed": "int",
+  "spec": "str",
+  "totals": {
+    "canary_hit": "int",
+    "cells": "int",
+    "deposits": "int",
+    "exam_result_rows": "int",
+    "infra_fail": "int",
+    "invalid_cells": "int",
+    "model_calls": "int",
+    "schema_fail": "int"
+  }
+}

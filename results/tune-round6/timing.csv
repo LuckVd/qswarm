@@ -1,0 +1,13 @@
+experiment,arm,group_id,seed,n_days,N,DELTA,T_BASE,exam_weight_high,verify_error,reviewer_x,tilt_gamma,router,window_days,elapsed_s
+matrix,tune,cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,11,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,40.70651164604351
+matrix,tune,cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,22,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,37.81718870997429
+matrix,tune,cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,33,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,39.64903159113601
+matrix,tune,cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,11,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,41.764483326114714
+matrix,tune,cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,22,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,37.283320089336485
+matrix,tune,cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,33,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,40.44691582303494
+matrix,tune,cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,11,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,41.02548713795841
+matrix,tune,cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,22,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,38.08121076179668
+matrix,tune,cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,33,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,40.12432589009404
+matrix,tune,cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,11,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,41.194471986964345
+matrix,tune,cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,22,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,37.3973017251119
+matrix,tune,cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,33,30,6,0.05,0.6,0.3,0.2,0.5,1.0,kernel.route,7.0,40.653679576702416

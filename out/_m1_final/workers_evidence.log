@@ -1,0 +1,24 @@
+重负载并发留痕（SPEC-5 §5.2/§7.3；M1 终检 2026-10-11）
+
+M1 窗口（SPEC-2/5 定稿 2026-10-10 11:00 之后）全部 experiment manifest：
+  2026-10-10 22:47  workers=3  n_rows=3  results/_rerun_w3_evidence/canary/manifest.json
+      argv: --round 52 --out results/_rerun_w3_evidence/canary --workers 3 --seeds 11,22,33 --n-days 30 --replay-every 10 --dims N=6 delta=0.05 t_base=0.6 exam_wh=0.3 ve=0.2
+  2026-10-11 00:02  workers=3  n_rows=507  results/experiments-full/manifest.json
+      argv: --full --workers 3 --out results/experiments-full
+  2026-10-11 00:11  workers=3  n_rows=3  results/_rerun_w3_evidence/probeA/manifest.json
+      argv: --round 53 --out results/_rerun_w3_evidence/probeA --workers 3 --seeds 11,22,33 --n-days 30 --replay-every 10 --dims N=6 delta=0.05 t_base=0.6 exam_wh=0.3 ve=0.2
+  2026-10-11 00:11  workers=3  n_rows=3  results/_rerun_w3_evidence/probeB/manifest.json
+      argv: --round 54 --out results/_rerun_w3_evidence/probeB --workers 3 --seeds 11,22,33 --n-days 30 --replay-every 10 --dims N=6 delta=0.05 t_base=0.6 exam_wh=0.5 ve=0.2
+  => M1 窗口共 4 批，workers>3 批次数: 0  —— 全部为 3 ✓
+
+M1 窗口内全量 pytest（串行单进程，pytest 无 workers 语义；无 xdist 且不得新增依赖）：
+  python3 -m pytest -rs --tb=short  →  528 passed, 0 failed, 0 skipped, rc=0 (332.53s)
+  日志: out/_m1_final/full_pytest.log
+
+M0 期历史 manifest（< 2026-10-10 11:00，共 63 批）：workers 分布 {4: 19, 3: 42, 2: 2}
+  （workers=4/2 均为 M0 期历史留痕，SPEC-5 §7.3 明文『仅作对照』；M1 起新命令全部显式 --workers 3）
+
+M1 期 workers=3 官方矩阵复核：
+  results/experiments-full/manifest.json: workers=3 n_rows=507 argv='--full --workers 3 --out results/experiments-full'
+  日志 results/full-run6-w3.log: wall 4118s ≤ 2h, per-run max 54.4s ≤ 5 min, chunk 1/3..3/3
+  out/group_targets.csv: 162/162 qualifies=True, n_pass=9 全部（终检独立重读复核）

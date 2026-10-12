@@ -1,0 +1,36 @@
+{
+ "files": [
+  {
+   "name": "test_font_bdf.py",
+   "sha256": "5c7538c3b183e9a865a115ae4e1c9d1419d9196caa86054f10f25dd721ee1c26",
+   "size": 751
+  },
+  {
+   "name": "test_font_pcf.py",
+   "sha256": "06dda5afd6d5e52ba7513ebe803cb063ec8e56c85d51f1c86253fa6a655040c9",
+   "size": 3868
+  },
+  {
+   "name": "test_fontfile.py",
+   "sha256": "ca4aec02a116067fda2ce4195aa6b9412e0355050ae42cb10d186b3c99336af8",
+   "size": 1082
+  },
+  {
+   "name": "BdfFontFile.py",
+   "sha256": "33e80d3faf8e783e23846027dc5d84a1e2a904eede095052655a22d38687bd66",
+   "size": 3318
+  },
+  {
+   "name": "FontFile.py",
+   "sha256": "0b12f0c8d8d65b258bd230f15abe41903f31c955583aafbe1c935eeb3d110215",
+   "size": 4240
+  },
+  {
+   "name": "PcfFontFile.py",
+   "sha256": "aa2703ced5588f87a06dcc1a3258c4f49f7e5777cd31924816858f2e709bb2bf",
+   "size": 6956
+  }
+ ],
+ "item_id": "SEED-0051",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0051/"
+}

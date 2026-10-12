@@ -1,0 +1,175 @@
+........................................................................ [ 22%]
+......................................................................FF [ 44%]
+................................F............F.............F.F.......... [ 66%]
+........................................................................ [ 88%]
+......................................                                   [100%]
+=================================== FAILURES ===================================
+_________________ test_real_exam_center_integration[1.0-True] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-121/test_real_exam_center_integrat0')
+q = 1.0, should_pass = True
+
+    @pytest.mark.parametrize("q,should_pass", [(1.0, True), (0.0, False)])
+    def test_real_exam_center_integration(tmp_path, q, should_pass):
+        """SPEC-4 §0 集成：真实 simulator.ExamCenter 作回调，shadow→candidate→暗考收官。"""
+        db = tmp_path / "l.db"
+        _positive_ledger(db)
+        with _open(db) as led:
+            center = ExamCenter(
+                StubPool(StubAgent("a", {"injection": q})),
+                led,
+                seed=7,
+                params=PARAMS,
+                config=ExamWorldParams(p_clip=(0.0, 1.0)),
+            )
+    
+            def adapter(**kw):
+                return center.run_promotion_exam(
+                    kw["agent_id"], kw["role"], kw["node"], day=0,
+                    from_status=CellStatus(kw["from_status"]),
+                )
+    
+            transitions = promote_scan(led, AS_OF, exam=adapter)
+            reasons = [(t.reason, t.to_status) for t in transitions]
+            events = read_events(db)
+    
+        exam_results = [e for e in events if e.kind is LedgerKind.EXAM_RESULT]
+>       assert len(exam_results) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_kernel_promote_scan.py:516: AssertionError
+_________________ test_real_exam_center_integration[0.0-False] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-121/test_real_exam_center_integrat1')
+q = 0.0, should_pass = False
+
+    @pytest.mark.parametrize("q,should_pass", [(1.0, True), (0.0, False)])
+    def test_real_exam_center_integration(tmp_path, q, should_pass):
+        """SPEC-4 §0 集成：真实 simulator.ExamCenter 作回调，shadow→candidate→暗考收官。"""
+        db = tmp_path / "l.db"
+        _positive_ledger(db)
+        with _open(db) as led:
+            center = ExamCenter(
+                StubPool(StubAgent("a", {"injection": q})),
+                led,
+                seed=7,
+                params=PARAMS,
+                config=ExamWorldParams(p_clip=(0.0, 1.0)),
+            )
+    
+            def adapter(**kw):
+                return center.run_promotion_exam(
+                    kw["agent_id"], kw["role"], kw["node"], day=0,
+                    from_status=CellStatus(kw["from_status"]),
+                )
+    
+            transitions = promote_scan(led, AS_OF, exam=adapter)
+            reasons = [(t.reason, t.to_status) for t in transitions]
+            events = read_events(db)
+    
+        exam_results = [e for e in events if e.kind is LedgerKind.EXAM_RESULT]
+>       assert len(exam_results) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests/test_kernel_promote_scan.py:516: AssertionError
+______________ test_regret_curves_comparable_same_world_same_seed ______________
+
+arms = {'default': RunResult(seed=11, n_days=18, params=ParamsConfig(promote=PromoteParams(N=3, N_S2S3=0, DELTA=0.01, M=1, M_...f00ac10ac00>, status_counts={'active': 9, 'shadow': 372}, cells_count=381, db_path=None, elapsed_s=17.491849776823074)}
+
+    def test_regret_curves_comparable_same_world_same_seed(arms):
+        """同世界同种子：两臂完整跑通、官方口径 regret 曲线可比、默认臂双通道齐触发。"""
+        d, t = arms["default"], arms["thompson"]
+    
+        # 完整跑通：同一条任务流各派单恰一次；dispatch 事件齐备；环内+收尾重放等价
+        assert d.router_name == "kernel.route" and t.router_name == "route_thompson"
+        assert [x.task_id for x in d.tasks] == [x.task_id for x in t.tasks]
+        assert len(d.routing) == len(t.routing) == len(d.tasks) > 0
+        assert d.event_kinds()["dispatch"] == len(d.tasks)
+        assert t.event_kinds()["dispatch"] == len(t.tasks)
+        assert d.replay_report.passed and t.replay_report.passed
+        assert d.metrics.replay_equivalent is True and t.metrics.replay_equivalent is True
+        assert all(rep.passed for rep in d.replay_day_reports + t.replay_day_reports)
+    
+        # 默认臂双通道齐触发（本闭环的关键标定）：specialist 有规模（非孤例）、
+        # explore 在场；TS 臂全量走 thompson 通道且派单非空、探索覆盖 ≥2 agent
+        ch_d = Counter(r.channel for r in d.routing)
+>       assert set(ch_d) == {"specialist", "explore"}
+E       AssertionError: assert {'explore'} == {'explore', 'specialist'}
+E         
+E         Extra items in the right set:
+E         'specialist'
+E         Use -v to get more diff
+
+tests/test_kernel_route_thompson.py:308: AssertionError
+______________ test_entry_direct_threshold_boundary_is_inclusive _______________
+
+    def test_entry_direct_threshold_boundary_is_inclusive():
+        """正确率恰等于门槛（含等号语义）→ 直晋；低于 → 不直晋。
+    
+        用 7/8=0.875 门槛：扫描种子表找含 accuracy=0.875 正向格的种子；凡该格为其
+        (role, family) 的最高正确率 ace，必在事件中；任何低于门槛的正方向格绝不出现。
+        """
+        found = False
+        for seed in (42, 43, 44, 45, 46):
+            pool, outcomes, events, p = _seed_with(0.875, seed=seed)
+            got = {(str(e.payload["role"]), e.payload["node"], e.payload["agent"])
+                   for e in events}
+            below = {(o.role.value, o.family, o.agent_id) for o in outcomes
+                     if o.direction == 1 and o.accuracy < 0.875}
+            assert not (below & got)
+            for o in outcomes:
+                if o.direction == 1 and o.accuracy == 0.875:
+                    peers = [x for x in outcomes
+                             if x.role is o.role and x.family == o.family
+                             and x.direction == 1 and x.accuracy >= 0.875]
+                    if max(peers, key=lambda x: (x.accuracy, x.agent_id)).agent_id != o.agent_id:
+                        continue                       # 同族更高 ace 在：不占席位
+>                   assert (o.role.value, o.family, o.agent_id) in got
+E                   AssertionError: assert ('scout', 'mem_safety', 'scout-02') in {('auditor', 'config_dep', 'auditor-05'), ('auditor', 'injection', 'auditor-02'), ('reviewer', 'crypto', 'reviewer-04'), ('scout', 'authz', 'scout-02'), ('scout', 'config_dep', 'scout-03'), ('scout', 'crypto', 'scout-06'), ...}
+
+tests/test_m0_final_knobs.py:375: AssertionError
+______________ test_run_produces_all_event_kinds_and_nine_metrics ______________
+
+base_run = RunResult(seed=11, n_days=18, params=ParamsConfig(promote=PromoteParams(N=3, N_S2S3=0, DELTA=0.01, M=1, M_window_days=...7f00aa5a0f20>, status_counts={'active': 7, 'shadow': 370}, cells_count=377, db_path=None, elapsed_s=16.327262863051146)
+
+    def test_run_produces_all_event_kinds_and_nine_metrics(base_run):
+        kinds = base_run.event_kinds()
+        for kind in ("dispatch", "deposit", "promotion", "demotion"):
+>           assert kinds[kind] > 0, f"run 产物缺 {kind} 事件：{dict(kinds)}"
+E           AssertionError: run 产物缺 demotion 事件：{'deposit': 3602, 'promotion': 34, 'dispatch': 768, 'exam_result': 17}
+E           assert 0 > 0
+
+tests/test_sim_engine.py:188: AssertionError
+________________ test_override_t_base_changes_routing_behavior _________________
+
+base_run = RunResult(seed=11, n_days=18, params=ParamsConfig(promote=PromoteParams(N=3, N_S2S3=0, DELTA=0.01, M=1, M_window_days=...7f00aa5a0f20>, status_counts={'active': 7, 'shadow': 370}, cells_count=377, db_path=None, elapsed_s=16.327262863051146)
+tbase_run = RunResult(seed=11, n_days=18, params=ParamsConfig(promote=PromoteParams(N=3, N_S2S3=0, DELTA=0.01, M=1, M_window_days=...7f00ac0161b0>, status_counts={'active': 7, 'shadow': 370}, cells_count=377, db_path=None, elapsed_s=17.067579049617052)
+
+    def test_override_t_base_changes_routing_behavior(base_run, tbase_run):
+        # 覆盖确实生效（其余参数逐项一致）
+        assert base_run.params.tilt.T_BASE == 0.7
+        assert tbase_run.params.tilt.T_BASE == 0.9
+        assert tbase_run.params.tilt.GAMMA == base_run.params.tilt.GAMMA == 0.0
+        assert tbase_run.seed == base_run.seed
+    
+        # 路由行为不同：同一批任务的派单结果出现分歧（tilt 概率 0.7 → 0.9）
+        diff = [
+            (x, y) for x, y in zip(base_run.routing, tbase_run.routing)
+            if x.assignee != y.assignee
+        ]
+>       assert len(diff) > 0, "改 T_BASE 后路由行为必须不同"
+E       AssertionError: 改 T_BASE 后路由行为必须不同
+E       assert 0 > 0
+E        +  where 0 = len([])
+
+tests/test_sim_engine.py:248: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_kernel_promote_scan.py::test_real_exam_center_integration[1.0-True]
+FAILED tests/test_kernel_promote_scan.py::test_real_exam_center_integration[0.0-False]
+FAILED tests/test_kernel_route_thompson.py::test_regret_curves_comparable_same_world_same_seed
+FAILED tests/test_m0_final_knobs.py::test_entry_direct_threshold_boundary_is_inclusive
+FAILED tests/test_sim_engine.py::test_run_produces_all_event_kinds_and_nine_metrics
+FAILED tests/test_sim_engine.py::test_override_t_base_changes_routing_behavior
+PYTEST_EXIT=1

@@ -1,0 +1,33 @@
+{
+ "argv": [
+  "--round",
+  "99",
+  "--out",
+  "results/_audit-rec-group",
+  "--workers",
+  "4",
+  "--seeds",
+  "11,22,33",
+  "--dims",
+  "N=6 delta=0.05 t_base=0.6 exam_wh=0.3 ve=0.2 window=7"
+ ],
+ "mode": "tune",
+ "n_units": 3,
+ "n_rows": 3,
+ "workers": 4,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-10T01:58:52+00:00",
+ "finished_at_utc": "2026-10-10T01:59:41.844927+00:00",
+ "wall_s": 49.035060316324234,
+ "per_run_elapsed_s": {
+  "min": 46.272370553109795,
+  "median": 48.735844305250794,
+  "max": 48.820399639196694
+ },
+ "python": "3.12.3"
+}

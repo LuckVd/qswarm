@@ -1,0 +1,5 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,3,FAIL(0.2570),FAIL(0.8715),PASS,PASS,NODATA,PASS,PASS,NODATA,PASS,4,2,0.7500937731425066
+cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,3,FAIL(0.2614),FAIL(0.8944),PASS,PASS,NODATA,PASS,PASS,NODATA,PASS,4,2,0.7500937731425066
+cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,3,FAIL(0.2386),FAIL(0.8715),PASS,PASS,NODATA,PASS,PASS,NODATA,PASS,4,2,0.7820489495364004
+cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,3,FAIL(0.2413),FAIL(0.8944),PASS,PASS,NODATA,PASS,PASS,NODATA,PASS,4,2,0.7820489495364004

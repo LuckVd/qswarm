@@ -1,0 +1,21 @@
+{
+ "verdict": "insufficient_material",
+ "shortfalls": [
+  "injection/cve_rollback: 1/10",
+  "deser/cve_rollback: 0/6",
+  "deser/jo_real: 0/4",
+  "deser/fp: 0/6",
+  "crypto/cve_rollback: 0/6",
+  "authz/cve_rollback: 0/6",
+  "config_dep/cve_rollback: 0/6",
+  "mem_safety/cve_rollback: 0/6"
+ ],
+ "built_items": 42,
+ "required_items": 100,
+ "source_counts": {
+  "cve_rollback": 1,
+  "juliet_mutation": 20,
+  "owasp_mutation": 21
+ },
+ "note": "CWE502（deser）语料全源不可达 + cve_rollback post-cutoff 产出不足；不伪造来源、不放宽红线（SPEC-6 §1.1-4/§1.2）"
+}

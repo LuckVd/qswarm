@@ -1,0 +1,16 @@
+{
+ "files": [
+  {
+   "name": "security.py",
+   "sha256": "2768225297be90295624822934d5307e549b656982a1c7c94d22e4734c66c7f4",
+   "size": 6266
+  },
+  {
+   "name": "test_security.py",
+   "sha256": "869b9c34b4f32aebf4b42cb56a3dd21a0fb3e0a6fc5e776843d39d0d0f7127be",
+   "size": 2388
+  }
+ ],
+ "item_id": "SEED-0049",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0049/"
+}

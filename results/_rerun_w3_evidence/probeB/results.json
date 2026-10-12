@@ -1,0 +1,120 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "N": [
+   6.0
+  ],
+  "delta": [
+   0.05
+  ],
+  "t_base": [
+   0.6
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "N6-delta0p05-t_base0p6-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 6,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.898989898989899,
+   "promotion_recall": 0.675,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.03409090909090909,
+   "degradation_response": 80.0,
+   "regret_total": 162.90365124528776,
+   "regret_per_task": 0.10303836258398973,
+   "regret_late_over_early": 0.4544923078081544,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "3f79775c55f5842eb37341bfb563c2f241e118db795273a809b9d790502e5b3e"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "N6-delta0p05-t_base0p6-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 6,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.9405940594059405,
+   "promotion_recall": 0.75,
+   "median_time_to_active": 150.0,
+   "wrong_extinguish_rate": 0.0297029702970297,
+   "degradation_response": null,
+   "regret_total": 186.39469223929214,
+   "regret_per_task": 0.11986796928571841,
+   "regret_late_over_early": 0.6096978082694762,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "1185b23569da92cca85a29a91ed6f754ad1b18c50b96550e270e6f137cd94da8"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "N6-delta0p05-t_base0p6-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 6,
+   "DELTA": 0.05,
+   "T_BASE": 0.6,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8924731182795699,
+   "promotion_recall": 0.675,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.01098901098901099,
+   "degradation_response": 62.0,
+   "regret_total": 160.23835046424,
+   "regret_per_task": 0.10826915571908108,
+   "regret_late_over_early": 0.5132813935058514,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "347c9c7d416fab43e0fb81c8b96a4b25c246d51d886a23462bce9e4e490c1250"
+  }
+ ]
+}

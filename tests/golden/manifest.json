@@ -1,0 +1,168 @@
+{
+ "counts": {
+  "agg_cells": 8,
+  "budget": 3,
+  "dispatch": 4,
+  "promote_scan": 8,
+  "re_route": 4,
+  "route": 9,
+  "route_thompson": 9,
+  "total": 45
+ },
+ "float_policy": "exact（JSON repr 往返逐位保真；同一平台回归门为逐位比对，跨平台若 libm 浮点有差请按 regen_command 重冻）",
+ "generated_by": "scripts/freeze_golden.py --seed 7 --n-days 30",
+ "params": {
+  "budget": {
+   "COST_PER_L2_CENTS": 5,
+   "COST_PER_S2_CENTS": 10,
+   "FAST_CENTS": 2,
+   "FULL_CENTS": 600,
+   "L2_QUOTA_CAP": 45,
+   "PR_CENTS": 100,
+   "RESCAN_WEEKLY": 0.07
+  },
+  "decay": {
+   "EPS_FLOOR": 0.5,
+   "T_HALF_DAYS": 30.0,
+   "T_HALF_DAYS_EXAM": 15.0
+  },
+  "demote": {
+   "DORMANT_DAYS": 60,
+   "FC_BASE_EXAMS": 2,
+   "FC_CONSEC": 2,
+   "FC_DAYS": 1,
+   "FC_ITEMS": 60,
+   "FC_MARGIN": 0.15,
+   "REACTIVATE_N": 5,
+   "WINDOWS": 2
+  },
+  "deposits": {
+   "REVIEWER_X": 0.5,
+   "SCOUT_X": 0.2,
+   "VERIFIER_CONFIRM": 0.25,
+   "VERIFIER_CONFLICT": 0.5
+  },
+  "exam": {
+   "COOLDOWN_DAYS": 1,
+   "ENTRY_CORROB_S2S3": 2.0,
+   "ENTRY_DIRECT": 0.3,
+   "ENTRY_GRACE_DAYS": 3,
+   "ENTRY_MARGIN": 1,
+   "ENTRY_TOP_FRAC": 0.2,
+   "ENTRY_WINDOW_DAYS": 12,
+   "PERIODIC_ITEMS": 10,
+   "PERIODIC_PASS": 0.75,
+   "PROMO_ITEMS": 5,
+   "PROMO_MIN_REJECT_FP": 1,
+   "PROMO_REAL": 3,
+   "TYPE_ENTRY": 0.3,
+   "TYPE_ENTRY_COMBINE": 0.25
+  },
+  "explore": {
+   "UNIFORM_FLOOR": 0.2
+  },
+  "panel": {
+   "MIN_FAMILIES": 2,
+   "SIZE": 3
+  },
+  "promote": {
+   "DELTA": 0.05,
+   "M": 30,
+   "M_PRORATE": true,
+   "M_window_days": 90,
+   "N": 6,
+   "N_S2S3": 3,
+   "UNIQUE_PER_FAMILY": true,
+   "WINDOW_ADVANTAGE": 2
+  },
+  "roster": {
+   "auditor": 5,
+   "reviewer": 4,
+   "scout": 6,
+   "verifier": 3
+  },
+  "shrink": {
+   "LAMBDA": 5.0
+  },
+  "tilt": {
+   "GAMMA": 1.0,
+   "T_BASE": 0.6,
+   "T_MAX": 0.9,
+   "T_MIN": 0.5
+  }
+ },
+ "regen_command": "python3 scripts/freeze_golden.py --seed 7 --n-days 30",
+ "regen_m1_commands": {
+  "budget": "python3 scripts/freeze_budget_golden.py",
+  "dispatch": "python3 scripts/freeze_golden_m1.py",
+  "re_route": "python3 scripts/freeze_golden_m1.py"
+ },
+ "schema_version": 1,
+ "seq_policy": "片段重放按片段序重编 seq，故期望不含 seq；Transition.seq 与 cells.last_event_seq 不参与比对（账本记账产物，非机制公式）",
+ "spec": "SPEC-4 §4 输出物3：内核黄金用例回归集（route/promote_scan/agg_cells 各≥6 + route_thompson TS 对照臂，从仿真轨迹抽样；此后内核实现变更以本集为回归门）",
+ "trajectory": {
+  "cells_total": 396,
+  "digest": "sha256:435cb6e7e01933d5a6c2ea57dfd5dc0a88d65e2597e6a4bef9e6a9ec25c07dc2",
+  "exam": {
+   "entry_items": 12,
+   "p_clip": [
+    0.05,
+    0.95
+   ],
+   "p_slope": 1.0,
+   "seeding": true,
+   "type_quiz_items": 56,
+   "weight_high": 0.5,
+   "weight_low": 0.2
+  },
+  "hidden": {
+   "drift_delta": 0.25,
+   "expert_alpha": 8.0,
+   "luck_bias": 0.15,
+   "p_degraded": 0.05,
+   "p_expert": 0.1,
+   "p_lucky": 0.1,
+   "t_drift": 500
+  },
+  "n_days": 30,
+  "n_events": 15864,
+  "n_tasks": 1564,
+  "overrides": {},
+  "params_base": "configs/params.yaml",
+  "promote_window_days": 7.0,
+  "replay_every": 0,
+  "route_seed": 17919669168364637188,
+  "route_seed_labels": [
+   "engine",
+   "route"
+  ],
+  "router": "kernel.route",
+  "run_id": "sim-s7-d30",
+  "seed": 7,
+  "stream": {
+   "lam": 50.0,
+   "mix": {
+    "fast": 0.5,
+    "full": 0.15,
+    "pr": 0.35
+   }
+  },
+  "taxonomy": "configs/taxonomy.yaml",
+  "transitions_total": 425,
+  "ts_arm": "kernel.route_thompson（对照臂用例与 route 用例同切片同 rng 偏移，expected=确定性重放；轨迹派单本身仍由 kernel.route 生成）",
+  "verdict": {
+   "p_blocking": 0.5,
+   "s1_weight": 0.05,
+   "s2_reach_full": 0.3,
+   "s2_wrong_confirm": 0.1,
+   "s3_error": 0.05,
+   "s3_reach_concluded": 0.4,
+   "s3_reach_inconclusive": 0.8,
+   "verify_error": 0.2,
+   "z_own_w": 0.6,
+   "z_panel_w": 0.4
+  }
+ },
+ "ts_policy": "SimClock 整秒时刻编码为 (day, i)：ts = T0 + day·86400s + i·1s；片段耗尽后 FragmentClock 回落 as_of（夜批追加事件=夜锚点，与原一致）",
+ "verify_command": "python3 scripts/freeze_golden.py --seed 7 --n-days 30 --check"
+}

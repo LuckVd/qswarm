@@ -1,0 +1,2 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+window7-cooldown7-N10-delta0p15-tdrift600,3,FAIL(0.2963),FAIL(1.0000),NODATA,PASS,NODATA,PASS,PASS,NODATA,PASS,5,3,0.8957791048371851

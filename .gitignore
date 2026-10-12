@@ -1,0 +1,35 @@
+# ── 密钥（绝不入库）───────────────────────────────────────────────
+.zhipu_key
+
+# ── Python 运行产物 ──────────────────────────────────────────────
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ── 网络缓存（可再生产物，12M）────────────────────────────────────
+.cache-seeds/
+
+# ── out/：只跟踪交付报告与播种报告（文本证据），排除二进制 DB 与响应缓存
+out/*
+!out/_m1_final
+!out/_m1_evidence
+!out/_m2_final
+!out/m0gate-arch-20261009
+!out/m2-seeding
+!out/m2-seeding-v2
+out/m2-seeding/cache/
+out/m2-seeding-v2/cache/
+out/m2-seeding/seeds.db*
+out/m2-seeding/replay.db*
+out/m2-seeding-v2/cache/
+out/m2-seeding-v2/seeds.db*
+out/m2-seeding-v2/replay.db*
+out/m2-seeding-replay/
+
+# ── SQLite 附生文件（如 results 侧未来出现）────────────────────────
+*.db-shm
+*.db-wal
+
+# ── SQLite 数据库（一律可再生产物）────────────────────────────────
+*.db
+*.sqlite

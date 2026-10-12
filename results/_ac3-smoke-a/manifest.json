@@ -1,0 +1,27 @@
+{
+ "argv": [
+  "--smoke",
+  "--out",
+  "results/_ac3-smoke-a",
+  "--workers",
+  "4"
+ ],
+ "mode": "smoke",
+ "n_units": 78,
+ "n_rows": 78,
+ "workers": 4,
+ "seeds": [
+  11,
+  22
+ ],
+ "n_days": 8,
+ "started_at_utc": "2026-10-09T08:25:30.270723+00:00",
+ "finished_at_utc": "2026-10-09T08:27:07.585544+00:00",
+ "wall_s": 97.30174775375053,
+ "per_run_elapsed_s": {
+  "min": 3.9186977739445865,
+  "median": 4.839259512256831,
+  "max": 5.238157251384109
+ },
+ "python": "3.12.3"
+}

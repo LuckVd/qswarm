@@ -1,0 +1,28 @@
+{
+ "argv": [
+  "--full",
+  "--workers",
+  "4",
+  "--out",
+  "results/experiments-full"
+ ],
+ "mode": "full",
+ "n_units": 507,
+ "n_rows": 507,
+ "workers": 4,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-08T16:31:27.083235+00:00",
+ "finished_at_utc": "2026-10-08T17:36:20.147267+00:00",
+ "wall_s": 3892.9853280968964,
+ "per_run_elapsed_s": {
+  "min": 24.14620611211285,
+  "median": 30.93314249208197,
+  "max": 32.65605703694746
+ },
+ "python": "3.12.3"
+}

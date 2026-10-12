@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qswarm"
+version = "0.1.0"
+description = "蜂群代码安全审查系统：contracts / kernel / simulator（设计文档 v0.3.4）"
+requires-python = ">=3.11"           # StrEnum 需 3.11+
+dependencies = [
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+# 纯 Python 工程：无 LLM SDK、无网络依赖（SPEC-4 §6 实现约束）。
+# M0 阶段运行依赖仅 pydantic/pyyaml；kernel/simulator 尚无第三方需求。
+
+[tool.setuptools]
+packages = [
+    "qswarm",
+    "qswarm.contracts",
+    "qswarm.kernel",
+    "qswarm.simulator",
+]
+
+[tool.setuptools.package-data]
+qswarm = ["contracts/*.sql"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

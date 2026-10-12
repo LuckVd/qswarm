@@ -1,0 +1,292 @@
+{
+ "case_id": "re_route-004",
+ "desc": "多 finding 弱存款 + 全账本重放等价 + 表投影。",
+ "expected": {
+  "deposit_count": 5,
+  "ops": [
+   {
+    "ok": true,
+    "value": [
+     {
+      "kind": "re_route",
+      "payload": {
+       "finding_id": "F-20260101-000001",
+       "from_node": "injection/sqli",
+       "reason": "type_mismatch",
+       "to_node": "crypto"
+      }
+     },
+     {
+      "kind": "deposit",
+      "payload": {
+       "agent": "S-scout-1",
+       "cluster": null,
+       "direction": -1,
+       "finding": "F-20260101-000001",
+       "origin": "prod",
+       "role": "scout",
+       "signal_tier": "S1",
+       "src_seq": 3,
+       "taxonomy_path": [
+        "injection",
+        "sqli"
+       ],
+       "weight": 0.05
+      }
+     },
+     {
+      "kind": "deposit",
+      "payload": {
+       "agent": "S-scout-2",
+       "cluster": null,
+       "direction": -1,
+       "finding": "F-20260101-000001",
+       "origin": "prod",
+       "role": "scout",
+       "signal_tier": "S1",
+       "src_seq": 3,
+       "taxonomy_path": [
+        "injection",
+        "sqli"
+       ],
+       "weight": 0.05
+      }
+     }
+    ]
+   },
+   {
+    "ok": true,
+    "value": [
+     {
+      "kind": "re_route",
+      "payload": {
+       "finding_id": "F-20260101-000002",
+       "from_node": "crypto/aes_ecb",
+       "reason": "type_mismatch",
+       "to_node": "injection/xss"
+      }
+     },
+     {
+      "kind": "deposit",
+      "payload": {
+       "agent": "S-scout-1",
+       "cluster": null,
+       "direction": -1,
+       "finding": "F-20260101-000002",
+       "origin": "prod",
+       "role": "scout",
+       "signal_tier": "S1",
+       "src_seq": 6,
+       "taxonomy_path": [
+        "crypto",
+        "aes_ecb"
+       ],
+       "weight": 0.05
+      }
+     }
+    ]
+   },
+   {
+    "ok": true,
+    "value": {
+     "n_cells": 8,
+     "n_diff": 0
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "cells": {
+      "S-scout-1|scout|crypto": {
+       "activated_at": null,
+       "n_eff": 0.1,
+       "n_eff_s2s3": 0.0,
+       "neg_w": 0.05,
+       "pos_w": 0.0,
+       "status": "shadow"
+      },
+      "S-scout-1|scout|crypto/aes_ecb": {
+       "activated_at": null,
+       "n_eff": 0.1,
+       "n_eff_s2s3": 0.0,
+       "neg_w": 0.05,
+       "pos_w": 0.0,
+       "status": "shadow"
+      },
+      "S-scout-1|scout|injection": {
+       "activated_at": null,
+       "n_eff": 1.1,
+       "n_eff_s2s3": 1.0,
+       "neg_w": 0.05,
+       "pos_w": 0.5,
+       "status": "shadow"
+      },
+      "S-scout-1|scout|injection/sqli": {
+       "activated_at": null,
+       "n_eff": 1.1,
+       "n_eff_s2s3": 1.0,
+       "neg_w": 0.05,
+       "pos_w": 0.5,
+       "status": "shadow"
+      },
+      "S-scout-2|scout|crypto": {
+       "activated_at": null,
+       "n_eff": 1.0,
+       "n_eff_s2s3": 1.0,
+       "neg_w": 0.0,
+       "pos_w": 0.5,
+       "status": "shadow"
+      },
+      "S-scout-2|scout|crypto/aes_ecb": {
+       "activated_at": null,
+       "n_eff": 1.0,
+       "n_eff_s2s3": 1.0,
+       "neg_w": 0.0,
+       "pos_w": 0.5,
+       "status": "shadow"
+      },
+      "S-scout-2|scout|injection": {
+       "activated_at": null,
+       "n_eff": 0.1,
+       "n_eff_s2s3": 0.0,
+       "neg_w": 0.05,
+       "pos_w": 0.0,
+       "status": "shadow"
+      },
+      "S-scout-2|scout|injection/sqli": {
+       "activated_at": null,
+       "n_eff": 0.1,
+       "n_eff_s2s3": 0.0,
+       "neg_w": 0.05,
+       "pos_w": 0.0,
+       "status": "shadow"
+      }
+     }
+    }
+   }
+  ],
+  "tables": {
+   "findings": {
+    "F-20260101-000001": "open",
+    "F-20260101-000002": "open"
+   },
+   "tasks": {
+    "T-R1-001": {
+     "assignee": "A-auditor-1",
+     "attempts": 1,
+     "state": "dispatched"
+    }
+   }
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "events": [
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S-scout-1",
+     "cluster": null,
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S2",
+     "src_seq": null,
+     "taxonomy_path": [
+      "injection",
+      "sqli"
+     ],
+     "weight": 0.5
+    }
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S-scout-2",
+     "cluster": null,
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S2",
+     "src_seq": null,
+     "taxonomy_path": [
+      "crypto",
+      "aes_ecb"
+     ],
+     "weight": 0.5
+    }
+   }
+  ],
+  "findings": [
+   {
+    "id": "F-20260101-000001",
+    "run_id": "R1"
+   },
+   {
+    "family": "crypto",
+    "id": "F-20260101-000002",
+    "run_id": "R1",
+    "type": null
+   }
+  ],
+  "runs": [
+   {
+    "mode": "full",
+    "run_id": "R1"
+   }
+  ],
+  "tasks": [
+   {
+    "assignee": "A-auditor-1",
+    "attempts": 1,
+    "node": "injection/sqli",
+    "run_id": "R1",
+    "state": "dispatched",
+    "task_id": "T-R1-001"
+   }
+  ]
+ },
+ "kind": "re_route",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "多 finding 各至多一次弱存款（不同 from_node 路径段）；收尾全账本 rebuild 重放等价 diff=0；tasks/findings 表投影与 deposit 计数冻结。",
+  "spec_ref": "SPEC-2 §3.2/§6.3/§6.5；SPEC-5 §1.3/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "from_node": "injection/sqli",
+    "scout_ids": [
+     "S-scout-1",
+     "S-scout-2"
+    ],
+    "to_node": "crypto"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "from_node": "crypto/aes_ecb",
+    "scout_ids": [
+     "S-scout-1"
+    ],
+    "to_node": "injection/xss"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {},
+   "op": "rebuild_check"
+  },
+  {
+   "args": {},
+   "op": "agg_view"
+  }
+ ]
+}

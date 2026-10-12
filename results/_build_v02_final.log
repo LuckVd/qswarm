@@ -1,0 +1,42 @@
+== 段一：CVE 回滚取材（OSV → GitHub parent 快照）==
+  CVE 回滚产出：7
+== 段二：Juliet / OWASP 取材 ==
+  Juliet C 用例面：92；Juliet Java CWE502：0；OWASP 用例面：2740
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s07/CWE78_OS_Command_Injection__wchar_t_environment_popen_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s07/CWE78_OS_Command_Injection__wchar_t_environment_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s03/CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_loop_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s04/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s05/CWE121_Stack_Based_Buffer_Overflow__CWE805_struct_alloca_memmove_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s06/CWE121_Stack_Based_Buffer_Overflow__CWE805_wchar_t_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s07/CWE121_Stack_Based_Buffer_Overflow__CWE806_char_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s08/CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE122_Heap_Based_Buffer_Overflow/s01/CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_goodB2G.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s03/CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s04/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s05/CWE121_Stack_Based_Buffer_Overflow__CWE805_struct_alloca_memmove_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s06/CWE121_Stack_Based_Buffer_Overflow__CWE805_wchar_t_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s07/CWE121_Stack_Based_Buffer_Overflow__CWE806_char_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s08/CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE122_Heap_Based_Buffer_Overflow/s01/CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_81_goodB2G.cpp
+== 段三：bank.yaml 签发 + 校验器全绿 ==
+Traceback (most recent call last):
+  File "/data/Qswarm/scripts/build_seeds/build.py", line 871, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/data/Qswarm/scripts/build_seeds/build.py", line 861, in main
+    build_bank(
+  File "/data/Qswarm/scripts/build_seeds/build.py", line 834, in build_bank
+    bank = load_bank(out / "bank.yaml")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/Qswarm/qswarm/exams/bank.py", line 347, in load_bank
+    validate_bank(bank)
+  File "/data/Qswarm/qswarm/exams/bank.py", line 244, in validate_bank
+    raise ValueError(f"[{it.item_id}] canary 形态非法（期望 qsw-canary-<item_id>-<8位hex>）")
+ValueError: [SEED-0001] canary 形态非法（期望 qsw-canary-<item_id>-<8位hex>）
+exit=1

@@ -1,0 +1,2 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,3,PASS,FAIL(0.9220),PASS,PASS,NODATA,PASS,PASS,PASS,PASS,2,1,0.8997966901679276

@@ -1,0 +1,148 @@
+{
+ "case_id": "budget-002",
+ "expected": {
+  "run": {
+   "spent_cents": 11,
+   "status": "degraded"
+  },
+  "scaling_events": [
+   {
+    "kind": "scaling",
+    "payload": {
+     "delta": -1,
+     "pool": "mode:full",
+     "reason": "budget_breaker"
+    },
+    "run_id": "R-GOLDEN-B2"
+   }
+  ],
+  "steps": [
+   {
+    "state": {
+     "degraded": false,
+     "mode": "full",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": 1,
+     "spent_cents": 9,
+     "tier": "full"
+    }
+   },
+   {
+    "state": {
+     "degraded": false,
+     "mode": "full",
+     "quota_l2": 1,
+     "quota_s2": 0,
+     "remaining_cents": 6,
+     "spent_cents": 4,
+     "tier": "full"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "full",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": 0,
+     "spent_cents": 10,
+     "tier": "pr"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "full",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": 0,
+     "spent_cents": 10,
+     "tier": "pr"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "full",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": -1,
+     "spent_cents": 11,
+     "tier": "pr"
+    }
+   }
+  ]
+ },
+ "inputs": {
+  "setup": {
+   "budget_cents": 10,
+   "clock": "2026-10-10T00:00:00Z",
+   "mode": "full",
+   "run_id": "R-GOLDEN-B2"
+  },
+  "steps": [
+   {
+    "op": "policy_state",
+    "policy": {
+     "budget_cents": 10,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "full"
+    },
+    "spent": 9
+   },
+   {
+    "cents": 4,
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 10,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "full"
+    }
+   },
+   {
+    "op": "policy_state",
+    "policy": {
+     "budget_cents": 10,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "full"
+    },
+    "spent": 10
+   },
+   {
+    "cents": 6,
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 10,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "full"
+    }
+   },
+   {
+    "cents": 1,
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 10,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "full"
+    }
+   }
+  ]
+ },
+ "kind": "budget",
+ "meta": {
+  "origin": "spec_literal",
+  "pins": "D16 等号熔断：首 trip 唯一 SCALING(pool=mode:full,delta=-1,reason=budget_breaker)+runs.status=degraded 同事务；重复 trip 零新事件；full→pr 阶梯；配额归零",
+  "spec_ref": "SPEC-2 §4.2/§4.3（D15/D16/D17）；SPEC-5 §1.4"
+ }
+}

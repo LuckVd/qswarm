@@ -1,0 +1,2 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p3-entry_frac0p2-entry_margin1-type_entry0p3-grace3-corrob2-QUIZ56-eitems12-ewindow12-tcomb0p25-fc_days1-fc_items60-fc_margin0p15-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2,3,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,PASS,0,0,0.4697384562985034

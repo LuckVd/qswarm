@@ -1,0 +1,5 @@
+experiment,arm,group_id,n_days,n_runs,N,DELTA,T_BASE,exam_weight_high,verify_error,elapsed_s_mean,elapsed_s_max,elapsed_s_sum,within_budget_5min
+matrix,tune,cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,30,3,6,0.05,0.6,0.3,0.2,39.39091064905127,40.70651164604351,118.1727319471538,True
+matrix,tune,cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,30,3,6,0.05,0.6,0.3,0.2,39.83157307949538,41.764483326114714,119.49471923848614,True
+matrix,tune,cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,30,3,6,0.05,0.6,0.3,0.2,39.74367459661638,41.02548713795841,119.23102378984913,True
+matrix,tune,cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2,30,3,6,0.05,0.6,0.3,0.2,39.748484429592885,41.194471986964345,119.24545328877866,True

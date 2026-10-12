@@ -1,0 +1,2 @@
+experiment,arm,group_id,n_days,n_runs,N,DELTA,T_BASE,exam_weight_high,verify_error,elapsed_s_mean,elapsed_s_max,elapsed_s_sum,within_budget_5min
+matrix,tune,entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,30,3,14,0.15,0.8,0.5,0.2,28.184217335656285,29.0117741888389,84.55265200696886,True

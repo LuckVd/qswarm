@@ -1,0 +1,11 @@
+{
+ "files": [
+  {
+   "name": "source.java",
+   "sha256": "9cfda0ccc7642330b04515f84152788e24063217d87ee4d808750775dc807c19",
+   "size": 4064
+  }
+ ],
+ "item_id": "SEED-0033",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0033/"
+}

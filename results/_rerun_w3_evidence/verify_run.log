@@ -1,0 +1,13 @@
+[PASS] E1 workers==3 —— argv=['--full', '--workers', '3', '--out', 'results/experiments-full']
+[PASS] E1 n_rows==507 —— n_units=507
+[PASS] E1 wall ≤ 2h —— wall=4118s
+[PASS] E1 per-run max < 300s —— max=54.4s
+[PASS] E2 matrix 组数==162 —— n=162
+[PASS] E2 162 组全 9/9 达标
+[PASS] E2 推荐组==N06-D0.05-T0.60-E0.30-V0.20 —— N06-D0.05-T0.60-E0.30-V0.20
+[PASS] E2 replay_equivalent 507/507 —— 507/507
+[FAIL] E3 results.csv 剔除 digest 列后逐位一致 —— new=ad8acc20535f4320… old=28281ef8ce70c045…
+E4 compare_rerun.py 逐组对照（162 组）：metrics_equal=117/162 digest_equal=0/162 ALL_EQUAL=0/162
+[FAIL] E4 逐组 metrics_equal 全真
+E4 信息位：digest_equal=0/162（逐字段落盘于 compare_all_groups.csv，差异根因另证）
+VERIFY_RESULT = HAS_FAILURES

@@ -1,0 +1,32 @@
+== 段一：CVE 回滚取材（OSV → GitHub parent 快照）==
+  [osv-fail] npm/moment: RemoteDisconnected
+  [cve-rollback] CVE-2026-27199 pallets/werkzeug@d005985e → authz
+  [cve-rollback] CVE-2026-40192 python-pillow/Pillow@2696e962 → authz
+  [cve-rollback] CVE-2026-54059 python-pillow/Pillow@e3f56df5 → authz
+  [cve-rollback] CVE-2026-55380 python-pillow/Pillow@949f081d → authz
+  [cve-rollback] CVE-2026-55798 python-pillow/Pillow@87e78833 → injection
+  [fetch-fail] https://api.github.com/repos/python-pillow/Pillow/commits/ceefc348eb3c3844c7f9796ef2cc3a7dd5fbba7b → HTTPError: HTTP Error 403: rate limit exceeded
+  [fetch-fail] https://api.github.com/repos/python-pillow/Pillow/commits/03992618118b4a76b6163cd72ab5ecd684133b83 → HTTPError: HTTP Error 403: rate limit exceeded
+  [fetch-fail] https://api.github.com/repos/python-pillow/Pillow/commits/a9ffc42bedf4fc0a7ef8d6486e7f9e81e3397721 → HTTPError: HTTP Error 403: rate limit exceeded
+  [fetch-fail] https://api.github.com/repos/python-pillow/Pillow/commits/cce3bdb867c77a3420261ed1bfdb6b0787ec8fc1 → HTTPError: HTTP Error 403: rate limit exceeded
+  CVE 回滚产出：8
+== 段二：Juliet / OWASP 取材 ==
+  Juliet C 用例面：92；Juliet Java CWE502：0；OWASP 用例面：2740
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s07/CWE78_OS_Command_Injection__wchar_t_environment_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_goodB2G.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s03/CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s04/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_snprintf_81_goodG2B.cpp
+[stop] 取材产出不足（如实报缺，不伪造）：
+  injection/cve_rollback: 2/10
+  deser/cve_rollback: 0/6
+  deser/jo_real: 0/4
+  deser/fp: 0/6
+  crypto/cve_rollback: 0/6
+  config_dep/cve_rollback: 0/6
+  mem_safety/cve_rollback: 0/6
+  已建 49/100 题；缺口清单 seeds/.build-shortfall.json

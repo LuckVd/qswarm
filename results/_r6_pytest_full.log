@@ -1,0 +1,102 @@
+...................................F.................................... [ 23%]
+........................................................................ [ 46%]
+...........................................F............................ [ 69%]
+........................................................................ [ 92%]
+........................                                                 [100%]
+=================================== FAILURES ===================================
+________________ test_cli_smoke_reproducible_schema_and_budget _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0')
+
+    def test_cli_smoke_reproducible_schema_and_budget(tmp_path):
+        """同命令同种子两次运行：确定性载荷逐位一致；schema 齐备；smoke 单实验 <5 min。"""
+        out1, out2 = tmp_path / "a", tmp_path / "b"
+        assert main(["--smoke", "--out", str(out1), "--workers", "4"]) == 0
+        assert main(["--smoke", "--out", str(out2), "--workers", "4"]) == 0
+    
+        # ac1：一条命令产出全部结果文件
+        for name in DETERMINISTIC_FILES + TELEMETRY_FILES:
+            assert (out1 / name).is_file() and (out2 / name).is_file(), name
+    
+        # ac2：确定性载荷逐字节一致（遥测两件天然非确定，只查形状）
+        for name in DETERMINISTIC_FILES:
+>           assert (out1 / name).read_bytes() == (out2 / name).read_bytes(), name
+E           AssertionError: results.csv
+E           assert b'experiment,...8b8daede20c\n' == b'experiment,...fe339f5ca7a\n'
+E             
+E             At index 482 diff: b'3' != b'8'
+E             Use -v to get more diff
+
+tests/test_experiments.py:192: AssertionError
+----------------------------- Captured stdout call -----------------------------
+[experiments] mode=smoke units=78 (matrix groups=32 × seeds=[11, 22] + additional 14 runs) n_days=8 workers=4
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (94s)
+[experiments] chunk 2/4 done (98s)
+[experiments] chunk 3/4 done (98s)
+[experiments] chunk 4/4 done (98s)
+[experiments] done in 98s → /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a (per-run max 5.4s)
+  results_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/results.csv
+  summary_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/summary.csv
+  starvation_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/starvation.csv
+  results_json: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/results.json
+  timing_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/timing.csv
+  timing_by_group_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/timing_by_group.csv
+  manifest_json: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/a/manifest.json
+[experiments] mode=smoke units=78 (matrix groups=32 × seeds=[11, 22] + additional 14 runs) n_days=8 workers=4
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (95s)
+[experiments] chunk 2/4 done (95s)
+[experiments] chunk 3/4 done (95s)
+[experiments] chunk 4/4 done (98s)
+[experiments] done in 98s → /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b (per-run max 5.2s)
+  results_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/results.csv
+  summary_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/summary.csv
+  starvation_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/starvation.csv
+  results_json: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/results.json
+  timing_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/timing.csv
+  timing_by_group_csv: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/timing_by_group.csv
+  manifest_json: /tmp/pytest-of-root/pytest-114/test_cli_smoke_reproducible_sc0/b/manifest.json
+________________ test_same_seed_bit_identical_across_processes _________________
+
+base_run = RunResult(seed=11, n_days=18, params=ParamsConfig(promote=PromoteParams(N=3, N_S2S3=0, DELTA=0.01, M=1, M_window_days=...25384c5b830>, status_counts={'active': 14, 'shadow': 363}, cells_count=377, db_path=None, elapsed_s=10.918231706134975)
+
+    def test_same_seed_bit_identical_across_processes(base_run):
+        """确定性不依赖进程与哈希序：子进程用不同 PYTHONHASHSEED 重跑同 (seed, 配置)，
+        规范化轨迹摘要与进程内 run 逐位相同（排除同进程缓存/哈希序偶然一致）。"""
+        repo_root = str(Path(qswarm.__file__).resolve().parent.parent)
+        snippet = (
+            _CROSS_PROC_SNIPPET
+            .replace("__REPO_ROOT__", repr(repo_root))
+            .replace("__SEED__", repr(KW_MAIN["seed"]))
+            .replace("__N_DAYS__", repr(KW_MAIN["n_days"]))
+            .replace("__LAM__", repr(KW_MAIN["stream"].lam))
+            .replace("__REPLAY_EVERY__", repr(KW_MAIN["replay_every"]))
+            .replace("__OVERRIDES__", repr(KW_MAIN["overrides"]))
+        )
+        proc = subprocess.run(
+            [sys.executable, "-c", snippet],
+            capture_output=True, text=True, timeout=900,
+            env={**os.environ, "PYTHONHASHSEED": "424242"},  # 与父进程哈希序刻意不同
+        )
+        assert proc.returncode == 0, f"子进程失败：\n{proc.stderr}"
+        echo = json.loads(proc.stdout)
+    
+        # 生效配置与父进程场景逐项一致（片段与 KW_MAIN 无漂移）
+        assert echo["seed"] == base_run.seed
+        assert echo["n_days"] == base_run.n_days
+        assert echo["t_base"] == base_run.params.tilt.T_BASE
+        assert echo["gamma"] == base_run.params.tilt.GAMMA
+        assert echo["n_events"] == len(base_run.events)
+    
+        # 跨进程逐位一致（事件序列 + 路由 + 任务流 + 度量的规范化 JSON 摘要）
+>       assert echo["digest"] == base_run.digest
+E       AssertionError: assert '4f694571891e...27276b9cd8804' == 'dc292a81997a...61b6242cde37e'
+E         
+E         - dc292a81997a51e31049760e9c4e2d2e33b7f0e5ce2d14cc41461b6242cde37e
+E         + 4f694571891eddebff6beed89c4c6ef3f2f4336568105b8d26a27276b9cd8804
+
+tests/test_sim_engine.py:172: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_experiments.py::test_cli_smoke_reproducible_schema_and_budget
+FAILED tests/test_sim_engine.py::test_same_seed_bit_identical_across_processes

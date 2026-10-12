@@ -1,0 +1,197 @@
+{
+ "case_id": "budget-003",
+ "expected": {
+  "run": {
+   "spent_cents": 11,
+   "status": "degraded"
+  },
+  "scaling_events": [
+   {
+    "kind": "scaling",
+    "payload": {
+     "delta": -1,
+     "pool": "mode:pr",
+     "reason": "budget_breaker"
+    },
+    "run_id": "R-GOLDEN-B3"
+   }
+  ],
+  "steps": [
+   {
+    "state": {
+     "degraded": true,
+     "mode": "pr",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": 0,
+     "spent_cents": 5,
+     "tier": "fast"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "pr",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": -3,
+     "spent_cents": 8,
+     "tier": "fast"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "pr",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": -6,
+     "spent_cents": 11,
+     "tier": "fast"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "pr",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": -3,
+     "spent_cents": 8,
+     "tier": "fast"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "fast",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": 0,
+     "spent_cents": 2,
+     "tier": "fast"
+    }
+   },
+   {
+    "state": {
+     "degraded": true,
+     "mode": "fast",
+     "quota_l2": 0,
+     "quota_s2": 0,
+     "remaining_cents": -1,
+     "spent_cents": 3,
+     "tier": "fast"
+    }
+   },
+   {
+    "value": false
+   },
+   {
+    "value": false
+   }
+  ]
+ },
+ "inputs": {
+  "setup": {
+   "budget_cents": 5,
+   "clock": "2026-10-10T00:00:00Z",
+   "mode": "pr",
+   "run_id": "R-GOLDEN-B3"
+  },
+  "steps": [
+   {
+    "cents": 5,
+    "note": "pr-trip",
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 5,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "pr"
+    }
+   },
+   {
+    "cents": 3,
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 5,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "pr"
+    }
+   },
+   {
+    "cents": 3,
+    "op": "on_cost",
+    "policy": {
+     "budget_cents": 5,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "pr"
+    }
+   },
+   {
+    "op": "policy_state",
+    "policy": {
+     "budget_cents": 5,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "pr"
+    },
+    "spent": 8
+   },
+   {
+    "op": "policy_state",
+    "policy": {
+     "budget_cents": 2,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "fast"
+    },
+    "spent": 2
+   },
+   {
+    "op": "policy_state",
+    "policy": {
+     "budget_cents": 2,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "fast"
+    },
+    "spent": 3
+   },
+   {
+    "op": "batch_eligible",
+    "policy": {
+     "budget_cents": 5,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "pr"
+    }
+   },
+   {
+    "op": "batch_eligible",
+    "policy": {
+     "budget_cents": 2,
+     "cost_per_l2_cents": 5,
+     "cost_per_s2_cents": 10,
+     "l2_cap": 45,
+     "mode": "fast"
+    }
+   }
+  ]
+ },
+ "kind": "budget",
+ "meta": {
+  "origin": "spec_literal",
+  "pins": "pr→fast 阶梯到底；重复 trip 幂等零新事件；负 remaining 配额恒 0；fast 档等号熔断；审计注记 note 落 runs.meta_json（不进 SCALING 词表）",
+  "spec_ref": "SPEC-2 §4.2/§4.3（D15/D16/D17）；SPEC-5 §1.4"
+ }
+}

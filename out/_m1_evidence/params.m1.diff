@@ -1,0 +1,19 @@
+--- /data/Qswarm/out/_m1_evidence/params.pre.yaml	2026-10-10 18:54:31.997958750 +0800
++++ /data/Qswarm/configs/params.yaml	2026-10-10 18:51:55.788924342 +0800
+@@ -72,7 +72,15 @@
+ # TYPE_ENTRY_COMBINE=0.25：类型席位合成分 = 0.75·quiz 分 + 0.25·入学分（q_f
+ #   的独立测量），降低席位选择的测量噪声。
+ explore:  {UNIFORM_FLOOR: 0.20}                # 探索通道 20% 均匀保底（§5.2）
+-budget:   {PR_CENTS: 100, FULL_CENTS: 600, L2_QUOTA_CAP: 45, RESCAN_WEEKLY: 0.07}
++budget:   {PR_CENTS: 100, FULL_CENTS: 600, L2_QUOTA_CAP: 45, RESCAN_WEEKLY: 0.07, FAST_CENTS: 2, COST_PER_L2_CENTS: 5, COST_PER_S2_CENTS: 10}
++# ── M1 预算新键（SPEC-2 §8.1；DECISIONS 2026-10-10「旋钮缺省纪律落地」行回填）──
++# FAST_CENTS=2：fast 档单 run 预算（美分）＝ §2.2 fast 成本锚点上界 $0.02；熔断为
++#   §2.4 常设机制、无开关（budget_for_mode 三档取键：fast→FAST_CENTS / pr→
++#   PR_CENTS / full→FULL_CENTS）。COST_PER_L2_CENTS=5 / COST_PER_S2_CENTS=10：
++#   L2 单点 / S2 单次验证成本估计（§2.4 配额公式的估计输入，非记账费率——费率
++#   以 on_cost 实测回报为准；§2.2 成本锚点 ≈$0.05 / ≈$0.10），为 0 → quota 恒 0
++#   （保守不派）。缺省值=规格逐字；仿真器不注入 BudgetPolicy（缺省 None）=
++#   无预算约束路径，M0 仿真轨迹逐字兼容（「缺省关闭=规格逐字」的 M1 形态）。
+ deposits: {SCOUT_X: 0.2, REVIEWER_X: 0.5, VERIFIER_CONFLICT: 0.5, VERIFIER_CONFIRM: 0.25}
+ panel:    {SIZE: 3, MIN_FAMILIES: 2}           # 评审团（§16.7-6）
+ roster:   {scout: 6, auditor: 5, reviewer: 4, verifier: 3}

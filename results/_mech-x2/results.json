@@ -1,0 +1,115 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   12.0
+  ],
+  "rauditor": [
+   10.0
+  ],
+  "rreviewer": [
+   8.0
+  ],
+  "rverifier": [
+   6.0
+  ],
+  "entry_direct": [
+   0.55
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "type_entry": [
+   0.55
+  ],
+  "grace": [
+   3.0
+  ],
+  "corrob": [
+   3.0
+  ],
+  "quiz": [
+   12.0
+  ],
+  "fc_net": [
+   1.0
+  ],
+  "fc_days": [
+   2.0
+  ],
+  "fc_items": [
+   20.0
+  ],
+  "fc_pass": [
+   0.55
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 1,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout12-rauditor10-rreviewer8-rverifier6-entry_direct0p55-entry_frac0p2-type_entry0p55-grace3-corrob3-QUIZ12-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.85,
+   "promotion_recall": 0.2222222222222222,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.019230769230769232,
+   "degradation_response": 134.0,
+   "regret_total": 213.73071633635786,
+   "regret_per_task": 0.13518704385601382,
+   "regret_late_over_early": 0.7286599393113848,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "a22a69b80385ea5f2f7870043657f3f87529a4e5bb3a6d0a038dd7d25e30f377"
+  }
+ ]
+}

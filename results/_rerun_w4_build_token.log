@@ -1,0 +1,43 @@
+== 段一：CVE 回滚取材（OSV → GitHub parent 快照）==
+  [fetch-fail] https://raw.githubusercontent.com/pallets/flask/941efd4a36ed0f27e13758874f95e3aa1d3ee163/src/flask/sessions.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  [fetch-fail] https://raw.githubusercontent.com/pallets/flask/941efd4a36ed0f27e13758874f95e3aa1d3ee163/tests/test_basic.py → TimeoutError: The read operation timed out
+  [fetch-fail] https://raw.githubusercontent.com/pallets/flask/27be9338405382445a7cb01151e084559b98d602/src/flask/app.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  [fetch-fail] https://raw.githubusercontent.com/tornadoweb/tornado/771472cfdaeebc0d89a9cc46e249f8891a6b29cd/tornado/test/web_test.py → TimeoutError: The read operation timed out
+  [fetch-fail] https://raw.githubusercontent.com/tornadoweb/tornado/771472cfdaeebc0d89a9cc46e249f8891a6b29cd/tornado/web.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  [fetch-fail] https://raw.githubusercontent.com/tornadoweb/tornado/ed47b431a5ec38aa61f504148afae2cb8f981332/tornado/test/httputil_test.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  [fetch-fail] https://codeload.github.com/tornadoweb/tornado/tar.gz/ed47b431a5ec38aa61f504148afae2cb8f981332 → IncompleteRead: IncompleteRead(409600 bytes read)
+  [fetch-fail] https://raw.githubusercontent.com/urllib3/urllib3/d03fe327a71d09728512217149f269763671f296/dummyserver/app.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  [fetch-fail] https://raw.githubusercontent.com/urllib3/urllib3/d03fe327a71d09728512217149f269763671f296/src/urllib3/poolmanager.py → URLError: <urlopen error _ssl.c:983: The handshake operation timed out>
+  CVE 回滚产出：7
+== 段二：Juliet / OWASP 取材 ==
+  Juliet C 用例面：92；Juliet Java CWE502：0；OWASP 用例面：2740
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s07/CWE78_OS_Command_Injection__wchar_t_environment_popen_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s02/CWE78_OS_Command_Injection__char_console_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE78_OS_Command_Injection/s07/CWE78_OS_Command_Injection__wchar_t_environment_popen_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s03/CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_loop_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s04/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s05/CWE121_Stack_Based_Buffer_Overflow__CWE805_struct_alloca_memmove_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s06/CWE121_Stack_Based_Buffer_Overflow__CWE805_wchar_t_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s07/CWE121_Stack_Based_Buffer_Overflow__CWE806_char_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s08/CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_snprintf_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE122_Heap_Based_Buffer_Overflow/s01/CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_81_bad.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_connect_socket_81_goodB2G.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s02/CWE121_Stack_Based_Buffer_Overflow__CWE193_char_alloca_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s03/CWE121_Stack_Based_Buffer_Overflow__CWE193_wchar_t_declare_loop_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s04/CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s05/CWE121_Stack_Based_Buffer_Overflow__CWE805_struct_alloca_memmove_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s06/CWE121_Stack_Based_Buffer_Overflow__CWE805_wchar_t_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s07/CWE121_Stack_Based_Buffer_Overflow__CWE806_char_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE121_Stack_Based_Buffer_Overflow/s08/CWE121_Stack_Based_Buffer_Overflow__CWE806_wchar_t_declare_snprintf_81_goodG2B.cpp
+  [drop] expected 复核未过：juliet-c/CWE122_Heap_Based_Buffer_Overflow/s01/CWE122_Heap_Based_Buffer_Overflow__cpp_CWE129_connect_socket_81_goodB2G.cpp
+[stop] 取材产出不足（如实报缺，不伪造）：
+  injection/cve_rollback: 2/10
+  crypto/cve_rollback: 0/6
+  authz/cve_rollback: 5/6
+  config_dep/cve_rollback: 0/6
+  mem_safety/cve_rollback: 0/6
+  已建 73/100 题；缺口清单 seeds/.build-shortfall.json
+exit=1

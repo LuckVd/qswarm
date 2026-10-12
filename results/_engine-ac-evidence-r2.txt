@@ -1,0 +1,9 @@
+[AC1] 固定种子两次 run：digest=dc292a81997a51e3…  一致=True  (events=4488, transitions=84)
+[AC2] 事件计数={'dispatch': 768, 'deposit': 3595, 'promotion': 83, 'demotion': 1}  9项度量键齐备=True
+[AC2] 度量记录={"promotion_precision": 0.5714285714285714, "promotion_recall": 0.02857142857142857, "median_time_to_active": null, "wrong_extinguish_rate": 0.0, "degradation_response": null, "regret_total": 181.54277801653564, "regret_per_task": 0.23638382554236412, "cold_start_length": 2.0, "regret_late_over_early": 0.8011371216680638, "replay_equivalent": true}
+[AC2] T_BASE 0.7→0.9：分歧派单=214  specialist 通道 28→33  轨迹不同=True  生效=True
+[AC3] exam_seeding：on 存款=108  off 存款=0  轨迹不同=True  无播种不冷死=166 单派单  生效=True
+[AC3] TS 替换：router_name='route_thompson'  通道集=['thompson']  轨迹不同=True  生效=True
+[S2⑧] 三档 verify_error 驱动 OK=True  报告判定=False
+
+ALL ACCEPTANCE CHECKS: PASS

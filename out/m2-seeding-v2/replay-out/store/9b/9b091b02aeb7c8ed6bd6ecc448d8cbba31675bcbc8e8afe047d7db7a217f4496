@@ -1,0 +1,22 @@
+{
+ "item_id": "SEED-0002",
+ "taxonomy_path": [
+  "injection"
+ ],
+ "lang": "python",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0002/",
+ "planted": false,
+ "expected": "real",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0002-9d012c04",
+ "source": "cve_rollback",
+ "snapshot_files": [
+  "ImageShow.py"
+ ],
+ "upstream": {
+  "cve": "CVE-2026-55798",
+  "parent_sha": "87e788339e8746e7ceb8e901df9b0c7fda55e975",
+  "commit_date": "2026-06-20"
+ }
+}

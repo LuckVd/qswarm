@@ -1,0 +1,180 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   6.0
+  ],
+  "rauditor": [
+   5.0
+  ],
+  "rreviewer": [
+   4.0
+  ],
+  "rverifier": [
+   3.0
+  ],
+  "cooldown": [
+   1.0
+  ],
+  "entry_direct": [
+   0.25
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "entry_margin": [
+   1.0
+  ],
+  "type_entry": [
+   0.25
+  ],
+  "grace": [
+   3.0
+  ],
+  "corrob": [
+   1.0
+  ],
+  "quiz": [
+   32.0
+  ],
+  "fc_days": [
+   2.0
+  ],
+  "fc_items": [
+   60.0
+  ],
+  "fc_margin": [
+   0.18
+  ],
+  "fc_consec": [
+   2.0
+  ],
+  "fc_base": [
+   2.0
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8125,
+   "promotion_recall": 0.42857142857142855,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.017543859649122806,
+   "degradation_response": 202.0,
+   "regret_total": 166.2251877925177,
+   "regret_per_task": 0.10513927121601371,
+   "regret_late_over_early": 0.37987174606926094,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "789c7d1ebcea50a284719a30b9ff57f5e94d645c657b26fe248afd53b851a198"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.984375,
+   "promotion_recall": 0.5098039215686274,
+   "median_time_to_active": 75.0,
+   "wrong_extinguish_rate": 0.015625,
+   "degradation_response": null,
+   "regret_total": 221.3743981342975,
+   "regret_per_task": 0.14236295699954823,
+   "regret_late_over_early": 0.5272806072336798,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "ee3d47ad0d5f6046f4d923bfe7fd2216af34de2da688cf38d7ec4962b28a98ed"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8461538461538461,
+   "promotion_recall": 0.4666666666666667,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.03225806451612903,
+   "degradation_response": 148.0,
+   "regret_total": 182.84199563877758,
+   "regret_per_task": 0.12354188894511998,
+   "regret_late_over_early": 0.6157393109720154,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "6b7062a612f9694be5f1eb133b5ff285839be186b1555017cacd61bd2dfa844c"
+  }
+ ]
+}

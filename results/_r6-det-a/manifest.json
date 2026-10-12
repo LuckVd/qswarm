@@ -1,0 +1,27 @@
+{
+ "argv": [
+  "--smoke",
+  "--out",
+  "results/_r6-det-a",
+  "--workers",
+  "4"
+ ],
+ "mode": "smoke",
+ "n_units": 78,
+ "n_rows": 78,
+ "workers": 4,
+ "seeds": [
+  11,
+  22
+ ],
+ "n_days": 8,
+ "started_at_utc": "2026-10-09T10:31:37.035753+00:00",
+ "finished_at_utc": "2026-10-09T10:33:20.976835+00:00",
+ "wall_s": 103.92788919480518,
+ "per_run_elapsed_s": {
+  "min": 3.827745020855218,
+  "median": 5.201121493708342,
+  "max": 5.8407867550849915
+ },
+ "python": "3.12.3"
+}

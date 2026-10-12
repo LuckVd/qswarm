@@ -1,0 +1,37 @@
+$ python3 -m qswarm.kernel.replay experiments/_demo_ledger.db --from 0
+kernel replay: experiments/_demo_ledger.db
+  window : from_seq=0 upto_seq=8904 events=8904 (demotion=1 deposit=8902 promotion=1)
+  as_of  : 2031-01-06T23:00:00Z
+  cells  : rebuilt=391 (dormant=1 shadow=390)
+exit=0
+
+$ python3 -m qswarm.kernel.replay experiments/_demo_ledger.db --upto 4000
+kernel replay: experiments/_demo_ledger.db
+  window : from_seq=0 upto_seq=4000 events=4000 (deposit=4000)
+  as_of  : 2030-06-16T15:00:00Z
+  cells  : rebuilt=367 (shadow=367)
+exit=0
+
+$ python3 -m qswarm.kernel.replay experiments/_demo_ledger.db --json
+{
+  "ledger": "experiments/_demo_ledger.db",
+  "from_seq": 0,
+  "upto_seq": 8904,
+  "events": 8904,
+  "kinds": {
+    "demotion": 1,
+    "deposit": 8902,
+    "promotion": 1
+  },
+  "as_of": "2031-01-06T23:00:00Z",
+  "cells": 391,
+  "status_counts": {
+    "dormant": 1,
+    "shadow": 390
+  }
+}
+exit=0
+
+$ python3 -m qswarm.kernel.replay /tmp (非账本文件 → 失败路径)
+kernel replay: 失败：unable to open database file
+exit=1

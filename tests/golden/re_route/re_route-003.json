@@ -1,0 +1,250 @@
+{
+ "case_id": "re_route-003",
+ "desc": "guess_taxonomy 排序确定性（口碑加权读数）。",
+ "expected": {
+  "deposit_count": 2,
+  "ops": [
+   {
+    "ok": true,
+    "value": [
+     "injection",
+     "sqli"
+    ]
+   },
+   {
+    "ok": true,
+    "value": [
+     "injection",
+     "sqli"
+    ]
+   },
+   {
+    "ok": true,
+    "value": [
+     "injection",
+     "sqli"
+    ]
+   },
+   {
+    "ok": true,
+    "value": [
+     "injection"
+    ]
+   },
+   {
+    "ok": true,
+    "value": null
+   },
+   {
+    "ok": true,
+    "value": [
+     "injection",
+     "sqli"
+    ]
+   }
+  ],
+  "tables": {
+   "findings": {},
+   "tasks": {}
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "events": [
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S-good",
+     "cluster": null,
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S2",
+     "src_seq": null,
+     "taxonomy_path": [
+      "injection",
+      "sqli"
+     ],
+     "weight": 0.5
+    }
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S-star",
+     "cluster": null,
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S2",
+     "src_seq": null,
+     "taxonomy_path": [
+      "crypto",
+      "aes_ecb"
+     ],
+     "weight": 1.0
+    }
+   }
+  ],
+  "runs": [
+   {
+    "mode": "full",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "re_route",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "猜测聚合全序裁决：票数主序；平手按猜测格 C* 之和（谱系经 scout_of 显式接参；无谱系/无格按 ROOT_PRIOR）；再平手路径字典序升序；guess_family 缺失不成路径；全无猜测 → None；纯函数零 rng。",
+  "spec_ref": "SPEC-2 §3.2/§6.5（D14 谱系接参）；SPEC-5 §1.3/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c1",
+      "guess_family": "injection",
+      "guess_type": "sqli",
+      "reason_ref": "artifact://c1",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c2",
+      "guess_family": "injection",
+      "guess_type": "sqli",
+      "reason_ref": "artifact://c2",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c3",
+      "guess_family": "injection",
+      "guess_type": "xss",
+      "reason_ref": "artifact://c3",
+      "suspicious": true
+     }
+    ],
+    "scout_of": {
+     "c3": "S-good"
+    }
+   },
+   "op": "guess_taxonomy"
+  },
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c1",
+      "guess_family": "injection",
+      "guess_type": "sqli",
+      "reason_ref": "artifact://c1",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c3",
+      "guess_family": "injection",
+      "guess_type": "xss",
+      "reason_ref": "artifact://c3",
+      "suspicious": true
+     }
+    ],
+    "scout_of": {
+     "c1": "S-good"
+    }
+   },
+   "op": "guess_taxonomy"
+  },
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c1",
+      "guess_family": "injection",
+      "guess_type": "sqli",
+      "reason_ref": "artifact://c1",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c3",
+      "guess_family": "injection",
+      "guess_type": "xss",
+      "reason_ref": "artifact://c3",
+      "suspicious": true
+     }
+    ]
+   },
+   "op": "guess_taxonomy"
+  },
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c1",
+      "guess_family": "injection",
+      "guess_type": null,
+      "reason_ref": "artifact://c1",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c2",
+      "guess_family": "injection",
+      "guess_type": null,
+      "reason_ref": "artifact://c2",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c3",
+      "guess_family": "injection",
+      "guess_type": "xss",
+      "reason_ref": "artifact://c3",
+      "suspicious": true
+     }
+    ]
+   },
+   "op": "guess_taxonomy"
+  },
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c9",
+      "guess_family": null,
+      "guess_type": null,
+      "reason_ref": "artifact://c9",
+      "suspicious": true
+     }
+    ]
+   },
+   "op": "guess_taxonomy"
+  },
+  {
+   "args": {
+    "reports": [
+     {
+      "candidate_id": "c1",
+      "guess_family": "injection",
+      "guess_type": "sqli",
+      "reason_ref": "artifact://c1",
+      "suspicious": true
+     },
+     {
+      "candidate_id": "c3",
+      "guess_family": "injection",
+      "guess_type": "xss",
+      "reason_ref": "artifact://c3",
+      "suspicious": true
+     }
+    ],
+    "scout_of": {
+     "c1": "S-star"
+    }
+   },
+   "op": "guess_taxonomy"
+  }
+ ]
+}

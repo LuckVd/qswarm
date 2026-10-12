@@ -1,0 +1,5 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+window1-cooldown7-N6-delta0p05-tdrift250,3,FAIL(0.3053),FAIL(0.9861),FAIL(2.0750),FAIL(1.0833),FAIL(5.2133),PASS,PASS,PASS,PASS,5,0,0.838626785209785
+window1-cooldown7-N6-delta0p05-tdrift600,3,FAIL(0.2788),FAIL(0.9861),FAIL(2.0750),FAIL(1.0833),FAIL(2.8800),PASS,PASS,PASS,PASS,5,0,0.8373522547993449
+window1-cooldown7-N6-delta0p15-tdrift250,3,FAIL(0.2368),FAIL(0.9908),NODATA,FAIL(0.2121),NODATA,PASS,PASS,NODATA,PASS,6,3,0.8443224765024261
+window1-cooldown7-N6-delta0p15-tdrift600,3,FAIL(0.2615),FAIL(0.9908),NODATA,FAIL(0.2121),NODATA,PASS,PASS,NODATA,PASS,6,3,0.8375396165276472

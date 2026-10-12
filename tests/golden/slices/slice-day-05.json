@@ -1,0 +1,7 @@
+{
+ "anchor": "day",
+ "as_of": "2030-01-06T00:24:22Z",
+ "n_events": 1439,
+ "note": "输入账本片段 = events_log.json 前 n_events 行（ts ≤/< as_of：night 为严格小于，day/nightend 为 ≤）；装载器见 tests/golden_loader.py",
+ "slice_id": "day-05"
+}

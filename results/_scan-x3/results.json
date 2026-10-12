@@ -1,0 +1,174 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   3.0
+  ],
+  "rauditor": [
+   4.0
+  ],
+  "rreviewer": [
+   4.0
+  ],
+  "rverifier": [
+   3.0
+  ],
+  "cooldown": [
+   3.0
+  ],
+  "entry_direct": [
+   0.3
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "type_entry": [
+   0.3
+  ],
+  "grace": [
+   4.0
+  ],
+  "corrob": [
+   1.0
+  ],
+  "quiz": [
+   32.0
+  ],
+  "fc_net": [
+   1.0
+  ],
+  "fc_days": [
+   2.0
+  ],
+  "fc_items": [
+   20.0
+  ],
+  "fc_pass": [
+   0.55
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout3-rauditor4-rreviewer4-rverifier3-cooldown3-entry_direct0p3-entry_frac0p2-type_entry0p3-grace4-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8275862068965517,
+   "promotion_recall": 0.41975308641975306,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.05555555555555555,
+   "degradation_response": null,
+   "regret_total": 144.99846161109272,
+   "regret_per_task": 0.09171313194882526,
+   "regret_late_over_early": 0.5279891380990456,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "2a6dff7a2029c9cc3e6588009ff4b206379673c1d1986bbf1afbf4c7e792210b"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout3-rauditor4-rreviewer4-rverifier3-cooldown3-entry_direct0p3-entry_frac0p2-type_entry0p3-grace4-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.9253731343283582,
+   "promotion_recall": 0.5641025641025641,
+   "median_time_to_active": 208.0,
+   "wrong_extinguish_rate": 0.029850746268656716,
+   "degradation_response": null,
+   "regret_total": 167.57439710254025,
+   "regret_per_task": 0.1077648855964889,
+   "regret_late_over_early": 0.3690462466561867,
+   "cold_start_length": 3.0,
+   "replay_equivalent": true,
+   "digest": "10454de92fbb57950b645bc521bc67cbfa39e7a7f07c064e6a3128e2ef85ec5d"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout3-rauditor4-rreviewer4-rverifier3-cooldown3-entry_direct0p3-entry_frac0p2-type_entry0p3-grace4-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.75,
+   "promotion_recall": 0.4074074074074074,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.07407407407407407,
+   "degradation_response": 682.0,
+   "regret_total": 150.49228637453842,
+   "regret_per_task": 0.10168397728009353,
+   "regret_late_over_early": 0.5887702091518789,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "32db0f044d9da7f2e8f14ca9157c08b15b5d3055553e53f64507642c3c11ff07"
+  }
+ ]
+}

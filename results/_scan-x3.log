@@ -1,0 +1,10 @@
+[tune-round19] groups=1 units=3 seeds=[11, 22, 33] dims={'verify_error': [0.2], 'rscout': [3.0], 'rauditor': [4.0], 'rreviewer': [4.0], 'rverifier': [3.0], 'cooldown': [3.0], 'entry_direct': [0.3], 'entry_frac': [0.2], 'type_entry': [0.3], 'grace': [4.0], 'corrob': [1.0], 'quiz': [32.0], 'fc_net': [1.0], 'fc_days': [2.0], 'fc_items': [20.0], 'fc_pass': [0.55], 'm_prorate': [1.0], 'unique': [1.0], 'wadv': [2.0], 'N': [10.0], 'delta': [0.1], 't_base': [0.7], 'exam_wh': [0.5], 've': [0.2]}
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=3
+[experiments] chunk 1/3 done (31s)
+[experiments] chunk 2/3 done (31s)
+[experiments] chunk 3/3 done (31s)
+[tune-round19] done in 31s → results/_scan-x3 (per-run max 30.7s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+rscout3-rauditor4-rreviewer4-rverifier3-cooldown3-entry_direct0p3-entry_frac0p2-type_entry0p3-grace4-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2 FAIL(0.07 FAIL(0.33 FAIL(0.04 FAIL(0.06 FAIL(3.54      PASS      PASS      PASS      PASS      5      0
+
+selection: fallback=True featured=rscout3-rauditor4-rreviewer4-rverifier3-cooldown3-entry_direct0p3-entry_frac0p2-type_entry0p3-grace4-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2 qualifies=False unmet=5 nodata=0

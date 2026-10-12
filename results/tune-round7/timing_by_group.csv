@@ -1,0 +1,13 @@
+experiment,arm,group_id,n_days,n_runs,N,DELTA,T_BASE,exam_weight_high,verify_error,elapsed_s_mean,elapsed_s_max,elapsed_s_sum,within_budget_5min
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p2,30,3,14,0.15,0.6,0.3,0.2,32.44604745786637,33.30180596699938,97.33814237359911,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p35,30,3,14,0.15,0.6,0.3,0.35,31.851216769001137,32.63186136027798,95.55365030700341,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p5,30,3,14,0.15,0.6,0.3,0.5,31.94357492324586,32.67895975196734,95.83072476973757,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p2,30,3,14,0.15,0.6,0.5,0.2,32.65467099736755,33.67202272731811,97.96401299210265,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p35,30,3,14,0.15,0.6,0.5,0.35,32.766194511360176,33.68749384582043,98.29858353408054,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p5,30,3,14,0.15,0.6,0.5,0.5,32.021306092229985,32.853969007730484,96.06391827668995,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p2,30,3,14,0.15,0.8,0.3,0.2,32.910950325118996,33.9780060951598,98.732850975357,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p35,30,3,14,0.15,0.8,0.3,0.35,31.858305567099404,32.82792257796973,95.5749167012982,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p5,30,3,14,0.15,0.8,0.3,0.5,32.448043356804796,33.656900813337415,97.3441300704144,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,30,3,14,0.15,0.8,0.5,0.2,32.987734337958194,34.04074665578082,98.96320301387459,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p35,30,3,14,0.15,0.8,0.5,0.35,32.36482926473642,33.482413568068296,97.09448779420927,True
+matrix,tune,entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p5,30,3,14,0.15,0.8,0.5,0.5,31.766571443993598,32.352532105054706,95.2997143319808,True

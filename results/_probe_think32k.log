@@ -1,0 +1,4 @@
+served=glm-5.3 finish=stop 耗时=184.1s
+reasoning=39924字符(10299tok) content=1239字符 completion_tokens=10763
+判定: declined=False family=crypto cwe=CWE-327 title=弱加密算法：使用已淘汰的 DES/CBC/PKCS5Padding（56 位有效密钥）对数据进行加密
+reasoning尾部120: ). OK.⏎⏎One more: hardcoded "SunJCE" provider — not a vuln.⏎⏎Final confidence: 0.8. Output only the JSON, no extra text.

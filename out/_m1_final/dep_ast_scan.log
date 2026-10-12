@@ -1,0 +1,11 @@
+AST 全量 import 扫描（M1 终检 2026-10-11）
+scanned_files=81  (qswarm+tests+scripts+experiments+conftest)
+标准库外 import 根清单:
+  golden_loader: 6 files  <- 仓库本地模块(tests/ sys.path 装载, 非第三方)
+  m1_harness: 2 files  <- 仓库本地模块(tests/ sys.path 装载, 非第三方)
+  pydantic: 6 files
+  pytest: 29 files
+  yaml: 2 files
+
+白名单外第三方根: 无 —— 第三方闭集 = {pydantic, yaml, pytest} ✓
+网络库: 0 import（另见 gate_grep_evidence.log §2）

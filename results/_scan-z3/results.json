@@ -1,0 +1,180 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   6.0
+  ],
+  "rauditor": [
+   5.0
+  ],
+  "rreviewer": [
+   4.0
+  ],
+  "rverifier": [
+   3.0
+  ],
+  "cooldown": [
+   2.0
+  ],
+  "entry_direct": [
+   0.25
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "entry_margin": [
+   1.0
+  ],
+  "type_entry": [
+   0.25
+  ],
+  "grace": [
+   3.0
+  ],
+  "corrob": [
+   1.0
+  ],
+  "quiz": [
+   40.0
+  ],
+  "fc_days": [
+   2.0
+  ],
+  "fc_items": [
+   60.0
+  ],
+  "fc_margin": [
+   0.18
+  ],
+  "fc_consec": [
+   2.0
+  ],
+  "fc_base": [
+   2.0
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8225806451612904,
+   "promotion_recall": 0.3904761904761905,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.03636363636363636,
+   "degradation_response": 202.0,
+   "regret_total": 178.4751798657015,
+   "regret_per_task": 0.11288752679677515,
+   "regret_late_over_early": 0.45989671855344594,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "73062516a8fdaa05a2e01aa7477ea74161b37433da43555ae37901b30ddd7e37"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 1.0,
+   "promotion_recall": 0.45098039215686275,
+   "median_time_to_active": 75.0,
+   "wrong_extinguish_rate": 0.0,
+   "degradation_response": null,
+   "regret_total": 192.225843475665,
+   "regret_per_task": 0.12361790577213183,
+   "regret_late_over_early": 0.3257781626581262,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "00cea005a7c48c0ab2983f27f78d983daba30cf7e9e3d5b135b2abab31b58617"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8571428571428571,
+   "promotion_recall": 0.42857142857142855,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.0,
+   "degradation_response": 148.0,
+   "regret_total": 184.88289256730252,
+   "regret_per_task": 0.12492087335628549,
+   "regret_late_over_early": 0.6026293092880276,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "6e91a8826e34aaabeda650b9db05ff380d3f7b134b16d425bcb0d0f8a40aa3ac"
+  }
+ ]
+}

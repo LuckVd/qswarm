@@ -1,0 +1,14 @@
+base=results/experiments-full/results.csv (group=N10-D0.05-T0.60-E0.30-V0.50)  rerun=results/tune-round5/results.csv
+promotion_precision        0.6923076923076923~0.6923076923076923 | 0.6666666666666666~0.6666666666666666 | 0.6923076923076923~0.6923076923076923  [ok]
+promotion_recall           0.0~0.0 | 0.0~0.0 | 0.0~0.0  [ok]
+median_time_to_active      ∅~∅ | 615.0~615.0 | ∅~∅  [ok]
+wrong_extinguish_rate      0.0~0.0 | 0.0~0.0 | 0.0~0.0  [ok]
+degradation_response       ∅~∅ | ∅~∅ | ∅~∅  [ok]
+regret_total               367.2706259778303~367.2706259778303 | 395.60338747624814~395.60338747624814 | 324.5578497263519~324.5578497263519  [ok]
+regret_per_task            0.2323027362288617~0.2323027362288617 | 0.2544073231358509~0.2544073231358509 | 0.2192958444096972~0.2192958444096972  [ok]
+regret_late_over_early     0.775550854783389~0.775550854783389 | 0.9519130399691773~0.9519130399691773 | 0.8936716292644058~0.8936716292644058  [ok]
+cold_start_length          2.0~2.0 | 2.0~2.0 | 1.0~1.0  [ok]
+replay_equivalent          True~True | True~True | True~True  [ok]
+digest                     e253d28bb04bce60b5feb83a96f7f88c8a4518257f5bf5567dcd70521efb4b2c~e253d28bb04bce60b5feb83a96f7f88c8a4518257f5bf5567dcd70521efb4b2c | f7783ff0accbefd401ce4967d824e3393926428b8f7c6f713ea2db743f869c94~f7783ff0accbefd401ce4967d824e3393926428b8f7c6f713ea2db743f869c94 | ce88c668195b72118da32086c02167b156a89bace543fb8c305748ddee58dfdc~ce88c668195b72118da32086c02167b156a89bace543fb8c305748ddee58dfdc  [ok]
+metrics_equal=true digest_equal=true ALL_EQUAL=true
+exit=0

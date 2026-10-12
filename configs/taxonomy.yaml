@@ -1,0 +1,10 @@
+# taxonomy.yaml —— 家族树（SPEC-1 §5.3；种子版六家族，可扩展；v1_weight 缺省 1.0）
+# 注：SPEC §5.3 原文 config_dep:/mem_safety: 冒号后缺空格（YAML 不可解析的笔误），
+#     此处补空格修正，键值内容逐字不变——见 docs/spec/DECISIONS.md 2026-10-08 条目。
+families:
+  injection: {types: [sqli, cmdi, xss, ssrf, xxe]}
+  deser:     {types: [java_gadget, py_pickle]}
+  crypto:    {types: [weak_algo, hardcoded_key, weak_random]}
+  authz:     {types: [idor, session_fixation, logic_bypass]}
+  config_dep: {types: [secret_leak, outdated_dep, misconfig]}
+  mem_safety: {types: [overflow, uaf], v1_weight: 0.3}   # §16.2.5 降权

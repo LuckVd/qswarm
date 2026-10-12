@@ -1,0 +1,4 @@
+experiment,arm,group_id,seed,n_days,N,DELTA,T_BASE,exam_weight_high,verify_error,reviewer_x,tilt_gamma,router,window_days,elapsed_s
+matrix,tune,entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,11,30,14,0.15,0.8,0.5,0.2,0.5,1.0,kernel.route,7.0,28.644165778066963
+matrix,tune,entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,22,30,14,0.15,0.8,0.5,0.2,0.5,1.0,kernel.route,7.0,26.896712040062994
+matrix,tune,entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2,33,30,14,0.15,0.8,0.5,0.2,0.5,1.0,kernel.route,7.0,29.0117741888389

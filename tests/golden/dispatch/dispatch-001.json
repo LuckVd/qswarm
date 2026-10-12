@@ -1,0 +1,142 @@
+{
+ "case_id": "dispatch-001",
+ "desc": "full 档四件套装配 + 派单快乐路径：契约字段逐字直出；DISPATCH 事件承载 assignee/hop_budget；任务行 dispatched/attempts=1。",
+ "expected": {
+  "deposit_count": 0,
+  "ops": [
+   {
+    "ok": true,
+    "value": "T-R1-001"
+   },
+   {
+    "ok": true,
+    "value": {
+     "context_refs": [],
+     "deadline_s": 600,
+     "goal": "对 injection/sqli 以 auditor 职责完成本次分片",
+     "hop_budget": 2,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "injection/sqli",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "dispatch",
+     "payload": {
+      "assignee": "A-auditor-1",
+      "hop_budget": 2,
+      "node": "injection/sqli",
+      "role": "auditor",
+      "task_id": "T-R1-001"
+     }
+    }
+   }
+  ],
+  "tables": {
+   "findings": {},
+   "tasks": {
+    "T-R1-001": {
+     "assignee": "A-auditor-1",
+     "attempts": 1,
+     "state": "dispatched"
+    }
+   }
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "runs": [
+   {
+    "mode": "full",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "dispatch",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "full 档四件套逐字（①goal ②output_schema_ref ③tool_bounds ④task_bounds + hop_budget=2 + taxonomy_node）+ queued→dispatched（tasks 行与 DISPATCH 事件同事务，attempts=1）；零存款。",
+  "spec_ref": "SPEC-2 §2.2/§2.3（§4.3 四件套）；SPEC-5 §1.2/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "node": "injection/sqli",
+    "role": "auditor",
+    "run_id": "R1",
+    "shard": {
+     "paths": [
+      "src/app/db.py"
+     ]
+    }
+   },
+   "op": "create_task"
+  },
+  {
+   "args": {
+    "deadline_s": 600,
+    "decision": {
+     "assignee": "A-auditor-1",
+     "channel": "explore",
+     "family": "injection",
+     "node": "injection/sqli",
+     "raw_tilt": null,
+     "reason": "no_specs",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "mode": "full"
+   },
+   "op": "build_contract"
+  },
+  {
+   "args": {
+    "contract": {
+     "context_refs": [],
+     "deadline_s": 600,
+     "goal": "对 injection/sqli 以 auditor 职责完成本次分片",
+     "hop_budget": 2,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "injection/sqli",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    },
+    "decision": {
+     "assignee": "A-auditor-1",
+     "channel": "explore",
+     "family": "injection",
+     "node": "injection/sqli",
+     "raw_tilt": null,
+     "reason": "no_specs",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "task_id": "T-R1-001"
+   },
+   "op": "dispatch"
+  }
+ ]
+}

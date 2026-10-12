@@ -1,0 +1,2595 @@
+{
+  "kind": "seeding_report",
+  "spec": "SPEC-6 §4.4（组织出生证明）",
+  "contract_version": "cv1",
+  "bank_version": 1,
+  "entry_items": 12,
+  "seed": 0,
+  "roles": [
+    "scout",
+    "auditor"
+  ],
+  "generated_at": "2026-10-12T04:36:53.365528Z",
+  "degraded": false,
+  "invalid_cell_ratio": 0.0,
+  "qc_alerts": [
+    "strong:zhipu/glm-5.2@cv1",
+    "strong:zhipu/glm-5@cv1"
+  ],
+  "totals": {
+    "cells": 20,
+    "invalid_cells": 0,
+    "deposits": 20,
+    "exam_result_rows": 240,
+    "model_calls": 240,
+    "schema_fail": 0,
+    "infra_fail": 0,
+    "canary_hit": 0
+  },
+  "agents": [
+    {
+      "agent_id": "cheap:zhipu/glm-4.5-air@cv1",
+      "model_ref": "cheap:zhipu/glm-4.5-air",
+      "role": "scout",
+      "tier": "cheap",
+      "pool_class": "temp",
+      "contract_version": "cv1",
+      "qc": {
+        "min_pass": 0.8,
+        "accuracy": 0.925,
+        "passed": true,
+        "status": "active"
+      },
+      "cells": [
+        {
+          "family": "injection",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 3,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0014",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0017",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0028",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0004",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0006",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0025",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0007",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0009",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0020",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0012",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0010",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0022",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "crypto",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 3,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0031",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0033",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0041",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0029",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0037",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0044",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0038",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0032",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0047",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0039",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0036",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0045",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "authz",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 5,
+          "fp_rejected": 0,
+          "accuracy": 0.625,
+          "direction": 1,
+          "weight": 0.275,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0060",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0050",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0065",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0054",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0053",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0063",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0058",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0057",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0068",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0055",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0059",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0062",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "config_dep",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 4,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0072",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0078",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0081",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0069",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0076",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0087",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0079",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0080",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0082",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0075",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0071",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0086",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "mem_safety",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 1,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0092",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0089",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0100",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0095",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0093",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0097",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0091",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0094",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0099",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0096",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0090",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0098",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "cheap:zhipu/glm-4.6@cv1",
+      "model_ref": "cheap:zhipu/glm-4.6",
+      "role": "scout",
+      "tier": "cheap",
+      "pool_class": "temp",
+      "contract_version": "cv1",
+      "qc": {
+        "min_pass": 0.8,
+        "accuracy": 0.875,
+        "passed": true,
+        "status": "active"
+      },
+      "cells": [
+        {
+          "family": "injection",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 7,
+          "fp_rejected": 2,
+          "accuracy": 0.875,
+          "direction": 1,
+          "weight": 0.425,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0006",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0011",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0021",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0015",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0010",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0024",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0005",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0014",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0019",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0013",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0004",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0027",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "crypto",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 4,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0032",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0037",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0043",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0034",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0035",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0041",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0039",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0030",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0048",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0036",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0033",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0046",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "authz",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 4,
+          "fp_rejected": 0,
+          "accuracy": 0.5,
+          "direction": 1,
+          "weight": 0.2,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0053",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0055",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0068",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0050",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0049",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0065",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0059",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0058",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0061",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0060",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0057",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0066",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "config_dep",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 4,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0072",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0073",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0082",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0070",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0071",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0083",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0074",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0075",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0088",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0076",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0079",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0085",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "mem_safety",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 1,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0090",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0095",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0097",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0093",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0089",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0098",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0096",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0091",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0099",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0094",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0092",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0100",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "strong:zhipu/glm-5.2@cv1",
+      "model_ref": "strong:zhipu/glm-5.2",
+      "role": "auditor",
+      "tier": "strong",
+      "pool_class": "formal",
+      "contract_version": "cv1",
+      "qc": {
+        "min_pass": 0.8,
+        "accuracy": 0.75,
+        "passed": false,
+        "status": "provisioning"
+      },
+      "cells": [
+        {
+          "family": "injection",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 2,
+          "fp_rejected": 3,
+          "accuracy": 0.25,
+          "direction": -1,
+          "weight": 0.35,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0006",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0007",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0027",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0005",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0010",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0028",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0009",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0003",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0024",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0001",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0018",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0022",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "crypto",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 7,
+          "fp_rejected": 4,
+          "accuracy": 0.875,
+          "direction": 1,
+          "weight": 0.425,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0040",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0029",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0045",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0032",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0038",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0041",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0033",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0037",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0042",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0036",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0035",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0046",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "authz",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 5,
+          "fp_rejected": 4,
+          "accuracy": 0.625,
+          "direction": 1,
+          "weight": 0.275,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0051",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0058",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0066",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0060",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0056",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0068",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0057",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0055",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0061",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0059",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0050",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0062",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "config_dep",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 4,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0072",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0074",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0084",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0075",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0069",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0081",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0073",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0080",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0086",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0079",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0076",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0083",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "mem_safety",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 2,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0095",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0090",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0100",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0094",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0092",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0097",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0089",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0093",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0098",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0091",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0096",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0099",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "strong:zhipu/glm-5@cv1",
+      "model_ref": "strong:zhipu/glm-5",
+      "role": "auditor",
+      "tier": "strong",
+      "pool_class": "formal",
+      "contract_version": "cv1",
+      "qc": {
+        "min_pass": 0.8,
+        "accuracy": 0.7,
+        "passed": false,
+        "status": "provisioning"
+      },
+      "cells": [
+        {
+          "family": "injection",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 1,
+          "fp_rejected": 3,
+          "accuracy": 0.125,
+          "direction": -1,
+          "weight": 0.425,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0008",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0009",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0028",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0005",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0010",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0025",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0007",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0004",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0024",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0002",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0011",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0026",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "crypto",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 6,
+          "fp_rejected": 3,
+          "accuracy": 0.75,
+          "direction": 1,
+          "weight": 0.35,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0034",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0029",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0042",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0033",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0032",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0041",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0040",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0037",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0046",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0031",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0039",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0047",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "authz",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 5,
+          "fp_rejected": 4,
+          "accuracy": 0.625,
+          "direction": 1,
+          "weight": 0.275,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0049",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0052",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0067",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0053",
+              "expected": "real",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0060",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0068",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0056",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0057",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0064",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0059",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0055",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0062",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "config_dep",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 4,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0072",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0076",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0082",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0080",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0079",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0083",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0077",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0069",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0086",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0078",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0073",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0088",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        },
+        {
+          "family": "mem_safety",
+          "status": "ok",
+          "real_n": 8,
+          "fp_n": 4,
+          "real_correct": 8,
+          "fp_rejected": 2,
+          "accuracy": 1.0,
+          "direction": 1,
+          "weight": 0.5,
+          "deposit_written": true,
+          "schema_fail": 0,
+          "infra_fail": 0,
+          "canary_hit": 0,
+          "items": [
+            {
+              "item_id": "SEED-0089",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0092",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0100",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0090",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0091",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0098",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0093",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0096",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0097",
+              "expected": "fp",
+              "correct": false,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0095",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0094",
+              "expected": "real",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            },
+            {
+              "item_id": "SEED-0099",
+              "expected": "fp",
+              "correct": true,
+              "schema_fail": false,
+              "infra_fail": false,
+              "canary_hit": false,
+              "attempts": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

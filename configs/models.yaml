@@ -1,0 +1,38 @@
+# models.yaml —— 供给面参考形态（SPEC-6 §5.1 / SPEC-1 §5.1；M2 参考配置）。
+#
+# 三节（tiers / entry_exams / runtime），extra=forbid；api_key_env 为**环境变量名**
+# （调用时才读取，值永不入账本/工件/日志，§11.6-5——本文件不含任何密钥值）。
+# provider = 供应商名（线格式族由 provider 推断：anthropic → /v1/messages，
+# 其余 → chat/completions；base URL 见 qswarm/supply/config.PROVIDER_BASE_URLS）。
+# 参考形态 = cheap×2 + strong×2 + mid×1 + engineering×1 = 候选模型 6 个
+# → v0 候选编制 = scout×2 + auditor×2（SPEC-6 §4.1/S10；reviewer/verifier 随
+# M3 补播时注册）。
+#
+# 温度双轨（§16.7-8）：考试调用温度恒 0（prompts.EXAM_TEMPERATURE 常量，不进
+# 配置）；生产调用温度上限 = runtime.production_temp（≤0.2 红线）。
+
+tiers:
+  cheap:
+    primary:   {provider: deepseek,  model: deepseek-chat,   api_key_env: QSWARM_KEY_DEEPSEEK}
+    fallbacks:
+      - {provider: openai, model: gpt-4o-mini, api_key_env: QSWARM_KEY_OPENAI}
+  strong:
+    primary:   {provider: anthropic, model: claude-sonnet-4-5, api_key_env: QSWARM_KEY_ANTHROPIC}
+    fallbacks:
+      - {provider: openai, model: gpt-4o, api_key_env: QSWARM_KEY_OPENAI}
+  mid:
+    primary:   {provider: deepseek,  model: deepseek-reasoner, api_key_env: QSWARM_KEY_DEEPSEEK}
+  engineering:
+    primary:   {provider: openai,    model: gpt-4o,           api_key_env: QSWARM_KEY_OPENAI}
+
+entry_exams:
+  cheap:       {min_pass: 0.8, families: all}
+  strong:      {min_pass: 0.8, families: all}
+  mid:         {min_pass: 0.8, families: all}
+  engineering: {min_pass: 0.8, families: all}
+
+runtime:
+  rpm_limit: 600
+  tpm_limit: 4000000
+  batch_mode_for_full: true
+  production_temp: 0.2

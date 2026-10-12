@@ -1,0 +1,37 @@
+{
+ "argv": [
+  "--round",
+  "51",
+  "--workers",
+  "4",
+  "--seeds",
+  "11,22,33",
+  "--n-days",
+  "30",
+  "--replay-every",
+  "10",
+  "--dims",
+  "N=6 delta=0.05 t_base=0.6 exam_wh=0.3 ve=0.2 entry_direct=0.3 entry_frac=0.2 entry_margin=1 type_entry=0.3 grace=3 corrob=2 ewindow=12 tcomb=0.25 quiz=56 eitems=12 fc_days=1 fc_items=60 fc_margin=0.15 fc_consec=2 fc_base=2 cooldown=1 m_prorate=1 unique=1 wadv=2 rscout=6 rauditor=5 rreviewer=4 rverifier=3",
+  "--out",
+  "results/tune-round51"
+ ],
+ "mode": "tune",
+ "n_units": 3,
+ "n_rows": 3,
+ "workers": 4,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-09T19:12:32+00:00",
+ "finished_at_utc": "2026-10-09T19:13:05.089893+00:00",
+ "wall_s": 32.794131599832326,
+ "per_run_elapsed_s": {
+  "min": 29.05293805617839,
+  "median": 30.926117713097483,
+  "max": 32.3625648682937
+ },
+ "python": "3.12.3"
+}

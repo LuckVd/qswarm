@@ -1,0 +1,2 @@
+experiment,arm,group_id,n_days,n_runs,N,DELTA,T_BASE,exam_weight_high,verify_error,elapsed_s_mean,elapsed_s_max,elapsed_s_sum,within_budget_5min
+matrix,tune,rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p3-entry_frac0p2-entry_margin1-type_entry0p3-grace2-corrob2-QUIZ48-eitems12-ewindow12-tcomb0p25-fc_days1-fc_items60-fc_margin0p15-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2,30,3,10,0.1,0.7,0.5,0.2,32.45296241265411,33.39954220503569,97.35888723796234,True

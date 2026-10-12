@@ -1,0 +1,14 @@
+[tune-round6] groups=4 units=12 seeds=[11, 22, 33] dims={'verify_error': [0.2], 'cooldown': [2.0, 3.0], 'entry_direct': [0.75, 0.875], 'm_prorate': [1.0], 'N': [6.0], 'delta': [0.05], 't_base': [0.6], 'exam_wh': [0.3], 've': [0.2]}
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (119s)
+[experiments] chunk 2/4 done (120s)
+[experiments] chunk 3/4 done (120s)
+[experiments] chunk 4/4 done (120s)
+[tune-round6] done in 120s → results/tune-round6 (per-run max 41.8s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+cooldown2-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 FAIL(0.25 FAIL(0.87      PASS      PASS    NODATA      PASS      PASS    NODATA      PASS      4      2
+cooldown2-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 FAIL(0.26 FAIL(0.89      PASS      PASS    NODATA      PASS      PASS    NODATA      PASS      4      2
+cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 FAIL(0.23 FAIL(0.87      PASS      PASS    NODATA      PASS      PASS    NODATA      PASS      4      2
+cooldown3-entry_direct0p875-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 FAIL(0.24 FAIL(0.89      PASS      PASS    NODATA      PASS      PASS    NODATA      PASS      4      2
+
+selection: fallback=True featured=cooldown3-entry_direct0p75-m_prorate1-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 qualifies=False unmet=4 nodata=2

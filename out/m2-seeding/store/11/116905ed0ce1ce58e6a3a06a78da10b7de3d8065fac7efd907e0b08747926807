@@ -1,0 +1,16 @@
+{
+ "files": [
+  {
+   "name": "test_file_gd.py",
+   "sha256": "a259396323ca4c7c344d4c589d97391e1c2e3eac20e2bbfd0f326dcab6759144",
+   "size": 1008
+  },
+  {
+   "name": "GdImageFile.py",
+   "sha256": "93fd8b768699ebf98ecdd57f271fb4091a75c110924c8fd90fc15034f8f9f311",
+   "size": 2821
+  }
+ ],
+ "item_id": "SEED-0052",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0052/"
+}

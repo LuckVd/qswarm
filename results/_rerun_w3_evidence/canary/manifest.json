@@ -1,0 +1,37 @@
+{
+ "argv": [
+  "--round",
+  "52",
+  "--out",
+  "results/_rerun_w3_evidence/canary",
+  "--workers",
+  "3",
+  "--seeds",
+  "11,22,33",
+  "--n-days",
+  "30",
+  "--replay-every",
+  "10",
+  "--dims",
+  "N=6 delta=0.05 t_base=0.6 exam_wh=0.3 ve=0.2"
+ ],
+ "mode": "tune",
+ "n_units": 3,
+ "n_rows": 3,
+ "workers": 3,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-10T14:46:59+00:00",
+ "finished_at_utc": "2026-10-10T14:47:22.949217+00:00",
+ "wall_s": 23.303973999340087,
+ "per_run_elapsed_s": {
+  "min": 20.174522414803505,
+  "median": 20.296459604986012,
+  "max": 22.914060489740223
+ },
+ "python": "3.12.3"
+}

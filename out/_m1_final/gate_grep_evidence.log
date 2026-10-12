@@ -1,0 +1,25 @@
+# M1 终检门禁 grep 证据（2026-10-11，逐字 SPEC-5 判据命令）
+
+## 1. SPEC-5 §2.1 判据2 写口独立 grep（期望空）
+$ grep -rnE "\b(INSERT[[:space:]]+INTO|REPLACE[[:space:]]+INTO|UPDATE|DELETE[[:space:]]+FROM)[[:space:]]+(ledger|cells|findings|evidence_nodes|votes|verify_results|clusters|cluster_members|tasks|candidates|runs)\b" qswarm/ --include="*.py" | grep -v "^qswarm/kernel/"
+[pipeline exit=1 —— 非零=空输出=无越界]
+
+## 2. SPEC-5 §7.1 无网络 grep（期望 0 命中）
+$ grep -rnE "\b(socket|ssl|urllib|urllib3|http\.client|httpx|requests|aiohttp|ftplib|smtplib|telnetlib)\b" qswarm/ --include="*.py"
+[exit=1 —— 1=0 命中=通过]
+
+## 3. SPEC-5 §2.3 判据2 M1 新函数零随机源（期望 0 命中）
+[exit=1 —— 1=0 命中=通过]
+
+## 4. SPEC-5 §4.1 判据B 黄金 digest（期望 66 OK）
+     66 OK
+[EXIT=0]
+
+## 5. SPEC-5 §7.2 修订后依赖白名单命令（修订留痕见 DECISIONS 2026-10-11；期望空）
+[exit=1 —— 1=空=通过]
+
+## 6. SPEC-5 §7.2 原始命令（修订前口径，供对照；输出=标准库三根非第三方）
+contextlib
+functools
+re
+[以上 contextlib/functools/re 均为 CPython 标准库]

@@ -1,0 +1,1372 @@
+{
+ "case_id": "cluster-003",
+ "expected": {
+  "cells": {
+   "A1|auditor|injection": {
+    "activated_at": null,
+    "n_eff": 3.0999846502625505,
+    "n_eff_s2s3": 2.9999852920634362,
+    "neg_w": 0.9999970584074954,
+    "pos_w": 0.5499952667237799,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "A1|auditor|injection/xss": {
+    "activated_at": null,
+    "n_eff": 3.0999846502625505,
+    "n_eff_s2s3": 2.9999852920634362,
+    "neg_w": 0.9999970584074954,
+    "pos_w": 0.5499952667237799,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "A2|auditor|injection": {
+    "activated_at": null,
+    "n_eff": 3.099985479254027,
+    "n_eff_s2s3": 2.999986094313291,
+    "neg_w": 0.9999973258246383,
+    "pos_w": 0.5499954138023753,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "A2|auditor|injection/xss": {
+    "activated_at": null,
+    "n_eff": 3.099985479254027,
+    "n_eff_s2s3": 2.999986094313291,
+    "neg_w": 0.9999973258246383,
+    "pos_w": 0.5499954138023753,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "A5|auditor|deser": {
+    "activated_at": null,
+    "n_eff": 0.9999994651643556,
+    "n_eff_s2s3": 0.9999994651643556,
+    "neg_w": 0.0,
+    "pos_w": 0.4999997325821778,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "A6|auditor|deser": {
+    "activated_at": null,
+    "n_eff": 0.999999732582142,
+    "n_eff_s2s3": 0.999999732582142,
+    "neg_w": 0.0,
+    "pos_w": 0.499999866291071,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R1|reviewer|injection": {
+    "activated_at": null,
+    "n_eff": 0.5499957079596842,
+    "n_eff_s2s3": 0.4999959887476842,
+    "neg_w": 0.0,
+    "pos_w": 0.2749978539798421,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R1|reviewer|injection/xss": {
+    "activated_at": null,
+    "n_eff": 0.5499957079596842,
+    "n_eff_s2s3": 0.4999959887476842,
+    "neg_w": 0.0,
+    "pos_w": 0.2749978539798421,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R2|reviewer|injection": {
+    "activated_at": null,
+    "n_eff": 0.5499958550383977,
+    "n_eff_s2s3": 0.4999961224555763,
+    "neg_w": 0.0,
+    "pos_w": 0.2749979275191988,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R2|reviewer|injection/xss": {
+    "activated_at": null,
+    "n_eff": 0.5499958550383977,
+    "n_eff_s2s3": 0.4999961224555763,
+    "neg_w": 0.0,
+    "pos_w": 0.2749979275191988,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R3|reviewer|injection": {
+    "activated_at": null,
+    "n_eff": 0.5499960021171504,
+    "n_eff_s2s3": 0.49999625616350407,
+    "neg_w": 0.2749980010585752,
+    "pos_w": 0.0,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "R3|reviewer|injection/xss": {
+    "activated_at": null,
+    "n_eff": 0.5499960021171504,
+    "n_eff_s2s3": 0.49999625616350407,
+    "neg_w": 0.2749980010585752,
+    "pos_w": 0.0,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "S1|scout|injection": {
+    "activated_at": null,
+    "n_eff": 0.21999822435240404,
+    "n_eff_s2s3": 0.19999834201593117,
+    "neg_w": 0.0,
+    "pos_w": 0.10999911217620202,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "S1|scout|injection/xss": {
+    "activated_at": null,
+    "n_eff": 0.21999822435240404,
+    "n_eff_s2s3": 0.19999834201593117,
+    "neg_w": 0.0,
+    "pos_w": 0.10999911217620202,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "V9|verifier|injection": {
+    "activated_at": null,
+    "n_eff": 0.9999975932418527,
+    "n_eff_s2s3": 0.9999975932418527,
+    "neg_w": 0.49999879662092633,
+    "pos_w": 0.0,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   },
+   "V9|verifier|injection/xss": {
+    "activated_at": null,
+    "n_eff": 0.9999975932418527,
+    "n_eff_s2s3": 0.9999975932418527,
+    "neg_w": 0.49999879662092633,
+    "pos_w": 0.0,
+    "status": "shadow",
+    "updated_at": "2031-03-04T00:00:54Z"
+   }
+  },
+  "clusters": {
+   "C-20310304-000001": {
+    "created_at": "2031-03-04T00:00:12Z",
+    "level": "fine",
+    "members": [],
+    "split": true,
+    "verdict_at": "2031-03-04T00:00:44Z",
+    "verdict_dir": -1,
+    "verdict_tier": "S3"
+   },
+   "C-20310304-000002": {
+    "created_at": "2031-03-04T00:00:14Z",
+    "level": "fine",
+    "members": [
+     "F5",
+     "F6"
+    ],
+    "split": false,
+    "verdict_at": "2031-03-04T00:00:53Z",
+    "verdict_dir": 1,
+    "verdict_tier": "S2"
+   },
+   "C-20310304-000003": {
+    "created_at": "2031-03-04T00:00:16Z",
+    "level": "fine",
+    "members": [
+     "F8",
+     "F9"
+    ],
+    "split": false,
+    "verdict_at": null,
+    "verdict_dir": null,
+    "verdict_tier": null
+   },
+   "C-20310304-000004": {
+    "created_at": "2031-03-04T00:00:18Z",
+    "level": "fine",
+    "members": [
+     "FA",
+     "FB"
+    ],
+    "split": false,
+    "verdict_at": null,
+    "verdict_dir": null,
+    "verdict_tier": null
+   },
+   "C-20310304-000005": {
+    "created_at": "2031-03-04T00:00:47Z",
+    "level": "fine",
+    "members": [
+     "F1",
+     "F2"
+    ],
+    "split": false,
+    "verdict_at": null,
+    "verdict_dir": null,
+    "verdict_tier": null
+   },
+   "C-20310304-000006": {
+    "created_at": "2031-03-04T00:00:48Z",
+    "level": "fine",
+    "members": [
+     "F4"
+    ],
+    "split": false,
+    "verdict_at": null,
+    "verdict_dir": null,
+    "verdict_tier": null
+   }
+  },
+  "events": [
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F1",
+     "reporter": "A1",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:00Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F2",
+     "reporter": "A2",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:01Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F3",
+     "reporter": "A3",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:02Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F4",
+     "reporter": "A4",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:03Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F5",
+     "reporter": "A5",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:04Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F6",
+     "reporter": "A6",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:05Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F7",
+     "reporter": "A7",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:06Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F8",
+     "reporter": "A8",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:07Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "F9",
+     "reporter": "A9",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:08Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "FA",
+     "reporter": "AA",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:09Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": null,
+     "finding_id": "FB",
+     "reporter": "AB",
+     "state": "open"
+    },
+    "ts": "2031-03-04T00:00:10Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000001",
+     "level": "fine",
+     "members": [
+      "F1",
+      "F2"
+     ]
+    },
+    "ts": "2031-03-04T00:00:12Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000002",
+     "level": "fine",
+     "members": [
+      "F5",
+      "F6"
+     ]
+    },
+    "ts": "2031-03-04T00:00:14Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000003",
+     "level": "fine",
+     "members": [
+      "F8",
+      "F9"
+     ]
+    },
+    "ts": "2031-03-04T00:00:16Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000004",
+     "level": "fine",
+     "members": [
+      "FA",
+      "FB"
+     ]
+    },
+    "ts": "2031-03-04T00:00:18Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000001",
+     "level": "fine",
+     "members": [
+      "F4"
+     ]
+    },
+    "ts": "2031-03-04T00:00:19Z"
+   },
+   {
+    "kind": "verify_result",
+    "payload": {
+     "cluster_id": "C-20310304-000001",
+     "error_kind": null,
+     "outcome": "verified_real"
+    },
+    "ts": "2031-03-04T00:00:20Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": "F1",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.5
+    },
+    "ts": "2031-03-04T00:00:21Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A2",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": "F2",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.5
+    },
+    "ts": "2031-03-04T00:00:22Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.1
+    },
+    "ts": "2031-03-04T00:00:23Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.25
+    },
+    "ts": "2031-03-04T00:00:24Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R2",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.25
+    },
+    "ts": "2031-03-04T00:00:25Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R3",
+     "cluster": "C-20310304-000001",
+     "direction": -1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S2",
+     "src_seq": 17,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.25
+    },
+    "ts": "2031-03-04T00:00:26Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": "C-20310304-000001",
+     "finding_id": "F1",
+     "reporter": "A1",
+     "state": "voted"
+    },
+    "ts": "2031-03-04T00:00:29Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": "F1",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.05
+    },
+    "ts": "2031-03-04T00:00:30Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A2",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": "F2",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.05
+    },
+    "ts": "2031-03-04T00:00:31Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "S1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "scout",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.010000000000000002
+    },
+    "ts": "2031-03-04T00:00:32Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R1",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.025
+    },
+    "ts": "2031-03-04T00:00:33Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R2",
+     "cluster": "C-20310304-000001",
+     "direction": 1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.025
+    },
+    "ts": "2031-03-04T00:00:34Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "R3",
+     "cluster": "C-20310304-000001",
+     "direction": -1,
+     "finding": null,
+     "origin": "prod",
+     "role": "reviewer",
+     "signal_tier": "S1",
+     "src_seq": 24,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.025
+    },
+    "ts": "2031-03-04T00:00:35Z"
+   },
+   {
+    "kind": "human_verdict",
+    "payload": {
+     "actor": "human",
+     "cluster_id": "C-20310304-000001",
+     "direction": -1,
+     "source": "panel"
+    },
+    "ts": "2031-03-04T00:00:36Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": "C-20310304-000001",
+     "finding_id": "F1",
+     "reporter": "A1",
+     "state": "rejected"
+    },
+    "ts": "2031-03-04T00:00:38Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": "C-20310304-000001",
+     "finding_id": "F2",
+     "reporter": "A2",
+     "state": "rejected"
+    },
+    "ts": "2031-03-04T00:00:40Z"
+   },
+   {
+    "kind": "finding",
+    "payload": {
+     "cluster": "C-20310304-000001",
+     "finding_id": "F4",
+     "reporter": "A4",
+     "state": "rejected"
+    },
+    "ts": "2031-03-04T00:00:42Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A1",
+     "cluster": "C-20310304-000001",
+     "direction": -1,
+     "finding": "F1",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S3",
+     "src_seq": 31,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 1.0
+    },
+    "ts": "2031-03-04T00:00:43Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A2",
+     "cluster": "C-20310304-000001",
+     "direction": -1,
+     "finding": "F2",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S3",
+     "src_seq": 31,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 1.0
+    },
+    "ts": "2031-03-04T00:00:44Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "V9",
+     "cluster": "C-20310304-000001",
+     "direction": -1,
+     "finding": null,
+     "origin": "prod",
+     "role": "verifier",
+     "signal_tier": "S3",
+     "src_seq": 31,
+     "taxonomy_path": [
+      "injection",
+      "xss"
+     ],
+     "weight": 0.5
+    },
+    "ts": "2031-03-04T00:00:45Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000005",
+     "level": "fine",
+     "members": [
+      "F1",
+      "F2"
+     ]
+    },
+    "ts": "2031-03-04T00:00:47Z"
+   },
+   {
+    "kind": "cluster_merge",
+    "payload": {
+     "cluster_id": "C-20310304-000006",
+     "level": "fine",
+     "members": [
+      "F4"
+     ]
+    },
+    "ts": "2031-03-04T00:00:48Z"
+   },
+   {
+    "kind": "cluster_split",
+    "payload": {
+     "cluster_id": "C-20310304-000001",
+     "new_clusters": [
+      "C-20310304-000005",
+      "C-20310304-000006"
+     ]
+    },
+    "ts": "2031-03-04T00:00:49Z"
+   },
+   {
+    "kind": "verify_result",
+    "payload": {
+     "cluster_id": "C-20310304-000002",
+     "error_kind": null,
+     "outcome": "verified_real"
+    },
+    "ts": "2031-03-04T00:00:50Z"
+   },
+   {
+    "kind": "verify_result",
+    "payload": {
+     "cluster_id": "C-PLACEHOLDER",
+     "error_kind": null,
+     "outcome": "verified_real"
+    },
+    "ts": "2031-03-04T00:00:51Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A5",
+     "cluster": "C-20310304-000002",
+     "direction": 1,
+     "finding": "F5",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S2",
+     "src_seq": 41,
+     "taxonomy_path": [
+      "deser"
+     ],
+     "weight": 0.5
+    },
+    "ts": "2031-03-04T00:00:52Z"
+   },
+   {
+    "kind": "deposit",
+    "payload": {
+     "agent": "A6",
+     "cluster": "C-20310304-000002",
+     "direction": 1,
+     "finding": "F6",
+     "origin": "prod",
+     "role": "auditor",
+     "signal_tier": "S2",
+     "src_seq": 41,
+     "taxonomy_path": [
+      "deser"
+     ],
+     "weight": 0.5
+    },
+    "ts": "2031-03-04T00:00:53Z"
+   },
+   {
+    "kind": "human_verdict",
+    "payload": {
+     "actor": "human",
+     "cluster_id": "C-20310304-000004",
+     "direction": 0,
+     "source": "panel"
+    },
+    "ts": "2031-03-04T00:00:54Z"
+   }
+  ],
+  "findings": {
+   "F1": {
+    "cluster_id": "C-20310304-000005",
+    "state": "rejected"
+   },
+   "F2": {
+    "cluster_id": "C-20310304-000005",
+    "state": "rejected"
+   },
+   "F3": {
+    "cluster_id": null,
+    "state": "open"
+   },
+   "F4": {
+    "cluster_id": "C-20310304-000006",
+    "state": "rejected"
+   },
+   "F5": {
+    "cluster_id": "C-20310304-000002",
+    "state": "open"
+   },
+   "F6": {
+    "cluster_id": "C-20310304-000002",
+    "state": "open"
+   },
+   "F7": {
+    "cluster_id": null,
+    "state": "open"
+   },
+   "F8": {
+    "cluster_id": "C-20310304-000003",
+    "state": "open"
+   },
+   "F9": {
+    "cluster_id": "C-20310304-000003",
+    "state": "open"
+   },
+   "FA": {
+    "cluster_id": "C-20310304-000004",
+    "state": "open"
+   },
+   "FB": {
+    "cluster_id": "C-20310304-000004",
+    "state": "open"
+   }
+  }
+ },
+ "inputs": {
+  "findings": [
+   {
+    "id": "F1",
+    "line_end": 20,
+    "line_start": 10,
+    "path": "a.py",
+    "reporter": "A1"
+   },
+   {
+    "id": "F2",
+    "line_end": 18,
+    "line_start": 12,
+    "path": "a.py",
+    "reporter": "A2"
+   },
+   {
+    "cwe": "CWE-89",
+    "id": "F3",
+    "line_end": 40,
+    "line_start": 15,
+    "path": "a.py",
+    "reporter": "A3"
+   },
+   {
+    "id": "F4",
+    "line_end": 110,
+    "line_start": 100,
+    "path": "a.py",
+    "reporter": "A4"
+   },
+   {
+    "cwe": null,
+    "family": "deser",
+    "id": "F5",
+    "line_end": 9,
+    "line_start": 5,
+    "path": "b.py",
+    "reporter": "A5",
+    "type": null
+   },
+   {
+    "cwe": null,
+    "family": "deser",
+    "id": "F6",
+    "line_end": 8,
+    "line_start": 6,
+    "path": "b.py",
+    "reporter": "A6",
+    "type": null
+   },
+   {
+    "cwe": null,
+    "family": "deser",
+    "id": "F7",
+    "line_end": 9,
+    "line_start": 7,
+    "path": "b.py",
+    "reporter": "A7",
+    "type": "variant"
+   },
+   {
+    "cwe": "CWE-200",
+    "id": "F8",
+    "line_end": 5,
+    "line_start": 1,
+    "path": "c.py",
+    "reporter": "A8"
+   },
+   {
+    "cwe": "CWE-200",
+    "id": "F9",
+    "line_end": 9,
+    "line_start": 3,
+    "path": "c.py",
+    "reporter": "A9"
+   },
+   {
+    "cwe": "CWE-89",
+    "id": "FA",
+    "line_end": 5,
+    "line_start": 1,
+    "path": "d.py",
+    "reporter": "AA"
+   },
+   {
+    "cwe": "CWE-89",
+    "id": "FB",
+    "line_end": 9,
+    "line_start": 3,
+    "path": "d.py",
+    "reporter": "AB"
+   }
+  ],
+  "ops": [
+   {
+    "level": "fine",
+    "op": "find_and_merge",
+    "sim": {
+     "kind": "const",
+     "value": 0.89
+    }
+   },
+   {
+    "level": "fine",
+    "op": "find_and_merge",
+    "sim": {
+     "kind": "const",
+     "value": 0.9
+    }
+   },
+   {
+    "assigned": {
+     "F1": "C-20310304-000001",
+     "F2": "C-20310304-000001",
+     "F5": "C-20310304-000002",
+     "F6": "C-20310304-000002",
+     "F8": "C-20310304-000003",
+     "F9": "C-20310304-000003",
+     "FA": "C-20310304-000004",
+     "FB": "C-20310304-000004"
+    },
+    "level": "coarse",
+    "op": "find_and_merge"
+   },
+   {
+    "level": "fine",
+    "op": "find_and_merge"
+   },
+   {
+    "op": "apply_merges",
+    "proposals": [
+     {
+      "key_cwe": "CWE-79",
+      "key_lang": "py",
+      "key_path": "a.py",
+      "level": "fine",
+      "line_window": [
+       10,
+       110
+      ],
+      "member_ids": [
+       "F1",
+       "F2",
+       "F4"
+      ],
+      "sim_min": null
+     }
+    ]
+   },
+   {
+    "op": "apply_merges",
+    "proposals": [
+     {
+      "key_cwe": "CWE-79",
+      "key_lang": "py",
+      "key_path": "a.py",
+      "level": "fine",
+      "line_window": [
+       10,
+       110
+      ],
+      "member_ids": [
+       "F1",
+       "F2",
+       "F4"
+      ],
+      "sim_min": null
+     }
+    ]
+   },
+   {
+    "call": {
+     "op": "apply_merges",
+     "proposals": [
+      {
+       "key_cwe": "CWE-79",
+       "key_lang": "py",
+       "key_path": "a.py",
+       "level": "fine",
+       "line_window": [
+        10,
+        20
+       ],
+       "member_ids": [
+        "F1"
+       ],
+       "sim_min": null
+      }
+     ]
+    },
+    "match": "部分重叠",
+    "op": "expect_error"
+   },
+   {
+    "finding_id": "F1",
+    "op": "seed_votes",
+    "votes": [
+     {
+      "dims": [
+       0.8,
+       0.8,
+       0.8,
+       0.8
+      ],
+      "direction": 1,
+      "reviewer": "R1"
+     },
+     {
+      "dims": [
+       0.6,
+       0.6,
+       0.6,
+       0.6
+      ],
+      "direction": 1,
+      "reviewer": "R2"
+     },
+     {
+      "dims": [
+       0.4,
+       0.4,
+       0.4,
+       0.4
+      ],
+      "direction": -1,
+      "reviewer": "R3"
+     }
+    ]
+   },
+   {
+    "cluster_id": "C-20310304-000001",
+    "ctx": {
+     "members": [
+      [
+       "F1",
+       "A1",
+       "auditor"
+      ],
+      [
+       "F2",
+       "A2",
+       "auditor"
+      ]
+     ],
+     "scouts": [
+      "S1"
+     ],
+     "verifier_id": "V9",
+     "votes": [
+      [
+       "R1",
+       1
+      ],
+      [
+       "R2",
+       1
+      ],
+      [
+       "R3",
+       -1
+      ]
+     ]
+    },
+    "direction": 1,
+    "op": "propagate",
+    "source": {
+     "kind": "verify_result",
+     "payload": {
+      "cluster_id": "C-20310304-000001",
+      "outcome": "verified_real"
+     }
+    },
+    "tier": "S2"
+   },
+   {
+    "ctx": {
+     "members": [
+      [
+       "F1",
+       "A1",
+       "auditor"
+      ],
+      [
+       "F2",
+       "A2",
+       "auditor"
+      ]
+     ],
+     "scouts": [
+      "S1"
+     ],
+     "verifier_id": "V9",
+     "votes": [
+      [
+       "R1",
+       1
+      ],
+      [
+       "R2",
+       1
+      ],
+      [
+       "R3",
+       -1
+      ]
+     ]
+    },
+    "expected_votes": 3,
+    "finding_id": "F1",
+    "op": "close_panel"
+   },
+   {
+    "actor": "human",
+    "cluster_id": "C-20310304-000001",
+    "ctx": {
+     "members": [
+      [
+       "F1",
+       "A1",
+       "auditor"
+      ],
+      [
+       "F2",
+       "A2",
+       "auditor"
+      ]
+     ],
+     "verifier_id": "V9"
+    },
+    "direction": -1,
+    "op": "human_verdict"
+   },
+   {
+    "actor": "human",
+    "cluster_id": "C-20310304-000001",
+    "groups": [
+     [
+      "F2",
+      "F1"
+     ],
+     [
+      "F4"
+     ]
+    ],
+    "op": "split_cluster"
+   },
+   {
+    "kind": "verify_result",
+    "op": "append",
+    "payload": {
+     "cluster_id": "C-20310304-000002",
+     "outcome": "verified_real"
+    }
+   },
+   {
+    "kind": "verify_result",
+    "op": "append",
+    "payload": {
+     "cluster_id": "C-PLACEHOLDER",
+     "outcome": "verified_real"
+    }
+   },
+   {
+    "lineage": {
+     "C-20310304-000002": {
+      "members": [
+       [
+        "F5",
+        "A5",
+        "auditor"
+       ],
+       [
+        "F6",
+        "A6",
+        "auditor"
+       ]
+      ],
+      "verifier_id": "V9"
+     },
+     "C-PLACEHOLDER": null
+    },
+    "op": "propagate_pending"
+   },
+   {
+    "actor": "human",
+    "cluster_id": "C-20310304-000004",
+    "ctx": {
+     "members": [
+      [
+       "FA",
+       "AA",
+       "auditor"
+      ],
+      [
+       "FB",
+       "AB",
+       "auditor"
+      ]
+     ]
+    },
+    "direction": 0,
+    "op": "human_verdict"
+   }
+  ],
+  "t0": "2031-03-04T00:00:00Z"
+ },
+ "kind": "cluster",
+ "meta": {
+  "checkpoint": 3,
+  "note": "inputs=op 前缀（自含）；expected=事件流（剔 seq）+ clusters/findings 投影 + cells 全格表，与重放执行逐位比对"
+ },
+ "params": {
+  "budget": {
+   "COST_PER_L2_CENTS": 5,
+   "COST_PER_S2_CENTS": 10,
+   "FAST_CENTS": 2,
+   "FULL_CENTS": 600,
+   "L2_QUOTA_CAP": 45,
+   "PR_CENTS": 100,
+   "RESCAN_WEEKLY": 0.07
+  },
+  "decay": {
+   "EPS_FLOOR": 0.5,
+   "T_HALF_DAYS": 30.0,
+   "T_HALF_DAYS_EXAM": 15.0
+  },
+  "demote": {
+   "DORMANT_DAYS": 60,
+   "FC_BASE_EXAMS": 2,
+   "FC_CONSEC": 2,
+   "FC_DAYS": 1,
+   "FC_ITEMS": 60,
+   "FC_MARGIN": 0.15,
+   "REACTIVATE_N": 5,
+   "WINDOWS": 2
+  },
+  "deposits": {
+   "REVIEWER_X": 0.5,
+   "SCOUT_X": 0.2,
+   "VERIFIER_CONFIRM": 0.25,
+   "VERIFIER_CONFLICT": 0.5
+  },
+  "exam": {
+   "COOLDOWN_DAYS": 1,
+   "ENTRY_CORROB_S2S3": 2.0,
+   "ENTRY_DIRECT": 0.3,
+   "ENTRY_GRACE_DAYS": 3,
+   "ENTRY_MARGIN": 1,
+   "ENTRY_TOP_FRAC": 0.2,
+   "ENTRY_WINDOW_DAYS": 12,
+   "PERIODIC_ITEMS": 10,
+   "PERIODIC_PASS": 0.75,
+   "PROMO_ITEMS": 5,
+   "PROMO_MIN_REJECT_FP": 1,
+   "PROMO_REAL": 3,
+   "TYPE_ENTRY": 0.3,
+   "TYPE_ENTRY_COMBINE": 0.25
+  },
+  "explore": {
+   "UNIFORM_FLOOR": 0.2
+  },
+  "panel": {
+   "MIN_FAMILIES": 2,
+   "SIZE": 3
+  },
+  "promote": {
+   "DELTA": 0.05,
+   "M": 30,
+   "M_PRORATE": true,
+   "M_window_days": 90,
+   "N": 6,
+   "N_S2S3": 3,
+   "UNIQUE_PER_FAMILY": true,
+   "WINDOW_ADVANTAGE": 2
+  },
+  "roster": {
+   "auditor": 5,
+   "reviewer": 4,
+   "scout": 6,
+   "verifier": 3
+  },
+  "shrink": {
+   "LAMBDA": 5.0
+  },
+  "tilt": {
+   "GAMMA": 1.0,
+   "T_BASE": 0.6,
+   "T_MAX": 0.9,
+   "T_MIN": 0.5
+  }
+ }
+}

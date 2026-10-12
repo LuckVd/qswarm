@@ -1,0 +1,33 @@
+{
+ "argv": [
+  "--round",
+  "2",
+  "--dims",
+  "cooldown=7 window=1 N=6 delta=0.05,0.15 tdrift=250,600",
+  "--seeds",
+  "11,22,33",
+  "--n-days",
+  "30",
+  "--workers",
+  "4"
+ ],
+ "mode": "tune",
+ "n_units": 12,
+ "n_rows": 12,
+ "workers": 4,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-08T18:41:59+00:00",
+ "finished_at_utc": "2026-10-08T18:43:28.848321+00:00",
+ "wall_s": 89.05105050979182,
+ "per_run_elapsed_s": {
+  "min": 27.544528402853757,
+  "median": 29.737609869800508,
+  "max": 30.475313117261976
+ },
+ "python": "3.12.3"
+}

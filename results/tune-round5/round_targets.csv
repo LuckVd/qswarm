@@ -1,0 +1,2 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5,3,FAIL(0.2403),FAIL(1.0000),FAIL(2.0750),PASS,NODATA,PASS,PASS,NODATA,PASS,5,2,0.8737118413389907

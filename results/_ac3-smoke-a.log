@@ -1,0 +1,14 @@
+[experiments] mode=smoke units=78 (matrix groups=32 × seeds=[11, 22] + additional 14 runs) n_days=8 workers=4
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (92s)
+[experiments] chunk 2/4 done (97s)
+[experiments] chunk 3/4 done (97s)
+[experiments] chunk 4/4 done (97s)
+[experiments] done in 97s → results/_ac3-smoke-a (per-run max 5.2s)
+  results_csv: results/_ac3-smoke-a/results.csv
+  summary_csv: results/_ac3-smoke-a/summary.csv
+  starvation_csv: results/_ac3-smoke-a/starvation.csv
+  results_json: results/_ac3-smoke-a/results.json
+  timing_csv: results/_ac3-smoke-a/timing.csv
+  timing_by_group_csv: results/_ac3-smoke-a/timing_by_group.csv
+  manifest_json: results/_ac3-smoke-a/manifest.json

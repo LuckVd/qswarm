@@ -1,0 +1,168 @@
+{
+ "case_id": "re_route-002",
+ "desc": "幂等至多一次 + 触发门负用例 + L0 直出。",
+ "expected": {
+  "deposit_count": 2,
+  "ops": [
+   {
+    "ok": true,
+    "value": [
+     {
+      "kind": "re_route",
+      "payload": {
+       "finding_id": "F-20260101-000001",
+       "from_node": "injection/sqli",
+       "reason": "type_mismatch",
+       "to_node": "crypto"
+      }
+     },
+     {
+      "kind": "deposit",
+      "payload": {
+       "agent": "S-a",
+       "cluster": null,
+       "direction": -1,
+       "finding": "F-20260101-000001",
+       "origin": "prod",
+       "role": "scout",
+       "signal_tier": "S1",
+       "src_seq": 1,
+       "taxonomy_path": [
+        "injection",
+        "sqli"
+       ],
+       "weight": 0.05
+      }
+     },
+     {
+      "kind": "deposit",
+      "payload": {
+       "agent": "S-b",
+       "cluster": null,
+       "direction": -1,
+       "finding": "F-20260101-000001",
+       "origin": "prod",
+       "role": "scout",
+       "signal_tier": "S1",
+       "src_seq": 1,
+       "taxonomy_path": [
+        "injection",
+        "sqli"
+       ],
+       "weight": 0.05
+      }
+     }
+    ]
+   },
+   {
+    "ok": true,
+    "value": []
+   },
+   {
+    "error": "非错配不触发 re_route：'injection' → 'injection/sqli'（家族级→类型级细化是正常流程，D12/§3.1）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "error": "非错配不触发 re_route：'crypto' → 'crypto'（家族级→类型级细化是正常流程，D12/§3.1）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "ok": true,
+    "value": [
+     {
+      "kind": "re_route",
+      "payload": {
+       "finding_id": "F-20260101-000002",
+       "from_node": "crypto",
+       "reason": "type_mismatch",
+       "to_node": "injection"
+      }
+     }
+    ]
+   }
+  ],
+  "tables": {
+   "findings": {
+    "F-20260101-000001": "open",
+    "F-20260101-000002": "open"
+   },
+   "tasks": {}
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "findings": [
+   {
+    "id": "F-20260101-000001",
+    "run_id": "R1"
+   },
+   {
+    "family": "injection",
+    "id": "F-20260101-000002",
+    "run_id": "R1"
+   }
+  ],
+  "runs": [
+   {
+    "mode": "pr",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "re_route",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "同 finding 第二次 re_route → 零新事件（读侧幂等）；家族级→类型级细化与全等节点 → ValueError 零落库（写侧非法，D12）；L0 直出无猜测者 → 仅 re_route事件零存款。",
+  "spec_ref": "SPEC-2 §3.1/§3.2/§6.4（D12）；SPEC-5 §1.3/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "from_node": "injection/sqli",
+    "scout_ids": [
+     "S-b",
+     "S-a"
+    ],
+    "to_node": "crypto"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "from_node": "crypto",
+    "to_node": "injection"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "from_node": "injection",
+    "to_node": "injection/sqli"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "from_node": "crypto",
+    "to_node": "crypto"
+   },
+   "op": "re_route_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "from_node": "crypto",
+    "to_node": "injection"
+   },
+   "op": "re_route_finding"
+  }
+ ]
+}

@@ -1,0 +1,90 @@
+# params.yaml —— 机制参数定稿（SPEC-1 §5.2 建节；SPEC-4 §4 输出物 1 定稿回填）
+#
+# ── M0 定稿依据（2026-10-09 门禁终检 · v2 机制定稿版）──────────────
+# 证据链：out/sim_report.md §1/§4（官方 --full 全矩阵 + §4-1 选择器）+
+#         results/TUNING_LOG.md Round 9-50（调参轮逐点实证）+
+#         out/group_targets.csv（逐组 9 目标判定）。
+# 本版为「v2 机制定稿」：在 Round-8 机制层四旋钮（M_PRORATE/UNIQUE_PER_FAMILY/
+# WINDOW_ADVANTAGE/ENTRY_DIRECT）之上，落地 §8.4 席位孵化直晋通道（提名—佐证—
+# 暗考兜底—换题重考，类型节点 quiz 提名）与 §8.1 周期复核熄灭通道（趋势判据），
+# 使 SPEC-4 §2 全部 9 项目标首次同时达标——官方 --full 全矩阵（507 runs，
+# results/full-run5.log，wall 4499s ≤ 2h，per-run max 37.1s ≤ 5 min）
+# **162/162 组全达标**，选择器推荐组 N06-D0.05-T0.60-E0.30-V0.20（本文件坐标）
+# 实测：① 0.9114±0.0255 / ② 0.7000±0.0433 / ③ 150≤200 / ④ 0.0389±0.0245 /
+# ⑤ 71±12.7 / ⑥ 0.5352<1 / ⑦ 1.67<50 / ⑧ 1.0≤2× / ⑨ 100%
+# （out/sim_report.md §1）。各旋钮缺省值全部关闭 = §7.3/§8.2 逐字
+# 可回归（tests/test_kernel_promote_scan.py spec_literal 钉住）。
+#
+# ── 扫描维度（SPEC-4 §3 主矩阵坐标；本文件取值 = 官方矩阵选择器推荐组）────
+# N ∈ {6,10,14} × DELTA ∈ {0.05,0.10,0.15} × T_BASE ∈ {0.6,0.7,0.8} 为机制扫描
+# 坐标；exam 权重上限（世界侧 ExamWorldParams.weight_high=0.3）与 verify_error
+# （世界侧 VerdictParams=0.2）不进契约。本坐标 = out/sim_report.md §1/§4 选择器
+# 结论（162/162 组全达标，N06-D0.05-T0.60-E0.30-V0.20 为中位晋升时长最短者；
+# v2 通道主导下坐标不敏感，敏感性表见 out/sim_report.md §2）。
+
+promote:  {N: 6, N_S2S3: 3, DELTA: 0.05, M: 30, M_window_days: 90,
+           M_PRORATE: true, UNIQUE_PER_FAMILY: true, WINDOW_ADVANTAGE: 2}
+# M_PRORATE（DECISIONS 2026-10-09）：判据③ M 按节点期望簇份额等比缩放，消除
+#   低权重族/高扇出族 type 节点在窗内结构性不可达的死门槛；
+# UNIQUE_PER_FAMILY（同上）：同族唯一专员——§7.3 证据路径的查准护栏（v2 直晋
+#   席位格豁免：提名发生在播种夜，席位兑现不是新增拥挤）；
+# WINDOW_ADVANTAGE=2（同上）：判据②叠加近 2 衰退窗逐窗 LB>基线+δ，剔陈旧/运气
+#   记录的晋升。N/N_S2S3/DELTA/M 及全部 §7.3 硬门槛语义逐字未动。
+
+tilt:     {T_BASE: 0.60, GAMMA: 1.0, T_MIN: 0.50, T_MAX: 0.90}
+shrink:   {LAMBDA: 5}                          # = 2.5 个 S3 当量（§5.1）
+decay:    {T_HALF_DAYS: 30, T_HALF_DAYS_EXAM: 15, EPS_FLOOR: 0.5}
+demote:   {WINDOWS: 2, DORMANT_DAYS: 60, REACTIVATE_N: 5,
+           FC_DAYS: 1, FC_ITEMS: 60, FC_MARGIN: 0.15, FC_CONSEC: 2, FC_BASE_EXAMS: 2}
+# WINDOWS=2/DORMANT_DAYS=60/REACTIVATE_N=5 为 §7.3 逐字（转换③④⑤未动）。
+# FC_*（周期复核熄灭通道，§8.1「淘汰仍只看后续周期考」「连续 2 个考核周期低于
+#   及格线」的落地；DECISIONS 2026-10-09 v2）：active 格每 FC_DAYS=1 天传唤一场
+#   FC_ITEMS=60 题复核考，得分低于「前 FC_BASE_EXAMS=2 场冻结基线 −
+#   FC_MARGIN=0.15」记一次不达标，连续 FC_CONSEC=2 场不达标 → 熄灭
+#   (reason=decay)。趋势式判据的必要性：退化型（前 top 漂移 −0.25）与平庸型
+#   考后 q 分布重叠，绝对及格线无法同时满足 ④ 与 ⑤；周期考无生产信号依赖
+#   （投票/标记存款不反映评审/验证蜂自身能力），对全角色可观测。响应实测
+#   62-80 任务（⑤≤150），误熄灭率 ④≈0.01-0.03（≤0.05）。FC_DAYS=0 即关闭。
+
+exam:     {PROMO_ITEMS: 5, PROMO_REAL: 3, PROMO_MIN_REJECT_FP: 1,
+           PERIODIC_ITEMS: 10, PERIODIC_PASS: 0.75, COOLDOWN_DAYS: 1,
+           ENTRY_DIRECT: 0.30, ENTRY_TOP_FRAC: 0.2, ENTRY_MARGIN: 1,
+           TYPE_ENTRY: 0.30, ENTRY_GRACE_DAYS: 3, ENTRY_CORROB_S2S3: 2.0,
+           ENTRY_WINDOW_DAYS: 12, TYPE_ENTRY_COMBINE: 0.25}
+# PROMO_*（§8.2 及格线定稿）与 PERIODIC_*（§8.2 周期考规格值）逐字未动。
+# COOLDOWN_DAYS 14→7（Round1/3 实证）→1（v2 定稿）：暗考重考冷却——§8.2「冷却
+#   期后换题重考」的重考节奏在 30 日地平线内需 2-3 次重考才能让席位提名充分
+#   兑现（② 查全 500 任务窗），cd=1 实测不伤查准（暗考 p³(1−(1−p)²) 对低 q 格
+#   仍是硬闸，Round 44-50 对照）。
+# ENTRY_DIRECT=0.30 + ENTRY_TOP_FRAC=0.2 + ENTRY_MARGIN=1（§8.4 席位孵化直晋，
+#   DECISIONS 2026-10-09 v2）：每 (role, node) 按入学/quiz 正确率排名的前
+#   ⌈0.2·n⌉ 席（与 §2 度量 top-20% 口径同式）直晋 candidate，门槛只看正确数
+#   （≥ 0.30×题数），席位边际 = 入选最低正确数领先未入选最高者 ≥1 题。
+# TYPE_ENTRY=0.30：类型级孵化 quiz 提名（类型节点测 q_t；quiz 为提名考试，
+#   提名格另写一笔入格推动存款以兑现 §7.1 惰性建格）。
+# ENTRY_GRACE_DAYS=3 + ENTRY_CORROB_S2S3=2.0：直晋候选人的收官序 = 生产佐证
+#   （n_eff_s2s3≥2 且纯生产 C* 高于同节点 LOO 生产基线 → 免暗考）→ 宽限 3 夜 →
+#   §8.2 暗考兜底。佐证的两侧都排除考试存款（quiz 会抬高混合基线，混合口径
+#   无判别力）。
+# ENTRY_WINDOW_DAYS=12：孵化兑现窗——窗闭后提名格冻结（§8.4 是冷启动机制，
+#   窗 ≥ ② 的 500 任务窗；窗闭后漂移格不再被提名通道激活，① 的激活时点
+#   真值排名不被漂移污染）。
+# TYPE_ENTRY_COMBINE=0.25：类型席位合成分 = 0.75·quiz 分 + 0.25·入学分（q_f
+#   的独立测量），降低席位选择的测量噪声。
+explore:  {UNIFORM_FLOOR: 0.20}                # 探索通道 20% 均匀保底（§5.2）
+budget:   {PR_CENTS: 100, FULL_CENTS: 600, L2_QUOTA_CAP: 45, RESCAN_WEEKLY: 0.07, FAST_CENTS: 2, COST_PER_L2_CENTS: 5, COST_PER_S2_CENTS: 10}
+# ── M1 预算新键（SPEC-2 §8.1；DECISIONS 2026-10-10「旋钮缺省纪律落地」行回填）──
+# FAST_CENTS=2：fast 档单 run 预算（美分）＝ §2.2 fast 成本锚点上界 $0.02；熔断为
+#   §2.4 常设机制、无开关（budget_for_mode 三档取键：fast→FAST_CENTS / pr→
+#   PR_CENTS / full→FULL_CENTS）。COST_PER_L2_CENTS=5 / COST_PER_S2_CENTS=10：
+#   L2 单点 / S2 单次验证成本估计（§2.4 配额公式的估计输入，非记账费率——费率
+#   以 on_cost 实测回报为准；§2.2 成本锚点 ≈$0.05 / ≈$0.10），为 0 → quota 恒 0
+#   （保守不派）。缺省值=规格逐字；仿真器不注入 BudgetPolicy（缺省 None）=
+#   无预算约束路径，M0 仿真轨迹逐字兼容（「缺省关闭=规格逐字」的 M1 形态）。
+deposits: {SCOUT_X: 0.2, REVIEWER_X: 0.5, VERIFIER_CONFLICT: 0.5, VERIFIER_CONFIRM: 0.25}
+panel:    {SIZE: 3, MIN_FAMILIES: 2}           # 评审团（§16.7-6）
+roster:   {scout: 6, auditor: 5, reviewer: 4, verifier: 3}
+# roster 维持 §1.1 种子版编制（6/5/4/3）。世界侧孵化考试题数定稿：
+# ExamWorldParams.entry_items=12（§8.4「8–12 题」上限）与 type_quiz_items=56
+# （类型 quiz 无规格值；席位保真度随题量上升，Round 41-49 网格实测 56 为
+# ①② 联合可达档），随仿真世界参数记录于 DECISIONS 2026-10-09 v2 条。

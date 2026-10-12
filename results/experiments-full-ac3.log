@@ -1,0 +1,13 @@
+[experiments] mode=full units=507 (matrix groups=162 × seeds=[11, 22, 33] + additional 21 runs) n_days=30 workers=4
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (4406s)
+[experiments] chunk 2/4 done (4429s)
+[experiments] chunk 3/4 done (4429s)
+[experiments] chunk 4/4 done (4429s)
+[experiments] done in 4429s → results/experiments-full-ac3 (per-run max 50.2s)
+  results_csv: results/experiments-full-ac3/results.csv
+  summary_csv: results/experiments-full-ac3/summary.csv
+  starvation_csv: results/experiments-full-ac3/starvation.csv
+  results_json: results/experiments-full-ac3/results.json
+  timing_csv: results/experiments-full-ac3/timing.csv
+  manifest_json: results/experiments-full-ac3/manifest.json

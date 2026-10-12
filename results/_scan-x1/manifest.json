@@ -1,0 +1,37 @@
+{
+ "argv": [
+  "--round",
+  "17",
+  "--workers",
+  "3",
+  "--seeds",
+  "11,22,33",
+  "--n-days",
+  "30",
+  "--replay-every",
+  "10",
+  "--dims",
+  "N=10 delta=0.10 t_base=0.7 exam_wh=0.5 ve=0.2 entry_frac=0.2 m_prorate=1 unique=1 wadv=2 fc_net=1 fc_days=2 fc_items=20 fc_pass=0.55 entry_direct=0.3 type_entry=0.3 corrob=1 grace=4 cooldown=2 quiz=24 rscout=6 rauditor=5 rreviewer=4 rverifier=3",
+  "--out",
+  "results/_scan-x1"
+ ],
+ "mode": "tune",
+ "n_units": 3,
+ "n_rows": 3,
+ "workers": 3,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-09T14:56:34+00:00",
+ "finished_at_utc": "2026-10-09T14:57:05.270923+00:00",
+ "wall_s": 30.67303941072896,
+ "per_run_elapsed_s": {
+  "min": 28.797671281266958,
+  "median": 29.101517544128,
+  "max": 30.34342726599425
+ },
+ "python": "3.12.3"
+}

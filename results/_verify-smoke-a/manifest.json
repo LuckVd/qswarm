@@ -1,0 +1,27 @@
+{
+ "argv": [
+  "--smoke",
+  "--out",
+  "results/_verify-smoke-a",
+  "--workers",
+  "2"
+ ],
+ "mode": "smoke",
+ "n_units": 78,
+ "n_rows": 78,
+ "workers": 2,
+ "seeds": [
+  11,
+  22
+ ],
+ "n_days": 8,
+ "started_at_utc": "2026-10-08T14:36:31.317519+00:00",
+ "finished_at_utc": "2026-10-08T14:40:40.565530+00:00",
+ "wall_s": 249.23063432704657,
+ "per_run_elapsed_s": {
+  "min": 5.284342385828495,
+  "median": 6.292013700120151,
+  "max": 7.808242764789611
+ },
+ "python": "3.12.3"
+}

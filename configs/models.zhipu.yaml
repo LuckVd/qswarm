@@ -1,0 +1,44 @@
+# models.zhipu.yaml —— 智谱 BigModel 供给配置（2026-10-12，负责人指定）。
+# 与 configs/models.yaml（参考形态）同构三节；provider=zhipu（新供应商，
+# PROVIDER_BASE_URLS 加行，chat/completions 兼容族）；api_key_env 只存
+# 环境变量名（值调用时读取，永不入账本/工件/日志，§11.6-5）。
+#
+# GLM Coding Plan 实测路由（2026-10-12 探针）：请求的轻量模型由套餐映射为
+# glm-5.3-flash 服务，旗舰模型映射为 glm-5.3 服务——model_ref 记录请求模型
+# （蜂身份），实际服务模型见 out/m2-seeding 缓存的响应 model 字段。
+# 训练时代 caveat：glm-5.x 训练数据晚于 KNOWLEDGE_CUTOFF(2025-03-31) 常量
+# 所设时代，7 条 cve_rollback 原题对该名册存在背题风险（93% 变异语料不受
+# 影响）——DECISIONS 同日行留痕，M3 考试解读时须知。
+
+tiers:
+  cheap:
+    primary:   {provider: zhipu, model: glm-4.5-air, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks:
+      - {provider: zhipu, model: glm-4.6, api_key_env: QSWARM_KEY_ZHIPU}
+  strong:
+    primary:   {provider: zhipu, model: glm-5.2, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks:
+      - {provider: zhipu, model: glm-5, api_key_env: QSWARM_KEY_ZHIPU}
+  mid:
+    primary:   {provider: zhipu, model: glm-5.1, api_key_env: QSWARM_KEY_ZHIPU}
+  engineering:
+    primary:   {provider: zhipu, model: glm-5.3, api_key_env: QSWARM_KEY_ZHIPU}
+
+entry_exams:
+  cheap:       {min_pass: 0.8, families: all}
+  strong:      {min_pass: 0.8, families: all}
+  mid:         {min_pass: 0.8, families: all}
+  engineering: {min_pass: 0.8, families: all}
+
+runtime:
+  rpm_limit: 600
+  tpm_limit: 4000000
+  batch_mode_for_full: true
+  production_temp: 0.2
+  # 思考型模型运行点（2026-10-12 DECISIONS）：GLM 5.x 服务端思考通道计入输出
+  # 预算——4096 封顶实测被 reasoning 烧穿（正文 0 字符，finish=length），同题
+  # 32K 预算复测 finish=stop 且判读正确（思考 ~10.3K tok、耗时 184s）。全档
+  # 显式钉 enabled：考试/生产测的是同一运行点位，可复现可比较。
+  exam_max_output_tokens: 32768
+  exam_timeout_s: 600
+  thinking: {cheap: enabled, strong: enabled, mid: enabled, engineering: enabled}

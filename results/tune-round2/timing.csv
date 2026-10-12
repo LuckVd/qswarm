@@ -1,0 +1,13 @@
+experiment,arm,group_id,seed,n_days,N,DELTA,T_BASE,exam_weight_high,verify_error,reviewer_x,tilt_gamma,router,window_days,elapsed_s
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift250,11,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,30.44432757003233
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift250,22,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,27.832316165789962
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift250,33,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,30.16571168694645
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift600,11,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,29.67209767503664
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift600,22,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,27.544528402853757
+matrix,tune,window1-cooldown7-N6-delta0p05-tdrift600,33,30,6,0.05,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,29.346570109948516
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift250,11,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,29.907884258776903
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift250,22,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,27.85694660199806
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift250,33,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,29.737609869800508
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift600,11,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,30.039994988124818
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift600,22,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,27.693569420836866
+matrix,tune,window1-cooldown7-N6-delta0p15-tdrift600,33,30,6,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,1.0,30.475313117261976

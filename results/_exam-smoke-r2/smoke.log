@@ -1,0 +1,10 @@
+[①] 播种 108/108 格 origin=exam，权重域全合规，平均正确率=0.503
+[②] scout-01/scout/injection q=0.50：
+     day= 0 attempt=1 真题对=0/3 拒雷=0/2 → 不过→shadow+冷却至 d7
+     day= 7 attempt=2 真题对=1/3 拒雷=2/2 → 不过→shadow+冷却至 d14
+     day=14 attempt=3 真题对=2/3 拒雷=1/2 → 不过→shadow+冷却至 d21
+     day=21 attempt=4 真题对=2/3 拒雷=1/2 → 不过→shadow+冷却至 d28
+     day=28 attempt=5 真题对=1/3 拒雷=1/2 → 不过→shadow+冷却至 d35
+     day=35 attempt=6 真题对=3/3 拒雷=2/2 → 及格→active
+[③] exam_result×6、promotion×1、存款恒 108（暗考零存款）—— 账本事件面全合规
+SMOKE OK

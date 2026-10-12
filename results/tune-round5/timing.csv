@@ -1,0 +1,4 @@
+experiment,arm,group_id,seed,n_days,N,DELTA,T_BASE,exam_weight_high,verify_error,reviewer_x,tilt_gamma,router,window_days,elapsed_s
+matrix,tune,window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5,11,30,10,0.05,0.6,0.3,0.5,0.5,1.0,kernel.route,7.0,25.286354318261147
+matrix,tune,window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5,22,30,10,0.05,0.6,0.3,0.5,0.5,1.0,kernel.route,7.0,25.463818460237235
+matrix,tune,window7-cooldown7-N10-delta0p05-t_base0p6-exam_wh0p3-VE0p5,33,30,10,0.05,0.6,0.3,0.5,0.5,1.0,kernel.route,7.0,27.432144689839333

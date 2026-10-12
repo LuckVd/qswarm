@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0007",
+ "taxonomy_path": [
+  "injection"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0007/",
+ "planted": true,
+ "expected": "real",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0007-c0d5a1a0",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 7
+ }
+}

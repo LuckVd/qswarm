@@ -1,0 +1,13 @@
+[freeze] engine.run(seed=7, n_days=30) …
+Traceback (most recent call last):
+  File "/data/Qswarm/scripts/freeze_golden.py", line 941, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/data/Qswarm/scripts/freeze_golden.py", line 915, in main
+    docs = build_fixture_tree(args.seed, args.n_days)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/Qswarm/scripts/freeze_golden.py", line 640, in build_fixture_tree
+    raise AssertionError(
+AssertionError: 自检失败 promote-006（不产出坏夹具）：
+promote-006.transitions: 列表长度 expected=21 got=20
+EXIT=1

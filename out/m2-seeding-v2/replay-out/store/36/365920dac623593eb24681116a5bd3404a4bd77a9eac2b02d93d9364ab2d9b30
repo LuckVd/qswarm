@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0044",
+ "taxonomy_path": [
+  "crypto"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0044/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0044-73c2f8af",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 44
+ }
+}

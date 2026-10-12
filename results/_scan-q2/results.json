@@ -1,0 +1,180 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   6.0
+  ],
+  "rauditor": [
+   5.0
+  ],
+  "rreviewer": [
+   4.0
+  ],
+  "rverifier": [
+   3.0
+  ],
+  "cooldown": [
+   1.0
+  ],
+  "entry_direct": [
+   0.25
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "entry_margin": [
+   1.0
+  ],
+  "type_entry": [
+   0.25
+  ],
+  "grace": [
+   3.0
+  ],
+  "corrob": [
+   1.0
+  ],
+  "quiz": [
+   40.0
+  ],
+  "fc_days": [
+   1.0
+  ],
+  "fc_items": [
+   60.0
+  ],
+  "fc_margin": [
+   0.15
+  ],
+  "fc_consec": [
+   2.0
+  ],
+  "fc_base": [
+   2.0
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days1-fc_items60-fc_margin0p15-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.7938144329896907,
+   "promotion_recall": 0.6190476190476191,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.04597701149425287,
+   "degradation_response": 80.0,
+   "regret_total": 175.03909021388623,
+   "regret_per_task": 0.11071416205811906,
+   "regret_late_over_early": 0.4908223235923099,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "a5c51c603190cc6c9b161705ff2941928fa17fed5c18a745133da648234c944a"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days1-fc_items60-fc_margin0p15-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.9130434782608695,
+   "promotion_recall": 0.6764705882352942,
+   "median_time_to_active": 150.0,
+   "wrong_extinguish_rate": 0.06521739130434782,
+   "degradation_response": null,
+   "regret_total": 191.2830251465899,
+   "regret_per_task": 0.1230115917341414,
+   "regret_late_over_early": 0.43947715613059624,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "a4d361035542ac3abaf7fe497de7802abdb35a272df86d513114b3ecec17009d"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown1-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ40-fc_days1-fc_items60-fc_margin0p15-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8255813953488372,
+   "promotion_recall": 0.5904761904761905,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.04819277108433735,
+   "degradation_response": 62.0,
+   "regret_total": 158.18609908524346,
+   "regret_per_task": 0.10688249938192125,
+   "regret_late_over_early": 0.482981020402167,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "b780f05c9510fe52e4b45c616d4a87e97f91616a9b071ea0a59a958f0752308f"
+  }
+ ]
+}

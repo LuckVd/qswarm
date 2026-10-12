@@ -1,0 +1,5 @@
+unit-definition mismatches: 0; pinned-override mismatches: 0
+MATRIX UNIT DEFINITION BIT-IDENTICAL: 162 groups x seeds [11,22,33] = 486 matrix units
++ 21 additional units (tilt/reviewer_x/thompson arms) identity fields all equal; those arms pin
+no mechanism overrides (overrides=()), their N/DELTA/T_BASE columns read yaml at run time - the
+baseline csv predates today's v2 params finalization (pre-existing non-M1 drift, DECISIONS 2026-10-09/66).

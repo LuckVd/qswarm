@@ -1,0 +1,18 @@
+[experiments] mode=full units=507 (matrix groups=162 × seeds=[11, 22, 33] + additional 21 runs) n_days=30 workers=3
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=3
+[experiments] chunk 1/3 done (4118s)
+[experiments] chunk 2/3 done (4118s)
+[experiments] chunk 3/3 done (4118s)
+[experiments] done in 4118s → results/experiments-full (per-run max 54.4s)
+  results_csv: results/experiments-full/results.csv
+  summary_csv: results/experiments-full/summary.csv
+  starvation_csv: results/experiments-full/starvation.csv
+  results_json: results/experiments-full/results.json
+  timing_csv: results/experiments-full/timing.csv
+  timing_by_group_csv: results/experiments-full/timing_by_group.csv
+  manifest_json: results/experiments-full/manifest.json
+[report] 参数组 162 个：全达标 162；推荐 N06-D0.05-T0.60-E0.30-V0.20
+  report_md: out/sim_report.md
+  sensitivity_csv: out/sensitivity.csv
+  group_targets_csv: out/group_targets.csv
+MATRIX_AND_REPORT_DONE

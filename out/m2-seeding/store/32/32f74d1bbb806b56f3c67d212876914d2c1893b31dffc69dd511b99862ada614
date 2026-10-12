@@ -1,0 +1,23 @@
+{
+ "item_id": "SEED-0053",
+ "taxonomy_path": [
+  "authz"
+ ],
+ "lang": "python",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0053/",
+ "planted": false,
+ "expected": "real",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0053-538be594",
+ "source": "cve_rollback",
+ "snapshot_files": [
+  "test_file_eps.py",
+  "EpsImagePlugin.py"
+ ],
+ "upstream": {
+  "cve": "CVE-2026-59203",
+  "parent_sha": "f1b3d8f83ec6b7d9dafc03df1fc25d70119951a8",
+  "commit_date": "2026-06-22"
+ }
+}

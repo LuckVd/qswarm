@@ -1,0 +1,4 @@
+cold_start_length          2.0~2.0 | 2.0~2.0 | 1.0~1.0  [ok]
+replay_equivalent          True~True | True~True | True~True  [ok]
+digest                     282e9f884ebb91d948fe5c81d09db942fdba78c7eda82bb165df21b484cbe7e3~282e9f884ebb91d948fe5c81d09db942fdba78c7eda82bb165df21b484cbe7e3 | 6cd640f042ad520752fc33fe8f80e6e913420c317d6919522c099ac20ef8564d~6cd640f042ad520752fc33fe8f80e6e913420c317d6919522c099ac20ef8564d | b30038d271f2437a44fb66cb318f6f6586d3f7dc14bc61e7089d5b1803050215~b30038d271f2437a44fb66cb318f6f6586d3f7dc14bc61e7089d5b1803050215  [ok]
+metrics_equal=true digest_equal=true ALL_EQUAL=true

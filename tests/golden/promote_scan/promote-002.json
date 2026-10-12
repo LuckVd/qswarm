@@ -1,0 +1,1759 @@
+{
+ "case_id": "promote-002",
+ "expected": {
+  "transitions": [
+   {
+    "agent_id": "auditor-01",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-01:auditor:config_dep/outdated_dep",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-01",
+    "criteria": null,
+    "exam_id": "promo:auditor-01:auditor:config_dep/outdated_dep:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "auditor-02",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-02:auditor:config_dep/secret_leak",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-02",
+    "criteria": null,
+    "exam_id": "promo:auditor-02:auditor:config_dep/secret_leak:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "exam_fail",
+    "role": "auditor",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "auditor-02",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-02:auditor:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-02",
+    "criteria": null,
+    "exam_id": "promo:auditor-02:auditor:deser/py_pickle:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "auditor-03",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-03:auditor:authz/logic_bypass",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "authz/logic_bypass",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-03",
+    "criteria": null,
+    "exam_id": "promo:auditor-03:auditor:authz/logic_bypass:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "authz/logic_bypass",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "auditor-03",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-03:auditor:mem_safety/overflow",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-03",
+    "criteria": null,
+    "exam_id": "promo:auditor-03:auditor:mem_safety/overflow:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "auditor-04",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-04:auditor:crypto",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-04",
+    "criteria": null,
+    "exam_id": "promo:auditor-04:auditor:crypto:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "auditor-04",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-04:auditor:crypto/weak_random",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto/weak_random",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-04",
+    "criteria": null,
+    "exam_id": "promo:auditor-04:auditor:crypto/weak_random:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto/weak_random",
+    "reason": "exam_fail",
+    "role": "auditor",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "auditor-05",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-05:auditor:deser",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-05",
+    "criteria": null,
+    "exam_id": "promo:auditor-05:auditor:deser:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser",
+    "reason": "exam_fail",
+    "role": "auditor",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "auditor-05",
+    "criteria": null,
+    "exam_id": "entry-retry:auditor-05:auditor:injection/xss",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "candidate",
+    "role": "auditor",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "auditor-05",
+    "criteria": null,
+    "exam_id": "promo:auditor-05:auditor:injection/xss:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "exam_pass",
+    "role": "auditor",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "reviewer-01",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-01:reviewer:authz/idor",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "authz/idor",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-01",
+    "criteria": null,
+    "exam_id": "promo:reviewer-01:reviewer:authz/idor:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "authz/idor",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:deser/java_gadget:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_pass",
+    "role": "reviewer",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:deser/py_pickle:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/cmdi",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/cmdi:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/sqli",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/sqli:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/ssrf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/ssrf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:mem_safety",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:mem_safety:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety",
+    "reason": "exam_pass",
+    "role": "reviewer",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:authz",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "authz",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:authz:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "authz",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:authz/session_fixation",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "authz/session_fixation",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:authz/session_fixation:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "authz/session_fixation",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:config_dep/misconfig",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/misconfig",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:config_dep/misconfig:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/misconfig",
+    "reason": "exam_pass",
+    "role": "reviewer",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:config_dep/secret_leak",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:config_dep/secret_leak:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:injection/xxe",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xxe",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:injection/xxe:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xxe",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-03:reviewer:mem_safety/uaf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "criteria": null,
+    "exam_id": "promo:reviewer-03:reviewer:mem_safety/uaf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-01:scout:config_dep",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "promo:scout-01:scout:config_dep:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-01:scout:config_dep/outdated_dep",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "promo:scout-01:scout:config_dep/outdated_dep:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-01:scout:config_dep/secret_leak",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "promo:scout-01:scout:config_dep/secret_leak:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-01:scout:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "promo:scout-01:scout:deser/java_gadget:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:authz/logic_bypass",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "authz/logic_bypass",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:authz/logic_bypass:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "authz/logic_bypass",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:crypto/weak_algo",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:crypto/weak_algo:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:crypto/weak_random",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto/weak_random",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:crypto/weak_random:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto/weak_random",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:deser/py_pickle:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:mem_safety/overflow",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:mem_safety/overflow:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:mem_safety/uaf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:mem_safety/uaf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-03:scout:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "promo:scout-03:scout:deser/py_pickle:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-03:scout:injection/ssrf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "promo:scout-03:scout:injection/ssrf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-03:scout:injection/xss",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-03",
+    "criteria": null,
+    "exam_id": "promo:scout-03:scout:injection/xss:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-05:scout:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "promo:scout-05:scout:deser/java_gadget:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-05:scout:injection",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "promo:scout-05:scout:injection:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-05:scout:injection/cmdi",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "promo:scout-05:scout:injection/cmdi:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-06:scout:config_dep/outdated_dep",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "promo:scout-06:scout:config_dep/outdated_dep:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/outdated_dep",
+    "reason": "exam_pass",
+    "role": "scout",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-06:scout:crypto/weak_algo",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "promo:scout-06:scout:crypto/weak_algo:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-06:scout:injection/xss",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-06",
+    "criteria": null,
+    "exam_id": "promo:scout-06:scout:injection/xss:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:config_dep/misconfig",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/misconfig",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:config_dep/misconfig:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/misconfig",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:config_dep/secret_leak",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:config_dep/secret_leak:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:crypto",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:crypto:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:crypto/weak_algo",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:crypto/weak_algo:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "crypto/weak_algo",
+    "reason": "exam_pass",
+    "role": "verifier",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:deser",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:deser:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser",
+    "reason": "exam_pass",
+    "role": "verifier",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:deser/py_pickle:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:injection/sqli",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:injection/sqli:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:injection/ssrf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:injection/ssrf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "exam_pass",
+    "role": "verifier",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:injection/xss",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:injection/xss:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xss",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:injection/xxe",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/xxe",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:injection/xxe:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/xxe",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:mem_safety/overflow",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:mem_safety/overflow:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/overflow",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-02:verifier:config_dep",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "promo:verifier-02:verifier:config_dep:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep",
+    "reason": "exam_pass",
+    "role": "verifier",
+    "to_status": "active"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-02:verifier:mem_safety/uaf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "promo:verifier-02:verifier:mem_safety/uaf:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-03",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-03:verifier:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-03",
+    "criteria": null,
+    "exam_id": "promo:verifier-03:verifier:deser/java_gadget:a2",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_pass",
+    "role": "verifier",
+    "to_status": "active"
+   }
+  ]
+ },
+ "inputs": {
+  "exam_script": [
+   {
+    "agent_id": "auditor-01",
+    "exam_id": "promo:auditor-01:auditor:config_dep/outdated_dep:a2",
+    "kind": "promo",
+    "node": "config_dep/outdated_dep",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-02",
+    "exam_id": "promo:auditor-02:auditor:config_dep/secret_leak:a2",
+    "kind": "promo",
+    "node": "config_dep/secret_leak",
+    "passed": false,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-02",
+    "exam_id": "promo:auditor-02:auditor:deser/py_pickle:a2",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-03",
+    "exam_id": "promo:auditor-03:auditor:authz/logic_bypass:a2",
+    "kind": "promo",
+    "node": "authz/logic_bypass",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-03",
+    "exam_id": "promo:auditor-03:auditor:mem_safety/overflow:a2",
+    "kind": "promo",
+    "node": "mem_safety/overflow",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-04",
+    "exam_id": "promo:auditor-04:auditor:crypto:a2",
+    "kind": "promo",
+    "node": "crypto",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-04",
+    "exam_id": "promo:auditor-04:auditor:crypto/weak_random:a2",
+    "kind": "promo",
+    "node": "crypto/weak_random",
+    "passed": false,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-05",
+    "exam_id": "promo:auditor-05:auditor:deser:a2",
+    "kind": "promo",
+    "node": "deser",
+    "passed": false,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "auditor-05",
+    "exam_id": "promo:auditor-05:auditor:injection/xss:a2",
+    "kind": "promo",
+    "node": "injection/xss",
+    "passed": true,
+    "role": "auditor"
+   },
+   {
+    "agent_id": "reviewer-01",
+    "exam_id": "promo:reviewer-01:reviewer:authz/idor:a2",
+    "kind": "promo",
+    "node": "authz/idor",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:deser/java_gadget:a2",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": true,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:deser/py_pickle:a2",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/cmdi:a2",
+    "kind": "promo",
+    "node": "injection/cmdi",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/sqli:a2",
+    "kind": "promo",
+    "node": "injection/sqli",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/ssrf:a2",
+    "kind": "promo",
+    "node": "injection/ssrf",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:mem_safety:a2",
+    "kind": "promo",
+    "node": "mem_safety",
+    "passed": true,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:authz:a2",
+    "kind": "promo",
+    "node": "authz",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:authz/session_fixation:a2",
+    "kind": "promo",
+    "node": "authz/session_fixation",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:config_dep/misconfig:a2",
+    "kind": "promo",
+    "node": "config_dep/misconfig",
+    "passed": true,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:config_dep/secret_leak:a2",
+    "kind": "promo",
+    "node": "config_dep/secret_leak",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:injection/xxe:a2",
+    "kind": "promo",
+    "node": "injection/xxe",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-03",
+    "exam_id": "promo:reviewer-03:reviewer:mem_safety/uaf:a2",
+    "kind": "promo",
+    "node": "mem_safety/uaf",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "scout-01",
+    "exam_id": "promo:scout-01:scout:config_dep:a2",
+    "kind": "promo",
+    "node": "config_dep",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-01",
+    "exam_id": "promo:scout-01:scout:config_dep/outdated_dep:a2",
+    "kind": "promo",
+    "node": "config_dep/outdated_dep",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-01",
+    "exam_id": "promo:scout-01:scout:config_dep/secret_leak:a2",
+    "kind": "promo",
+    "node": "config_dep/secret_leak",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-01",
+    "exam_id": "promo:scout-01:scout:deser/java_gadget:a2",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:authz/logic_bypass:a2",
+    "kind": "promo",
+    "node": "authz/logic_bypass",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:crypto/weak_algo:a2",
+    "kind": "promo",
+    "node": "crypto/weak_algo",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:crypto/weak_random:a2",
+    "kind": "promo",
+    "node": "crypto/weak_random",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:deser/py_pickle:a2",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:mem_safety/overflow:a2",
+    "kind": "promo",
+    "node": "mem_safety/overflow",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:mem_safety/uaf:a2",
+    "kind": "promo",
+    "node": "mem_safety/uaf",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-03",
+    "exam_id": "promo:scout-03:scout:deser/py_pickle:a2",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-03",
+    "exam_id": "promo:scout-03:scout:injection/ssrf:a2",
+    "kind": "promo",
+    "node": "injection/ssrf",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-03",
+    "exam_id": "promo:scout-03:scout:injection/xss:a2",
+    "kind": "promo",
+    "node": "injection/xss",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-05",
+    "exam_id": "promo:scout-05:scout:deser/java_gadget:a2",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-05",
+    "exam_id": "promo:scout-05:scout:injection:a2",
+    "kind": "promo",
+    "node": "injection",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-05",
+    "exam_id": "promo:scout-05:scout:injection/cmdi:a2",
+    "kind": "promo",
+    "node": "injection/cmdi",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-06",
+    "exam_id": "promo:scout-06:scout:config_dep/outdated_dep:a2",
+    "kind": "promo",
+    "node": "config_dep/outdated_dep",
+    "passed": true,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-06",
+    "exam_id": "promo:scout-06:scout:crypto/weak_algo:a2",
+    "kind": "promo",
+    "node": "crypto/weak_algo",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-06",
+    "exam_id": "promo:scout-06:scout:injection/xss:a2",
+    "kind": "promo",
+    "node": "injection/xss",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:config_dep/misconfig:a2",
+    "kind": "promo",
+    "node": "config_dep/misconfig",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:config_dep/secret_leak:a2",
+    "kind": "promo",
+    "node": "config_dep/secret_leak",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:crypto:a2",
+    "kind": "promo",
+    "node": "crypto",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:crypto/weak_algo:a2",
+    "kind": "promo",
+    "node": "crypto/weak_algo",
+    "passed": true,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:deser:a2",
+    "kind": "promo",
+    "node": "deser",
+    "passed": true,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:deser/py_pickle:a2",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:injection/sqli:a2",
+    "kind": "promo",
+    "node": "injection/sqli",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:injection/ssrf:a2",
+    "kind": "promo",
+    "node": "injection/ssrf",
+    "passed": true,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:injection/xss:a2",
+    "kind": "promo",
+    "node": "injection/xss",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:injection/xxe:a2",
+    "kind": "promo",
+    "node": "injection/xxe",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:mem_safety/overflow:a2",
+    "kind": "promo",
+    "node": "mem_safety/overflow",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-02",
+    "exam_id": "promo:verifier-02:verifier:config_dep:a2",
+    "kind": "promo",
+    "node": "config_dep",
+    "passed": true,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-02",
+    "exam_id": "promo:verifier-02:verifier:mem_safety/uaf:a2",
+    "kind": "promo",
+    "node": "mem_safety/uaf",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-03",
+    "exam_id": "promo:verifier-03:verifier:deser/java_gadget:a2",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": true,
+    "role": "verifier"
+   }
+  ],
+  "night_as_of": "2030-01-05T12:24:21Z",
+  "window_days": 7.0
+ },
+ "kind": "promote_scan",
+ "meta": {
+  "day": 4,
+  "n_transitions": 110,
+  "night_as_of": "2030-01-05T12:24:21Z",
+  "note": "expected=该夜 promote_scan 的全部状态流转（剔 seq；shadow→candidate 附四判据快照数值）；考试回调按 exam_script 脚本化（kind=promo=暗考 passed / kind=fc=周期复核 decayed），未命中格返回 None（与原轨迹回调未触发一致）",
+  "reasons": [
+   "candidate",
+   "exam_fail",
+   "exam_pass"
+  ],
+  "seed": 7,
+  "trajectory_digest": "sha256:435cb6e7e01933d5a6c2ea57dfd5dc0a88d65e2597e6a4bef9e6a9ec25c07dc2",
+  "window_days": 7.0
+ },
+ "params": {
+  "budget": {
+   "COST_PER_L2_CENTS": 5,
+   "COST_PER_S2_CENTS": 10,
+   "FAST_CENTS": 2,
+   "FULL_CENTS": 600,
+   "L2_QUOTA_CAP": 45,
+   "PR_CENTS": 100,
+   "RESCAN_WEEKLY": 0.07
+  },
+  "decay": {
+   "EPS_FLOOR": 0.5,
+   "T_HALF_DAYS": 30.0,
+   "T_HALF_DAYS_EXAM": 15.0
+  },
+  "demote": {
+   "DORMANT_DAYS": 60,
+   "FC_BASE_EXAMS": 2,
+   "FC_CONSEC": 2,
+   "FC_DAYS": 1,
+   "FC_ITEMS": 60,
+   "FC_MARGIN": 0.15,
+   "REACTIVATE_N": 5,
+   "WINDOWS": 2
+  },
+  "deposits": {
+   "REVIEWER_X": 0.5,
+   "SCOUT_X": 0.2,
+   "VERIFIER_CONFIRM": 0.25,
+   "VERIFIER_CONFLICT": 0.5
+  },
+  "exam": {
+   "COOLDOWN_DAYS": 1,
+   "ENTRY_CORROB_S2S3": 2.0,
+   "ENTRY_DIRECT": 0.3,
+   "ENTRY_GRACE_DAYS": 3,
+   "ENTRY_MARGIN": 1,
+   "ENTRY_TOP_FRAC": 0.2,
+   "ENTRY_WINDOW_DAYS": 12,
+   "PERIODIC_ITEMS": 10,
+   "PERIODIC_PASS": 0.75,
+   "PROMO_ITEMS": 5,
+   "PROMO_MIN_REJECT_FP": 1,
+   "PROMO_REAL": 3,
+   "TYPE_ENTRY": 0.3,
+   "TYPE_ENTRY_COMBINE": 0.25
+  },
+  "explore": {
+   "UNIFORM_FLOOR": 0.2
+  },
+  "panel": {
+   "MIN_FAMILIES": 2,
+   "SIZE": 3
+  },
+  "promote": {
+   "DELTA": 0.05,
+   "M": 30,
+   "M_PRORATE": true,
+   "M_window_days": 90,
+   "N": 6,
+   "N_S2S3": 3,
+   "UNIQUE_PER_FAMILY": true,
+   "WINDOW_ADVANTAGE": 2
+  },
+  "roster": {
+   "auditor": 5,
+   "reviewer": 4,
+   "scout": 6,
+   "verifier": 3
+  },
+  "shrink": {
+   "LAMBDA": 5.0
+  },
+  "tilt": {
+   "GAMMA": 1.0,
+   "T_BASE": 0.6,
+   "T_MAX": 0.9,
+   "T_MIN": 0.5
+  }
+ },
+ "slice": "night-04"
+}

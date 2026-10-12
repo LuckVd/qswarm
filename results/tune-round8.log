@@ -1,0 +1,10 @@
+[tune-round8] groups=1 units=3 seeds=[11, 22, 33] dims={'verify_error': [0.2], 'entry_direct': [0.875], 'm_prorate': [1.0], 'unique': [1.0], 'wadv': [2.0], 'N': [14.0], 'delta': [0.15], 't_base': [0.8], 'exam_wh': [0.5], 've': [0.2]}
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=3
+[experiments] chunk 1/3 done (30s)
+[experiments] chunk 2/3 done (30s)
+[experiments] chunk 3/3 done (30s)
+[tune-round8] done in 30s → results/tune-round8 (per-run max 29.8s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2      PASS FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      2      1
+
+selection: fallback=True featured=entry_direct0p875-m_prorate1-unique1-WADV2-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2 qualifies=False unmet=2 nodata=1

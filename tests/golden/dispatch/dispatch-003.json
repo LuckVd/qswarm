@@ -1,0 +1,204 @@
+{
+ "case_id": "dispatch-003",
+ "desc": "空池派单 + run 收尾过期：零存款负断言与幂等双面。",
+ "expected": {
+  "deposit_count": 0,
+  "ops": [
+   {
+    "ok": true,
+    "value": "T-R1-001"
+   },
+   {
+    "ok": true,
+    "value": {
+     "context_refs": [],
+     "deadline_s": 60,
+     "goal": "对 injection/sqli 以 auditor 职责完成本次分片",
+     "hop_budget": 1,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "injection/sqli",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "dispatch",
+     "payload": {
+      "assignee": null,
+      "hop_budget": 1,
+      "node": "injection/sqli",
+      "role": "auditor",
+      "task_id": "T-R1-001"
+     }
+    }
+   },
+   {
+    "ok": true,
+    "value": [
+     {
+      "kind": "finding",
+      "payload": {
+       "cluster": null,
+       "finding_id": "F-20260101-000001",
+       "reporter": "A-auditor-1",
+       "state": "expired"
+      }
+     },
+     {
+      "kind": "finding",
+      "payload": {
+       "cluster": null,
+       "finding_id": "F-20260101-000002",
+       "reporter": "A-auditor-1",
+       "state": "expired"
+      }
+     }
+    ]
+   },
+   {
+    "ok": true,
+    "value": []
+   }
+  ],
+  "tables": {
+   "findings": {
+    "F-20260101-000001": "expired",
+    "F-20260101-000002": "expired",
+    "F-20260101-000003": "confirmed"
+   },
+   "tasks": {
+    "T-R1-001": {
+     "assignee": null,
+     "attempts": 0,
+     "state": "failed"
+    }
+   }
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "findings": [
+   {
+    "id": "F-20260101-000001",
+    "run_id": "R1",
+    "state": "open"
+   },
+   {
+    "id": "F-20260101-000002",
+    "run_id": "R1",
+    "state": "verified"
+   },
+   {
+    "id": "F-20260101-000003",
+    "run_id": "R1",
+    "state": "confirmed"
+   }
+  ],
+  "runs": [
+   {
+    "mode": "pr",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "dispatch",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "空池派单落 assignee=null 的 DISPATCH 事件且 tasks 留 queued、attempts 不消耗；expire_run 非终态（open/verified，D19）按字典序→expired 零存款、未完任务→failed、重复收尾幂等 []。",
+  "spec_ref": "SPEC-2 §2.3（D10/D19）；SPEC-5 §1.2/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "node": "injection/sqli",
+    "role": "auditor",
+    "run_id": "R1",
+    "shard": {
+     "paths": [
+      "src/app/db.py"
+     ]
+    }
+   },
+   "op": "create_task"
+  },
+  {
+   "args": {
+    "deadline_s": 60,
+    "decision": {
+     "assignee": null,
+     "channel": "specialist",
+     "family": "injection",
+     "node": "injection/sqli",
+     "raw_tilt": null,
+     "reason": "empty_pool",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "mode": "pr"
+   },
+   "op": "build_contract"
+  },
+  {
+   "args": {
+    "contract": {
+     "context_refs": [],
+     "deadline_s": 60,
+     "goal": "对 injection/sqli 以 auditor 职责完成本次分片",
+     "hop_budget": 1,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "injection/sqli",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    },
+    "decision": {
+     "assignee": null,
+     "channel": "specialist",
+     "family": "injection",
+     "node": "injection/sqli",
+     "raw_tilt": null,
+     "reason": "empty_pool",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "task_id": "T-R1-001"
+   },
+   "op": "dispatch"
+  },
+  {
+   "args": {
+    "reason": "budget_breaker",
+    "run_id": "R1"
+   },
+   "op": "expire_run"
+  },
+  {
+   "args": {
+    "reason": "budget_breaker",
+    "run_id": "R1"
+   },
+   "op": "expire_run"
+  }
+ ]
+}

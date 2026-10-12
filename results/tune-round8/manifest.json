@@ -1,0 +1,35 @@
+{
+ "argv": [
+  "--round",
+  "8",
+  "--workers",
+  "3",
+  "--seeds",
+  "11,22,33",
+  "--n-days",
+  "30",
+  "--replay-every",
+  "10",
+  "--dims",
+  "N=14 delta=0.15 t_base=0.8 exam_wh=0.5 ve=0.2 entry_direct=0.875 m_prorate=1 unique=1 wadv=2"
+ ],
+ "mode": "tune",
+ "n_units": 3,
+ "n_rows": 3,
+ "workers": 3,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-09T13:15:48+00:00",
+ "finished_at_utc": "2026-10-09T13:16:18.533930+00:00",
+ "wall_s": 30.237693320028484,
+ "per_run_elapsed_s": {
+  "min": 28.088370356708765,
+  "median": 29.108096979092807,
+  "max": 29.80260510975495
+ },
+ "python": "3.12.3"
+}

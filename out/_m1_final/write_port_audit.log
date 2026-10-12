@@ -1,0 +1,53 @@
+写口审计（SPEC-2 §6.1/§7 · SPEC-5 §2.1 判据 2 同口径）
+  包根   : /data/Qswarm/qswarm
+  扫描   : 28 个 .py · 词表 11 表 · 动词 INSERT INTO / REPLACE INTO / UPDATE / DELETE FROM
+  写口清单（kernel/ 内 19 条，期望写口见 §6.1 表）:
+    PORT kernel/budget.py:305  UPDATE runs（期望: kernel/budget.py,kernel/dispatch.py ✓）
+    PORT kernel/cells.py:377  DELETE FROM cells（期望: kernel/cells.py ✓）
+    PORT kernel/cells.py:379  INSERT INTO cells（期望: kernel/cells.py ✓）
+    PORT kernel/cluster.py:363  INSERT INTO clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:388  INSERT INTO cluster_members（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:439  UPDATE clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:546  DELETE FROM cluster_members（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:958  UPDATE clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/dispatch.py:244  INSERT INTO runs（期望: kernel/budget.py,kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:302  INSERT INTO tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:356  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:413  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:421  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:475  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:521  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:557  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:607  INSERT INTO findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:643  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/ledger.py:291  INSERT INTO ledger（期望: kernel/ledger.py ✓）
+  违规（kernel/ 外写口）: 0 条
+WRITE-PORT AUDIT PASS
+normal EXIT=0
+写口审计（SPEC-2 §6.1/§7 · SPEC-5 §2.1 判据 2 同口径）
+  包根   : /data/Qswarm/qswarm
+  扫描   : 28 个 .py · 词表 11 表 · 动词 INSERT INTO / REPLACE INTO / UPDATE / DELETE FROM
+  写口清单（kernel/ 内 19 条，期望写口见 §6.1 表）:
+    PORT kernel/budget.py:305  UPDATE runs（期望: kernel/budget.py,kernel/dispatch.py ✓）
+    PORT kernel/cells.py:377  DELETE FROM cells（期望: kernel/cells.py ✓）
+    PORT kernel/cells.py:379  INSERT INTO cells（期望: kernel/cells.py ✓）
+    PORT kernel/cluster.py:363  INSERT INTO clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:388  INSERT INTO cluster_members（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:439  UPDATE clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:546  DELETE FROM cluster_members（期望: kernel/cluster.py ✓）
+    PORT kernel/cluster.py:958  UPDATE clusters（期望: kernel/cluster.py ✓）
+    PORT kernel/dispatch.py:244  INSERT INTO runs（期望: kernel/budget.py,kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:302  INSERT INTO tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:356  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:413  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:421  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:475  UPDATE tasks（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:521  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:557  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:607  INSERT INTO findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/dispatch.py:643  UPDATE findings（期望: kernel/dispatch.py ✓）
+    PORT kernel/ledger.py:291  INSERT INTO ledger（期望: kernel/ledger.py ✓）
+  违规（kernel/ 外写口）: 0 条
+  [strict] 清单漂移: 0 条
+WRITE-PORT AUDIT PASS
+strict EXIT=0

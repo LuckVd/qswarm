@@ -1,0 +1,214 @@
+{
+ "case_id": "dispatch-004",
+ "desc": "结论状态机：迁移表合法边全走通 + 非法边负用例（FINDING_TRANSITIONS 突变的检出面）。",
+ "expected": {
+  "deposit_count": 0,
+  "ops": [
+   {
+    "ok": true,
+    "value": {
+     "kind": "finding",
+     "payload": {
+      "cluster": null,
+      "finding_id": "F-20260101-000001",
+      "reporter": "A-auditor-1",
+      "state": "voted"
+     }
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "finding",
+     "payload": {
+      "cluster": null,
+      "finding_id": "F-20260101-000001",
+      "reporter": "A-auditor-1",
+      "state": "verified"
+     }
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "finding",
+     "payload": {
+      "cluster": null,
+      "finding_id": "F-20260101-000001",
+      "reporter": "A-auditor-1",
+      "state": "confirmed"
+     }
+    }
+   },
+   {
+    "error": "非法结论迁移：'F-20260101-000001' confirmed → expired（终态不可再流转）（§10.2 迁移表守卫 + D8 直达边）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "finding",
+     "payload": {
+      "cluster": null,
+      "finding_id": "F-20260101-000002",
+      "reporter": "A-auditor-1",
+      "state": "confirmed"
+     }
+    }
+   },
+   {
+    "error": "非法结论迁移：'F-20260101-000002' confirmed → rejected（终态不可再流转）（§10.2 迁移表守卫 + D8 直达边）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "finding",
+     "payload": {
+      "cluster": null,
+      "finding_id": "F-20260101-000003",
+      "reporter": "A-auditor-1",
+      "state": "inconclusive"
+     }
+    }
+   },
+   {
+    "error": "非法结论迁移：'F-20260101-000003' inconclusive → open（§10.2 迁移表守卫 + D8 直达边）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "error": "非法结论迁移：'F-20260101-000004' confirmed → expired（终态不可再流转）（§10.2 迁移表守卫 + D8 直达边）",
+    "error_type": "ValueError",
+    "ok": false
+   },
+   {
+    "error": "finding 不存在：'F-missing'",
+    "error_type": "ValueError",
+    "ok": false
+   }
+  ],
+  "tables": {
+   "findings": {
+    "F-20260101-000001": "confirmed",
+    "F-20260101-000002": "confirmed",
+    "F-20260101-000003": "inconclusive",
+    "F-20260101-000004": "confirmed"
+   },
+   "tasks": {}
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "findings": [
+   {
+    "id": "F-20260101-000001",
+    "run_id": "R1",
+    "state": "open"
+   },
+   {
+    "id": "F-20260101-000002",
+    "run_id": "R1",
+    "state": "open"
+   },
+   {
+    "id": "F-20260101-000003",
+    "run_id": "R1",
+    "state": "voted"
+   },
+   {
+    "id": "F-20260101-000004",
+    "run_id": "R1",
+    "state": "confirmed"
+   }
+  ],
+  "runs": [
+   {
+    "mode": "full",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "dispatch",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "§10.2 迁移表逐字 + D8 直达边：open→voted→verified→confirmed 主链、open→confirmed（S3 直达）、voted→inconclusive；非法迁移/终态再流转/未知 finding一律 ValueError 零落库；kind=finding 事件 payload.state 承载新状态，零存款。",
+  "spec_ref": "SPEC-2 §2.4/§10.2（D8/D9）；SPEC-5 §1.2/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "to_state": "voted"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "to_state": "verified"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "to_state": "confirmed"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000001",
+    "to_state": "expired"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "to_state": "confirmed"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000002",
+    "to_state": "rejected"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000003",
+    "to_state": "inconclusive"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000003",
+    "to_state": "open"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-20260101-000004",
+    "to_state": "expired"
+   },
+   "op": "transition_finding"
+  },
+  {
+   "args": {
+    "finding_id": "F-missing",
+    "to_state": "expired"
+   },
+   "op": "transition_finding"
+  }
+ ]
+}

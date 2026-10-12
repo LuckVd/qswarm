@@ -1,0 +1,368 @@
+{
+ "case_id": "promote-007",
+ "expected": {
+  "transitions": [
+   {
+    "agent_id": "auditor-02",
+    "criteria": null,
+    "exam_id": "forcause:auditor-02:auditor:deser/py_pickle:a7",
+    "from_status": "active",
+    "kind": "demotion",
+    "node": "deser/py_pickle",
+    "reason": "decay",
+    "role": "auditor",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/cmdi",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/cmdi:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/cmdi",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/sqli",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/sqli:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/sqli",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "entry-retry:reviewer-02:reviewer:injection/ssrf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "candidate",
+    "role": "reviewer",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "criteria": null,
+    "exam_id": "promo:reviewer-02:reviewer:injection/ssrf:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "injection/ssrf",
+    "reason": "exam_fail",
+    "role": "reviewer",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-01:scout:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-01",
+    "criteria": null,
+    "exam_id": "promo:scout-01:scout:deser/java_gadget:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-02:scout:deser/py_pickle",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-02",
+    "criteria": null,
+    "exam_id": "promo:scout-02:scout:deser/py_pickle:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/py_pickle",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "entry-retry:scout-05:scout:deser/java_gadget",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "candidate",
+    "role": "scout",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "scout-05",
+    "criteria": null,
+    "exam_id": "promo:scout-05:scout:deser/java_gadget:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "deser/java_gadget",
+    "reason": "exam_fail",
+    "role": "scout",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-01:verifier:config_dep/secret_leak",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-01",
+    "criteria": null,
+    "exam_id": "promo:verifier-01:verifier:config_dep/secret_leak:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "config_dep/secret_leak",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "entry-retry:verifier-02:verifier:mem_safety/uaf",
+    "from_status": "shadow",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "candidate",
+    "role": "verifier",
+    "to_status": "candidate"
+   },
+   {
+    "agent_id": "verifier-02",
+    "criteria": null,
+    "exam_id": "promo:verifier-02:verifier:mem_safety/uaf:a9",
+    "from_status": "candidate",
+    "kind": "promotion",
+    "node": "mem_safety/uaf",
+    "reason": "exam_fail",
+    "role": "verifier",
+    "to_status": "shadow"
+   }
+  ]
+ },
+ "inputs": {
+  "exam_script": [
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/cmdi:a9",
+    "kind": "promo",
+    "node": "injection/cmdi",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/sqli:a9",
+    "kind": "promo",
+    "node": "injection/sqli",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "reviewer-02",
+    "exam_id": "promo:reviewer-02:reviewer:injection/ssrf:a9",
+    "kind": "promo",
+    "node": "injection/ssrf",
+    "passed": false,
+    "role": "reviewer"
+   },
+   {
+    "agent_id": "scout-01",
+    "exam_id": "promo:scout-01:scout:deser/java_gadget:a9",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-02",
+    "exam_id": "promo:scout-02:scout:deser/py_pickle:a9",
+    "kind": "promo",
+    "node": "deser/py_pickle",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "scout-05",
+    "exam_id": "promo:scout-05:scout:deser/java_gadget:a9",
+    "kind": "promo",
+    "node": "deser/java_gadget",
+    "passed": false,
+    "role": "scout"
+   },
+   {
+    "agent_id": "verifier-01",
+    "exam_id": "promo:verifier-01:verifier:config_dep/secret_leak:a9",
+    "kind": "promo",
+    "node": "config_dep/secret_leak",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "verifier-02",
+    "exam_id": "promo:verifier-02:verifier:mem_safety/uaf:a9",
+    "kind": "promo",
+    "node": "mem_safety/uaf",
+    "passed": false,
+    "role": "verifier"
+   },
+   {
+    "agent_id": "auditor-02",
+    "decayed": true,
+    "exam_id": "forcause:auditor-02:auditor:deser/py_pickle:a7",
+    "kind": "fc",
+    "node": "deser/py_pickle",
+    "role": "auditor"
+   }
+  ],
+  "night_as_of": "2030-01-12T13:07:20Z",
+  "window_days": 7.0
+ },
+ "kind": "promote_scan",
+ "meta": {
+  "day": 11,
+  "n_transitions": 17,
+  "night_as_of": "2030-01-12T13:07:20Z",
+  "note": "expected=该夜 promote_scan 的全部状态流转（剔 seq；shadow→candidate 附四判据快照数值）；考试回调按 exam_script 脚本化（kind=promo=暗考 passed / kind=fc=周期复核 decayed），未命中格返回 None（与原轨迹回调未触发一致）",
+  "reasons": [
+   "candidate",
+   "decay",
+   "exam_fail"
+  ],
+  "seed": 7,
+  "trajectory_digest": "sha256:435cb6e7e01933d5a6c2ea57dfd5dc0a88d65e2597e6a4bef9e6a9ec25c07dc2",
+  "window_days": 7.0
+ },
+ "params": {
+  "budget": {
+   "COST_PER_L2_CENTS": 5,
+   "COST_PER_S2_CENTS": 10,
+   "FAST_CENTS": 2,
+   "FULL_CENTS": 600,
+   "L2_QUOTA_CAP": 45,
+   "PR_CENTS": 100,
+   "RESCAN_WEEKLY": 0.07
+  },
+  "decay": {
+   "EPS_FLOOR": 0.5,
+   "T_HALF_DAYS": 30.0,
+   "T_HALF_DAYS_EXAM": 15.0
+  },
+  "demote": {
+   "DORMANT_DAYS": 60,
+   "FC_BASE_EXAMS": 2,
+   "FC_CONSEC": 2,
+   "FC_DAYS": 1,
+   "FC_ITEMS": 60,
+   "FC_MARGIN": 0.15,
+   "REACTIVATE_N": 5,
+   "WINDOWS": 2
+  },
+  "deposits": {
+   "REVIEWER_X": 0.5,
+   "SCOUT_X": 0.2,
+   "VERIFIER_CONFIRM": 0.25,
+   "VERIFIER_CONFLICT": 0.5
+  },
+  "exam": {
+   "COOLDOWN_DAYS": 1,
+   "ENTRY_CORROB_S2S3": 2.0,
+   "ENTRY_DIRECT": 0.3,
+   "ENTRY_GRACE_DAYS": 3,
+   "ENTRY_MARGIN": 1,
+   "ENTRY_TOP_FRAC": 0.2,
+   "ENTRY_WINDOW_DAYS": 12,
+   "PERIODIC_ITEMS": 10,
+   "PERIODIC_PASS": 0.75,
+   "PROMO_ITEMS": 5,
+   "PROMO_MIN_REJECT_FP": 1,
+   "PROMO_REAL": 3,
+   "TYPE_ENTRY": 0.3,
+   "TYPE_ENTRY_COMBINE": 0.25
+  },
+  "explore": {
+   "UNIFORM_FLOOR": 0.2
+  },
+  "panel": {
+   "MIN_FAMILIES": 2,
+   "SIZE": 3
+  },
+  "promote": {
+   "DELTA": 0.05,
+   "M": 30,
+   "M_PRORATE": true,
+   "M_window_days": 90,
+   "N": 6,
+   "N_S2S3": 3,
+   "UNIQUE_PER_FAMILY": true,
+   "WINDOW_ADVANTAGE": 2
+  },
+  "roster": {
+   "auditor": 5,
+   "reviewer": 4,
+   "scout": 6,
+   "verifier": 3
+  },
+  "shrink": {
+   "LAMBDA": 5.0
+  },
+  "tilt": {
+   "GAMMA": 1.0,
+   "T_BASE": 0.6,
+   "T_MAX": 0.9,
+   "T_MIN": 0.5
+  }
+ },
+ "slice": "night-11"
+}

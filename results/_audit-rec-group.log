@@ -1,0 +1,9 @@
+[tune-round99] groups=1 units=3 seeds=[11, 22, 33] dims={'verify_error': [0.2], 'window': [7.0], 'N': [6.0], 'delta': [0.05], 't_base': [0.6], 'exam_wh': [0.3], 've': [0.2]}
+[experiments] 1/3 runs done (47s)
+[experiments] 2/3 runs done (49s)
+[experiments] 3/3 runs done (49s)
+[tune-round99] done in 49s → results/_audit-rec-group (per-run max 48.8s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+window7-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2      PASS      PASS      PASS      PASS      PASS      PASS      PASS      PASS      PASS      0      0
+
+selection: fallback=False featured=window7-N6-delta0p05-t_base0p6-exam_wh0p3-VE0p2 qualifies=True unmet=0 nodata=0

@@ -1,0 +1,4 @@
+experiment,arm,group_id,seed,n_days,N,DELTA,T_BASE,exam_weight_high,verify_error,reviewer_x,tilt_gamma,router,window_days,elapsed_s
+matrix,tune,window7-cooldown7-N10-delta0p15-tdrift600,11,30,10,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,7.0,26.371580437291414
+matrix,tune,window7-cooldown7-N10-delta0p15-tdrift600,22,30,10,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,7.0,24.071306008845568
+matrix,tune,window7-cooldown7-N10-delta0p15-tdrift600,33,30,10,0.15,0.7,0.3,0.2,0.5,1.0,kernel.route,7.0,26.405540148261935

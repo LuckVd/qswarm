@@ -1,0 +1,28 @@
+{
+ "argv": [
+  "--full",
+  "--workers",
+  "4",
+  "--out",
+  "results/experiments-full-ac3"
+ ],
+ "mode": "full",
+ "n_units": 507,
+ "n_rows": 507,
+ "workers": 4,
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "started_at_utc": "2026-10-09T07:11:10.545130+00:00",
+ "finished_at_utc": "2026-10-09T08:24:59.220054+00:00",
+ "wall_s": 4428.586689725053,
+ "per_run_elapsed_s": {
+  "min": 22.543724566232413,
+  "median": 32.93204188439995,
+  "max": 50.247489812318236
+ },
+ "python": "3.12.3"
+}

@@ -1,0 +1,177 @@
+{
+ "schema_version": 1,
+ "mode": "tune",
+ "grid": {
+  "verify_error": [
+   0.2
+  ],
+  "rscout": [
+   6.0
+  ],
+  "rauditor": [
+   5.0
+  ],
+  "rreviewer": [
+   4.0
+  ],
+  "rverifier": [
+   3.0
+  ],
+  "cooldown": [
+   2.0
+  ],
+  "entry_direct": [
+   0.25
+  ],
+  "entry_frac": [
+   0.2
+  ],
+  "entry_margin": [
+   1.0
+  ],
+  "type_entry": [
+   0.25
+  ],
+  "grace": [
+   3.0
+  ],
+  "corrob": [
+   1.0
+  ],
+  "quiz": [
+   32.0
+  ],
+  "fc_net": [
+   1.0
+  ],
+  "fc_days": [
+   2.0
+  ],
+  "fc_items": [
+   20.0
+  ],
+  "fc_pass": [
+   0.5
+  ],
+  "m_prorate": [
+   1.0
+  ],
+  "unique": [
+   1.0
+  ],
+  "wadv": [
+   2.0
+  ],
+  "N": [
+   10.0
+  ],
+  "delta": [
+   0.1
+  ],
+  "t_base": [
+   0.7
+  ],
+  "exam_wh": [
+   0.5
+  ],
+  "ve": [
+   0.2
+  ]
+ },
+ "seeds": [
+  11,
+  22,
+  33
+ ],
+ "n_days": 30,
+ "n_matrix_groups": 1,
+ "n_additional_runs": 0,
+ "n_units": 3,
+ "s2_reference_ve": 0.2,
+ "s2_limit": 2.0,
+ "replay_every": 10,
+ "window_days": null,
+ "rows": [
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p5-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 11,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8125,
+   "promotion_recall": 0.3904761904761905,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.08771929824561403,
+   "degradation_response": null,
+   "regret_total": 176.94641082629929,
+   "regret_per_task": 0.1119205634574948,
+   "regret_late_over_early": 0.3952619915289137,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "7a2afe8b7a77d8a461af7088ff1b4eb5e78eb3fe584d2abff87cd470be684eb9"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p5-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 22,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.9836065573770492,
+   "promotion_recall": 0.4215686274509804,
+   "median_time_to_active": 75.0,
+   "wrong_extinguish_rate": 0.04918032786885246,
+   "degradation_response": null,
+   "regret_total": 224.96090104197526,
+   "regret_per_task": 0.14466938973760468,
+   "regret_late_over_early": 0.4534596029365718,
+   "cold_start_length": 2.0,
+   "replay_equivalent": true,
+   "digest": "1b3dfccc8ac38d29dd1868a91eea6e26ebb69df58a6d47a7500d7806127675bf"
+  },
+  {
+   "experiment": "matrix",
+   "arm": "tune",
+   "group_id": "rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin1-type_entry0p25-grace3-corrob1-QUIZ32-fc_net1-fc_days2-fc_items20-fc_pass0p5-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2",
+   "seed": 33,
+   "n_days": 30,
+   "N": 10,
+   "DELTA": 0.1,
+   "T_BASE": 0.7,
+   "exam_weight_high": 0.5,
+   "verify_error": 0.2,
+   "reviewer_x": 0.5,
+   "tilt_gamma": 1.0,
+   "router": "kernel.route",
+   "window_days": 7.0,
+   "promotion_precision": 0.8461538461538461,
+   "promotion_recall": 0.4380952380952381,
+   "median_time_to_active": null,
+   "wrong_extinguish_rate": 0.03225806451612903,
+   "degradation_response": null,
+   "regret_total": 178.36701031322536,
+   "regret_per_task": 0.12051825021163876,
+   "regret_late_over_early": 0.568586711813034,
+   "cold_start_length": 1.0,
+   "replay_equivalent": true,
+   "digest": "db264d8d929c0a7e5146e02f5dcdffb5741025928b9c30b9eaab8ef1627a10f4"
+  }
+ ]
+}

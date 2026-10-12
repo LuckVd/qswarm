@@ -1,0 +1,16 @@
+{
+ "files": [
+  {
+   "name": "test_file_eps.py",
+   "sha256": "f31943bf469d0870aa1f58b328622dcf94d00c8cb98b609df5ecfc3484e218b3",
+   "size": 15541
+  },
+  {
+   "name": "EpsImagePlugin.py",
+   "sha256": "be8d0113db0f6386a2b6b1e191397948ac4f7fab9eb0148b4dfeeaa1115f3656",
+   "size": 16656
+  }
+ ],
+ "item_id": "SEED-0053",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0053/"
+}

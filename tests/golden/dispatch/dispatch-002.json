@@ -1,0 +1,175 @@
+{
+ "case_id": "dispatch-002",
+ "desc": "fast 档 hop 耗尽态契约 + 重派通道耗尽 → failed：重试上限语义与审计锚逐字。",
+ "expected": {
+  "deposit_count": 0,
+  "ops": [
+   {
+    "ok": true,
+    "value": "T-R1-001"
+   },
+   {
+    "ok": true,
+    "value": {
+     "context_refs": [],
+     "deadline_s": 30,
+     "goal": "对 crypto/aes_ecb 以 auditor 职责完成本次分片",
+     "hop_budget": 0,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "crypto/aes_ecb",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "dispatch",
+     "payload": {
+      "assignee": "A-auditor-1",
+      "hop_budget": 0,
+      "node": "crypto/aes_ecb",
+      "role": "auditor",
+      "task_id": "T-R1-001"
+     }
+    }
+   },
+   {
+    "ok": true,
+    "value": {
+     "kind": "re_dispatch",
+     "payload": {
+      "from_agent": "A-auditor-1",
+      "reason": "timeout",
+      "task_id": "T-R1-001",
+      "to_agent": "A-auditor-2"
+     }
+    }
+   },
+   {
+    "error": "任务 'T-R1-001' 重派通道已关闭：attempts=2 ≥ DISPATCH_MAX_ATTEMPTS=2（§16.7-8；tasks 置 failed，零存款）",
+    "error_type": "ValueError",
+    "ok": false
+   }
+  ],
+  "tables": {
+   "findings": {},
+   "tasks": {
+    "T-R1-001": {
+     "assignee": "A-auditor-2",
+     "attempts": 2,
+     "state": "failed"
+    }
+   }
+  }
+ },
+ "inputs": {
+  "clock": "2026-01-01T00:00:00Z",
+  "runs": [
+   {
+    "mode": "fast",
+    "run_id": "R1"
+   }
+  ]
+ },
+ "kind": "dispatch",
+ "meta": {
+  "clock": "2026-01-01T00:00:00Z",
+  "generator": "python3 scripts/freeze_golden_m1.py",
+  "origin": "spec_literal",
+  "pins": "fast 档 hop_budget=0（跳数预算天生耗尽）+ 重派通道：attempts<2 重派（attempts+1）+ RE_DISPATCH 事件；≥2 → tasks 置 failed + ValueError + 关闭审计事件（to_agent=from_agent）+ 零存款。",
+  "spec_ref": "SPEC-2 §2.2/§2.3/§16.7-8（D 关闭分支见 DECISIONS 2026-10-10 dispatch 行）；SPEC-5 §1.2/§4.3"
+ },
+ "ops": [
+  {
+   "args": {
+    "node": "crypto/aes_ecb",
+    "role": "auditor",
+    "run_id": "R1",
+    "shard": {
+     "paths": [
+      "src/crypto.py"
+     ]
+    }
+   },
+   "op": "create_task"
+  },
+  {
+   "args": {
+    "deadline_s": 30,
+    "decision": {
+     "assignee": "A-auditor-1",
+     "channel": "explore",
+     "family": "crypto",
+     "node": "crypto/aes_ecb",
+     "raw_tilt": null,
+     "reason": "no_specs",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "mode": "fast"
+   },
+   "op": "build_contract"
+  },
+  {
+   "args": {
+    "contract": {
+     "context_refs": [],
+     "deadline_s": 30,
+     "goal": "对 crypto/aes_ecb 以 auditor 职责完成本次分片",
+     "hop_budget": 0,
+     "output_schema_ref": "AuditorFinding",
+     "role": "auditor",
+     "task_bounds": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
+     "task_id": "T-R1-001",
+     "taxonomy_node": "crypto/aes_ecb",
+     "tool_bounds": [
+      "repo:ro",
+      "repomap:ro"
+     ]
+    },
+    "decision": {
+     "assignee": "A-auditor-1",
+     "channel": "explore",
+     "family": "crypto",
+     "node": "crypto/aes_ecb",
+     "raw_tilt": null,
+     "reason": "no_specs",
+     "role": "auditor",
+     "spec_c_stars": [],
+     "specs": [],
+     "task_id": "T-R1-001",
+     "tilt": null,
+     "uniform_pick": null
+    },
+    "task_id": "T-R1-001"
+   },
+   "op": "dispatch"
+  },
+  {
+   "args": {
+    "reason": "timeout",
+    "task_id": "T-R1-001",
+    "to_agent": "A-auditor-2"
+   },
+   "op": "re_dispatch"
+  },
+  {
+   "args": {
+    "reason": "timeout",
+    "task_id": "T-R1-001",
+    "to_agent": "A-auditor-3"
+   },
+   "op": "re_dispatch"
+  }
+ ]
+}

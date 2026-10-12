@@ -1,0 +1,53 @@
+{
+  "audit_id": "answers-key-audit-20261012",
+  "audited_by": "M2 接手会话（2026-10-12 下午）",
+  "scope": "交接文档 §6.2 的 29 道存疑题（22 可疑 + 7 cve_rollback）+ 全库对称风险抽查",
+  "verdict_vocab": {
+    "KEY_OK": "答案键正确：漏洞真实存在且家族标注可由代码真值推出",
+    "BROKEN_KEY": "答案键错误：快照中漏洞不存在（expected=real 不成立，decline 才是真）",
+    "BROKEN_FAMILY": "漏洞真实存在但家族键不可达：真实漏洞形态在六家族树中无归宿，标注家族无法由代码真值推出"
+  },
+  "disposition": {
+    "BROKEN_KEY": "v0.3 弃题回补；判分修正口径 = decline/suspicious=false 记对，suspicious=true 记错",
+    "BROKEN_FAMILY": "v0.3 retire（taxonomy 扩容增加 resource_exhaustion/DoS 家族后方可重新入池）；重判口径 = 从真题分母剔除"
+  },
+  "items": {
+    "SEED-0003": {"verdict": "BROKEN_KEY", "reason": "Juliet 官方 sources-sink-81 execl sink 模板空壳：action(char* data) 收污点参数但 EXECL(COMMAND_INT_PATH,COMMAND_INT_PATH,ARG1,ARG3,NULL) 从未使用 data；与官方镜像 raw 对照逐字一致（变异仅改动注释内标识符 TEMPLATE/label），bad 与 goodG2B sink 逐字相同。漏洞不存在。", "evidence": "镜像 Hufffman/Adjusted-Juliet-Test-Suite s01/..._execl_81_bad.cpp + goodG2B 对照；快照行 39"},
+    "SEED-0004": {"verdict": "BROKEN_KEY", "reason": "同上（char_environment_w32_execv_81）：EXECV(COMMAND_INT_PATH, args)，data 零使用；官方原件实证同形。", "evidence": "镜像 s03/..._environment_w32_execv_81_bad.cpp 全文取回对照"},
+    "SEED-0005": {"verdict": "BROKEN_KEY", "reason": "同族（char_file_w32_execv_81）：快照 sink 同形，data 零使用。", "evidence": "快照行 37 + 模板家族同构"},
+    "SEED-0006": {"verdict": "BROKEN_KEY", "reason": "同族（char_listen_socket_w32_spawnv_81）：_spawnv(_P_WAIT, COMMAND_INT_PATH, args)，data 零使用；官方原件实证同形（交接文档 SEED-0006 人工复核结论维持，根因改判为上游空壳而非变异破坏）。", "evidence": "镜像 s05/..._listen_socket_w32_spawnv_81_bad.cpp 全文取回对照"},
+    "SEED-0007": {"verdict": "BROKEN_KEY", "reason": "同族（wchar_t_console_execl_81）：EXECL(COMMAND_INT_PATH,COMMAND_INT_PATH,ARG1,ARG3,NULL)。", "evidence": "快照行 39"},
+    "SEED-0008": {"verdict": "BROKEN_KEY", "reason": "同族（wchar_t_file_w32_execv_81）：EXECV(COMMAND_INT_PATH, args)。", "evidence": "快照行 37"},
+    "SEED-0009": {"verdict": "BROKEN_KEY", "reason": "同族（wchar_t_listen_socket_w32_execv_81）：EXECV(COMMAND_INT_PATH, args)。", "evidence": "快照行 36-37"},
+    "SEED-0054": {"verdict": "KEY_OK", "reason": "CWE23 connect_socket_fopen：FOPEN(data,\"wb+\") 污点直入 sink 无路径校验，路径穿越漏洞存活。", "evidence": "快照 action() 体"},
+    "SEED-0055": {"verdict": "KEY_OK", "reason": "CWE23 environment_ofstream：outputFile.open((char*)data)，漏洞存活。", "evidence": "快照 action() 体"},
+    "SEED-0056": {"verdict": "KEY_OK", "reason": "CWE23 listen_socket_w32CreateFile：参数一致改名 data→vcaca70（签名与 CreateFileA 同步改名），污点链完整。", "evidence": "快照签名+sink"},
+    "SEED-0057": {"verdict": "KEY_OK", "reason": "CWE23 wchar_t_environment_ifstream：inputFile.open((char*)data)，漏洞存活。", "evidence": "快照 action() 体"},
+    "SEED-0058": {"verdict": "KEY_OK", "reason": "CWE23 wchar_t_listen_socket_open：OPEN(data,O_RDWR|O_CREAT,...)，漏洞存活。", "evidence": "快照 action() 体"},
+    "SEED-0059": {"verdict": "KEY_OK", "reason": "CWE36 connect_socket_fopen：FOPEN(data,\"wb+\")，绝对路径穿越漏洞存活。", "evidence": "快照 action() 体"},
+    "SEED-0060": {"verdict": "KEY_OK", "reason": "CWE36 environment_ofstream：outputFile.open((char*)data)，漏洞存活（注释内 file/word 改名为外观损伤）。", "evidence": "快照 action() 体"},
+    "SEED-0089": {"verdict": "KEY_OK", "reason": "CWE121：char dest[50]; strcpy(dest,data) 无界拷贝，栈溢出存活。", "evidence": "快照 action() 体"},
+    "SEED-0090": {"verdict": "KEY_OK", "reason": "CWE122/CWE193：wcscpy(data,source[10+1]) 目标无尺寸保证，堆溢出存活。", "evidence": "快照 action() 体"},
+    "SEED-0091": {"verdict": "KEY_OK", "reason": "CWE805：memcpy(data,source,100*sizeof(TwoIntsClass)) 目标可能 <100 元素，堆溢出存活。", "evidence": "快照 action() 体"},
+    "SEED-0092": {"verdict": "KEY_OK", "reason": "CWE805：wcsncpy(data,source[100],100-1) 目标无尺寸保证，存活。", "evidence": "快照 action() 体"},
+    "SEED-0093": {"verdict": "KEY_OK", "reason": "CWE131：循环写 10 int 入可能更小的 data 堆块，存活。", "evidence": "快照 action() 体"},
+    "SEED-0094": {"verdict": "KEY_OK", "reason": "CWE131：memmove(data,source,10*sizeof(int)) 目标无尺寸保证，存活。", "evidence": "快照 action() 体"},
+    "SEED-0095": {"verdict": "KEY_OK", "reason": "CWE193：memmove(data,source,strlen(source)+1) 目标无尺寸保证，存活。", "evidence": "快照 action() 体"},
+    "SEED-0096": {"verdict": "KEY_OK", "reason": "CWE805：SNPRINTF(data,100,\"%s\",source[100]) 硬编码长度与目标实际分配失配，存活。", "evidence": "快照 action() 体"},
+    "SEED-0001": {"verdict": "KEY_OK", "reason": "aiohttp formdata.add_field：parent 快照对 content_type 无 \\r/\\n 校验直接入 headers（fix 9a6ada9 补校验），CRLF 头注入真实存在；injection 家族标注成立。蜂全漏判 = 真实能力信号（题难非键坏）。", "evidence": "fix commit 9a6ada97 patch + parent_sha 39ae036 对上；快照 formdata.py add_field"},
+    "SEED-0002": {"verdict": "KEY_OK", "reason": "Pillow ImageShow WindowsViewer：parent 快照 get_command 以 f-string 插值 file 路径并 subprocess.Popen(...,shell=True)（fix 8404ea5 改 os.startfile 消除 shell），命令注入真实存在；injection 标注成立。", "evidence": "fix commit 8404ea5f patch + parent_sha 87e7883 对上；快照 ImageShow.py 130-160"},
+    "SEED-0049": {"verdict": "KEY_OK", "reason": "werkzeug safe_join：parent 快照对多段路径不做逐段 Windows 设备名检查且 altsep 检查在 isabs 之后（fix f407712 重写），Windows 设备名/穿越绕过真实存在；authz(logic_bypass) 标注成立。", "evidence": "fix commit f407712f patch + parent_sha d005985 对上；快照 security.py safe_join"},
+    "SEED-0050": {"verdict": "BROKEN_FAMILY", "reason": "FITS FitsGzipDecoder：parent 快照 gzip.decompress(self.fd.read()) 无界解压（fix 3cb854e 改限量读），解压炸弹真实存在；但资源耗尽/DoS 在六家族树（injection/deser/crypto/authz/config_dep/mem_safety{overflow,uaf}）无归宿，authz 标注无法由代码真值推出。v2 有蜂报 suspicious=true/mem_safety 被家族失配判错。", "evidence": "fix commit 3cb854e8 patch + parent_sha 2696e96 对上；缓存响应 guess_family=mem_safety"},
+    "SEED-0051": {"verdict": "BROKEN_FAMILY", "reason": "BdfFontFile/FontFile/PcfFontFile：parent 快照 BBX width/height 与 glyph 尺寸无 _decompression_bomb_check（fix 0a263e6 补），字体解压炸弹真实存在；同上家族无归宿，authz 误标。", "evidence": "fix commit 0a263e62 patch + parent_sha e3f56df 对上"},
+    "SEED-0052": {"verdict": "BROKEN_FAMILY", "reason": "GdImageFile._open：parent 快照 self._size 赋值后无 bomb check（fix f39b0ae 补），GD 解压炸弹真实存在；同上家族无归宿，authz 误标。", "evidence": "fix commit f39b0ae6 patch + parent_sha 949f081 对上"},
+    "SEED-0053": {"verdict": "BROKEN_FAMILY", "reason": "EpsImagePlugin：parent 快照 %%BeginBinary bytecount 未校验负值即 fp.seek(bytecount,SEEK_CUR)（fix 0399261 补 ValueError），负偏移回读/误析 DoS 真实存在；同上家族无归宿，authz 误标（置信略低于 0050-0052 但同类）。", "evidence": "fix commit 03992618 patch + parent_sha f1b3d8f 对上；快照 EpsImagePlugin.py 359-360"}
+  },
+  "bank_wide_findings": {
+    "juliet_injection_fp_face": "SEED-0019~0025（7 题 goodG2B 面）与 SEED-0003~0009 同属空壳 exec* 模板：代码与 real 面几乎逐字相同而标签相反。fp 键语义碰巧成立（无漏洞→decline 对），v2 判分不受影响；但同一快照两种相反标签不可并存于题库，v0.3 两面同弃（taint 校验对 bad/good 面都跑）。",
+    "syntax_damage_census": "39/39 道 juliet C(.cpp) 变异题的 if(0){/*dead*/} 插入在文件作用域（非法 C++ 语法，不可编译）；OWASP Java 题插入在类作用域且 SEED-0010 实证切开 @Override 与方法声明；python 模块级 if False: 合法。全部为外观/有效性损伤，不影响答案键，v0.3 修插入点（函数体内）。",
+    "rename_scope": "rename 按行正则替换会命中注释与字符串字面量（Filename: vac27e2.cpp、strings.vae4c64.xml、'Buffer v2abae5 Overflow'）——外观损伤，v0.3 限制替换到代码行。",
+    "owasp_spot_check": "SEED-0029(crypto weak hash)/0069(config_dep setSecure(false))/0010(injection ProcessBuilder cmdi) 抽查：sink 形态与 expected 一致；OWASP 标签源自官方 expectedresults-1.2.csv，可信度高，未发现键坏。",
+    "fp_symmetric_risk": "除 juliet injection fp 面（见上）外，其余 fp 面（CWE23/121/122 good 面、OWASP false 面）sink 形态与 real 面一致、标签语义成立；四类变异均不引入新漏洞（rename 全局一致、reorder 仅交换同缩进独立声明语句、dead_code 惰性块、restructure 仅注释横幅）——对称风险低。"
+  },
+  "totals": {"KEY_OK": 18, "BROKEN_KEY": 7, "BROKEN_FAMILY": 4, "audited": 29}
+}

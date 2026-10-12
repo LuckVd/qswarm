@@ -1,0 +1,10 @@
+[tune-round28] groups=1 units=3 seeds=[11, 22, 33] dims={'verify_error': [0.2], 'rscout': [6.0], 'rauditor': [5.0], 'rreviewer': [4.0], 'rverifier': [3.0], 'cooldown': [2.0], 'entry_direct': [0.25], 'entry_frac': [0.2], 'entry_margin': [0.0], 'type_entry': [0.25], 'grace': [3.0], 'corrob': [1.0], 'quiz': [32.0], 'fc_days': [2.0], 'fc_items': [60.0], 'fc_margin': [0.18], 'fc_consec': [2.0], 'fc_base': [2.0], 'm_prorate': [1.0], 'unique': [1.0], 'wadv': [2.0], 'N': [10.0], 'delta': [0.1], 't_base': [0.7], 'exam_wh': [0.5], 've': [0.2]}
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=3
+[experiments] chunk 1/3 done (32s)
+[experiments] chunk 2/3 done (32s)
+[experiments] chunk 3/3 done (32s)
+[tune-round28] done in 32s → results/_scan-z4 (per-run max 31.2s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin0-type_entry0p25-grace3-corrob1-QUIZ32-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2 FAIL(0.02 FAIL(0.33      PASS      PASS FAIL(0.16      PASS      PASS      PASS      PASS      3      0
+
+selection: fallback=True featured=rscout6-rauditor5-rreviewer4-rverifier3-cooldown2-entry_direct0p25-entry_frac0p2-entry_margin0-type_entry0p25-grace3-corrob1-QUIZ32-fc_days2-fc_items60-fc_margin0p18-fc_consec2-fc_base2-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2 qualifies=False unmet=3 nodata=0

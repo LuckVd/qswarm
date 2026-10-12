@@ -1,0 +1,2 @@
+group_id,n_seeds,promotion_precision,promotion_recall,median_time_to_active,wrong_extinguish_rate,degradation_response,regret_narrowing,cold_start_length,s2_starvation,replay_equivalent,n_unmet,n_nodata,regret_ratio
+rscout12-rauditor10-rreviewer8-rverifier6-cooldown2-entry_direct0p3-entry_frac0p2-type_entry0p3-grace5-corrob1-QUIZ12-fc_net1-fc_days2-fc_items20-fc_pass0p55-m_prorate1-unique1-WADV2-N10-delta0p1-t_base0p7-exam_wh0p5-VE0p2,3,FAIL(0.0509),FAIL(0.5922),FAIL(0.2025),FAIL(0.0133),FAIL(1.3850),PASS,PASS,PASS,PASS,5,0,0.5817901307303038

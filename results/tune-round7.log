@@ -1,0 +1,22 @@
+[tune-round7] groups=12 units=36 seeds=[11, 22, 33] dims={'verify_error': [0.2, 0.35, 0.5], 'entry_direct': [0.875], 'm_prorate': [1.0], 'unique': [1.0], 'N': [14.0], 'delta': [0.15], 't_base': [0.6, 0.8], 'exam_wh': [0.3, 0.5], 've': [0.2, 0.35, 0.5]}
+[experiments] ProcessPool 不可用（受限沙箱），降级 subprocess 分块执行 workers=4
+[experiments] chunk 1/4 done (290s)
+[experiments] chunk 2/4 done (293s)
+[experiments] chunk 3/4 done (293s)
+[experiments] chunk 4/4 done (293s)
+[tune-round7] done in 293s → results/tune-round7 (per-run max 34.0s)
+group_id                           promotion promotion median_ti wrong_ext degradati regret_na cold_star s2_starva replay_eq  unmet nodata
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p2      PASS FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      2      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p35      PASS FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      2      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p5      PASS FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      2      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p2 FAIL(0.07 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p35 FAIL(0.07 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p3-VE0p5 FAIL(0.07 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p2 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p35 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p6-exam_wh0p5-VE0p5 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p2 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p35 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p3-VE0p5 FAIL(0.03 FAIL(0.92      PASS      PASS    NODATA      PASS      PASS      PASS      PASS      3      1
+
+selection: fallback=True featured=entry_direct0p875-m_prorate1-unique1-N14-delta0p15-t_base0p8-exam_wh0p5-VE0p35 qualifies=False unmet=2 nodata=1

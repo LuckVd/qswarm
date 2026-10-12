@@ -1,0 +1,11 @@
+{
+ "files": [
+  {
+   "name": "FitsImagePlugin.py",
+   "sha256": "37545714eab44a1c5ad3b2f80e7bb93e55c3b941f2bfc4195f3dfad04d915f4a",
+   "size": 4676
+  }
+ ],
+ "item_id": "SEED-0050",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0050/"
+}

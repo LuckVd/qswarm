@@ -1,0 +1,29 @@
+
+========================================================================
+ac_muz07uljujh70qbj  同世界同种子闭环：两臂完整跑通 + 可比 regret 曲线
+========================================================================
+router 回显：default=kernel.route  thompson=route_thompson
+任务流：n=768（两臂同一条：True）
+default 臂通道分布：{'explore': 740, 'specialist': 28}  active 格收尾=14
+thompson 臂通道分布：{'thompson': 768}  active 格收尾=12
+  default 臂 regret：终点累计=181.5428  终点均值=0.236384  逐点 gap∈[0.2326, 0.8362]  累计单调不减=True
+ thompson 臂 regret：终点累计=177.0003  终点均值=0.230469  逐点 gap∈[0.2326, 0.8408]  累计单调不减=True
+真对照：逐任务派单不同 611/768；曲线逐点不同=True
+regret 曲线落盘：/data/Qswarm/results/route_thompson/regret_curves.csv（1536 行 = 2 臂 × 768 任务）
+
+========================================================================
+ac_muz07uljcftzax0l  默认 route() 行为不受影响（黄金手算复算一致）
+========================================================================
+静态：qswarm/kernel/route.py 全文无 thompson 痕迹（TS 臂只经 engine.router 注入点换臂，默认臂代码路径不变）
+手算 C*(a)=35101/41472=0.846378279  raw=0.70+C*−1.0=0.546378279321
+实现  tilt=0.5463782793209876 raw_tilt=0.5463782793209876 assignee='a' channel=specialist
+行为：黄金 tilt 数值/专员集合/派单结果与 Fraction 手算逐位一致（全量黄金用例由 tests/test_kernel_route.py 在门禁背书）
+
+========================================================================
+ac_muz07ulj0r1nfq6g  TS 采样经注入 RNG 可复现（同种子逐位一致）
+========================================================================
+单元级：同种子(20260929) 300 任务两遍决策序列逐位一致=True；异种子(77)不同=True；覆盖 agent 数=3
+空池：决策 assignee=None reason=empty_pool，rng.getstate() 逐位未动=True
+引擎级：TS 臂同种子重跑 digest 一致=True（sha256=fcf17dd13e29bf72…）；默认臂 digest 不同=True
+
+ALL ROUTE-THOMPSON ACCEPTANCE DEMOS PASSED
