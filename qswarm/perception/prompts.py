@@ -49,11 +49,12 @@ class L0Block:
     content: str
 
 
-def render_l0_scan(blocks: list[L0Block]) -> list[Message]:
+def render_l0_scan(blocks: list[L0Block], *, contract=None) -> list[Message]:
     """通道 B 装配：返回 [system, user]（+ 注入嫌疑通告）Message 列表。
 
     - system = L0_SCAN_SYSTEM + INJECTION_GUARD（防线段单一源复用）；
-    - user = 分片头行 + 每块按 UNTRUSTED_BLOCK 渲染（块序 = 传入序）；
+    - user = 任务头行（contract 给定时含 task_id/goal，D26 派单语义）+ 分片数 +
+      每块按 UNTRUSTED_BLOCK 渲染（块序 = 传入序）；
     - 任一块内容命中伪造分隔符模式 → 附加第三条 system 通告（与 prompts.render
       同口径；检测逻辑本地实现以维持 perception 不反向依赖 prompts.render 的
       渲染内部——模式两式与 prompts.templates 语义逐字一致）。"""
@@ -61,7 +62,11 @@ def render_l0_scan(blocks: list[L0Block]) -> list[Message]:
 
     suspect_re = re.compile(r"^<<<UNTRUSTED_DATA(.*)?$|^<<<UNTRUSTED_DATA end>>>$", re.MULTILINE)
     system = L0_SCAN_SYSTEM + "\n\n" + INJECTION_GUARD
-    header = f"shards: {len(blocks)}"
+    header_lines = [f"shards: {len(blocks)}"]
+    if contract is not None:
+        header_lines.insert(0, f"task_id: {contract.task_id}")
+        header_lines.insert(1, f"goal: {contract.goal}")
+    header = "\n".join(header_lines)
     rendered = "\n\n".join(
         Template(UNTRUSTED_BLOCK).substitute(ref=b.ref, content=b.content)
         for b in blocks

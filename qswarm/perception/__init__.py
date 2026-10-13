@@ -19,9 +19,12 @@ from .candidates import (
 )
 from .channels import (
     L0_CHANNEL_PREFIX,
+    L0_DEADLINE_S,
+    L0_TASK_BOUNDS,
     ChannelBFailure,
     RulesOutcome,
     Shard,
+    build_l0_contract,
     build_model_shards,
     channel_a_candidates,
     channel_b_scan,
@@ -57,9 +60,12 @@ __all__ = [
     "index_repo",
     # channels（§1.2–1.4 三通道）
     "L0_CHANNEL_PREFIX",
+    "L0_DEADLINE_S",
+    "L0_TASK_BOUNDS",
     "Shard",
     "ChannelBFailure",
     "RulesOutcome",
+    "build_l0_contract",
     "channel_a_candidates",
     "channel_b_scan",
     "channel_c_scan",

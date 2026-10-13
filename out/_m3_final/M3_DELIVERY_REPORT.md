@@ -50,7 +50,7 @@
 | test_candidate_id_content_addressed | 同上 | ✅ |
 | test_channel_a_tier1_callpoints | tests/test_perception_indexer.py | ✅ |
 | test_channel_a_no_grammar_absent | 同上 | ✅ |
-| test_channel_b_scout_identity | tests/test_kernel_loop_m3.py（l0scan 调用面 + 零存款断言）+ test_perception_channels.py | ✅ |
+| test_channel_b_scout_identity | tests/test_kernel_loop_m3.py（l0scan 调用面 + 零存款断言 + 分片工件 producer=agent_id 归属）+ test_perception_channels.py（contract 装配 + 任务头渲染） | ✅ |
 | test_channel_b_schema_fail_retry_once | tests/test_perception_channels.py | ✅ |
 | test_channel_c_mandatory_gate（D30） | tests/test_perception_rules_gate.py（**真 semgrep 子进程实跑**） | ✅ |
 | test_channel_c_runtime_timeout_absent | tests/test_perception_channels.py | ✅ |
@@ -102,7 +102,7 @@
 | 编号 | 落位 |
 |---|---|
 | D25 探测式分级 | `indexer.probe_languages`：发行版名机械反推 + import 探测，不硬编码清单；本环境实测六门 tier-1（python/js/go/java/c/c++）全可用；无 grammar → parse_ok=False 通道 A 缺席计数 |
-| D26 侦察蜂兼任 | 通道 B 经 build_contract(role=scout, task_id=`l0scan:`) + temp 池选蜂；零存款（D 组断言账本零 deposit）；工件 producer 归属 |
+| D26 侦察蜂兼任 | 通道 B 经 DispatchContract 直接装配（role=scout、task_id=`l0scan:<shard>`、goal 逐字、output_schema_ref=l0_candidates）+ temp 池选蜂 + 任务头渲染；零存款（D 组断言账本零 deposit）；有产出分片以 producer=agent_id 落独立工件 + 报告 channel_b_by_agent 归属计数 |
 | D27 候选内容寻址 | Candidate.candidate_id = blake2b(path, span, kind, clue) 16B hex；工件 `l0_candidates`；账本零直写 |
 | D28 新建空账本导入 | bootstrap.init_prod_ledger：空 schema + 一次性幂等导入；种子库 mode=ro 只读；src_seq 溯源；verify_ready fail-closed |
 | D29 verifier 预裁决单 | M3 纸面阶段 verifier 考试无沙箱执行（纸面卷 + CONFIRMED/REFUTED/INCONCLUSIVE 判分）；生产面 S2 预裁决单随 M4 簇消费 |
@@ -131,15 +131,16 @@ test_params_perception_section_optional_with_spec_defaults。
    通道 A 对识别不到调用节点的语言只剩标识符档（缺席语义显式计数，不静默）。
 2. **通道 A 词表全等匹配**：v1 clues 为全等匹配（不做子串猜测），漏报面由通道
    B/C 兜底；词表允许扩充不收缩（clues.py 模块头纪律）。
-3. **semgrep 可用性**：本环境装通（1.180.0，官方 PyPI；腾讯镜像源无此包——安装
+3. **D26 归属口径（提交后复核补全，2026-10-12）**：分片级空产出不落工件（内容寻址库不留空壳），归属以报告 channel_b_by_agent 计数恒记、有产出分片独立工件 producer 署名；通道 B 派单契约经 DispatchContract 直接装配（build_contract 角色表硬编码不适用于直扫产出）并随任务头渲染可审计；
+4. **semgrep 可用性**：本环境装通（1.180.0，官方 PyPI；腾讯镜像源无此包——安装
    需 `--index-url https://pypi.org/simple`）。规则包 v1 为模式级 sink 命中，
    误报由 L1 消费（命中仅提升优先级，不是准入条件）。
-4. **L1 上下文窗**：候选块注入 span ±20 行（L1_CONTEXT_LINES）——侦察面够定位，
+5. **L1 上下文窗**：候选块注入 span ±20 行（L1_CONTEXT_LINES）——侦察面够定位，
    M4 L2 深挖面（repo map 切片）再扩展。
-5. **run 级幂等边界**：同 run 同仓库重跑收敛（任务 id 派生 + 存在性跳过）；crash
+6. **run 级幂等边界**：同 run 同仓库重跑收敛（任务 id 派生 + 存在性跳过）；crash
    后部分完成 run 的续跑按「已 done 跳过、其余重派」收敛（queued/dispatched 残留
    行的精细恢复未做——v1 无此场景，发生时人工介入）。
-6. **E 组在线补播考未执行**（待负责人放行，§2.E 命令就绪）。
+7. **E 组在线补播考未执行**（待负责人放行，§2.E 命令就绪）。
 
 ## 6. 遗留与下一步（M4 输入面）
 

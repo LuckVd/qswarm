@@ -52,6 +52,7 @@ class ScanReport:
     channel_a_absent_langs: list[str] = field(default_factory=list)
     model_channel_fail: list[dict] = field(default_factory=list)
     rule_channel_skipped: str | None = None
+    channel_b_by_agent: dict[str, int] = field(default_factory=dict)  # D26 候选归属计数
     artifact_ref: str | None = None          # l0_candidates 工件 sha256（可选）
 
     def to_dict(self) -> dict:
@@ -70,6 +71,7 @@ class ScanReport:
             "channel_a_absent_langs": list(self.channel_a_absent_langs),
             "model_channel_fail": list(self.model_channel_fail),
             "rule_channel_skipped": self.rule_channel_skipped,
+            "channel_b_by_agent": dict(self.channel_b_by_agent),
             "artifact_ref": self.artifact_ref,
         }
 
@@ -243,12 +245,16 @@ def scan_repo(
         )
         report.shard_count = len(shards)
         picker = scout_picker or default_scout_picker(scouts)
-        b_out = _run_channel_b(shards, adapter=adapter, picker=picker)
+        b_out = _run_channel_b(
+            shards, adapter=adapter, picker=picker,
+            ledger=ledger, store_dir=store_dir,
+        )
         report.channel_b_count = len(b_out[0])
         report.model_channel_fail = [
             {"shard_id": f.shard_id, "agent_id": f.agent_id, "reason": f.reason}
             for f in b_out[1]
         ]
+        report.channel_b_by_agent = b_out[2]
 
     # 归并 + 档位裁剪。
     merged = merge_candidates([*a_raw, *(c_out.candidates if c_out and c_out.candidates else [])])
@@ -279,14 +285,28 @@ def scan_repo(
     return report
 
 
-def _run_channel_b(shards: list[Shard], *, adapter, picker):
-    """按 picker 逐片执行通道 B（返回 (candidates, failures)）。"""
+def _run_channel_b(shards: list[Shard], *, adapter, picker, ledger=None, store_dir=None):
+    """按 picker 逐片执行通道 B（返回 (candidates, failures, by_agent 计数)）。
+
+    D26 归属落位：每分片产出经 ``artifact_put(producer=agent_id)`` 落独立
+    l0_candidates 工件（写蜂的工件区语义——空产出分片不落工件，归属计数恒记）。"""
     from .channels import ChannelBOutcome
 
     outcome = ChannelBOutcome()
+    by_agent: dict[str, int] = {}
     for idx, shard in enumerate(shards):
         model_ref, agent_id = picker(shard.shard_id, idx)
         part = channel_b_scan([shard], adapter=adapter, model_ref=model_ref, agent_id=agent_id)
         outcome.candidates.extend(part.candidates)
         outcome.failures.extend(part.failures)
-    return outcome.candidates, outcome.failures
+        by_agent[agent_id] = by_agent.get(agent_id, 0) + len(part.candidates)
+        if ledger is not None and store_dir is not None and part.candidates:
+            from qswarm.exams.store import artifact_put
+            from qswarm.perception.candidates import candidates_to_json
+
+            artifact_put(
+                ledger, Path(store_dir),
+                candidates_to_json(part.candidates).encode("utf-8"),
+                mime="application/json", kind="l0_candidates", producer=agent_id,
+            )
+    return outcome.candidates, outcome.failures, by_agent

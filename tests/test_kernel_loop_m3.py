@@ -176,7 +176,20 @@ def test_e2e_fast_lane(tmp_path):
     init_prod_ledger(tmp_path / "prod.db", seed_db_path=seed_db, clock=FixedClock(m3_harness.T0))
     repo = m3_harness.make_repo(tmp_path / "repo")
     params = load_params()                                 # 通道 B 开（全通道 e2e）
-    adapter = ScriptedScoutAdapter()
+
+    def _l0_script(ref: str):
+        """api.py 分片产出一条 B 候选（D26 归属断言的产出面）。"""
+        if ref.startswith("src/api.py"):
+            return json.dumps(
+                {"candidates": [
+                    {"path": "src/api.py", "start_line": 5, "end_line": 6,
+                     "kind": "model_flag", "family_hint": "injection",
+                     "reason": "直扫命中系统调用"},
+                ]}
+            )
+        return None
+
+    adapter = ScriptedScoutAdapter(l0_script=_l0_script)
     with KernelLedger(tmp / "prod.db", clock=FixedClock(m3_harness.T0)) as led:
         report = run_scan(
             led, repo_root=repo, mode="full", run_id="R-E2E",
@@ -199,6 +212,18 @@ def test_e2e_fast_lane(tmp_path):
             if e.payload.get("origin") == "exam" and e.run_id == "R-E2E"
         ]
         assert b_deposits == []                            # 账本零 deposit（B/L0）
+        # D26 候选工件按蜂归属：有产出的分片以 producer=agent_id 落独立
+        # l0_candidates 工件；报告 channel_b_by_agent 计数与工件署名一致
+        producers_b = {
+            p for (p,) in led.conn.execute(
+                "SELECT DISTINCT producer FROM artifacts WHERE kind = 'l0_candidates'"
+            )
+            if p != "perception"                           # perception = 归并集工件
+        }
+        by_agent = report.scan["channel_b_by_agent"]
+        expected_agents = {a for a, n in by_agent.items() if n > 0}
+        assert expected_agents and expected_agents <= producers_b
+        assert sum(by_agent.values()) == scan["counts"]["channel_b"] >= 1
         # 工件库：候选集工件在位
         ref = scan["artifact_ref"]
         assert (tmp / "store" / ref[:2] / ref).exists()

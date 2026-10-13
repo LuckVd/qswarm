@@ -15,6 +15,7 @@ import pytest
 from qswarm.perception.channels import (
     L0_CHANNEL_PREFIX,
     Shard,
+    build_l0_contract,
     build_model_shards,
     channel_a_candidates,
     channel_b_scan,
@@ -79,6 +80,41 @@ def test_channel_b_scout_identity_and_success():
     assert c.channels == frozenset({"B"}) and c.kind == "model_flag"
     assert c.taxonomy_hint == "injection" and len(c.clue) <= 200
     assert L0_CHANNEL_PREFIX == "l0scan:"            # 与 L1 l1: 前缀严格区分
+
+
+def test_channel_b_contract_assembly():
+    """§1.3 派单契约装配（D26）：task_id=`l0scan:<shard>`、role=scout、goal 逐字、
+    任务头行随渲染（task_id/goal 进 user 消息头，派单语义可审计）。"""
+    from qswarm.contracts import Role
+
+    shard = _one_shard()[0]
+    contract = build_l0_contract(shard)
+    assert contract.task_id == f"l0scan:{shard.shard_id}"
+    assert contract.role == Role.SCOUT
+    assert contract.goal == "L0 直扫：结构候选收集"
+    assert contract.task_bounds.startswith("只做结构级扫描与候选收集")
+    assert contract.output_schema_ref == "l0_candidates"   # 产出=候选工件（自描述）
+    assert contract.context_refs == [shard.blocks[0].ref]
+    assert contract.hop_budget == 0
+
+    class _Capture(_Scripted):
+        def __init__(self, responses):
+            super().__init__(responses)
+            self.seen_messages = []
+
+        def complete(self, *, model_ref, messages, temperature, timeout_s=None):
+            self.seen_messages.append(list(messages))
+            return super().complete(model_ref=model_ref, messages=messages,
+                                    temperature=temperature, timeout_s=timeout_s)
+
+    adapter = _Capture([json.dumps({"candidates": []})])
+    channel_b_scan(_one_shard(), adapter=adapter,
+                   model_ref="cheap:x/y@cv1", agent_id="A1@cv1")
+    user_head = adapter.seen_messages[0][1].content.splitlines()[:2]
+    assert user_head == [
+        f"task_id: l0scan:{shard.shard_id}",
+        "goal: L0 直扫：结构候选收集",
+    ]
 
 
 def test_channel_b_schema_fail_retry_once_then_absent():

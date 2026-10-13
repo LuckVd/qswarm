@@ -23,6 +23,8 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from qswarm.contracts import DispatchContract, Role
+from qswarm.kernel.dispatch import ROLE_TOOL_BOUNDS
 from qswarm.prompts import EXAM_TEMPERATURE, SchemaRejected, extract_json
 
 from .candidates import CANDIDATE_KINDS, Candidate
@@ -31,8 +33,12 @@ from .prompts import L0Block, render_l0_scan
 
 __all__ = [
     "L0_CHANNEL_PREFIX",
+    "L0_DEADLINE_S",
+    "L0_TASK_BOUNDS",
+    "build_l0_contract",
     "ChannelBFailure",
     "RulesOutcome",
+    "Shard",
     "build_model_shards",
     "channel_a_candidates",
     "channel_b_scan",
@@ -44,8 +50,38 @@ __all__ = [
 #: 通道 B 任务 id 前缀（D26：与 L1 任务 ``l1:`` 严格区分，防两类工时混账）。
 L0_CHANNEL_PREFIX = "l0scan:"
 
+#: 通道 B 调用 deadline（任务头行渲染值；与考试面 EXAM_DEADLINE_S 同量级的
+#: 模块常量，不进 params——extra=forbid 纪律）。
+L0_DEADLINE_S = 600
+
+#: 通道 B 任务边界（④ 段：直扫语义，与 scout 生产任务边界刻意区分）。
+L0_TASK_BOUNDS = "只做结构级扫描与候选收集；不做深挖、不下漏洞结论、不产 finding。"
+
 #: 模型候选 kind 词表（rule_hit 为通道 C 专属；模型产出该 kind 视为越表丢弃）。
 _MODEL_KINDS = CANDIDATE_KINDS - {"rule_hit"}
+
+
+def build_l0_contract(shard: Shard) -> DispatchContract:
+    """通道 B 派单契约装配（§1.3 逐字四字段：role=scout、task_id=`l0scan:<shard>`、
+    goal=「L0 直扫：结构候选收集」）。
+
+    - **直接构造 DispatchContract** 而非 build_contract：后者的 ② output_schema_ref
+      硬编码 ROLE_OUTPUT_SCHEMA[role]="ScoutReport"，而 L0 直扫产出是候选列表
+      （工件 kind=l0_candidates 自描述），角色表硬编码不适用（DECISIONS M3-1 修订
+      口径）；契约只承载派单语义（渲染头 + 审计锚），不入 tasks 状态机（M3-1）；
+    - tool_bounds 沿 scout 权限边界（repo:ro）；task_bounds = L0 直扫专属措辞。"""
+    return DispatchContract(
+        task_id=f"{L0_CHANNEL_PREFIX}{shard.shard_id}",
+        role=Role.SCOUT,
+        goal="L0 直扫：结构候选收集",
+        output_schema_ref="l0_candidates",
+        tool_bounds=list(ROLE_TOOL_BOUNDS["scout"]),
+        task_bounds=L0_TASK_BOUNDS,
+        context_refs=[b.ref for b in shard.blocks],
+        taxonomy_node="",
+        hop_budget=0,
+        deadline_s=L0_DEADLINE_S,
+    )
 
 
 # ── 通道 A：结构（index × clues）─────────────────────────────────
@@ -209,14 +245,16 @@ def channel_b_scan(
 ) -> ChannelBOutcome:
     """执行通道 B 直扫（D26：侦察蜂身份、零存款、失败重试 1 次后分片缺席）。
 
-    - 任务契约形态（审计锚）：task_id=``l0scan:<shard_id>``（本模块零账本触达，
-      contract 仅作工时区分语义随报告/工件承载——见 SPEC-7 §1.3 与 DECISIONS
-      M3 实现期行）；
+    - 每分片装配 DispatchContract（:func:`build_l0_contract`，task_id=
+      ``l0scan:<shard_id>``）并随任务头渲染（派单语义可审计）；零账本触达——
+      审计锚 = 工件 producer 字段（调用方按 agent 落 l0_candidates 分片工件）
+      + 扫描报告计数（含 model_channel_fail 归属蜂 id）；
     - SchemaRejected / AdapterError → 重试 1 次；仍败 → ChannelBFailure（该分片
       通道 B 缺席），不抛错。"""
     outcome = ChannelBOutcome(shard_count=len(shards))
     for shard in shards:
-        messages = render_l0_scan(list(shard.blocks))
+        contract = build_l0_contract(shard)
+        messages = render_l0_scan(list(shard.blocks), contract=contract)
         raw: str | None = None
         last_error = ""
         for _attempt in (1, 2):                  # §1.3：重试 1 次
