@@ -88,8 +88,7 @@
 ### E 组：补播执行（在线部分待负责人）
 - 离线判分链路全绿（`test_seed_entry_reviewer_verifier_e2e`：2 蜂 × 5 家族 = 10 格
   存款、QC 1.0 转 active、DepositPayload 与 auditor 同形）；
-- **在线入职考一轮未执行**（需 `QSWARM_KEY_ZHIPU` + 负责人放行；models.zhipu.yaml
-  mid=glm-5.1 / engineering=glm-5.3 已就位）。执行命令：
+- **在线入职考一轮未执行，且负责人已裁决推迟**（2026-10-12：非 M3 门禁项，绑定为 **M4 生产联调前置件**——评审团/预裁决单需真实 reviewer/verifier 蜂时再跑；名册拍板 glm-5.3/glm-5.3，models.zhipu.yaml mid 档已改，5.1 弃用）。执行命令（届时）：
   ```bash
   QSWARM_KEY_ZHIPU="$(cat .zhipu_key)" python3 -m qswarm.exams.seeding \
     --bank seeds/bank.yaml --models configs/models.zhipu.yaml \

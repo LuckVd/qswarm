@@ -20,7 +20,9 @@ tiers:
     fallbacks:
       - {provider: zhipu, model: glm-5, api_key_env: QSWARM_KEY_ZHIPU}
   mid:
-    primary:   {provider: zhipu, model: glm-5.1, api_key_env: QSWARM_KEY_ZHIPU}
+    # glm-5.1 非真实服务模型（负责人 2026-10-12 澄清：请求名皆映射 glm-5.3），
+    # mid 档直书 glm-5.3——与 engineering 同真实能力、agent_id 以档位前缀区分。
+    primary:   {provider: zhipu, model: glm-5.3, api_key_env: QSWARM_KEY_ZHIPU}
   engineering:
     primary:   {provider: zhipu, model: glm-5.3, api_key_env: QSWARM_KEY_ZHIPU}
 
