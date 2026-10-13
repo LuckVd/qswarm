@@ -76,10 +76,12 @@ class IndexEntry:
     path: str
     lang: str
     calls: tuple[tuple[str, int, tuple[tuple[str, str], ...]], ...]
-    # ^ (被调名, 1-based 行, 命中[(family, kind), ...])
+    # ^ (被调名, 1-based 行, 命中[(family, kind), ...])——线索词表命中面（通道 A）
     idents: tuple[tuple[str, int, tuple[tuple[str, str], ...]], ...]
     defs: tuple[tuple[str, int, int], ...]        # (函数名, 起行, 止行)
-    parse_ok: bool                                # 无 grammar/解析失败 = False
+    all_calls: tuple[tuple[str, int], ...] = ()   # 全量调用点名（M4/D37 repo map
+    #   名称绑定图地基；缺省 () 保 M3 缓存 JSON 向后兼容——from_json 容缺失）
+    parse_ok: bool = True                         # 无 grammar/解析失败 = False
 
     def to_json(self) -> str:
         return json.dumps(
@@ -89,6 +91,7 @@ class IndexEntry:
                 "calls": [list(c) for c in self.calls],
                 "idents": [list(i) for i in self.idents],
                 "defs": [list(d) for d in self.defs],
+                "all_calls": [list(c) for c in self.all_calls],
                 "parse_ok": self.parse_ok,
             },
             ensure_ascii=False, sort_keys=True,
@@ -109,7 +112,10 @@ class IndexEntry:
                 for name, line, hits in data["idents"]
             ),
             defs=tuple((str(n), int(a), int(b)) for n, a, b in data["defs"]),
-            parse_ok=bool(data["parse_ok"]),
+            all_calls=tuple(
+                (str(n), int(line)) for n, line in data.get("all_calls", ())
+            ),
+            parse_ok=bool(data.get("parse_ok", True)),
         )
 
 
@@ -177,13 +183,10 @@ def lang_for_path(path: str) -> str | None:
 
 # ── 解析与线索匹配 ────────────────────────────────────────────────
 
-def _call_name_hits(node) -> tuple[str, tuple[tuple[str, str], ...]] | None:
-    """调用节点 → (匹配名, 命中)：尾段标识符与分隔符归一全名两档匹配（取先命中）。
+def _call_func_name(node) -> str | None:
+    """调用节点 → 被调名文本（无词表过滤；M4/D37 全量调用点名面）。
 
-    - 尾段：``os.system`` → ``system``（命中 sinks 词表短名）；
-    - 全名归一：分隔符 ::/->/./: → ``_``：``pickle.loads`` → ``pickle_loads``
-      （命中 serialization 词表复合名）；
-    - 两档皆不命中 → None。"""
+    function/name 字段优先，兜底首个标识符/属性类子节点；取不出 → None。"""
     func = node.child_by_field_name("function") or node.child_by_field_name("name")
     if func is None:
         for child in node.children:
@@ -194,7 +197,18 @@ def _call_name_hits(node) -> tuple[str, tuple[tuple[str, str], ...]] | None:
     if func is None:
         return None
     text = (func.text or b"").decode("utf-8", "replace").strip("()[] \t\r\n")
-    if not text:
+    return text or None
+
+
+def _call_name_hits(node) -> tuple[str, tuple[tuple[str, str], ...]] | None:
+    """调用节点 → (匹配名, 命中)：尾段标识符与分隔符归一全名两档匹配（取先命中）。
+
+    - 尾段：``os.system`` → ``system``（命中 sinks 词表短名）；
+    - 全名归一：分隔符 ::/->/./: → ``_``：``pickle.loads`` → ``pickle_loads``
+      （命中 serialization 词表复合名）；
+    - 两档皆不命中 → None。"""
+    text = _call_func_name(node)
+    if text is None:
         return None
     tail = text
     for sep in ("::", "->", ".", ":"):
@@ -240,18 +254,22 @@ def parse_index(path: str, lang: str, source: bytes) -> IndexEntry:
     """单文件解析 → IndexEntry（无 grammar → parse_ok=False 空索引，缺席语义）。"""
     parser = _load_parser(lang)
     if parser is None:
-        return IndexEntry(path=path, lang=lang, calls=(), idents=(), defs=(), parse_ok=False)
+        return IndexEntry(path=path, lang=lang, calls=(), idents=(), defs=(), all_calls=(), parse_ok=False)
     try:
         tree = parser.parse(source)
     except Exception:                            # noqa: BLE001 — 坏文件按缺席计
-        return IndexEntry(path=path, lang=lang, calls=(), idents=(), defs=(), parse_ok=False)
+        return IndexEntry(path=path, lang=lang, calls=(), idents=(), defs=(), all_calls=(), parse_ok=False)
     calls: list[tuple[str, int, tuple[tuple[str, str], ...]]] = []
     idents: list[tuple[str, int, tuple[tuple[str, str], ...]]] = []
     defs: list[tuple[str, int, int]] = []
+    all_calls: list[tuple[str, int]] = []
 
     def visit(node) -> None:
         ntype = node.type
         if ntype in _CALL_NODE_TYPES:
+            name = _call_func_name(node)
+            if name:
+                all_calls.append((name, node.start_point[0] + 1))
             hit = _call_name_hits(node)
             if hit is not None:
                 name, hits = hit
@@ -275,6 +293,7 @@ def parse_index(path: str, lang: str, source: bytes) -> IndexEntry:
         calls=tuple(calls),
         idents=tuple(idents),
         defs=tuple(sorted(defs)),
+        all_calls=tuple(all_calls),
         parse_ok=True,
     )
 
@@ -336,7 +355,7 @@ def index_repo(
     for path, source in files:
         lang = lang_for_path(path)
         if lang is None:
-            out.append(IndexEntry(path=path, lang="", calls=(), idents=(), defs=(), parse_ok=False))
+            out.append(IndexEntry(path=path, lang="", calls=(), idents=(), defs=(), all_calls=(), parse_ok=False))
             continue
         out.append(cache.get_or_parse(path, lang, source))
     return out

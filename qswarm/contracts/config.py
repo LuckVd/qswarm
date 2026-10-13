@@ -221,6 +221,27 @@ class PerceptionScanParams(BaseModel):
     rescan_sample_frac: float = Field(default=0.05, ge=0, le=1)
 
 
+class PerceptionRepomapParams(BaseModel):
+    """repo map 切片预算（SPEC-8 §1.2/D37）：邻域子图切片的文件数与总行数上限
+    （种子文件恒在；截断计数入 RepoSlice 与报告）。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    max_files: int = Field(default=12, ge=1)
+    max_lines: int = Field(default=1500, ge=1)
+
+
+class ConsultParams(BaseModel):
+    """L2 会诊编排旋钮（SPEC-8 §6/D31–D33；extra=forbid 纪律同根模型）。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    wall_clock_budget_s: int = Field(default=3600, gt=0)   # D33 pr 档墙钟预算
+    min_panel: int = Field(default=2, ge=2)                # 面板 fail-closed 下限（<2 不开）
+    s1_rho: float = Field(default=0.4, ge=0, le=1)         # D32 共模份额（=M0 Z_PANEL_W）
+    l2_context_lines: int = Field(default=40, ge=1)        # L2 候选块窗（深诊档）
+
+
 class PerceptionParams(BaseModel):
     """感知层旋钮根（SPEC-7 §6；extra=forbid 纪律同根模型）。"""
 
@@ -231,6 +252,7 @@ class PerceptionParams(BaseModel):
     l0: PerceptionL0Params = PerceptionL0Params()
     l1: PerceptionL1Params = PerceptionL1Params()
     scan: PerceptionScanParams = PerceptionScanParams()
+    repomap: PerceptionRepomapParams = PerceptionRepomapParams()
 
 
 class ParamsConfig(BaseModel):
@@ -250,6 +272,7 @@ class ParamsConfig(BaseModel):
     panel: PanelParams
     roster: RosterParams
     perception: PerceptionParams = PerceptionParams()
+    consult: ConsultParams = ConsultParams()
 
 
 # ── taxonomy.yaml（§5.3）────────────────────────────────────────

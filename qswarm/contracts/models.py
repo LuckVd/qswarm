@@ -106,6 +106,19 @@ class VerifierReport(BaseModel):               # S2（§6.3/§10.4；对应 veri
     logs_ref: str
 
 
+class PreVerdictSlip(BaseModel):
+    """S2 预裁决单（D29；SPEC-8 §2.6）——verifier v0 对精聚类簇的纸面预判，
+    不执行 PoC、不写 verify_results（该表是 S2 真验证专用面）、零存款
+    （verifier 存款只由 S3 回校，§6.5 ④）。与 VerifierReport 的语义边界：
+    inconclusive=纸面无法预判；verify_error=S2 执行失败（M5 面，互斥不混）。
+    落工件 kind="pre_verdict"，供仲裁/人工与 M5 沙箱排程。"""
+
+    cluster_id: str
+    expected_verdict: Literal["confirmed", "refuted", "inconclusive"]
+    poc_shape: str
+    env_requirements: list[str]
+
+
 # ── 4.3 账本载荷 schema（按 kind）───────────────────────────────
 
 class DepositPayload(BaseModel):               # kind=deposit（§3.2/§6.5 归属矩阵）
@@ -294,6 +307,7 @@ __all__ = [
     "ScalingPayload",
     "ScoutReport",
     "VerifierReport",
+    "PreVerdictSlip",
     "VerifyResultPayload",
     "VotePayload",
 ]

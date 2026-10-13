@@ -78,6 +78,7 @@ __all__ = [
     "SchemaRejected",
     "attach_cluster",
     "build_contract",
+    "close_task_empty",
     "create_task",
     "dispatch",
     "expire_run",
@@ -801,6 +802,25 @@ def _next_finding_id(ledger: KernelLedger) -> str:
         except ValueError:
             continue
     return f"F-{date}-{max_seq + 1:06d}"
+
+
+def close_task_empty(ledger: KernelLedger, task_id: str) -> None:
+    """空产出收口（tasks 表写口公开面；M4 consult declined 专用，SPEC-8 §2.2）。
+
+    auditor 按 goal 指令输出 declined 信封（无漏洞可报）→ 任务 done、零业务行
+    零业务事件（与 scout 分支的零事件 done 同语义；审计锚 = 任务行状态 + 报告
+    计数）。幂等：已终态跳过；非 dispatched → ValueError（§2.5 前件守卫同式）。"""
+    with transaction(ledger):
+        row = ledger.conn.execute(
+            "SELECT state FROM tasks WHERE task_id = ?", (task_id,)
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"任务不存在：{task_id!r}")
+        if str(row[0]) in TASK_STATE_TERMINAL:
+            return
+        if str(row[0]) != "dispatched":
+            raise ValueError(f"任务 {task_id!r} state={row[0]!r} ≠ dispatched")
+        _mark_task_done(ledger, task_id)
 
 
 def _mark_task_done(ledger: KernelLedger, task_id: str) -> None:

@@ -26,6 +26,7 @@ __all__ = [
     "import_roster_rows",
     "register_roster",
     "apply_qc_decision",
+    "attach_hat",
 ]
 
 
@@ -194,3 +195,34 @@ def apply_qc_decision(ledger: KernelLedger, agent_id: str, *, passed: bool) -> N
                 "UPDATE agents SET status = ? WHERE agent_id = ?",
                 (AgentStatus.PROVISIONING.value, agent_id),
             )
+
+
+def attach_hat(ledger: KernelLedger, agent_id: str, role: str) -> bool:
+    """给既有 agent 加戴角色帽（D31 帽兼任扩池；SPEC-8 §7）。
+
+    - 帽注册唯一写口仍在本模块（hats INSERT 面与 register_roster 同表同纪律）；
+    - agent 必须已存在且 status='active'（帽不授予未入编蜂）；
+    - role 越五角色词表 → ValueError；同 (agent_id, role) 帽已在 → 幂等跳过；
+    - pool_class：scout=temp、其余 formal（register_roster 同式）；
+    - 返回是否新注册（False = 已在）。
+    """
+    if role not in {r.value for r in Role}:
+        raise ValueError(
+            f"角色越词表：{role!r}（合法值：{sorted(r.value for r in Role)}）"
+        )
+    pool_class = PoolClass.TEMP.value if role == Role.SCOUT.value else PoolClass.FORMAL.value
+    with transaction(ledger):
+        row = ledger.conn.execute(
+            "SELECT status FROM agents WHERE agent_id = ?", (agent_id,)
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"agent 不存在：{agent_id!r}（帽只授予在编蜂）")
+        if str(row[0]) != AgentStatus.ACTIVE.value:
+            raise ValueError(
+                f"agent {agent_id!r} 非 active（status={row[0]!r}）——帽兼任只对在编蜂开放"
+            )
+        cur = ledger.conn.execute(
+            "INSERT OR IGNORE INTO hats (agent_id, role, pool_class) VALUES (?, ?, ?)",
+            (agent_id, role, pool_class),
+        )
+        return cur.rowcount > 0

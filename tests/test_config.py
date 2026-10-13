@@ -132,6 +132,7 @@ M3_FINAL_KNOBS: dict[str, dict[str, object]] = {
         "l0": {"max_file_lines": 800},
         "l1": {"fast_top_k": 3, "files_per_shard": 20},
         "scan": {"rescan_sample_frac": 0.05},
+        "repomap": {"max_files": 12, "max_lines": 1500},
     },
 }
 
@@ -141,6 +142,19 @@ ALL_PINNED_KNOBS: dict[str, dict[str, object]] = {
 }
 # M3 新节（V2 无此节，推导式不含）：perception 整节并入钉值对账面。
 for _section, _pins in M3_FINAL_KNOBS.items():
+    ALL_PINNED_KNOBS.setdefault(_section, dict(_pins))
+
+# ── M4 会诊新旋钮逐键钉值（SPEC-8 §6；D31–D33 拍板回填，2026-10-13）────────
+
+M4_FINAL_KNOBS: dict[str, dict[str, object]] = {
+    "consult": {
+        "wall_clock_budget_s": 3600,
+        "min_panel": 2,
+        "s1_rho": 0.4,
+        "l2_context_lines": 40,
+    },
+}
+for _section, _pins in M4_FINAL_KNOBS.items():
     ALL_PINNED_KNOBS.setdefault(_section, dict(_pins))
 
 
@@ -171,6 +185,35 @@ def test_params_perception_extra_forbidden():
     """perception 节越键拒绝（extra=forbid 纪律，M3 卷 B 组判据）。"""
     data = _params_dict()
     data["perception"]["rogue_knob"] = 1
+    with pytest.raises(ValidationError):
+        ParamsConfig.model_validate(data)
+
+
+def test_m4_consult_knobs_pinned():
+    """M4 consult 节 4 键 + perception.repomap 子节逐键钉值（SPEC-8 §6 回填）。"""
+    p = load_params()
+    assert p.consult.wall_clock_budget_s == 3600         # D33 pr 墙钟预算
+    assert p.consult.min_panel == 2                      # 面板 fail-closed 下限
+    assert p.consult.s1_rho == pytest.approx(0.4)        # D32（=M0 Z_PANEL_W）
+    assert p.consult.l2_context_lines == 40              # L2 深诊档窗
+    assert p.perception.repomap.max_files == 12          # D37 切片预算
+    assert p.perception.repomap.max_lines == 1500
+
+
+def test_params_consult_section_optional_with_spec_defaults():
+    """黄金兼容面：无 consult 节的旧参数集回落规格缺省（M3 perception 同款）。"""
+    data = _params_dict()
+    data.pop("consult")
+    params = ParamsConfig.model_validate(data)
+    assert params.consult.wall_clock_budget_s == 3600
+    assert params.consult.min_panel == 2
+    assert params.consult.s1_rho == pytest.approx(0.4)
+
+
+def test_params_consult_extra_forbidden():
+    """consult 节越键拒绝（extra=forbid 纪律，M4 卷 B 组判据）。"""
+    data = _params_dict()
+    data["consult"]["rogue_knob"] = 1
     with pytest.raises(ValidationError):
         ParamsConfig.model_validate(data)
 

@@ -163,11 +163,11 @@ def artifact_hash(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
-#: 工件 kind 词表（M2 两类 + M3 感知层两类，SPEC-7 §1.1/§1.2：候选集与索引
-#: 工件由 perception 经本形态写入——写口审计词表不变（artifacts 不在 WRITE_TABLES），
-#: perception 零账本直写纪律由 tests/test_m3_invariants.py 钉死）。
+#: 工件 kind 词表（M2 两类 + M3 感知层两类 + M4 会诊两类：repo_map 切片与
+#: verifier 预裁决单，SPEC-8 §1.3/§2.6——写口审计词表不变（artifacts 不在
+#: WRITE_TABLES），零账本直写纪律由 tests/test_m3_invariants.py 钉死）。
 ARTIFACT_KINDS: frozenset[str] = frozenset(
-    {"seed", "exam_log", "l0_candidates", "l0_index"}
+    {"seed", "exam_log", "l0_candidates", "l0_index", "repo_map", "pre_verdict"}
 )
 
 
@@ -183,7 +183,7 @@ def artifact_put(
     """写内容寻址工件（文件 + artifacts 索引行；幂等：同 hash 跳过）。返回 hash。
 
     ``kind`` 限定 :data:`ARTIFACT_KINDS`（M2 seed|exam_log + M3 l0_candidates|
-    l0_index；其余 kind 属后续里程碑的工件面）。"""
+    l0_index + M4 repo_map|pre_verdict；其余 kind 属后续里程碑的工件面）。"""
     if kind not in ARTIFACT_KINDS:
         raise ValueError(
             f"工件 kind 越词表：{kind!r}（合法值：{sorted(ARTIFACT_KINDS)}）"

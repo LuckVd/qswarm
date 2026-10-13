@@ -43,7 +43,7 @@ from qswarm.supply.config import ROLE_TIER
 
 from .bank import SeedBank
 from .paper import ENTRY_ITEMS
-from .roster import Candidate, apply_qc_decision, expand_candidates, register_roster
+from .roster import Candidate, apply_qc_decision, attach_hat, expand_candidates, register_roster
 from .runner import CellOutcome, SnapshotStore, run_entry_cell
 from .judge import entry_qc_pass
 from .store import upsert_exam_items
@@ -225,6 +225,7 @@ def seed_entry(
     *,
     seed: int,
     roles: Sequence[str] = SEEDING_ROLES,
+    extra_hats: Sequence[tuple[str, str]] = (),
     cache_dir: str | Path | None = None,
     store_dir: str | Path | None = None,
     resolve_text=None,
@@ -232,8 +233,30 @@ def seed_entry(
 ) -> dict:
     """播种总编排（§4.2）：注册 → 逐格考试/存款 → agg_cells 折叠 → QC → 报告。
 
+    ``extra_hats``（D31 帽兼任，SPEC-8 §7）：给**已在编 active** 蜂加戴角色帽并纳入
+    本轮考试（帽注册走 roster.attach_hat 唯一写口；考试格按 ROLE_TIER 档位展开）。
+    帽兼任蜂的 QC 失败只记告警不降编（agents.status 属蜂本体非帽；帽摘除随 M5
+    编制管理面）。
+
     返回报告 dict（``out_dir`` 给定时同步落盘 ``seeding_report.{json,md}``）。"""
-    candidates = expand_candidates(models, roles=tuple(roles))
+    candidates = list(expand_candidates(models, roles=tuple(roles)))
+    for agent_id, hat_role in extra_hats:
+        attach_hat(ledger, agent_id, hat_role)
+        tier = ROLE_TIER.get(hat_role)
+        if tier is None:
+            raise ValueError(f"帽兼任角色无档位映射：{hat_role!r}")
+        if tier not in models.entry_exams:
+            raise ValueError(f"models.yaml entry_exams 缺档位 {tier!r}（帽兼任 {agent_id!r}）")
+        row = ledger.conn.execute(
+            "SELECT model_ref FROM agents WHERE agent_id = ?", (agent_id,)
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"帽兼任 agent 不存在：{agent_id!r}")
+        candidates.append(
+            Candidate(
+                role=hat_role, tier=tier, model_ref=str(row[0]), agent_id=agent_id,
+            )
+        )
     for cand in candidates:
         if cand.tier not in models.entry_exams:
             raise ValueError(
@@ -271,12 +294,17 @@ def seed_entry(
     as_of = iso_utc(ledger._clock.now())
     agg_cells(ledger, as_of)
 
+    extra_ids = {agent_id for agent_id, _role in extra_hats}
     qc: dict[str, dict] = {}
     for cand in candidates:
         mine = [o for o in outcomes if o.agent_id == cand.agent_id and not o.infra_invalid]
         min_pass = models.entry_exams[cand.tier].min_pass
         record = _qc_record(cand, mine, min_pass)
         qc[cand.agent_id] = record
+        if cand.agent_id in extra_ids:
+            # 帽兼任蜂：QC 失败只记告警（apply_qc_decision 会把既有 active 蜂打回
+            # provisioning——帽资格考试不过不应降编蜂本体；帽摘除随 M5 编制管理面）。
+            continue
         apply_qc_decision(ledger, cand.agent_id, passed=record["passed"])
 
     report = build_report(
@@ -318,9 +346,30 @@ def main(argv: list[str] | None = None) -> int:
         help="播种角色逗号清单（M3，SPEC-7 §4：如 'reviewer,verifier' 补播；"
              "缺省 scout,auditor 既有行为零扰动）",
     )
+    parser.add_argument(
+        "--hat-agents", default=None,
+        help="帽兼任清单（D31，SPEC-8 §7）：'agent_id=role[,agent_id=role,...]'——"
+             "给已在编 active 蜂加戴角色帽并纳入本轮考试（QC 失败只告警不降编）",
+    )
     parser.add_argument("--replay", action="store_true", help="缓存重放模式（不经网络，S9）")
     parser.add_argument("--cache", default=None, help="replay 缓存目录（--replay 时必填）")
     args = parser.parse_args(argv)
+
+    extra_hats: list[tuple[str, str]] = []
+    if args.hat_agents is not None:
+        for pair in args.hat_agents.split(","):
+            pair = pair.strip()
+            if not pair:
+                continue
+            if "=" not in pair:
+                raise SystemExit(f"--hat-agents 形态非法：{pair!r}（须 agent_id=role）")
+            agent_id, hat_role = pair.split("=", 1)
+            hat_role = hat_role.strip()
+            if hat_role not in ROLE_TIER:
+                raise SystemExit(
+                    f"--hat-agents 角色越词表：{hat_role!r}（合法值：{sorted(ROLE_TIER)}）"
+                )
+            extra_hats.append((agent_id.strip(), hat_role))
 
     roles: tuple[str, ...] | None = None
     if args.roles is not None:
@@ -347,6 +396,7 @@ def main(argv: list[str] | None = None) -> int:
             report = seed_entry(
                 ledger, bank, models, adapter,
                 seed=args.seed, roles=roles if roles is not None else SEEDING_ROLES,
+                extra_hats=tuple(extra_hats),
                 cache_dir=Path(args.cache),
                 resolve_text=resolve, out_dir=out_dir,
             )
@@ -357,6 +407,7 @@ def main(argv: list[str] | None = None) -> int:
             report = seed_entry(
                 ledger, bank, models, adapter,
                 seed=args.seed, roles=roles if roles is not None else SEEDING_ROLES,
+                extra_hats=tuple(extra_hats),
                 cache_dir=cache_dir,
                 resolve_text=resolve, out_dir=out_dir,
             )

@@ -92,7 +92,14 @@ roster:   {scout: 6, auditor: 5, reviewer: 4, verifier: 3}
 # （§16.7-4 周期重扫抽样率，v1 只落开关）。
 perception: {model: {enabled: true}, rules: {enabled: true, timeout_s: 120},
              l0: {max_file_lines: 800}, l1: {fast_top_k: 3, files_per_shard: 20},
-             scan: {rescan_sample_frac: 0.05}}
+             scan: {rescan_sample_frac: 0.05},
+             repomap: {max_files: 12, max_lines: 1500}}
+# L2 会诊编排旋钮（SPEC-8 §6，2026-10-13 D31-D33 拍板回填）：
+# wall_clock_budget_s=D33 pr 墙钟预算（缺省 3600）；min_panel=面板 fail-closed 下限
+# （<2 不开面板，finding 停 open）；s1_rho=D32 共模份额（=M0 Z_PANEL_W 钉值）；
+# l2_context_lines=L2 候选块窗（深诊档，L1 的 20 的 2 倍）。缺节回落同款缺省
+# （configs 缺节黄金兼容由 tests 钉）。
+consult: {wall_clock_budget_s: 3600, min_panel: 2, s1_rho: 0.4, l2_context_lines: 40}
 # roster 维持 §1.1 种子版编制（6/5/4/3）。世界侧孵化考试题数定稿：
 # ExamWorldParams.entry_items=12（§8.4「8–12 题」上限）与 type_quiz_items=56
 # （类型 quiz 无规格值；席位保真度随题量上升，Round 41-49 网格实测 56 为

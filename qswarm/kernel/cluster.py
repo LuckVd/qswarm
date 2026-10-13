@@ -737,6 +737,8 @@ class VerdictContext:
     scouts: tuple[str, ...] = ()               # 额外侦察行（非 reporter 的簇标记者）
     votes: tuple[tuple[str, int], ...] = ()    # (reviewer, direction) 评审回校（§6.5 评审行）
     verifier_id: str | None = None             # §6.5 验证行归属（S3 到达时需要）
+    s1_factor: float = 1.0                     # S1 行源权重因子（D32 面板相关性补偿；
+                                               #  缺省 1.0 = 既有行为逐位不变）
 
 
 def _source_weight(tier: SignalTier) -> float:
@@ -789,6 +791,10 @@ def _expansion_rows(
 
     anchor_tax = tax_of(members[0].finding_id)
     source_w = _source_weight(tier)
+    if tier is SignalTier.S1:
+        # D32：S1 面板相关性补偿（§16.7-6 降权条款定量化）——同模面板信息量打折；
+        # S2/S3 不受影响（真值回校无共模问题）。缺省 1.0 时乘法逐位恒等。
+        source_w = source_w * float(ctx.s1_factor)
     scout_x = params.deposits.SCOUT_X
     reviewer_x = params.deposits.REVIEWER_X
 

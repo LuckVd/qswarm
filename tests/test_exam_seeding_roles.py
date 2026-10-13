@@ -20,6 +20,7 @@ from qswarm.exams.runner import run_entry_cell
 from qswarm.exams.seeding import SEEDING_ROLES, seed_entry
 from qswarm.supply.config import load_models
 
+import m3_harness
 import m2_harness
 from m2_harness import FakeAdapter, build_models_yaml, make_bank, make_resolver
 
@@ -145,3 +146,38 @@ def test_cli_roles_flag(tmp_path, env, monkeypatch):
                 "--roles", "scout,queen",
             ]
         )
+
+
+def test_seed_entry_extra_hats(env):
+    """D31 帽兼任（SPEC-8 §7）：已在编 active 蜂加戴 reviewer 帽并纳入考试——
+    帽注册走 attach_hat 唯一写口；考试格按 ROLE_TIER 档位展开；QC 失败不降编
+    （agents.status 属蜂本体）。"""
+    tmp_path, bank, models, resolve = env
+    db = tmp_path / "hats.db"
+    # 第一轮：常规 scout/auditor 播种（产出在编蜂）
+    with KernelLedger(db, clock=FixedClock(m3_harness.T0)) as led:
+        seed_entry(led, bank, models, FakeAdapter(tmp_path / "seeds"),
+                   seed=7, resolve_text=resolve)
+        agents_before = dict(led.conn.execute(
+            "SELECT agent_id, status FROM agents").fetchall())
+        auditor_id = next(a for a in agents_before if a.startswith("strong:"))
+        # 第二轮：auditor 加戴 reviewer 帽补播
+        report = seed_entry(
+            led, bank, models, FakeAdapter(tmp_path / "seeds"),
+            seed=7, roles=("reviewer",), extra_hats=((auditor_id, "reviewer"),),
+            resolve_text=resolve,
+        )
+        assert (auditor_id, "reviewer") in {
+            (r[0], r[1]) for r in led.conn.execute(
+                "SELECT agent_id, role FROM hats").fetchall()
+        }
+        assert auditor_id in {a["agent_id"] for a in report["agents"]}
+        # QC 记录在案且不降编：status 保持第一轮值（FakeAdapter 全对 → active）
+        assert led.conn.execute(
+            "SELECT status FROM agents WHERE agent_id = ?", (auditor_id,)
+        ).fetchone()[0] == agents_before[auditor_id]
+        # reviewer 帽考试存款落账（第二轮新增的 origin=exam 存款）
+        mine = [e for e in _exam_deposits(led)
+                if e.payload["agent"] == auditor_id
+                and e.payload.get("role") == "reviewer"]
+        assert mine

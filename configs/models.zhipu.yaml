@@ -22,7 +22,12 @@ tiers:
   mid:
     # glm-5.1 非真实服务模型（负责人 2026-10-12 澄清：请求名皆映射 glm-5.3），
     # mid 档直书 glm-5.3——与 engineering 同真实能力、agent_id 以档位前缀区分。
+    # fallback glm-5.3-flash（2026-10-13 D31 拍板）：reviewer 池扩至 2 蜂
+    # （mid:5.3 + mid:5.3-flash，expand_candidates 去重展开），把「跨模型族退化为
+    # 跨档位」变成真实的两档异构；第 3 席由帽兼任补足（SPEC-8 §3/§7）。
     primary:   {provider: zhipu, model: glm-5.3, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks:
+      - {provider: zhipu, model: glm-5.3-flash, api_key_env: QSWARM_KEY_ZHIPU}
   engineering:
     primary:   {provider: zhipu, model: glm-5.3, api_key_env: QSWARM_KEY_ZHIPU}
 
