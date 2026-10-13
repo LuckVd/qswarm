@@ -1,0 +1,63 @@
+{
+ "family": "injection",
+ "probe": "pass",
+ "calls": 4,
+ "ok": 4,
+ "schema_fail": 0,
+ "infra_fail": 0,
+ "correct": 4,
+ "rows": [
+  {
+   "role": "scout",
+   "model_ref": "cheap:zhipu/glm-4.5-air",
+   "agent_id": "cheap:zhipu/glm-4.5-air@cv1",
+   "item_id": "SEED-0010",
+   "expected": "real",
+   "family": "injection",
+   "elapsed_s": 8.5,
+   "raw_len": 231,
+   "outcome": "ok",
+   "declined": false,
+   "correct": true
+  },
+  {
+   "role": "scout",
+   "model_ref": "cheap:zhipu/glm-4.5-air",
+   "agent_id": "cheap:zhipu/glm-4.5-air@cv1",
+   "item_id": "SEED-0027",
+   "expected": "fp",
+   "family": "injection",
+   "elapsed_s": 117.2,
+   "raw_len": 73,
+   "outcome": "ok",
+   "declined": true,
+   "correct": true
+  },
+  {
+   "role": "auditor",
+   "model_ref": "strong:zhipu/glm-5.2",
+   "agent_id": "strong:zhipu/glm-5.2@cv1",
+   "item_id": "SEED-0007",
+   "expected": "real",
+   "family": "injection",
+   "elapsed_s": 47.6,
+   "raw_len": 876,
+   "outcome": "ok",
+   "declined": false,
+   "correct": true
+  },
+  {
+   "role": "auditor",
+   "model_ref": "strong:zhipu/glm-5.2",
+   "agent_id": "strong:zhipu/glm-5.2@cv1",
+   "item_id": "SEED-0026",
+   "expected": "fp",
+   "family": "injection",
+   "elapsed_s": 11.1,
+   "raw_len": 73,
+   "outcome": "ok",
+   "declined": true,
+   "correct": true
+  }
+ ]
+}

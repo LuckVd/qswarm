@@ -1,0 +1,2 @@
+<frozen runpy>:128: RuntimeWarning: 'qswarm.exams.seeding' found in sys.modules after import of package 'qswarm.exams', but prior to execution of 'qswarm.exams.seeding'; this may result in unpredictable behaviour
+SEEDING deposits=19 rows=228 candidates=4 OK
