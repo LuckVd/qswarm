@@ -14,9 +14,18 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+# M3 感知层可选依赖（SPEC-7 §1.2 D25 探测式分级：代码运行时探测 import 可用性，
+# 缺装 = 通道 A 对该语言缺席、通道 B 兜底——核心闭集 {pydantic, yaml, pytest} 不破）。
+perception = [
+    "tree-sitter>=0.23",
+    "tree-sitter-python", "tree-sitter-javascript", "tree-sitter-go",
+    "tree-sitter-java", "tree-sitter-c", "tree-sitter-cpp",
+]
 
 # 纯 Python 工程：无 LLM SDK、无网络依赖（SPEC-4 §6 实现约束）。
 # M0 阶段运行依赖仅 pydantic/pyyaml；kernel/simulator 尚无第三方需求。
+# M3：tree-sitter 为可选探测依赖（perception extra）；semgrep 为外部 CLI 工具
+#（通道 C，D30 必选件，子进程调用、非 Python 依赖），环境装通由 M3 门禁实跑钉住。
 
 [tool.setuptools]
 packages = [
@@ -24,6 +33,7 @@ packages = [
     "qswarm.contracts",
     "qswarm.kernel",
     "qswarm.simulator",
+    "qswarm.perception",
 ]
 
 [tool.setuptools.package-data]

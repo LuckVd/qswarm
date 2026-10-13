@@ -86,6 +86,7 @@ __all__ = [
     "open_run",
     "re_dispatch",
     "record_panel_consensus",
+    "register_candidates",
     "submit",
     "transition_finding",
 ]
@@ -224,6 +225,76 @@ def build_contract(
         hop_budget=hop_budget_for(mode),
         deadline_s=int(deadline_s),
     )
+
+
+# ── L0 候选点装配口（§6.1：candidates 表写口在本模块；SPEC-7 §2 接线消费）──
+
+
+def register_candidates(
+    ledger: KernelLedger,
+    *,
+    run_id: str,
+    candidates,  # Sequence[perception.candidates.Candidate]（鸭子类型，防 kernel→perception 依赖）
+) -> list[str]:
+    """L0 候选点入表（candidates 表 INSERT 唯一写口 = 本模块，§6.1）。
+
+    - 输入为 perception Candidate 形态（鸭子类型：``candidate_id/path/span/kind/
+      channels/taxonomy_hint/clue`` 属性；:data:`L0Channel` 词表映射 A→struct、
+      B→model、C→rule，``channels`` 列逗号串按词表序）；
+    - ``candidate_id`` = 'CD-<run>-<L0 序>'？非——perception Candidate 自带内容
+      寻址 id（blake2b 16B hex，SPEC-7 §1.1/D27），直接作主键（表 TEXT PK 无
+      形态约束；``CD-`` 序号形态归 M0 世界侧仿真候选，两形态并存、内容寻址 id
+      自明出处）；
+    - 幂等（读侧）：同 candidate_id 且字段全等 → 跳过；字段不等 → ValueError
+      （写侧非法，§6.4 界线；同 roster 幂等口径）；
+    - channel_score = 候选优先级（多通道命中加权，§2.1；归并层值直落）；
+      rule_id = kind=rule_hit 时的规则 id（clue 承载）；guess_family = 
+      taxonomy_hint（L0 初始猜测，侦察回填走 submit 的 COALESCE 语义）；
+    - 全部行同事务落库（§7.1 复合写原子性；行插入无账本事件——创建即初态，
+      与 create_task 同型纪律）。"""
+    _channel_word = {"A": "struct", "B": "model", "C": "rule"}
+    inserted: list[str] = []
+    with transaction(ledger):
+        for cand in candidates:
+            channels = ",".join(
+                _channel_word[c] for c in sorted(getattr(cand, "channels"))
+            )
+            span = getattr(cand, "span")
+            cid = str(getattr(cand, "candidate_id"))
+            row = ledger.conn.execute(
+                "SELECT path, line_start, line_end, channels FROM candidates"
+                " WHERE candidate_id = ?",
+                (cid,),
+            ).fetchone()
+            if row is not None:
+                if (
+                    str(row[0]) != str(getattr(cand, "path"))
+                    or int(row[1]) != int(span[0])
+                    or int(row[2]) != int(span[1])
+                    or str(row[3]) != channels
+                ):
+                    raise ValueError(
+                        f"候选点身份冲突：candidate_id={cid!r} 已存在且字段不等"
+                        "（人工介入，§6.4）"
+                    )
+                continue
+            kind = str(getattr(cand, "kind"))
+            hint = getattr(cand, "taxonomy_hint", None)
+            ledger.conn.execute(
+                "INSERT INTO candidates (candidate_id, run_id, path, line_start,"
+                " line_end, channels, channel_score, rule_id, guess_family,"
+                " guess_type, triaged, created_at)"
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, 0, ?)",
+                (
+                    cid, run_id, str(getattr(cand, "path")), int(span[0]), int(span[1]),
+                    channels, float(getattr(cand, "priority")),
+                    str(getattr(cand, "clue")) if kind == "rule_hit" else None,
+                    str(hint) if hint else None,
+                    _now_iso(ledger),
+                ),
+            )
+            inserted.append(cid)
+    return inserted
 
 
 # ── run 生命周期入口（§6.1：runs 表写口在本模块；findings.run_id 外键的前件）──

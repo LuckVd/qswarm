@@ -1,10 +1,10 @@
-"""exams.judge：逐角色判分纯函数 + 及格线函数（SPEC-6 §3.3）。
+"""exams.judge：逐角色判分纯函数 + 及格线函数（SPEC-6 §3.3；SPEC-7 §4.2 M3 扩展）。
 
 判分 = 考官答案对齐（§8.2）：expected 才是判分依据（S1 决策注——expected="real"
-的题 planted 可真可假）。v0 播种只覆盖 scout/auditor（S4：reviewer 需 staged
-finding 工件面 → M3 随 L2/评审开工补播；verifier 需沙箱 → 依赖序第 8 位；两角色
-cells 冷启动走家族级收缩既有机制兜底）。题面不给 family/type（S4）：判分 = 产出
-家族对齐题库答案（信任自由分析，不退化为复述假设）。
+的题 planted 可真可假）。M2 播种覆盖 scout/auditor（S4）；M3 补播 reviewer/
+verifier（SPEC-7 §4：纸面考试——reviewer 卷 = 快照 + 预置 finding，verifier 卷 =
+预置簇证据链、无沙箱执行 D29）。题面不给 family/type（S4）：判分 = 产出家族
+对齐题库答案（信任自由分析，不退化为复述假设）。
 
 injection_flag 不参与判分（记录进播种报告——注入行为是观测面，不是考项）。
 """
@@ -16,7 +16,13 @@ from typing import TYPE_CHECKING
 from qswarm.contracts import ExamParams
 
 if TYPE_CHECKING:  # 仅注解用
-    from qswarm.contracts import AuditorFinding, Role, ScoutReport
+    from qswarm.contracts import (
+        AuditorFinding,
+        ReviewerVote,
+        Role,
+        ScoutReport,
+        VerifierReport,
+    )
 
     from .bank import SeedItem
 
@@ -31,9 +37,9 @@ __all__ = [
 def judge_answer(
     item: "SeedItem",
     role: "Role | str",
-    parsed: "ScoutReport | AuditorFinding | None",
+    parsed: "ScoutReport | AuditorFinding | ReviewerVote | VerifierReport | None",
 ) -> bool:
-    """单题判对与否（§8.2 考官答案对齐；v0 覆盖 scout/auditor 两角色）。
+    """单题判对与否（§8.2 考官答案对齐；M3 起四角色全覆盖）。
 
     - **scout**：parsed=None（信封 declined 或 output 缺失）= 未标记任何候选，
       按 suspicious=False / guess_family=None 判定（real → 判错；fp → 判对，
@@ -44,8 +50,18 @@ def judge_answer(
     - **auditor**：real 判对 = 产出 finding ∧ family == item.taxonomy_path[0]
       （type 不判——家族级播种）；fp 判对 = declined（output=null）；
       产出但家族错 → 判错；产出多题任一 family 命中不放宽（信封单 finding 形态）；
-    - reviewer/verifier：NotImplementedError（S4：v0 不播种——角色随其生产面补播，
-      M3 起沿本函数扩展，词表不改）。
+    - **reviewer**（SPEC-7 §4.2，M3 补播）：parsed=None = 判错（评审蜂必须表态）；
+      real 判对 = direction == +1（ENDORSE——送审 finding 立得住）；fp 判对 =
+      direction == -1（REJECT——送审 finding 不成立）；direction == 0（证据不足）
+      双侧均判错（表态弃权 ≠ 判对，§8.1 淘汰机制同根基）；「多维意见中 family
+      维与答案键家族对齐（与 auditor 同口径）」由卷面构造侧承载——real 面预置
+      finding 声称家族 ≡ 答案键家族（构造即对齐，见 runner._exam_claim）；
+      ReviewerVote 输出契约无 family 字段（词表不改，SPEC-7 §4.3），判分不读
+      模型侧家族（DECISIONS M3 实现期行）；
+    - **verifier**（SPEC-7 §4.2，D29 纸面考）：parsed=None = 判错（验证蜂考试
+      不含弃权）；real 簇判对 = outcome == verified_real（CONFIRMED）；fp 簇判对
+      = outcome == verified_fp（REFUTED）；verify_error（INCONCLUSIVE）恒判错
+      ——区分能力与弃权是 §8.1 淘汰机制的根基（逐字）。
     """
     role_key = str(getattr(role, "value", role))
     if role_key == "scout":
@@ -60,9 +76,21 @@ def judge_answer(
         if item.expected == "real":
             return parsed is not None and str(parsed.family) == item.taxonomy_path[0]
         return parsed is None
+    if role_key == "reviewer":
+        if parsed is None:
+            return False
+        if item.expected == "real":
+            return parsed.direction == 1
+        return parsed.direction == -1
+    if role_key == "verifier":
+        if parsed is None:
+            return False
+        if item.expected == "real":
+            return str(parsed.outcome) == "verified_real"
+        return str(parsed.outcome) == "verified_fp"
     raise NotImplementedError(
-        f"M2 判分只覆盖 scout/auditor（S4 范围裁剪），role={role_key!r} 随其生产面"
-        "在 M3 补播时沿本函数扩展"
+        f"判分角色越词表：role={role_key!r}（四考试角色 scout/auditor/reviewer/"
+        "verifier；queen_advisor 不参考，SPEC-3 §6）"
     )
 
 

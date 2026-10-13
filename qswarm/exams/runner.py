@@ -235,11 +235,20 @@ def deposit_exists(ledger: KernelLedger, agent_id: str, role: str, family: str) 
 
 
 def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
-    """考试 DispatchContract（同 schema 同契约防 prompt 指纹偏差，§8.2）。"""
+    """考试 DispatchContract（同 schema 同契约防 prompt 指纹偏差，§8.2）。
+
+    goal 按角色分派（M3 补播：reviewer/verifier 纸面考，SPEC-7 §4.1）；四件套
+    其余字段四角色同形（同 schema 同契约）。"""
+    goals = {
+        "scout": f"入职考：判断 {family} 家族快照是否存在漏洞",
+        "auditor": f"入职考：判断 {family} 家族快照是否存在漏洞",
+        "reviewer": f"入职考：独立评审送审 finding（{family} 家族快照）",
+        "verifier": f"入职考：对预置簇证据链给出复现结论（{family} 家族快照）",
+    }
     return DispatchContract(
         task_id=f"entry:{agent_id}:{family}",
         role=Role(role),
-        goal=f"入职考：判断 {family} 家族快照是否存在漏洞",
+        goal=goals.get(role, f"入职考：判断 {family} 家族快照是否存在漏洞"),
         output_schema_ref=ROLE_OUTPUT_SCHEMA[role],
         tool_bounds=list(ROLE_TOOL_BOUNDS[role]),
         task_bounds=ROLE_TASK_BOUNDS[role],
@@ -250,15 +259,57 @@ def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
     )
 
 
-def _item_blocks(item: SeedItem, resolve_text: SnapshotResolver) -> list[ContextBlock]:
+def _exam_claim(item: SeedItem) -> str:
+    """纸面考预置 claim（reviewer 送审 finding / verifier 预置簇共用；确定性）。
+
+    - 声称家族/类型 ≡ 题库答案键 taxonomy_path（real 面「family 维与答案键家族
+      对齐」由构造侧承载——SPEC-7 §4.2/§4.3 口径，DECISIONS M3 实现期行）；
+    - 雷题（expected=fp）同样形态送审（声称存在漏洞而快照无洞）——评审/验证
+      的拒报面由判分函数消费（fp：REJECT / verified_fp）。"""
+    family = item.taxonomy_path[0]
+    type_ = item.taxonomy_path[1] if len(item.taxonomy_path) > 1 else None
+    return (
+        f"- 声称家族: {family}\n"
+        f"- 声称类型: {type_ if type_ else '（家族级，未细分）'}\n"
+        f"- 标题: 送审报告：该快照存在 {family} 漏洞\n"
+        "- 摘要: 报告者声称下方快照代码存在上述家族漏洞并提交送审；"
+        "请勿默认采信报告者结论，只依据快照代码独立判断。"
+    )
+
+
+def _item_blocks(
+    item: SeedItem,
+    resolve_text: SnapshotResolver,
+    role: str | None = None,
+) -> list[ContextBlock]:
     """单题数据块（§3.2）：题面头（item_id、lang、一句话）+ 快照文件按
-    snapshot_files 顺序注入；题面不给 family/type（S4）。题号标注在数据块首行。"""
+    snapshot_files 顺序注入；题号标注在数据块首行。M3 补播（SPEC-7 §4.1）：
+    reviewer 追加送审 finding 块；verifier 追加预置簇证据链块（纸面考试，
+    无沙箱执行——D29）。"""
+    heads = {
+        "scout": "判断以下快照是否存在漏洞",
+        "auditor": "判断以下快照是否存在漏洞",
+        "reviewer": "以下为送审 finding 与快照材料，独立评审并投票",
+        "verifier": "以下为预置簇证据链与快照材料，给出三分类复现结论",
+    }
     head = (
         f"item_id: {item.item_id}\n"
         f"lang: {item.lang}\n"
-        "判断以下快照是否存在漏洞"
+        f"{heads.get(role or 'scout', heads['scout'])}"
     )
     blocks = [ContextBlock(ref=item.repo_snapshot_ref, content=head)]
+    if role in ("reviewer", "verifier"):
+        cluster_note = (
+            "\n- 簇构成: C-EXAM（单成员 = 上述送审 finding，同快照同家族）"
+            if role == "verifier"
+            else ""
+        )
+        blocks.append(
+            ContextBlock(
+                ref=f"artifact://exam/{item.item_id}/staged-finding",
+                content=_exam_claim(item) + cluster_note,
+            )
+        )
     for name in item.snapshot_files:
         blocks.append(
             ContextBlock(
@@ -371,7 +422,7 @@ def run_entry_cell(
                                 messages=render_exam(
                                     role,
                                     contract=contract,
-                                    blocks=_item_blocks(item, resolve_text),
+                                    blocks=_item_blocks(item, resolve_text, role=role),
                                 ),
                                 temperature=EXAM_TEMPERATURE,
                             )

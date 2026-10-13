@@ -39,6 +39,7 @@ from qswarm.contracts import PoolClass, load_taxonomy
 from qswarm.kernel import KernelLedger, WallClock, agg_cells, iso_utc
 from qswarm.prompts import CONTRACT_VERSION
 from qswarm.supply import CandidateAdapter, ModelsConfig, UrllibAdapter, load_models
+from qswarm.supply.config import ROLE_TIER
 
 from .bank import SeedBank
 from .paper import ENTRY_ITEMS
@@ -312,9 +313,23 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--store-dir", default=None, help="内容寻址工件库根目录（缺省 <out>/store）")
     parser.add_argument("--cache-dir", default=None, help="响应缓存目录（缺省 <out>/cache）")
     parser.add_argument("--seed", type=int, default=0, help="出卷主种子（缺省 0）")
+    parser.add_argument(
+        "--roles", default=None,
+        help="播种角色逗号清单（M3，SPEC-7 §4：如 'reviewer,verifier' 补播；"
+             "缺省 scout,auditor 既有行为零扰动）",
+    )
     parser.add_argument("--replay", action="store_true", help="缓存重放模式（不经网络，S9）")
     parser.add_argument("--cache", default=None, help="replay 缓存目录（--replay 时必填）")
     args = parser.parse_args(argv)
+
+    roles: tuple[str, ...] | None = None
+    if args.roles is not None:
+        roles = tuple(r.strip() for r in args.roles.split(",") if r.strip())
+        bad = [r for r in roles if r not in ROLE_TIER]
+        if not roles or bad:
+            raise SystemExit(
+                f"--roles 越词表：{bad}（合法值：{sorted(ROLE_TIER)}）"
+            )
 
     out_dir = Path(args.out)
     store_dir = Path(args.store_dir) if args.store_dir else out_dir / "store"
@@ -331,7 +346,8 @@ def main(argv: list[str] | None = None) -> int:
             resolve = SnapshotStore(ledger, store_dir, Path(args.bank).parent).resolver()
             report = seed_entry(
                 ledger, bank, models, adapter,
-                seed=args.seed, cache_dir=Path(args.cache),
+                seed=args.seed, roles=roles if roles is not None else SEEDING_ROLES,
+                cache_dir=Path(args.cache),
                 resolve_text=resolve, out_dir=out_dir,
             )
         else:
@@ -340,7 +356,8 @@ def main(argv: list[str] | None = None) -> int:
             resolve = SnapshotStore(ledger, store_dir, Path(args.bank).parent).resolver()
             report = seed_entry(
                 ledger, bank, models, adapter,
-                seed=args.seed, cache_dir=cache_dir,
+                seed=args.seed, roles=roles if roles is not None else SEEDING_ROLES,
+                cache_dir=cache_dir,
                 resolve_text=resolve, out_dir=out_dir,
             )
         totals = report["totals"]

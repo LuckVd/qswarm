@@ -1,0 +1,156 @@
+# semgrep_rules.yaml —— 通道 C 家族规则包 v1（SPEC-7 §1.4/D30 必选件）。
+#
+# 规则 → 家族映射：每条规则 metadata.family ∈ taxonomy 六家族（channels 层消费），
+# check_id 命名 qsw.<family>.<name>（metadata 缺失时的反查回退）。
+# v1 规则面：模式级 sink/危险调用命中——命中仅提升候选优先级、不是准入条件
+# （L0 红线），误报由 L1 侦察蜂初筛消费；允许扩充不收缩（同 clues 词表纪律）。
+rules:
+  # ── injection ────────────────────────────────────────────────
+  - id: qsw.injection.os-system
+    message: os.system 调用（潜在命令注入 sink）
+    severity: WARNING
+    languages: [python]
+    metadata: {family: injection}
+    patterns:
+      - pattern: os.system(...)
+  - id: qsw.injection.subprocess-shell
+    message: subprocess shell=True 调用（命令注入 sink）
+    severity: WARNING
+    languages: [python]
+    metadata: {family: injection}
+    patterns:
+      - pattern: subprocess.$F(..., shell=True, ...)
+  - id: qsw.injection.eval-exec-py
+    message: eval/exec 动态求值（python 注入 sink）
+    severity: WARNING
+    languages: [python]
+    metadata: {family: injection}
+    patterns:
+      - pattern-either:
+          - pattern: eval(...)
+          - pattern: exec(...)
+  - id: qsw.injection.eval-js
+    message: eval 动态求值（js 注入 sink）
+    severity: WARNING
+    languages: [javascript]
+    metadata: {family: injection}
+    patterns:
+      - pattern: eval(...)
+  - id: qsw.injection.runtime-exec
+    message: Runtime.exec 系统命令执行（java 注入 sink）
+    severity: WARNING
+    languages: [java]
+    metadata: {family: injection}
+    patterns:
+      - pattern-either:
+          - pattern: Runtime.getRuntime().exec(...)
+          - pattern: new ProcessBuilder(...)
+  - id: qsw.injection.c-exec-family
+    message: C 执行族调用（system/popen/execl sink）
+    severity: WARNING
+    languages: [c, cpp]
+    metadata: {family: injection}
+    patterns:
+      - pattern-either:
+          - pattern: system(...)
+          - pattern: popen(...)
+          - pattern: execl(...)
+          - pattern: execv(...)
+  # ── deser ────────────────────────────────────────────────────
+  - id: qsw.deser.pickle-loads
+    message: pickle 反序列化入口（不可信数据反序列化 sink）
+    severity: WARNING
+    languages: [python]
+    metadata: {family: deser}
+    patterns:
+      - pattern-either:
+          - pattern: pickle.loads(...)
+          - pattern: pickle.load(...)
+  - id: qsw.deser.java-readobject
+    message: Java ObjectInputStream.readObject 反序列化入口
+    severity: WARNING
+    languages: [java]
+    metadata: {family: deser}
+    patterns:
+      - pattern: $O.readObject()
+  # ── crypto ───────────────────────────────────────────────────
+  - id: qsw.crypto.weak-hash
+    message: 弱哈希算法（MD5/SHA1）
+    severity: WARNING
+    languages: [python, java, go, javascript, c, cpp]
+    metadata: {family: crypto}
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5(...)
+          - pattern: hashlib.sha1(...)
+          - pattern: MessageDigest.getInstance("MD5")
+          - pattern: MessageDigest.getInstance("SHA-1")
+          - pattern: md5.New()
+          - pattern: sha1.New()
+  - id: qsw.crypto.des-ecb
+    message: 弱加密算法（DES/ECB 模式）
+    severity: WARNING
+    languages: [python, java, go]
+    metadata: {family: crypto}
+    patterns:
+      - pattern-either:
+          - pattern: DES.new(...)
+          - pattern: Cipher.getInstance("DES")
+          - pattern: Cipher.getInstance("AES/ECB/...")
+          - pattern: des.NewCipher(...)
+  # ── authz ────────────────────────────────────────────────────
+  - id: qsw.authz.session-flag
+    message: 会话/权限标志位直取（鉴权面候选点）
+    severity: INFO
+    languages: [python, java, go, javascript]
+    metadata: {family: authz}
+    patterns:
+      - pattern-either:
+          - pattern: session["is_admin"]
+          - pattern: session.get("is_admin")
+          - pattern: request.GET.get("admin")
+          - pattern: $REQ.cookies.get("role")
+  # ── config_dep ───────────────────────────────────────────────
+  - id: qsw.config_dep.hardcoded-secret
+    message: 硬编码凭据字面量（secret/password/api_key 赋值）
+    severity: WARNING
+    languages: [python, javascript, go, java]
+    metadata: {family: config_dep}
+    patterns:
+      - pattern-either:
+          - pattern: $SECRET = "..."
+          - pattern: var $SECRET = "..."
+          - pattern: $SECRET := "..."
+      # 收窄到凭据语义名（避免任意字符串变量全量命中）：
+      - metavariable-regex:
+          metavariable: $SECRET
+          regex: (?i).*(password|passwd|secret|api_key|apikey|access_key|token|private_key).*
+  # ── mem_safety ───────────────────────────────────────────────
+  - id: qsw.mem_safety.strcpy
+    message: strcpy 无界拷贝（mem_safety 危险函数）
+    severity: WARNING
+    languages: [c, cpp]
+    metadata: {family: mem_safety}
+    patterns:
+      - pattern: strcpy(...)
+  - id: qsw.mem_safety.gets
+    message: gets 危险函数（缓冲区溢出）
+    severity: ERROR
+    languages: [c, cpp]
+    metadata: {family: mem_safety}
+    patterns:
+      - pattern: gets(...)
+  - id: qsw.mem_safety.sprintf
+    message: sprintf 无界格式化（mem_safety 危险函数）
+    severity: WARNING
+    languages: [c, cpp]
+    metadata: {family: mem_safety}
+    patterns:
+      - pattern: sprintf(...)
+  - id: qsw.mem_safety.strcat
+    message: strcat 无界拼接（mem_safety 危险函数）
+    severity: WARNING
+    languages: [c, cpp]
+    metadata: {family: mem_safety}
+    patterns:
+      - pattern: strcat(...)

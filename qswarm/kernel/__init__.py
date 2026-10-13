@@ -100,6 +100,7 @@ from .dispatch import (
     open_finding,
     open_run,
     re_dispatch,
+    register_candidates,
     submit,
     transition_finding,
 )

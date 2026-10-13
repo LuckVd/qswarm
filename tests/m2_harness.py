@@ -22,6 +22,8 @@ __all__ = [
     "make_resolver",
     "scout_answer",
     "auditor_answer",
+    "reviewer_answer",
+    "verifier_answer",
 ]
 
 T0 = "2030-01-01T00:00:00Z"
@@ -205,6 +207,33 @@ def auditor_answer(item_payload: dict, *, family: str | None = "auto", decline: 
     }
 
 
+def reviewer_answer(item_payload: dict, *, direction: str = "auto") -> dict:
+    """reviewer 产出构造器（M3 纸面考；direction='auto' = real→+1 / fp→-1 满分卷）。"""
+    if direction == "auto":
+        d = 1 if item_payload["expected"] == "real" else -1
+    else:
+        d = int(direction)
+    return {
+        "dim_completeness": 0.8, "dim_reachability": 0.9, "dim_exploitability": 0.7,
+        "dim_fp_suspicion": 0.2, "direction": d, "comment_ref": "artifact://pending",
+    }
+
+
+def verifier_answer(item_payload: dict, *, outcome: str = "auto") -> dict:
+    """verifier 产出构造器（M3 纸面考 D29；outcome='auto' = real→verified_real /
+    fp→verified_fp 满分卷）。"""
+    if outcome == "auto":
+        oc = "verified_real" if item_payload["expected"] == "real" else "verified_fp"
+    else:
+        oc = outcome
+    return {
+        "cluster_id": "C-EXAM", "outcome": oc, "env_base": "paper",
+        "deps_ref": "artifact://pending", "trigger_path": [], "assertions": [],
+        "blocking": None, "error_kind": None, "attempts": 1, "duration_s": 0.0,
+        "logs_ref": "artifact://pending",
+    }
+
+
 class FakeAdapter:
     """脚本化 CandidateAdapter：按 (model_ref, item_id) → 响应或异常。
 
@@ -225,14 +254,24 @@ class FakeAdapter:
 
     @staticmethod
     def _role(model_ref: str) -> str:
-        return "scout" if model_ref.startswith("cheap:") else (
-            "auditor" if model_ref.startswith("strong:") else model_ref.split(":")[0]
-        )
+        if model_ref.startswith("cheap:"):
+            return "scout"
+        if model_ref.startswith("strong:"):
+            return "auditor"
+        if model_ref.startswith("mid:"):
+            return "reviewer"
+        if model_ref.startswith("engineering:"):
+            return "verifier"
+        return model_ref.split(":")[0]
 
     def ace_response(self, model_ref: str, item_id: str, payload: dict) -> str:
         role = self._role(model_ref)
         if role == "scout":
             out = scout_answer(payload)
+        elif role == "reviewer":
+            out = reviewer_answer(payload)
+        elif role == "verifier":
+            out = verifier_answer(payload)
         else:
             out = auditor_answer(payload)
         answer = {"item_id": item_id, "declined": out is None, "output": out}

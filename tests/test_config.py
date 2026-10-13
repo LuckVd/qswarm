@@ -99,9 +99,9 @@ def test_v2_final_knob_pinned(key, expected):
 def test_v2_final_knob_pins_cover_every_yaml_key():
     """钉值表与 yaml 键集逐节相等：params.yaml 每个既有键都必须被钉住。"""
     data = load_params().model_dump()
-    assert set(V2_FINAL_KNOBS) == set(data), (
-        f"节集不一致：缺钉 {sorted(set(data) - set(V2_FINAL_KNOBS))} / "
-        f"多钉 {sorted(set(V2_FINAL_KNOBS) - set(data))}"
+    assert set(ALL_PINNED_KNOBS) == set(data), (
+        f"节集不一致：缺钉 {sorted(set(data) - set(ALL_PINNED_KNOBS))} / "
+        f"多钉 {sorted(set(ALL_PINNED_KNOBS) - set(data))}"
     )
     for section, fields in data.items():
         pinned = set(ALL_PINNED_KNOBS[section])
@@ -122,10 +122,57 @@ M1_FINAL_KNOBS: dict[str, dict[str, object]] = {
     "budget": {"FAST_CENTS": 2, "COST_PER_L2_CENTS": 5, "COST_PER_S2_CENTS": 10},
 }
 
+# ── M3 感知层新旋钮逐键钉值（SPEC-7 §6；实现子任务回填，DECISIONS M3 行）──────
+# perception 节 7 键，缺省=规格逐字值；嵌套节面与 SPEC-7 §6 表逐字对应。
+
+M3_FINAL_KNOBS: dict[str, dict[str, object]] = {
+    "perception": {
+        "model": {"enabled": True},
+        "rules": {"enabled": True, "timeout_s": 120},
+        "l0": {"max_file_lines": 800},
+        "l1": {"fast_top_k": 3, "files_per_shard": 20},
+        "scan": {"rescan_sample_frac": 0.05},
+    },
+}
+
 ALL_PINNED_KNOBS: dict[str, dict[str, object]] = {
-    section: {**pins, **M1_FINAL_KNOBS.get(section, {})}
+    section: {**pins, **M1_FINAL_KNOBS.get(section, {}), **M3_FINAL_KNOBS.get(section, {})}
     for section, pins in V2_FINAL_KNOBS.items()
 }
+# M3 新节（V2 无此节，推导式不含）：perception 整节并入钉值对账面。
+for _section, _pins in M3_FINAL_KNOBS.items():
+    ALL_PINNED_KNOBS.setdefault(_section, dict(_pins))
+
+
+def test_m3_perception_knobs_pinned():
+    """M3 perception 节 7 键逐键钉值（SPEC-7 §6 回填；extra=forbid 由根模型管）。"""
+    p = load_params().perception
+    assert p.model.enabled is True                       # 通道 B 开（D26 侦察蜂兼任）
+    assert p.rules.enabled is True                       # semgrep 必选件缺省开（D30）
+    assert p.rules.timeout_s == 120
+    assert p.l0.max_file_lines == 800                    # 通道 B 单片行上限
+    assert p.l1.fast_top_k == 3                          # fast 档 Top-3（§2.2）
+    assert p.l1.files_per_shard == 20                    # L1 分片（§5.3）
+    assert p.scan.rescan_sample_frac == pytest.approx(0.05)
+
+
+def test_params_perception_section_optional_with_spec_defaults():
+    """黄金兼容面：无 perception 节的旧参数集回落规格缺省（golden manifest_params
+    用旧参数校验全模型，缺键必须回落——BudgetParams 同款纪律）。"""
+    data = _params_dict()
+    data.pop("perception")
+    params = ParamsConfig.model_validate(data)
+    assert params.perception.l1.fast_top_k == 3          # 缺节 → 规格缺省
+    assert params.perception.rules.enabled is True
+    assert params.perception.l0.max_file_lines == 800
+
+
+def test_params_perception_extra_forbidden():
+    """perception 节越键拒绝（extra=forbid 纪律，M3 卷 B 组判据）。"""
+    data = _params_dict()
+    data["perception"]["rogue_knob"] = 1
+    with pytest.raises(ValidationError):
+        ParamsConfig.model_validate(data)
 
 
 @pytest.mark.parametrize(

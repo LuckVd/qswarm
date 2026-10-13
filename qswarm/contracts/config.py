@@ -181,6 +181,58 @@ class RosterParams(BaseModel):
     verifier: int = Field(ge=0)
 
 
+# ── perception 节（SPEC-7 §6 新旋钮清单；M3 回填）────────────────
+# 全部带缺省 = 规格逐字值（「缺省关闭/缺省值=规格逐字」纪律同 BudgetParams）：
+# 旧参数集（黄金 manifest_params()）无本节时回落缺省，黄金 digest 逐位不变。
+# 嵌套键面与 SPEC-7 §6 表逐字对应：perception.model.enabled /
+# perception.rules.{enabled,timeout_s} / perception.l0.max_file_lines /
+# perception.l1.{fast_top_k,files_per_shard} / perception.scan.rescan_sample_frac。
+
+class PerceptionModelParams(BaseModel):
+    """通道 B（模型直扫）开关。执行者 = 侦察蜂兼任（SPEC-7 §1.3/D26）。"""
+
+    enabled: bool = True
+
+
+class PerceptionRulesParams(BaseModel):
+    """通道 C（semgrep 规则）参数。必选件（D30）：enabled 缺省开、门禁实跑判据；
+    运行期单次超时/故障 → 该轮通道缺席计数，漏斗不停摆（SPEC-7 §1.4 红线）。"""
+
+    enabled: bool = True
+    timeout_s: int = Field(default=120, gt=0)
+
+
+class PerceptionL0Params(BaseModel):
+    """L0 通道 B 分片参数：单片行上限（超长按函数边界切）。"""
+
+    max_file_lines: int = Field(default=800, ge=1)
+
+
+class PerceptionL1Params(BaseModel):
+    """L1 侦察参数：fast 档候选数（§2.2 档位表 Top-3）与分片大小。"""
+
+    fast_top_k: int = Field(default=3, ge=1)
+    files_per_shard: int = Field(default=20, ge=1)
+
+
+class PerceptionScanParams(BaseModel):
+    """周期重扫抽样率（§16.7-4；SPEC-7 §6 v1 只落开关，重扫调度随后续里程碑）。"""
+
+    rescan_sample_frac: float = Field(default=0.05, ge=0, le=1)
+
+
+class PerceptionParams(BaseModel):
+    """感知层旋钮根（SPEC-7 §6；extra=forbid 纪律同根模型）。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    model: PerceptionModelParams = PerceptionModelParams()
+    rules: PerceptionRulesParams = PerceptionRulesParams()
+    l0: PerceptionL0Params = PerceptionL0Params()
+    l1: PerceptionL1Params = PerceptionL1Params()
+    scan: PerceptionScanParams = PerceptionScanParams()
+
+
 class ParamsConfig(BaseModel):
     """params.yaml 根模型。初值见 configs/params.yaml（=设计默认）。"""
 
@@ -197,6 +249,7 @@ class ParamsConfig(BaseModel):
     deposits: DepositsParams
     panel: PanelParams
     roster: RosterParams
+    perception: PerceptionParams = PerceptionParams()
 
 
 # ── taxonomy.yaml（§5.3）────────────────────────────────────────

@@ -86,16 +86,71 @@ def test_judge_auditor_matrix():
     assert judge_answer(FP, "auditor", None) is True                               # declined=正确拒报
     assert judge_answer(FP, "auditor", finding(fp_payload)) is False
     assert judge_answer(FP, "auditor", finding(fp_payload, family="crypto")) is False
+    # M3 起四考试角色全覆盖（SPEC-7 §4.2）；queen_advisor 不参考仍 NotImplementedError
     with pytest.raises(NotImplementedError):
-        judge_answer(REAL, "reviewer", None)
-    with pytest.raises(NotImplementedError):
-        judge_answer(REAL, "verifier", None)
+        judge_answer(REAL, "queen_advisor", None)
 
 
-def test_judge_rejects_reviewer_verifier():
-    """reviewer/verifier → NotImplementedError（S4：v0 不播种，角色随生产面补播）。"""
-    for role in ("reviewer", "verifier"):
-        with pytest.raises(NotImplementedError, match="scout/auditor"):
+def _reviewer(direction: int):
+    from qswarm.contracts import ReviewerVote
+
+    return ReviewerVote(
+        dim_completeness=0.8, dim_reachability=0.9, dim_exploitability=0.7,
+        dim_fp_suspicion=0.2, direction=direction, comment_ref="artifact://pending",
+    )
+
+
+def _verifier(outcome: str):
+    from qswarm.contracts import VerifierReport
+
+    return VerifierReport(
+        cluster_id="C-EXAM", outcome=outcome, env_base="paper", deps_ref="artifact://pending",
+        trigger_path=[], assertions=[], blocking=None, error_kind=None,
+        attempts=1, duration_s=0.0, logs_ref="artifact://pending",
+    )
+
+
+def test_judge_reviewer():
+    """M3 卷 §1.6：ENDORSE/REJECT × real/fp 四象限 + 弃权方向双侧判错 +
+    parsed=None 判错（评审蜂必须表态）。
+
+    「多维意见中 family 维与答案键家族对齐（与 auditor 同口径）」由卷面构造侧
+    承载——real 面预置 finding 声称家族 ≡ 答案键家族（runner._exam_claim 构造即
+    对齐）；ReviewerVote 输出契约无 family 字段（词表不改），判分以 direction
+    承载 ENDORSE/REJECT（DECISIONS M3 实现期行）。"""
+    # real：ENDORSE(+1)=对；REJECT(-1)/弃权(0)=错
+    assert judge_answer(REAL, "reviewer", _reviewer(1)) is True
+    assert judge_answer(REAL, "reviewer", _reviewer(-1)) is False
+    assert judge_answer(REAL, "reviewer", _reviewer(0)) is False       # 表态弃权≠判对
+    assert judge_answer(REAL, "reviewer", None) is False               # parsed=None=判错
+    # fp：REJECT(-1)=对；ENDORSE(+1)/弃权(0)=错
+    assert judge_answer(FP, "reviewer", _reviewer(-1)) is True
+    assert judge_answer(FP, "reviewer", _reviewer(1)) is False
+    assert judge_answer(FP, "reviewer", _reviewer(0)) is False
+    assert judge_answer(FP, "reviewer", None) is False
+
+
+def test_judge_verifier():
+    """M3 卷 §1.6：CONFIRMED/REFUTED/INCONCLUSIVE 三值——real 簇=verified_real、
+    fp 簇=verified_fp、verify_error 恒判错（弃权恒判错——区分能力与弃权是
+    §8.1 淘汰机制的根基，SPEC-7 §4.2 逐字）；parsed=None 判错。"""
+    # real 簇
+    assert judge_answer(REAL, "verifier", _verifier("verified_real")) is True
+    assert judge_answer(REAL, "verifier", _verifier("verified_fp")) is False
+    assert judge_answer(REAL, "verifier", _verifier("verify_error")) is False   # INCONCLUSIVE 恒判错
+    assert judge_answer(REAL, "verifier", None) is False
+    # fp 簇
+    assert judge_answer(FP, "verifier", _verifier("verified_fp")) is True
+    assert judge_answer(FP, "verifier", _verifier("verified_real")) is False
+    assert judge_answer(FP, "verifier", _verifier("verify_error")) is False
+    assert judge_answer(FP, "verifier", None) is False
+
+
+def test_judge_rejects_unknown_role():
+    """未知角色 → NotImplementedError（queen_advisor 不参考，SPEC-3 §6；
+    M3 起四考试角色全覆盖，词表外仍拒绝）。"""
+    for role in ("queen_advisor", "unknown"):
+        with pytest.raises(NotImplementedError, match="四考试角色"):
             judge_answer(REAL, role, None)
 
 

@@ -20,7 +20,13 @@ from qswarm.kernel import KernelLedger, iso_utc, transaction
 from qswarm.prompts import CONTRACT_VERSION
 from qswarm.supply import ROLE_TIER, ModelsConfig
 
-__all__ = ["Candidate", "expand_candidates", "register_roster", "apply_qc_decision"]
+__all__ = [
+    "Candidate",
+    "expand_candidates",
+    "import_roster_rows",
+    "register_roster",
+    "apply_qc_decision",
+]
 
 
 @dataclass(frozen=True)
@@ -114,6 +120,61 @@ def register_roster(
             )
             registered.append(cand.agent_id)
     return registered
+
+
+def import_roster_rows(
+    ledger: KernelLedger,
+    *,
+    agents: list[tuple],
+    hats: list[tuple],
+) -> tuple[int, int]:
+    """agents/hats 全字段逐字导入（D28 生产账本引导；SPEC-7 §3.1）。
+
+    agents/hats 两表唯一写口仍在本模块（SPEC-2 §6.1 + M2 写口表扩展纪律）——
+    生产账本的编制导入不得在词表外长出第二写口，故由 kernel.bootstrap（编排）
+    读源库后调本函数落行（DECISIONS M3 实现期行）。
+
+    - ``agents`` 行形 = (agent_id, model_ref, contract_version, status,
+      created_at, last_active_at)；``hats`` 行形 = (agent_id, role, pool_class)；
+    - 幂等：同 id 全字段相等 → 跳过；字段不等 → ValueError（生产账本编制不可
+      被导入静默改写，与 :func:`register_roster` 同口径）；
+    - 返回 (agents_imported, agents_skipped)。"""
+    imported = skipped = 0
+    with transaction(ledger):
+        for agent_id, model_ref, cv, status, created_at, last_active_at in agents:
+            row = ledger.conn.execute(
+                "SELECT model_ref, contract_version, status, created_at,"
+                " last_active_at FROM agents WHERE agent_id = ?",
+                (agent_id,),
+            ).fetchone()
+            if row is not None:
+                same = (
+                    str(row[0]) == model_ref
+                    and str(row[1]) == cv
+                    and str(row[2]) == status
+                    and str(row[3]) == created_at
+                    and (row[4] == last_active_at
+                         or (row[4] is None and last_active_at is None))
+                )
+                if not same:
+                    raise ValueError(
+                        f"编制身份冲突：agent {agent_id!r} 已在生产账本且字段不等"
+                        "（人工介入——生产账本编制不可被导入静默改写）"
+                    )
+                skipped += 1
+                continue
+            ledger.conn.execute(
+                "INSERT INTO agents (agent_id, model_ref, contract_version, status,"
+                " created_at, last_active_at) VALUES (?, ?, ?, ?, ?, ?)",
+                (agent_id, model_ref, cv, status, created_at, last_active_at),
+            )
+            imported += 1
+        for agent_id, role, pool_class in hats:
+            ledger.conn.execute(
+                "INSERT OR IGNORE INTO hats (agent_id, role, pool_class) VALUES (?, ?, ?)",
+                (agent_id, role, pool_class),
+            )
+    return imported, skipped
 
 
 def apply_qc_decision(ledger: KernelLedger, agent_id: str, *, passed: bool) -> None:
