@@ -1,0 +1,40 @@
+# models.zhipu-flash.yaml —— 全 flash 编制供给配置（2026-10-19，负责人指令「全部用
+# GLM5.3flash」）。与 configs/models.zhipu.yaml 同构；差异仅档位模型名：
+# - strong/mid/engineering 三档直书 glm-5.3-flash（不再请求旗舰 glm-5.3——
+#   探针 out/m4-seeding-rv/probe_results.json 实测 glm-5.3 由旗舰服务）；
+# - cheap 档保留 glm-4.5-air / glm-4.6 请求名：Coding Plan 路由实测二者均由
+#   glm-5.3-flash 服务（同日探针），保留原请求名使 v03 血统的
+#   cheap:zhipu/glm-4.5-air@cv1 / cheap:zhipu/glm-4.6@cv1 身份可继续调用；
+# - 全链任意请求的实际服务模型 = glm-5.3-flash（无旗舰调用）。
+# 连带效应（D31 面板异构性收窄）：同族请求名下 SERVED_MODEL 全同 → 面板
+# diversity=1 → s1_factor=0.6（D32 公式 ×0.6 档）——记 DECISIONS 同日行。
+# 思考型运行点与 QC 线沿袭 2026-10-12 钉值（thinking enabled 全档 / 32K / 600s）。
+
+tiers:
+  cheap:
+    primary:   {provider: zhipu, model: glm-4.5-air, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks:
+      - {provider: zhipu, model: glm-4.6, api_key_env: QSWARM_KEY_ZHIPU}
+  strong:
+    primary:   {provider: zhipu, model: glm-5.3-flash, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks: []
+  mid:
+    primary:   {provider: zhipu, model: glm-5.3-flash, api_key_env: QSWARM_KEY_ZHIPU}
+    fallbacks: []
+  engineering:
+    primary:   {provider: zhipu, model: glm-5.3-flash, api_key_env: QSWARM_KEY_ZHIPU}
+
+entry_exams:
+  cheap:       {min_pass: 0.8, families: all}
+  strong:      {min_pass: 0.8, families: all}
+  mid:         {min_pass: 0.8, families: all}
+  engineering: {min_pass: 0.8, families: all}
+
+runtime:
+  rpm_limit: 600
+  tpm_limit: 4000000
+  batch_mode_for_full: true
+  production_temp: 0.2
+  exam_max_output_tokens: 32768
+  exam_timeout_s: 600
+  thinking: {cheap: enabled, strong: enabled, mid: enabled, engineering: enabled}

@@ -30,31 +30,31 @@ public class BenchmarkTest00001 extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    @vb6e9e8
-    public void doGet(HttpServletRequest request, HttpServletResponse vdcbff8)
+    @Override
+    public void doGet(HttpServletRequest vff7f3c, HttpServletResponse response)
             throws ServletException, IOException {
-        vdcbff8.setContentType("text/html;charset=UTF-8");
+        response.setContentType("v782811/html;charset=UTF-8");
         javax.servlet.http.Cookie userCookie =
                 new javax.servlet.http.Cookie("BenchmarkTest00001", "FileName");
         userCookie.setMaxAge(60 * 3); // Store cookie for 3 minutes
         userCookie.setHttpOnly(true);
         userCookie.setSecure(true);
-        userCookie.setPath(request.getRequestURI());
-        userCookie.setDomain(new java.net.URL(request.getRequestURL().toString()).getHost());
-        vdcbff8.addCookie(userCookie);
+        userCookie.setPath(vff7f3c.getRequestURI());
+        userCookie.setDomain(new java.net.URL(vff7f3c.getRequestURL().toString()).getHost());
+        response.addCookie(userCookie);
         javax.servlet.RequestDispatcher rd =
 // qsw-canary-SEED-0060-9efc7837
-                request.getRequestDispatcher("/pathtraver-00/BenchmarkTest00001.html");
-        rd.include(request, vdcbff8);
+                vff7f3c.getRequestDispatcher("/pathtraver-00/BenchmarkTest00001.html");
+        rd.include(vff7f3c, response);
     }
 
-    @vb6e9e8
-    public void doPost(HttpServletRequest request, HttpServletResponse vdcbff8)
+    @Override
+    public void doPost(HttpServletRequest vff7f3c, HttpServletResponse response)
             throws ServletException, IOException {
         // some code
-        vdcbff8.setContentType("text/html;charset=UTF-8");
+        response.setContentType("v782811/html;charset=UTF-8");
 
-        javax.servlet.http.Cookie[] theCookies = request.getCookies();
+        javax.servlet.http.Cookie[] theCookies = vff7f3c.getCookies();
 
         String param = "noCookieValueSupplied";
         if (theCookies != null) {
@@ -76,7 +76,7 @@ if (false) { /* dead */ }
             fis = new java.io.FileInputStream(new java.io.File(fileName));
             byte[] b = new byte[1000];
             int size = fis.read(b);
-            vdcbff8.getWriter()
+            response.getWriter()
                     .println(
                             "The beginning of file: '"
                                     + org.owasp.esapi.ESAPI.encoder().encodeForHTML(fileName)
@@ -88,7 +88,7 @@ if (false) { /* dead */ }
                                             .encodeForHTML(new String(b, 0, size)));
         } catch (Exception e) {
             System.out.println("Couldn't open FileInputStream on file: '" + fileName + "'");
-            vdcbff8.getWriter()
+            response.getWriter()
                     .println(
                             "Problem getting FileInputStream: "
                                     + org.owasp

@@ -2,7 +2,7 @@
 /* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81_bad.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
-v8dcf47 File: sources-v8cac35-81_bad.tmpl.cpp
+Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
@@ -26,7 +26,7 @@ using namespace std;
 namespace CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81
 {
 
-void CWE23_Relative_Path_Traversal__wchar_t_environment_ifstream_81_bad::action(wchar_t * data) const
+void v9a0082::v218593(wchar_t * data) const
 {
 
 if (0) { /* dead */ } 

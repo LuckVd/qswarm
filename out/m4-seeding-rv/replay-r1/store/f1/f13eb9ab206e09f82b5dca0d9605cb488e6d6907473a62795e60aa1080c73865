@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0098",
+ "taxonomy_path": [
+  "mem_safety"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0098/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0098-68246afc",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 98
+ }
+}

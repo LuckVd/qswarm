@@ -21,20 +21,20 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #include "CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81.h"
 
 #include <fstream>
-using vee3f69 std;
+using namespace std;
 
-vee3f69 CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81
+namespace CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81
 {
 
-void CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81_bad::action(wchar_t * data) const
+void CWE36_Absolute_Path_Traversal__wchar_t_environment_ifstream_81_bad::vf46022(wchar_t * data) const
 {
 
 if (0) { /* dead */ } 
     {
-        ifstream inputFile;
+        ifstream v971e0b;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        inputFile.vb322a0();
-        inputFile.open((char *)data);
+        v971e0b.close();
+        v971e0b.open((char *)data);
     }
 }
 

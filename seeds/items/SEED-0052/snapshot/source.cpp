@@ -2,7 +2,7 @@
 /* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_bad.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
-Template File: sources-v15c78f-81_bad.tmpl.cpp
+Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
@@ -21,11 +21,11 @@ Template File: sources-v15c78f-81_bad.tmpl.cpp
 
 #include <windows.h>
 
-v7a8a47 CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81
+namespace v28b68b
 // qsw-canary-SEED-0052-21b7b076
 {
 
-void CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_bad::action(char * data) const
+void CWE23_Relative_Path_Traversal__char_listen_socket_w32CreateFile_81_bad::vabc4de(char * data) const
 {
     {
         HANDLE hFile;

@@ -9,6 +9,7 @@
 #
 # 构建器在 scripts/build_seeds/（无包结构），测试以路径注入导入。
 
+import re
 import sys
 from pathlib import Path
 
@@ -214,6 +215,93 @@ class TestV03RetireAndQuota:
             assert q["cve"] + q["jo_real"] == real, f"{fam} real 拆分不符"
             assert q["fp"] == fp, f"{fam} fp 不符"
 
-    def test_bank_version_bumped_to_2(self):
-        """v0.3 重建 bank_version=2：出卷 derive_seed 含 bank_version，不换版本不换卷。"""
-        assert build.BANK_VERSION == 2
+    def test_bank_version_bumped_to_3(self):
+        """v0.4 重建 bank_version=3：出卷 derive_seed 含 bank_version，不换版本不换卷。"""
+        assert build.BANK_VERSION == 3
+
+
+class TestV04AuditFixes:
+    """v0.4 变异引擎审计修复（2026-10-20，DECISIONS 同日行）：
+    rename 不可变异掩码 + 全大写宏/标准 API 保护 + 语法门禁 + sink 污点断言。"""
+
+    NOISY_FIXTURE = """/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE36_Absolute_Path_Traversal__char_listen_socket_open_81_bad.cpp
+*/
+#ifndef OMITBAD
+#include "std_testcase.h"
+#include "v5e8df2.h"
+using namespace std;
+namespace CWE36_Absolute_Path_Traversal__char_listen_socket_open_81
+{
+void CWE36_Absolute_Path_Traversal__char_listen_socket_open_81_bad::action(char * data) const
+{
+    {
+        int fd = OPEN(data, O_RDWR|O_CREAT, S_IREAD|S_IWRITE);
+        if (fd != -1)
+        {
+            close(fd);
+        }
+    }
+}
+}
+#endif
+"""
+
+    def test_rename_keeps_keywords_and_macros(self):
+        """namespace/using/NULL/O_* 等不可改名：变异后关键词行保持原文。"""
+        out = build.mutate_code(self.NOISY_FIXTURE, family="authz", seed=59, lang="c")
+        assert "using namespace std;" in out
+        assert "OPEN(data" in out or "OPEN(" in out
+        assert not re.search(r"v[0-9a-f]{6}\s+namespace", out)
+        assert '#include "std_testcase.h"' in out
+        assert '#include "v5e8df2.h"' in out  # 预处理行不被改名
+        assert "O_RDWR|O_CREAT" in out
+        assert "S_IREAD|S_IWRITE" in out
+
+    def test_nomut_mask_covers_block_comment_interior(self):
+        """块注释内部不以 * 开头的行不再被改名（v0.3 缺口）。"""
+        src = "/*\nFilename: CWE23__char_fopen_81_bad.cpp\n*/\nvoid f(char * data) {\n    fopen(data, \"r\");\n}\n"
+        out = build.mutate_code(src, family="authz", seed=5, lang="c")
+        assert "Filename: CWE23__char_fopen_81_bad.cpp" in out
+
+    def test_syntax_gate_rejects_broken_mutation(self):
+        """语法门禁：新增语法错误的变异被拒，等错/无错放行。"""
+        good = "void f(char * data) {\n    fopen(data, \"r\");\n}\n"
+        broken = "void f(char * data) {\n    v117316 namespace std;\n    fopen(data, \"r\")\n}\n"
+        assert build.syntax_gate(good, good, "c") is True
+        assert build.syntax_gate(good, broken, "c") is False
+
+    def test_taint_sink_live(self):
+        """sink 断言：污点参数在调用实参位 → 放行；不在 → 拒。"""
+        live = 'void f(char * data) {\n    fopen(data, "r");\n}\n'
+        dead = 'void f(char * data) {\n    fopen("etc/passwd", "r");\n}\n'
+        assert build.taint_sink_live(live, "c") is True
+        assert build.taint_sink_live(dead, "c") is False
+
+    def test_mutated_authz_fixture_parses_clean(self):
+        """端到端：NOISY 形态修复件经变异后语法门禁必须放行。"""
+        out = build.mutate_code(self.NOISY_FIXTURE, family="authz", seed=59, lang="c")
+        assert build.syntax_gate(self.NOISY_FIXTURE, out, "c") is True
+        assert build.taint_sink_live(out, "c") is True
+
+
+class TestExamClaimGloss:
+    """v0.4 联调修复：_exam_claim 家族注解（authz 标签错位实验的落地，DECISIONS 同日行）。"""
+
+    def test_authz_claim_carries_gloss(self):
+        from qswarm.exams.runner import _exam_claim
+
+        class _It:
+            taxonomy_path = ["authz"]
+
+        claim = _exam_claim(_It())
+        assert "authz（访问控制与资源暴露类" in claim
+        assert "路径穿越" in claim
+
+    def test_unknown_family_falls_back_bare(self):
+        from qswarm.exams.runner import _exam_claim
+
+        class _It:
+            taxonomy_path = ["mystery"]
+
+        assert "- 声称家族: mystery\n" in _exam_claim(_It())

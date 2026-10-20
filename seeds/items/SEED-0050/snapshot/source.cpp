@@ -29,13 +29,13 @@ Template File: sources-sink-81_bad.tmpl.cpp
 namespace CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81
 {
 
-void CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81_bad::va1590e(char * data) const
+void v53c2a2::action(char * v5d7314) const
 {
     {
-        FILE *pFile = v90a26b;
+        FILE *pFile = NULL;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        pFile = FOPEN(data, "wb+");
-        if (pFile != v90a26b)
+        pFile = FOPEN(v5d7314, "wb+");
+        if (pFile != NULL)
         {
 
 if (0) { /* dead */ } 

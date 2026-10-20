@@ -259,19 +259,37 @@ def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
     )
 
 
+#: 家族注解（v0.4 联调修复，DECISIONS 2026-10-20 行）：裸家族标签与快照具体漏洞
+#: 形态在 LLM 评审视角可错位（实证：authz 族=路径穿越件，claim「存在 authz 漏洞」
+#: 被三蜂一致拒报——同题注入注解后 direction 由 -1 翻 +1，fp_susp 0.9→0.3）。
+#: 注解只展开声称家族的语义面，不改「声称家族 ≡ 答案键」不变量；未知家族回退
+#: 裸标签（零行为变化）。
+_FAMILY_GLOSS = {
+    "injection": "注入类（SQL/命令/代码注入、XSS/SSRF/XXE 等）",
+    "deser": "反序列化类（java_gadget/py_pickle）",
+    "crypto": "密码学误用类（弱算法/硬编码密钥/弱随机）",
+    "authz": "访问控制与资源暴露类（含路径穿越 CWE-22/36、越权、会话缺陷）",
+    "config_dep": "配置与依赖类（密钥泄漏/过期依赖/错误配置）",
+    "mem_safety": "内存安全类（溢出/UAF/双重释放）",
+}
+
+
 def _exam_claim(item: SeedItem) -> str:
     """纸面考预置 claim（reviewer 送审 finding / verifier 预置簇共用；确定性）。
 
     - 声称家族/类型 ≡ 题库答案键 taxonomy_path（real 面「family 维与答案键家族
       对齐」由构造侧承载——SPEC-7 §4.2/§4.3 口径，DECISIONS M3 实现期行）；
+      v0.4 起家族名附 _FAMILY_GLOSS 注解（标签语义面展开，家族 token 不变）；
     - 雷题（expected=fp）同样形态送审（声称存在漏洞而快照无洞）——评审/验证
       的拒报面由判分函数消费（fp：REJECT / verified_fp）。"""
     family = item.taxonomy_path[0]
     type_ = item.taxonomy_path[1] if len(item.taxonomy_path) > 1 else None
+    gloss = _FAMILY_GLOSS.get(family)
+    family_disp = f"{family}（{gloss}）" if gloss else family
     return (
-        f"- 声称家族: {family}\n"
+        f"- 声称家族: {family_disp}\n"
         f"- 声称类型: {type_ if type_ else '（家族级，未细分）'}\n"
-        f"- 标题: 送审报告：该快照存在 {family} 漏洞\n"
+        f"- 标题: 送审报告：该快照存在 {family_disp} 漏洞\n"
         "- 摘要: 报告者声称下方快照代码存在上述家族漏洞并提交送审；"
         "请勿默认采信报告者结论，只依据快照代码独立判断。"
     )

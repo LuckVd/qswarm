@@ -1,0 +1,11 @@
+{
+ "files": [
+  {
+   "name": "source.cpp",
+   "sha256": "ce427a28507a7fe0b78406f93bda8c1dca8407b1e8cfaa9243985f58de076b28",
+   "size": 1293
+  }
+ ],
+ "item_id": "SEED-0055",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0055/"
+}

@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0026",
+ "taxonomy_path": [
+  "injection"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0026/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0026-143eae03",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 26
+ }
+}

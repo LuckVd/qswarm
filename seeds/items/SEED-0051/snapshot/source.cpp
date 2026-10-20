@@ -2,7 +2,7 @@
 /* TEMPLATE GENERATED TESTCASE FILE
 Filename: CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad.cpp
 Label Definition File: CWE23_Relative_Path_Traversal.label.xml
-Template File: sources-vd31a4a-81_bad.tmpl.cpp
+Template File: sources-sink-81_bad.tmpl.cpp
 */
 /*
  * @description
@@ -20,21 +20,21 @@ Template File: sources-vd31a4a-81_bad.tmpl.cpp
 #include "CWE23_Relative_Path_Traversal__char_environment_ofstream_81.h"
 
 #include <fstream>
-v117316 namespace std;
+using namespace std;
 
 namespace CWE23_Relative_Path_Traversal__char_environment_ofstream_81
 {
 
-void CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad::action(char * data) const
+void CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad::action(char * v6767bc) const
 {
 
 if (0) { /* dead */ } 
     {
-        ofstream outputFile;
+        ofstream vf52625;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        outputFile.close();
+        vf52625.close();
 // qsw-canary-SEED-0051-a71b8e41
-        outputFile.open((char *)data);
+        vf52625.open((char *)v6767bc);
     }
 }
 

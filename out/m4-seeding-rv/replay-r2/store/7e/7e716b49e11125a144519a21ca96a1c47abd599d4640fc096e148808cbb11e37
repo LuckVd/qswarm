@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0042",
+ "taxonomy_path": [
+  "crypto"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0042/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "easy",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0042-d449e89b",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 42
+ }
+}

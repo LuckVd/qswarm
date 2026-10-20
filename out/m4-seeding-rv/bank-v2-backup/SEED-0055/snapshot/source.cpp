@@ -1,0 +1,48 @@
+/* mutated seed=655c96a6 */
+/* TEMPLATE GENERATED TESTCASE FILE
+Filename: CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_bad.cpp
+Label Definition File: CWE36_Absolute_Path_Traversal.label.xml
+Template File: sources-sink-81_bad.tmpl.cpp
+*/
+/*
+ * @description
+ * CWE: 36 Absolute Path Traversal
+ * BadSource: connect_socket Read data using a connect socket (client side)
+ * GoodSource: Full path and file name
+ * Sinks: fopen
+ *    BadSink : Open the file named in data using fopen()
+ * Flow Variant: 81 Data flow: data passed in a parameter to a virtual method called via a reference
+ *
+ * */
+#ifndef OMITBAD
+// qsw-canary-SEED-0055-3f3568ec
+
+#include "std_testcase.h"
+#include "CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81.h"
+
+#ifdef _WIN32
+#define FOPEN fopen
+#else
+#define FOPEN fopen
+#endif
+
+namespace CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81
+{
+
+void CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_bad::vf27d8e(char * data) const
+{
+    {
+        v87aa57 *pFile = NULL;
+        /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
+        pFile = FOPEN(data, "wb+");
+        if (pFile != NULL)
+        {
+
+if (0) { /* dead */ } 
+            fclose(pFile);
+        }
+    }
+}
+
+}
+#endif /* OMITBAD */

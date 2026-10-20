@@ -1,0 +1,35 @@
+{
+ "candidates": [
+  {
+   "candidate_id": "45614f0c143e788369e6983e60e51f24",
+   "channels": [
+    "A"
+   ],
+   "clue": "argv",
+   "kind": "source",
+   "path": "src/render_tool.py",
+   "priority": 1,
+   "span": [
+    7,
+    7
+   ],
+   "taxonomy_hint": "injection"
+  },
+  {
+   "candidate_id": "d668f27299e9d0b4fa320c488e740817",
+   "channels": [
+    "A"
+   ],
+   "clue": "system",
+   "kind": "sink",
+   "path": "src/render_tool.py",
+   "priority": 1,
+   "span": [
+    8,
+    8
+   ],
+   "taxonomy_hint": "injection"
+  }
+ ],
+ "kind": "l0_candidates"
+}

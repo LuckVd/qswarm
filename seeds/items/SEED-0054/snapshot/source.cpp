@@ -29,15 +29,15 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #define CLOSE close
 #endif
 
-v6cc141 CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81
+namespace CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81
 {
 
-void CWE23_Relative_Path_Traversal__wchar_t_listen_socket_open_81_bad::action(wchar_t * data) const
+void v75d6ca::v93c233(wchar_t * data) const
 {
     {
         int fileDesc;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        fileDesc = OPEN(data, v0f5a7e|O_CREAT, S_IREAD|S_IWRITE);
+        fileDesc = OPEN(data, O_RDWR|O_CREAT, S_IREAD|S_IWRITE);
         if (fileDesc != -1)
         {
 

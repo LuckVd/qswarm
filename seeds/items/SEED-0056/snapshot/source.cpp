@@ -26,15 +26,15 @@ namespace CWE36_Absolute_Path_Traversal__char_environment_ofstream_81
 {
 // qsw-canary-SEED-0056-b48466fc
 
-void CWE36_Absolute_Path_Traversal__char_environment_ofstream_81_bad::action(char * data) const
+void CWE36_Absolute_Path_Traversal__char_environment_ofstream_81_bad::v00aa72(char * vcaca70) const
 {
 
 if (0) { /* dead */ } 
     {
-        v8d8f7d outputFile;
+        ofstream outputFile;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        outputFile.vde0692();
-        outputFile.open((char *)data);
+        outputFile.close();
+        outputFile.open((char *)vcaca70);
     }
 }
 

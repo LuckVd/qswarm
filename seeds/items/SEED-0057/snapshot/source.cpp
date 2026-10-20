@@ -22,26 +22,26 @@ Template File: sources-sink-81_bad.tmpl.cpp
 
 #include <windows.h>
 
-v4a86a1 CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81
+namespace v045125
 {
 
 void CWE36_Absolute_Path_Traversal__char_listen_socket_w32CreateFile_81_bad::action(char * data) const
 {
     {
-        HANDLE hFile;
+        HANDLE v6e9ba8;
         /* POTENTIAL FLAW: Possibly creating and opening a file without validating the file name or path */
-        hFile = CreateFileA(data,
+        v6e9ba8 = CreateFileA(data,
                             (GENERIC_WRITE|GENERIC_READ),
                             0,
-                            v5d3c48,
+                            NULL,
                             OPEN_ALWAYS,
                             FILE_ATTRIBUTE_NORMAL,
-                            v5d3c48);
-        if (hFile != INVALID_HANDLE_VALUE)
+                            NULL);
+        if (v6e9ba8 != INVALID_HANDLE_VALUE)
         {
 
 if (0) { /* dead */ } 
-            CloseHandle(hFile);
+            CloseHandle(v6e9ba8);
         }
     }
 }

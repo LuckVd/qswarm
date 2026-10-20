@@ -96,7 +96,7 @@ RETIRED_CVES: frozenset[str] = frozenset({
 #: 题库版本（bank.yaml bank_version；bank.py 语义「单调递增，跨版本不可混卷」——
 #: 出卷 derive_seed 含 bank_version，换版本才换卷）。v0.3 重建 = 2（v0.2 = 1）；
 #: 重考必须新 DB（exam_results 幂等键 + deposit_exists 守卫，同库重跑静默复用旧判定）。
-BANK_VERSION = 2
+BANK_VERSION = 3
 
 #: v0.3 家族配额装配（SPEC-6 §1.2 v0.2 表 + v0.3 来源拆分修订）：逐家族
 #: cve_real / jo_real / fp（deser 已退出 v0 题库）。硬约束：cve + jo_real 与 fp 必须
@@ -228,9 +228,45 @@ _KEYWORDS = frozenset(
     import package extends implements final abstract interface enum null true false
     def lambda elif None True False and or not in is pass raise with as yield from
     function var let const async await of typeof instanceof
-    package func chan go defer select map range type var"""
+    package func chan go defer select map range type var
+    namespace using wchar_t char16_t char32_t template typename operator virtual
+    inline explicit mutable friend typeid nullptr decltype noexcept throw
+    boolean byte assert synchronized volatile transient native strictfp
+    Override override"""
     .split()
 )
+
+#: 标准库/系统 API 与常见类型名（rename 热点： Juliet 快照引用头文件符号，改即
+#: 不可编译——v0.4 审计修复，见 DECISIONS 2026-10-20 行）。
+_STD_IDENTS = frozenset(
+    """NULL FILE ofstream ifstream fstream iostream ostream cout cerr cin endl std
+    size_t ssize_t va_list wint_t intptr_t uintptr_t off_t mode_t pid_t
+    fopen freopen fdopen fread fwrite fclose fseek ftell rewind fflush remove rename tmpfile
+    open creat read write close unlink mkdir rmdir stat fstat lseek dup pipe
+    malloc calloc realloc free memcpy memmove memset memcmp
+    strcpy strncpy strcat strncat strcmp strncmp strlen strchr strrchr strstr strtok
+    strdup snprintf sprintf printf fprintf sscanf scanf gets puts getchar putchar
+    CreateFileA CreateFileW ReadFile WriteFile CloseHandle CreateProcessA CreateProcessW
+    GetCurrentProcessId GetModuleFileName OpenProcessToken
+    socket bind listen accept connect recv send recvfrom sendto select closesocket
+    htonl htons ntohl ntohs inet_addr WSAStartup WSACleanup WSAGetLastError
+    InputStream OutputStream FileInputStream FileOutputStream Reader Writer
+    BufferedReader InputStreamReader File FileReader FileWriter
+    String StringBuilder StringBuffer Throwable Exception RuntimeException
+    System Runtime Math Integer Long Boolean Character Double Float
+    HttpServletRequest HttpServletResponse HttpServlet Cookie
+    main argc argv environ""".split()
+)
+
+
+def _unrenameable(w: str) -> bool:
+    """不可改名 token：关键词 / 标准 API / 全大写宏约定（NULL、O_RDWR、S_IWRITE…）。
+
+    v0.4 审计修复：此前仅 _KEYWORDS 排除——宏与头文件符号被改名产生未定义标识符
+    （NULL→v90a26b、S_IREAD→vec2790），快照不可编译，评审蜂合理拒报。"""
+    if w in _KEYWORDS or w in _STD_IDENTS:
+        return True
+    return bool(re.fullmatch(r"[A-Z][A-Z0-9_]*", w))
 
 _IDENT_RE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]{3,})\b")
 _LINE_STMT_RE = re.compile(r"^(\s+)([^;\n{}]+;)\s*$")
@@ -246,6 +282,36 @@ def _is_comment_line(ln: str, lang: str) -> bool:
     if lang == "python":
         return s.startswith("#")
     return s.startswith(("//", "/*", "*", "*/"))
+
+
+def _nomut_mask(lines: list[str], lang: str) -> list[bool]:
+    """逐行「不可变异」掩码（v0.4 审计修复：收集与替换共用同一掩码）。
+
+    覆盖四类（均从保守方向过拦）：
+    ① 行首注释（// /* * */ #，沿 _is_comment_line）；
+    ② 块注释内部行——含不以 * 开头的行（Juliet 头部 `Filename:` 行此前被改名）；
+    ③ 预处理行（#include/#define/#ifndef…）——v0.3 收集跳过而替换不跳，
+       导致 `#include "v5e8df2.h"` 头文件名被改（SEED-0059 实锤）；
+    ④ java/python 的 import/from/package 行。"""
+    mask: list[bool] = []
+    in_block = False
+    for ln in lines:
+        if in_block:
+            mask.append(True)
+            if "*/" in ln:
+                in_block = False
+            continue
+        s = ln.lstrip()
+        if lang == "python":
+            comment = s.startswith(("#", "from ", "import "))
+        else:
+            comment = s.startswith(
+                ("//", "/*", "*", "*/", "#", "import ", "from ", "package ")
+            )
+            if "/*" in ln and "*/" not in ln:
+                in_block = True
+        mask.append(comment)
+    return mask
 
 
 def _func_body_open_lines(lines: list[str]) -> list[int]:
@@ -290,13 +356,16 @@ def mutate_code(text: str, *, family: str, seed: int, lang: str) -> str:
     lines = text.splitlines(keepends=True)
 
     # ① rename ×2：挑 2 个非保护标识符，逐个改名（rename → var_<hex4>）
+    #    v0.4：收集与替换共用 _nomut_mask（块注释内部行/预处理行同拦）；
+    #    候选再过 _unrenameable（关键词/标准 API/全大写宏不可改名）。
+    mask = _nomut_mask(lines, lang)
     idents: list[str] = []
-    for ln in lines:
-        if ln.lstrip().startswith(("#", "//", "import ", "from ", "package ")) or _is_comment_line(ln, lang):
+    for ln, skip in zip(lines, mask):
+        if skip:
             continue
         for m in _IDENT_RE.finditer(ln):
             w = m.group(1)
-            if w not in _KEYWORDS and w not in protected and w not in idents:
+            if w not in idents and not _unrenameable(w) and w not in protected:
                 idents.append(w)
         if len(idents) >= 24:
             break
@@ -304,8 +373,8 @@ def mutate_code(text: str, *, family: str, seed: int, lang: str) -> str:
     for old in idents[:2]:
         new = "v" + f"{derive_seed(seed, 'rename', old):06x}"[-6:]
         lines = [
-            (re.sub(rf"\b{re.escape(old)}\b", new, ln) if not _is_comment_line(ln, lang) else ln)
-            for ln in lines
+            (re.sub(rf"\b{re.escape(old)}\b", new, ln) if not skip else ln)
+            for ln, skip in zip(lines, mask)
         ]
 
     # ② reorder ×1：同缩进相邻语句对交换（语义无关的纯净交换不保证——只交换
@@ -343,6 +412,72 @@ def expected_recheck(text: str, family: str) -> bool:
     """固定规则集复核：家族签名 token ≥1 在位（变异不得改变真/雷属性，§2）。"""
     tokens = FAMILY_SIGNATURES.get(family, ())
     return any(t in text for t in tokens)
+
+
+# ── v0.4 变异门禁（2026-10-20 authz 审计修复：DECISIONS 同日行）─────────────
+
+
+def _ts_errors(text: str, lang: str) -> int | None:
+    """tree-sitter 语法错误计数（ERROR 节点 + missing token）；门禁缺席返回 None。"""
+    try:
+        from tree_sitter import Language, Parser
+        import tree_sitter_c
+        import tree_sitter_cpp
+        import tree_sitter_java
+        import tree_sitter_python
+    except ImportError:
+        return None
+    mod = {
+        "c": tree_sitter_c, "cpp": tree_sitter_cpp,
+        "java": tree_sitter_java, "python": tree_sitter_python,
+    }.get(lang)
+    if mod is None:
+        return None
+    parser = Parser(Language(mod.language()))
+    tree = parser.parse(text.encode("utf-8"))
+    count = 0
+    stack = [tree.root_node]
+    while stack:
+        node = stack.pop()
+        if node.type == "ERROR" or node.is_missing:
+            count += 1
+        stack.extend(node.children)
+    return count
+
+
+def syntax_gate(original: str, mutated: str, lang: str) -> bool:
+    """语法门禁：变异不得新增语法错误（tree-sitter ERROR/missing 基线 diff）。
+
+    v0.4 审计修复③：rename 打坏关键字/宏/include（`v117316 namespace std;`、
+    `#include "v5e8df2.h"`）后全管线无任何编译面检查——不可编译快照直接入题。
+    门禁缺席（tree-sitter 未装）→ 放行并打印告警（构建环境 venv 必装，缺席属
+    异常态，由调用方日志暴露）。"""
+    a, b = _ts_errors(original, lang), _ts_errors(mutated, lang)
+    if a is None or b is None:
+        print("  [warn] 语法门禁缺席（tree-sitter 未装）——该批变异未经语法校验")
+        return True
+    return b <= a
+
+
+def taint_sink_live(text: str, lang: str) -> bool:
+    """污点→sink 断言（v0.4 审计修复④）：签名污点参数必须仍出现在至少一个
+    调用实参位。c/cpp 取签名指针参数、java 取 String 引用参数做调用位匹配；
+    java 多跳流（request→getParameter→…→sink）参数不直连 sink，回落
+    taint_param_live（取材面既有校验）判活。无匹配签名形态同样回落。"""
+    if not taint_param_live(text):
+        return False
+    if lang not in ("c", "cpp"):
+        return True
+    matched_sig = False
+    for m in re.finditer(
+        r"[(,]\s*(?:const\s+)?(?:unsigned\s+)?[A-Za-z_]\w*(?:\s*\*)+\s*([A-Za-z_]\w*)\s*(?=[,)])",
+        text,
+    ):
+        matched_sig = True
+        p = m.group(1)
+        if re.search(rf"\([^;()]{{0,300}}\b{re.escape(p)}\b", text):
+            return True
+    return True if not matched_sig else False
 
 
 # ── 取材面 taint 存活校验（v0.3，2026-10-12 答案键缺陷修复）────────────────
@@ -911,6 +1046,10 @@ def build_bank(out: Path, cache: Path, *, offline: bool, family_quota_only: bool
                 print(f"  [drop] expected 复核未过：{rec['origin']}")
                 seq -= 1
                 continue
+            if not syntax_gate(rec["text"], mutated, rec["lang"]) or not taint_sink_live(mutated, rec["lang"]):
+                print(f"  [drop] v0.4 门禁未过（语法/污点 sink）：{rec['origin']}")
+                seq -= 1
+                continue
             payloads.append(_write_item(
                 items_dir, seq, family=family, expected="real", planted=True,
                 lang=rec["lang"], source=rec["kind"], files={"source" + Path(rec["origin"]).suffix: mutated},
@@ -932,6 +1071,10 @@ def build_bank(out: Path, cache: Path, *, offline: bool, family_quota_only: bool
             mutated = mutate_code(rec["text"], family=family, seed=master_seed + seq, lang=rec["lang"])
             if not expected_recheck(mutated, family):
                 print(f"  [drop] expected 复核未过：{rec['origin']}")
+                seq -= 1
+                continue
+            if not syntax_gate(rec["text"], mutated, rec["lang"]) or not taint_sink_live(mutated, rec["lang"]):
+                print(f"  [drop] v0.4 门禁未过（语法/污点 sink）：{rec['origin']}")
                 seq -= 1
                 continue
             payloads.append(_write_item(

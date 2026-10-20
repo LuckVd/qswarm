@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0051",
+ "taxonomy_path": [
+  "authz"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0051/",
+ "planted": true,
+ "expected": "real",
+ "difficulty": "easy",
+ "version": 2,
+ "canary": "qsw-canary-SEED-0051-a71b8e41",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 51
+ }
+}

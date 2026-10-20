@@ -1,0 +1,23 @@
+{
+ "item_id": "SEED-0049",
+ "taxonomy_path": [
+  "authz"
+ ],
+ "lang": "python",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0049/",
+ "planted": false,
+ "expected": "real",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0049-8adb9657",
+ "source": "cve_rollback",
+ "snapshot_files": [
+  "security.py",
+  "test_security.py"
+ ],
+ "upstream": {
+  "cve": "CVE-2026-27199",
+  "parent_sha": "d005985ef69ffe3275eda8fb6fb25e074dbe871b",
+  "commit_date": "2026-02-18"
+ }
+}

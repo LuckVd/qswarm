@@ -1,0 +1,1 @@
+{"digest": "46211c2aa9274b3cafb5b7035e925697", "files": [{"lang": "python", "path": "src/render_tool.py", "spans": [[1, 2], [5, 8]], "truncated": false}], "hop": 1, "truncated_files": 0, "truncated_lines": 6}

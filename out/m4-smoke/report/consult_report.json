@@ -1,0 +1,75 @@
+{
+  "deposits_written": 0,
+  "failures": {
+    "l2_infra_fail": 0,
+    "l2_quota_skipped": 0,
+    "l2_route_empty_pool": 0,
+    "l2_schema_fail": 0,
+    "panel_starved": 0,
+    "pv_schema_fail": 0,
+    "pv_skipped": 0
+  },
+  "findings": [],
+  "funnel": {
+    "candidates_total": 0,
+    "clusters_coarse": 0,
+    "clusters_fine": 0,
+    "expired_open": 0,
+    "findings_opened": 0,
+    "findings_voted": 0,
+    "l2_clean": 0,
+    "l2_dispatched": 0,
+    "panels_run": 0,
+    "preverdicts": 0
+  },
+  "mode": "pr",
+  "preverdicts": [],
+  "route_channels": {
+    "explore": 0,
+    "specialist": 0
+  },
+  "run_id": "M4SMOKE-CONSULT2",
+  "scan_run_id": "M4SMOKE-SCAN2",
+  "shadow": {
+    "cells_by_status": {
+      "active": 1,
+      "shadow": 40
+    },
+    "entry_knobs_zeroed": true,
+    "exam_callback_ready": true,
+    "n_eff": {
+      "max": 1.807788065877592,
+      "p50": 0.8464697743680393,
+      "p90": 0.9958467933576529
+    },
+    "per_family": {
+      "authz": {
+        "active": 0,
+        "candidate": 0,
+        "shadow": 7
+      },
+      "config_dep": {
+        "active": 0,
+        "candidate": 0,
+        "shadow": 7
+      },
+      "crypto": {
+        "active": 0,
+        "candidate": 0,
+        "shadow": 7
+      },
+      "injection": {
+        "active": 1,
+        "candidate": 0,
+        "shadow": 12
+      },
+      "mem_safety": {
+        "active": 0,
+        "candidate": 0,
+        "shadow": 7
+      }
+    }
+  },
+  "spent_cents": 0,
+  "wall_clock_exceeded": false
+}

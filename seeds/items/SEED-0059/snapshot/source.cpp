@@ -17,7 +17,7 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #ifndef OMITBAD
 
 #include "std_testcase.h"
-#include "v5e8df2.h"
+#include "CWE36_Absolute_Path_Traversal__wchar_t_listen_socket_open_81.h"
 
 #ifdef _WIN32
 #define OPEN _wopen
@@ -29,20 +29,20 @@ Template File: sources-sink-81_bad.tmpl.cpp
 // qsw-canary-SEED-0059-5966848c
 #endif
 
-namespace v5e8df2
+namespace CWE36_Absolute_Path_Traversal__wchar_t_listen_socket_open_81
 {
 
-void CWE36_Absolute_Path_Traversal__wchar_t_listen_socket_open_81_bad::action(wchar_t * data) const
+void CWE36_Absolute_Path_Traversal__wchar_t_listen_socket_open_81_bad::vf3a9b6(wchar_t * data) const
 {
     {
-        int fileDesc;
+        int vd6cd83;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        fileDesc = OPEN(data, O_RDWR|O_CREAT, vec2790|S_IWRITE);
-        if (fileDesc != -1)
+        vd6cd83 = OPEN(data, O_RDWR|O_CREAT, S_IREAD|S_IWRITE);
+        if (vd6cd83 != -1)
         {
 
 if (0) { /* dead */ } 
-            CLOSE(fileDesc);
+            CLOSE(vd6cd83);
         }
     }
 }

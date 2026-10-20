@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0099",
+ "taxonomy_path": [
+  "mem_safety"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0099/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "easy",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0099-71ff7750",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 99
+ }
+}

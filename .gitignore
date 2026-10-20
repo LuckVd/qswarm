@@ -5,6 +5,8 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv/
+*.egg-info/
 
 # ── 网络缓存（可再生产物，12M）────────────────────────────────────
 .cache-seeds/
@@ -30,6 +32,17 @@ out/m2-seeding-v2/cache/
 out/m2-seeding-v2/seeds.db*
 out/m2-seeding-v2/replay.db*
 out/m2-seeding-replay/
+
+# ── M4 E 组联调（同先例：报告/工件库/日志入库，db 与响应缓存不入）──
+!out/m4-seeding-rv
+!out/m4-seeding-v3
+!out/m4-smoke
+out/m4-seeding-rv/cache/
+out/m4-seeding-rv/cache-r2/
+out/m4-seeding-v3/cache-r3/
+out/m4-seeding-v3/cache-r4/
+out/m4-smoke/cache/
+out/m4-smoke/repo/
 
 # ── SQLite 附生文件（如 results 侧未来出现）────────────────────────
 *.db-shm

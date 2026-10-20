@@ -26,13 +26,13 @@ Template File: sources-sink-81_bad.tmpl.cpp
 #define FOPEN fopen
 #endif
 
-namespace CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81
+namespace v17431c
 {
 
 void CWE36_Absolute_Path_Traversal__char_connect_socket_fopen_81_bad::vf27d8e(char * data) const
 {
     {
-        v87aa57 *pFile = NULL;
+        FILE *pFile = NULL;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
         pFile = FOPEN(data, "wb+");
         if (pFile != NULL)

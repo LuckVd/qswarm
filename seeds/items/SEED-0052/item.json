@@ -8,7 +8,7 @@
  "planted": true,
  "expected": "real",
  "difficulty": "medium",
- "version": 1,
+ "version": 2,
  "canary": "qsw-canary-SEED-0052-21b7b076",
  "source": "juliet_mutation",
  "snapshot_files": [
