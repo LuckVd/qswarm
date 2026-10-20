@@ -9,8 +9,9 @@
   存款事件（append-only 顺序重放：payload 逐字复制、seq 重新编配、``src_seq``
   记原库 seq 溯源——M1 既有可选字段，聚合器不读、历史语义零扰动）；
 - 幂等（读侧）：agents 同 id 同字段跳过/字段不等 ValueError（roster 同口径）；
-  存款以 ``(origin=exam, src_seq)`` 查重跳过——二次导入零重复行零重复事件
-  （M3 卷 C 组判据）；
+  存款以**格键** ``(agent, role, taxonomy_path)`` 查重跳过——同库重导零重复行
+  零重复事件，跨库重导新格导入旧格跳过（src_seq 只作溯源不作幂等键，
+  2026-10-20 修复；M3 卷 C 组判据语义不变）；
 - 开工前校验（§3.1 逐字）：4 agent status=active 且考试存款数 ≥ 20，否则
   :func:`verify_ready` 拒绝开工（防空账本启动）；常量模块级承载（spec 常量
   纪律，同 EXAM_DEADLINE_S，不进 params）。
@@ -103,9 +104,20 @@ def _import_agents(prod: KernelLedger, seed: sqlite3.Connection, report: Bootstr
 def _import_exam_deposits(
     prod: KernelLedger, seed: sqlite3.Connection, report: BootstrapReport
 ) -> None:
-    """考试存款事件顺序重放（payload 逐字 + src_seq 溯源；幂等键 (origin=exam, src_seq)）。"""
-    existing_src = {
-        int(ev.payload.get("src_seq") or 0)
+    """考试存款事件顺序重放（payload 逐字 + src_seq 溯源）。
+
+    幂等键 = **格键** ``(agent, role, taxonomy_path)``（2026-10-20 修复）：与
+    runner.deposit_exists 同语义（一格恰一笔考试存款，M0 既定形态）。此前以
+    ``(origin=exam, src_seq)`` 查重——播种库 seq 从 1 编号，换播种库重导时新库
+    src_seq 与首导全量碰撞 → 新格存款被误跳过（「新库重导更新编制」通道断裂）；
+    格键查重对同库重导（同格 → 跳过，零重复）与跨库重导（新格 → 导入，旧格 →
+    跳过）都语义正确。存款值的版本化刷新（重考换权重）仍属 M5 记档项。"""
+    existing_cells = {
+        (
+            str(ev.payload.get("agent") or ""),
+            str(ev.payload.get("role") or ""),
+            tuple(ev.payload.get("taxonomy_path") or ()),
+        )
         for ev in prod.read(kinds=(LedgerKind.DEPOSIT,))
         if ev.payload.get("origin") == "exam"
     }
@@ -117,7 +129,12 @@ def _import_exam_deposits(
         if payload.get("origin") != "exam":
             continue                          # 播种库只承载考试存款（防御性过滤）
         report.seed_exam_deposit_seqs.append(int(seq))
-        if int(seq) in existing_src:
+        cell = (
+            str(payload.get("agent") or ""),
+            str(payload.get("role") or ""),
+            tuple(payload.get("taxonomy_path") or ()),
+        )
+        if cell in existing_cells:
             report.deposits_skipped += 1
             continue
         prod.append(
@@ -125,6 +142,7 @@ def _import_exam_deposits(
             {**payload, "src_seq": int(seq)},
             run_id=run_id,
         )
+        existing_cells.add(cell)
         report.deposits_imported += 1
     if report.deposits_imported == 0 and not report.seed_exam_deposit_seqs:
         # 空播种库（零考试存款）如实放行——verify_ready 会在开工前拦截。

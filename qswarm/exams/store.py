@@ -13,7 +13,8 @@
 - ``exam_results``：``id = f"ER-{seq:06d}"``，seq = 库内 ``ER-`` 前缀 max+1（D20
   同型口径）；``model_ref`` = 实际服务模型（§3.2 只走 primary，故恒 = agent
   的 model_ref，字段留痕防未来放宽）；``ts`` = 注入时钟；行级幂等键 =
-  ``(agent_id, purpose, item_id)`` 查重跳过（部分作答重跑收敛，§4.3）；
+  ``(agent_id, purpose, role, item_id)`` 查重跳过（部分作答重跑收敛，§4.3；含
+  role——帽考行不被主角色旧行遮蔽，2026-10-20 修复）；
 - 工件库：内容寻址文件库（``<store_dir>/<hash[:2]>/<hash>``）+ ``artifacts`` 表
   索引行——seed 快照（§1.3）与 exam_log 原始响应（§3.4/S9：判分可独立复核、
   replay 可复现的真源载体）。
@@ -134,11 +135,14 @@ def write_exam_result(
 ) -> str:
     """签发一行 exam_results（返回行 id；幂等命中返回既有行 id）。
 
-    幂等键 = (agent_id, purpose, item_id)：重跑覆盖同批行时查重跳过（§4.3）。"""
+    幂等键 = (agent_id, purpose, role, item_id)：重跑覆盖同批行时查重跳过（§4.3）。
+    含 role（2026-10-20 修复，DECISIONS 同日行）：不含 role 时同蜂第二角色（帽考）
+    的行被主角色旧行遮蔽——correct 值丢失、exam_results 审计面与报告面背离。"""
     purpose_key = str(getattr(purpose, "value", purpose))
     existing = ledger.conn.execute(
-        "SELECT id FROM exam_results WHERE agent_id = ? AND purpose = ? AND item_id = ?",
-        (agent_id, purpose_key, item_id),
+        "SELECT id FROM exam_results WHERE agent_id = ? AND purpose = ?"
+        " AND role = ? AND item_id = ?",
+        (agent_id, purpose_key, role, item_id),
     ).fetchone()
     if existing is not None:
         return str(existing[0])

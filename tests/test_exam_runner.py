@@ -248,3 +248,60 @@ def test_seeding_report_schema_no_secrets(env):
     assert json_path.exists() and md_path.exists()
     on_disk = json.loads(json_path.read_text(encoding="utf-8"))
     assert on_disk == report
+
+
+def test_cache_key_role_and_bank_version_sensitive():
+    """cache_key 含 role 与 bank_version（2026-10-20 修复）：跨角色（帽考）与跨
+    题库版本（regen 保 item_id 换内容、canary 确定性复原无法暴露陈旧）都不得
+    命中同一缓存条目；缺省空参保持旧调用兼容。"""
+    from qswarm.exams.runner import cache_key
+
+    base = cache_key("a@cv1", "injection", "SEED-0001")
+    assert cache_key("a@cv1", "injection", "SEED-0001") == base
+    assert cache_key("a@cv1", "injection", "SEED-0001", role="scout") != base
+    scout = cache_key("a@cv1", "injection", "SEED-0001", role="scout", bank_version=3)
+    assert cache_key("a@cv1", "injection", "SEED-0001",
+                     role="reviewer", bank_version=3) != scout
+    assert cache_key("a@cv1", "injection", "SEED-0001",
+                     role="scout", bank_version=2) != scout
+
+
+def test_retry_classification_infra_reset_on_content(env):
+    """重试分类（2026-10-20 修复）：attempt1 网络失败 + attempt2 返回内容但解析
+    失败 → **schema_fail 判错**（S7「解析失败判错」），不因 attempt1 的 infra 标记
+    粘滞误记 infra_fail（误分类可把格推过 INFRA_FAIL_LIMIT 整格作废）。"""
+    from qswarm.exams.runner import run_entry_cell
+    from qswarm.exams.paper import draw_paper
+    from qswarm.exams.store import upsert_exam_items
+    from qswarm.contracts import ExamPurpose
+
+    tmp, bank, models, resolve = env
+    family = bank.items[0].taxonomy_path[0]
+    paper = draw_paper(
+        bank, agent_id="cheap:x/y@cv1", role="scout", family=family,
+        purpose=ExamPurpose.ENTRY, bank_version=bank.bank_version, seed=7,
+    )
+    target = paper[0].item_id                             # 出卷确定性：必在卷内
+    seen: set[str] = set()
+
+    def script(model_ref, item_id, payload):
+        if item_id != target:
+            return None                                  # 其余题满分卷
+        if item_id in seen:
+            return "not-json-at-all"                     # attempt2：有内容、畸形
+        seen.add(item_id)
+        raise AdapterError("attempt1 network down")      # attempt1：基建失败
+
+    adapter = FakeAdapter(tmp / "seeds", script=script)
+    with KernelLedger(tmp / "retry.db", clock=FixedClock(T0)) as led:
+        upsert_exam_items(led, bank)                     # exam_results 外键前件
+        outcome = run_entry_cell(
+            led, bank, agent_id="cheap:x/y@cv1", role="scout",
+            model_ref="cheap:x/y@cv1", family=family,
+            adapter=adapter, seed=7, resolve_text=resolve,
+        )
+    assert outcome.status == "ok"                        # infra_fail=0 → 格不作废
+    assert outcome.infra_fail == 0 and outcome.schema_fail == 1
+    hit = next(o for o in outcome.items if o.item_id == target)
+    assert hit.schema_fail and not hit.infra_fail and hit.correct is False
+    assert hit.attempts == 2

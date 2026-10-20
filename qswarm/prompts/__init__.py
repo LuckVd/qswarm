@@ -6,6 +6,7 @@
 与装配规则；③输出解析纪律；④考试提示词变体（SPEC-6 消费）。
 """
 
+from .gloss import FAMILY_GLOSS, family_display
 from .parse import SchemaRejected, extract_json, parse_output
 from .render import ContextBlock, Message, render, render_exam
 from .templates import (
@@ -35,12 +36,14 @@ __all__ = [
     # 载体与装配（§3/§5）
     "ContextBlock",
     "EXAM_APPENDIX",
+    "FAMILY_GLOSS",
     "INJECTION_GUARD",
     "INJECTION_SUSPECT_NOTICE",
     "Message",
     "SCHEMA_FIELDS_BY_ROLE",
     "SYSTEM_BY_ROLE",
     "UNTRUSTED_BLOCK",
+    "family_display",
     "render",
     "render_exam",
     # 解析（§4）

@@ -264,3 +264,33 @@ def test_e2e_idempotent_rerun(tmp_path):
             1 for e in led.read(kinds=(LedgerKind.DEPOSIT,)) if e.payload.get("origin") == "prod"
         )
         assert n_deps2 == n_deps1 == r1.deposits_written
+
+
+def test_l1_submit_deposit_atomic_rollback(prod, monkeypatch):
+    """L1 submit 与存款同一事务（2026-10-20 修复）：两步间崩溃 → submit 一并回滚
+    （任务零半写态、无 done 孤儿），存款不丢——重跑不被「任务已存在」幂等检查
+    吞掉（修复前存款永久丢失且无修复路径）。"""
+    tmp, repo, params = prod
+    with KernelLedger(tmp / "prod.db", clock=FixedClock(m3_harness.T0)) as led:
+        orig = led.append
+
+        def boom(kind, payload, *args, **kwargs):
+            if str(kind) == "deposit":
+                raise RuntimeError("crash-between-submit-and-deposit")
+            return orig(kind, payload, *args, **kwargs)
+
+        monkeypatch.setattr(led, "append", boom)
+        with pytest.raises(RuntimeError, match="crash-between-submit-and-deposit"):
+            run_scan(
+                led, repo_root=repo, mode="full", run_id="R-ATOM",
+                params=params, adapter=ScriptedScoutAdapter(), store_dir=tmp / "store",
+                rules_runner=fake_rules_ok, clock=FixedClock(m3_harness.T0), promote=False,
+            )
+        states = {r[0] for r in led.conn.execute(
+            "SELECT state FROM tasks WHERE task_id LIKE 'l1:%'").fetchall()}
+        assert states and states <= {"dispatched"}       # submit 随存款一并回滚
+        n_deposit = sum(
+            1 for e in led.read(kinds=(LedgerKind.DEPOSIT,))
+            if e.payload.get("origin") == "prod"
+        )
+        assert n_deposit == 0

@@ -53,7 +53,7 @@ from qswarm.kernel.dispatch import (
     register_candidates,
     submit,
 )
-from qswarm.kernel.ledger import KernelClock, KernelLedger, WallClock
+from qswarm.kernel.ledger import KernelClock, KernelLedger, WallClock, transaction
 from qswarm.kernel.promote_scan import promote_scan
 from qswarm.kernel.route import RouteDecision
 from qswarm.perception import Candidate, ScanReport, scan_repo
@@ -321,38 +321,44 @@ def _dispatch_one_candidate(
         report.tasks_failed += 1
         report.l1_schema_fail += 1
         return
+    family = _verdict_family(output, cand, node)
+    direction = 1 if output.suspicious else -1
+    # submit（任务置 done）与 L1 存款同一事务（§7.1/D24 可重入）：此前两步间
+    # 崩溃则存款永久丢失——重跑时任务行已存在被幂等检查跳过、存款不再补写，
+    # 破坏「同仓库重跑账目收敛」（2026-10-20 修复）。
     try:
-        submit(
-            ledger, task_id, output,
-            contract=contract, params=params, run_id=run_id,
-        )
+        with transaction(ledger):
+            submit(
+                ledger, task_id, output,
+                contract=contract, params=params, run_id=run_id,
+            )
+            if family is None:
+                report.l1_no_family += 1
+            else:
+                ledger.append(
+                    "deposit",
+                    {
+                        "finding": None,
+                        "cluster": None,
+                        "agent": current_agent,
+                        "role": Role.SCOUT.value,
+                        "taxonomy_path": [family],
+                        "signal_tier": SignalTier.S1.value,
+                        "direction": direction,
+                        "weight": float(params.deposits.SCOUT_X),
+                        "origin": DepositOrigin.PROD.value,
+                    },
+                    run_id=run_id,
+                )
         report.tasks_done += 1
+        if family is not None:
+            report.deposits_written += 1
     except ValueError:
-        # candidate_id 指向不存在行等语义失败：schema_fail 计数 + 任务收尾失败。
+        # candidate_id 指向不存在行等语义失败：schema_fail 计数 + 任务收尾失败
+        # （事务回滚——submit 零半写态）。
         report.l1_schema_fail += 1
         report.tasks_failed += 1
         return
-    family = _verdict_family(output, cand, node)
-    if family is None:
-        report.l1_no_family += 1
-        return
-    direction = 1 if output.suspicious else -1
-    ledger.append(
-        "deposit",
-        {
-            "finding": None,
-            "cluster": None,
-            "agent": current_agent,
-            "role": Role.SCOUT.value,
-            "taxonomy_path": [family],
-            "signal_tier": SignalTier.S1.value,
-            "direction": direction,
-            "weight": float(params.deposits.SCOUT_X),
-            "origin": DepositOrigin.PROD.value,
-        },
-        run_id=run_id,
-    )
-    report.deposits_written += 1
 
 
 def by_agent_ref(scouts: list[tuple[str, str]], agent_id: str) -> str:

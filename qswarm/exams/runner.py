@@ -42,8 +42,10 @@ from qswarm.kernel.dispatch import ROLE_OUTPUT_SCHEMA, ROLE_TASK_BOUNDS, ROLE_TO
 from qswarm.prompts import (
     EXAM_TEMPERATURE,
     ContextBlock,
+    FAMILY_GLOSS,
     SchemaRejected,
     extract_json,
+    family_display,
     parse_output,
     render_exam,
 )
@@ -77,10 +79,22 @@ INFRA_FAIL_LIMIT = 2
 # ── 响应缓存（S9：考试结果的最终真源；replay 不经网络）────────────
 
 
-def cache_key(agent_id: str, family: str, item_id: str) -> str:
-    """缓存键（blake2b 内容定址同型——不使用内建 hash，跨 PYTHONHASHSEED 稳定）。"""
+def cache_key(
+    agent_id: str,
+    family: str,
+    item_id: str,
+    *,
+    role: str = "",
+    bank_version: int | str = 0,
+) -> str:
+    """缓存键（blake2b 内容定址同型——不使用内建 hash，跨 PYTHONHASHSEED 稳定）。
+
+    键含 role 与 bank_version（2026-10-20 修复，DECISIONS 同日行）：不含 role 时
+    同蜂跨角色（帽考）命中旧角色答卷且按 S9 纪律不重试；不含 bank_version 时
+    题库 regen（保 item_id 换内容）后复用同缓存目录会静默测旧题——canary 按
+    item_id+seed 确定性复原，无法暴露陈旧。缺省空参 = 旧键形（外部工具兼容）。"""
     h = hashlib.blake2b(digest_size=16)
-    for part in (agent_id, family, item_id):
+    for part in (agent_id, family, str(role), str(bank_version), item_id):
         h.update(part.encode("utf-8"))
         h.update(b"\x00")
     return h.hexdigest()
@@ -101,10 +115,6 @@ def cache_put(cache_dir: str | Path | None, key: str, raw: str) -> None:
     path = Path(cache_dir) / f"{key}.txt"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(raw, encoding="utf-8")
-
-
-class ReplayCacheMiss(RuntimeError):
-    """replay 模式缓存未命中（快速失败：replay ≠ 在线即停，不得静默判基建失败）。"""
 
 
 class ReplayCacheMiss(RuntimeError):
@@ -237,23 +247,28 @@ def deposit_exists(ledger: KernelLedger, agent_id: str, role: str, family: str) 
 def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
     """考试 DispatchContract（同 schema 同契约防 prompt 指纹偏差，§8.2）。
 
-    goal 按角色分派（M3 补播：reviewer/verifier 纸面考，SPEC-7 §4.1）；四件套
-    其余字段四角色同形（同 schema 同契约）。"""
+    **题面不给家族（S4 逐字，2026-10-20 修复）**：goal 与 taxonomy_node 均不承载
+    家族 token——judge 判分要求 ``guess_family == 答案键家族``（judge.py），家族
+    进题头等于泄题（auditor 真题家族分抄题头即满）。家族词表在 system 模板的
+    输出格式段（SCOUT/AUDITOR_SCHEMA_FIELDS 值域枚举）——模型从代码证据在六家族
+    菜单中选对是真实考面。reviewer/verifier 的家族面经送审 claim 块承载（构造
+    即对齐口径不变，M3-6）；``taxonomy_node=""`` 与生产 L1 契约同形
+    （perception/channels.py）。``family`` 形参保留（task_id 派生与出卷用）。"""
     goals = {
-        "scout": f"入职考：判断 {family} 家族快照是否存在漏洞",
-        "auditor": f"入职考：判断 {family} 家族快照是否存在漏洞",
-        "reviewer": f"入职考：独立评审送审 finding（{family} 家族快照）",
-        "verifier": f"入职考：对预置簇证据链给出复现结论（{family} 家族快照）",
+        "scout": "入职考：判断各快照是否存在漏洞（可疑时按输出词表给出家族猜测）",
+        "auditor": "入职考：判断各快照是否存在漏洞（存在时按输出词表给出家族）",
+        "reviewer": "入职考：独立评审送审 finding（声称家族以送审材料为准，勿默认采信）",
+        "verifier": "入职考：对预置簇证据链给出三分类复现结论",
     }
     return DispatchContract(
         task_id=f"entry:{agent_id}:{family}",
         role=Role(role),
-        goal=goals.get(role, f"入职考：判断 {family} 家族快照是否存在漏洞"),
+        goal=goals.get(role, "入职考：判断各快照是否存在漏洞"),
         output_schema_ref=ROLE_OUTPUT_SCHEMA[role],
         tool_bounds=list(ROLE_TOOL_BOUNDS[role]),
         task_bounds=ROLE_TASK_BOUNDS[role],
         context_refs=[],
-        taxonomy_node=family,
+        taxonomy_node="",
         hop_budget=0,
         deadline_s=EXAM_DEADLINE_S,
     )
@@ -263,15 +278,10 @@ def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
 #: 形态在 LLM 评审视角可错位（实证：authz 族=路径穿越件，claim「存在 authz 漏洞」
 #: 被三蜂一致拒报——同题注入注解后 direction 由 -1 翻 +1，fp_susp 0.9→0.3）。
 #: 注解只展开声称家族的语义面，不改「声称家族 ≡ 答案键」不变量；未知家族回退
-#: 裸标签（零行为变化）。
-_FAMILY_GLOSS = {
-    "injection": "注入类（SQL/命令/代码注入、XSS/SSRF/XXE 等）",
-    "deser": "反序列化类（java_gadget/py_pickle）",
-    "crypto": "密码学误用类（弱算法/硬编码密钥/弱随机）",
-    "authz": "访问控制与资源暴露类（含路径穿越 CWE-22/36、越权、会话缺陷）",
-    "config_dep": "配置与依赖类（密钥泄漏/过期依赖/错误配置）",
-    "mem_safety": "内存安全类（溢出/UAF/双重释放）",
-}
+#: 裸标签（零行为变化）。**单一源在 prompts.gloss**（2026-10-20 共享化）：考试
+#: claim 与生产票面（kernel.consult._finding_block/_candidate_block）同源同形，
+#: 消除 eval/production 偏移；本别名供既有测试与 import 面兼容。
+_FAMILY_GLOSS = FAMILY_GLOSS
 
 
 def _exam_claim(item: SeedItem) -> str:
@@ -279,13 +289,12 @@ def _exam_claim(item: SeedItem) -> str:
 
     - 声称家族/类型 ≡ 题库答案键 taxonomy_path（real 面「family 维与答案键家族
       对齐」由构造侧承载——SPEC-7 §4.2/§4.3 口径，DECISIONS M3 实现期行）；
-      v0.4 起家族名附 _FAMILY_GLOSS 注解（标签语义面展开，家族 token 不变）；
+      v0.4 起家族名附 FAMILY_GLOSS 注解（标签语义面展开，家族 token 不变）；
     - 雷题（expected=fp）同样形态送审（声称存在漏洞而快照无洞）——评审/验证
       的拒报面由判分函数消费（fp：REJECT / verified_fp）。"""
     family = item.taxonomy_path[0]
     type_ = item.taxonomy_path[1] if len(item.taxonomy_path) > 1 else None
-    gloss = _FAMILY_GLOSS.get(family)
-    family_disp = f"{family}（{gloss}）" if gloss else family
+    family_disp = family_display(family)
     return (
         f"- 声称家族: {family_disp}\n"
         f"- 声称类型: {type_ if type_ else '（家族级，未细分）'}\n"
@@ -415,7 +424,10 @@ def run_entry_cell(
                     real_n += 1
                 else:
                     fp_n += 1
-                key = cache_key(agent_id, family, item.item_id)
+                key = cache_key(
+                    agent_id, family, item.item_id,
+                    role=role, bank_version=bank.bank_version,
+                )
                 raw = cache_get(cache_dir, key)
                 attempts = 0
                 parsed: object | None = None
@@ -447,10 +459,13 @@ def run_entry_cell(
                         except AdapterError:
                             infra = True
                             continue
+                        # 已获响应：该题失败语义归 schema 面（infra 粘滞复位——
+                        # attempt1 网络失败 + attempt2 畸形输出此前被误记 infra_fail，
+                        # 违反 S7「解析失败判错」且可诱发整格 infra_invalid）。
+                        infra = False
                         cache_put(cache_dir, key, raw)
                         try:
                             parsed, declined = _parse_envelope_answer(role, raw, item.item_id)
-                            infra = False
                             schema = False
                             break
                         except SchemaRejected:

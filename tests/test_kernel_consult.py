@@ -303,6 +303,13 @@ def test_e2e_scan_to_voted(prod, tmp_path, monkeypatch):
         blob = json.loads((tmp / "out-r" / "consult_report.json").read_text())
         assert blob["funnel"]["findings_voted"] == report.findings_voted
         assert (tmp / "out-r" / "consult_report.md").exists()
+        # 报告字段真实化（2026-10-20 修复）：severity/direction/disagreement 读
+        # findings 行与票面聚合（修复前恒空串/0/字符串 truthy）
+        assert report.findings_detail
+        for f in report.findings_detail:
+            assert f["severity"] == "high"                # findings 行实值
+            assert f["direction"] == 1                    # 票向符号和的符号（全 +1）
+            assert f["disagreement"] is False             # disagreement_json 解析值
         # 影子面
         assert report.shadow["entry_knobs_zeroed"] is True
 
@@ -387,15 +394,58 @@ def test_consult_budget_degrade(prod, monkeypatch):
     params.budget.FULL_CENTS = 5
     with KernelLedger(tmp / "prod.db", clock=FixedClock(T0)) as led:
         _add_hats(led)
+        adapter = ScriptedConsultAdapter()
         report = run_consult(
             led, repo_root=repo, mode="full", run_id="R-BUDGET", scan_run_id="R-SCAN",
-            seed=11, adapter=ScriptedConsultAdapter(), store_dir=tmp / "store",
+            seed=11, adapter=adapter, store_dir=tmp / "store",
             params=params, clock=FixedClock(T0), cache_dir=tmp / "cache",
             report_dir=tmp / "out-b",
         )
         assert report.l2_quota_skipped >= 1
+        # 面板/预裁决预算门控（§2.7「预算尽 → 停新派单」对付费票单同样成立，
+        # 2026-10-20 修复——修复前熔断后两阶段仍持续产生付费调用）
+        assert report.panel_budget_skipped == report.clusters_coarse
+        assert report.pv_budget_skipped == report.clusters_fine
+        assert report.panels_run == 0 and report.preverdicts == 0
+        assert not [c for c in adapter.calls if c[0] in ("vote", "pv")]
         blob = json.loads((tmp / "out-b" / "consult_report.json").read_text())
         assert blob["failures"]["l2_quota_skipped"] >= 1
+        assert blob["failures"]["panel_budget_skipped"] == report.panel_budget_skipped
+        assert blob["failures"]["pv_budget_skipped"] == report.pv_budget_skipped
+
+
+def test_production_blocks_carry_family_gloss(prod):
+    """FAMILY_GLOSS 生产注入（prompts.gloss 单一源，2026-10-20）：L2 深诊块的
+    「L1 家族猜测」行与 reviewer 票面的「家族」行都带注解——与考试 claim 同形，
+    消除 eval/production 偏移（修复前 gloss 只在考试面注入）。"""
+    from qswarm.prompts import family_display
+
+    tmp, repo, params, _n = prod
+    seen: list[str] = []
+
+    class Capturing(ScriptedConsultAdapter):
+        def complete(self, *, model_ref, messages, temperature=0.0, **_kw):
+            seen.append(messages[1].content)
+            return super().complete(model_ref=model_ref, messages=messages,
+                                    temperature=temperature, **_kw)
+
+    with KernelLedger(tmp / "prod.db", clock=FixedClock(T0)) as led:
+        _add_hats(led)
+        run_consult(
+            led, repo_root=repo, mode="full", run_id="R-GLOSS", scan_run_id="R-SCAN",
+            seed=11, adapter=Capturing(), store_dir=tmp / "store", params=params,
+            clock=FixedClock(T0), cache_dir=tmp / "cache", report_dir=tmp / "out-g",
+        )
+    audits = [u for u in seen if "candidate_id: " in u]
+    votes = [u for u in seen if "\nfinding_id: " in u]
+    assert audits and votes
+    for u in audits:                                      # 猜测行：注解形或「无」
+        for line in u.splitlines():
+            if line.startswith("L1 家族猜测: ") and line != "L1 家族猜测: 无":
+                fam = line.split(": ", 1)[1].split("（", 1)[0]
+                assert line == f"L1 家族猜测: {family_display(fam)}", line
+    for u in votes:                                       # 票面家族行带注解
+        assert "家族: injection（注入类" in u
 
 
 def test_consult_empty_auditor_pool_queued(tmp_path):

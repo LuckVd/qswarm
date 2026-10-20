@@ -222,3 +222,33 @@ def test_artifact_put_get_roundtrip(tmp_path):
         assert artifact_get(led, store, "0" * 64) is None
         with pytest.raises(ValueError, match="kind 越词表"):
             artifact_put(led, store, b"x", mime="text/plain", kind="misc", producer="p")
+
+
+def test_exam_results_idempotency_key_includes_role(bank, tmp_path):
+    """幂等键含 role（2026-10-20 修复）：同 (agent, purpose, item) 跨角色（帽考）
+    各自落行——第二角色不被主角色旧行遮蔽、correct 值不丢失；同角色重跑仍幂等。"""
+    with KernelLedger(tmp_path / "er-role.db", clock=FixedClock(T0)) as led:
+        upsert_exam_items(led, bank)
+        it = bank.items[0]
+        r_scout = write_exam_result(
+            led, purpose=ExamPurpose.ENTRY, agent_id="A@cv1", role="scout",
+            node="injection", item_id=it.item_id, correct=True, model_ref="m1",
+        )
+        r_hat = write_exam_result(
+            led, purpose=ExamPurpose.ENTRY, agent_id="A@cv1", role="reviewer",
+            node="injection", item_id=it.item_id, correct=False, model_ref="m1",
+        )
+        assert r_hat != r_scout                        # 帽考行独立签发
+        assert write_exam_result(                      # 同角色重跑幂等
+            led, purpose=ExamPurpose.ENTRY, agent_id="A@cv1", role="reviewer",
+            node="injection", item_id=it.item_id, correct=False, model_ref="m1",
+        ) == r_hat
+        assert write_exam_result(
+            led, purpose=ExamPurpose.ENTRY, agent_id="A@cv1", role="scout",
+            node="injection", item_id=it.item_id, correct=False, model_ref="m1",
+        ) == r_scout
+        assert led.conn.execute("SELECT COUNT(*) FROM exam_results").fetchone()[0] == 2
+        # 两行的 correct 各自如实落库（修复前帽考行被旧行遮蔽、值丢失）
+        corrects = dict(led.conn.execute(
+            "SELECT role, correct FROM exam_results ORDER BY role").fetchall())
+        assert corrects == {"reviewer": 0, "scout": 1}

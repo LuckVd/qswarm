@@ -181,3 +181,23 @@ def test_seed_entry_extra_hats(env):
                 if e.payload["agent"] == auditor_id
                 and e.payload.get("role") == "reviewer"]
         assert mine
+
+
+def test_exam_paper_does_not_leak_family():
+    """S4 逐字（2026-10-20 修复回执）：题面不给家族——goal 与 taxonomy_node 头行
+    均不含家族 token。judge 判分要求 guess_family 对齐答案键家族（judge.py），
+    家族进题头 = 抄题头拿分；家族词表在 system 模板输出格式段（值域枚举），
+    reviewer/verifier 的家族面经送审 claim 块承载（构造即对齐口径不变）。"""
+    from qswarm.exams.runner import _FAMILY_GLOSS, _build_contract
+    from qswarm.prompts import FAMILY_GLOSS, ContextBlock, render_exam
+
+    assert _FAMILY_GLOSS is FAMILY_GLOSS                    # 单一源 = prompts.gloss
+    block = ContextBlock(ref="artifact://exam/SEED-0001/snap", content="int main(){}")
+    for role in ("scout", "auditor", "reviewer", "verifier"):
+        contract = _build_contract("a@cv1", role, "injection")
+        assert contract.taxonomy_node == ""                 # 与生产 L1 契约同形
+        messages = render_exam(role, contract=contract, blocks=[block])
+        header = messages[1].content.split("\n\n", 1)[0]    # 头四行（goal/taxonomy/…）
+        assert "taxonomy_node: \n" in header                # 头行空值（非家族）
+        for tok in FAMILY_GLOSS:
+            assert tok not in header, (role, tok)           # goal/头行零家族泄漏

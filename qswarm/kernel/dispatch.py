@@ -1117,6 +1117,17 @@ def _submit_verifier(
             "SELECT 1 FROM clusters WHERE cluster_id = ?", (cluster_id,)
         ).fetchone() is None:
             raise ValueError(f"簇不存在：{cluster_id!r}")
+        # VR 行号派生（D20 同型口径，2026-10-20 修复）：attempts = 同簇库内
+        # MAX(attempts)+1——此前直接采用模型自报 output.attempts 作主键段，同簇
+        # 第二次验证（re_dispatch 改派后新 verifier 同报 attempts=1）撞主键抛
+        # sqlite3.IntegrityError（非 ValueError，编排层 except 接不住、整编排崩）。
+        attempts = int(
+            ledger.conn.execute(
+                "SELECT COALESCE(MAX(attempts), 0) FROM verify_results"
+                " WHERE cluster_id = ?",
+                (cluster_id,),
+            ).fetchone()[0]
+        ) + 1
         blocking = output.blocking
         ledger.conn.execute(
             "INSERT INTO verify_results (id, cluster_id, outcome, env_base, deps_ref,"
@@ -1124,7 +1135,7 @@ def _submit_verifier(
             " blocking_ref, error_kind, attempts, duration_s, logs_ref, created_at)"
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
-                f"VR-{cluster_id}-{int(output.attempts)}", cluster_id,
+                f"VR-{cluster_id}-{attempts}", cluster_id,
                 outcome.value, output.env_base, output.deps_ref,
                 json.dumps([t for t in output.trigger_path], ensure_ascii=False),
                 json.dumps(
@@ -1135,7 +1146,7 @@ def _submit_verifier(
                 blocking.where if blocking is not None else None,
                 blocking.ref if blocking is not None else None,
                 error_kind.value if error_kind is not None else None,
-                int(output.attempts), float(output.duration_s), output.logs_ref,
+                attempts, float(output.duration_s), output.logs_ref,
                 _now_iso(ledger),
             ),
         )
@@ -1146,12 +1157,23 @@ def _submit_verifier(
             run_id=run,
         )
         events.append(ev)
+        # 目标状态按结论映射；**只流转合法成员**（2026-10-20 修复）：簇内已被
+        # S3 直答（D8 open/voted→confirmed/rejected 边）进入终态的成员不过迁移表
+        # ——此前对其无条件 transition_finding 抛 ValueError，整笔验证回滚、
+        # verify_result 永远无法落账。终态成员保持原判（append-only 语义）。
+        target = {
+            VerifyOutcome.VERIFIED_REAL: FindingState.VERIFIED,
+            VerifyOutcome.VERIFIED_FP: FindingState.REJECTED,
+            VerifyOutcome.VERIFY_ERROR: FindingState.INCONCLUSIVE,
+        }[outcome]
         members = [
-            r[0] for r in ledger.conn.execute(
-                "SELECT finding_id FROM cluster_members WHERE cluster_id = ?"
-                " ORDER BY finding_id",
+            fid for fid, st in ledger.conn.execute(
+                "SELECT cm.finding_id, f.state FROM cluster_members cm"
+                " JOIN findings f ON f.id = cm.finding_id"
+                " WHERE cm.cluster_id = ? ORDER BY cm.finding_id",
                 (cluster_id,),
-            )
+            ).fetchall()
+            if target in FINDING_TRANSITIONS.get(FindingState(str(st)), frozenset())
         ]
         if outcome is VerifyOutcome.VERIFIED_REAL:
             for member in members:

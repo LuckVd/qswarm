@@ -80,7 +80,13 @@ from qswarm.exams.store import artifact_put
 from qswarm.perception.indexer import IndexCache, index_repo, lang_for_path
 from qswarm.perception.repomap import build_name_graph, slice_for, slice_to_json
 from qswarm.perception.scan import _walk_repo
-from qswarm.prompts import EXAM_TEMPERATURE, ContextBlock, parse_output, render
+from qswarm.prompts import (
+    EXAM_TEMPERATURE,
+    ContextBlock,
+    family_display,
+    parse_output,
+    render,
+)
 from qswarm.prompts.parse import extract_json
 from qswarm.simulator.rng import derive_seed
 
@@ -309,7 +315,9 @@ class ConsultReport:
     l2_quota_skipped: int = 0
     l2_route_empty_pool: int = 0
     panel_starved: int = 0
+    panel_budget_skipped: int = 0
     pv_skipped: int = 0
+    pv_budget_skipped: int = 0
     pv_schema_fail: int = 0
     expired_open: int = 0
     deposits_written: int = 0
@@ -344,7 +352,9 @@ class ConsultReport:
                 "l2_quota_skipped": self.l2_quota_skipped,
                 "l2_route_empty_pool": self.l2_route_empty_pool,
                 "panel_starved": self.panel_starved,
+                "panel_budget_skipped": self.panel_budget_skipped,
                 "pv_skipped": self.pv_skipped,
+                "pv_budget_skipped": self.pv_budget_skipped,
                 "pv_schema_fail": self.pv_schema_fail,
             },
             "deposits_written": self.deposits_written,
@@ -409,7 +419,9 @@ def _report_md(rep: ConsultReport) -> str:
         f"- schema_fail {fa['l2_schema_fail']} / infra_fail {fa['l2_infra_fail']}"
         f" / quota_skipped {fa['l2_quota_skipped']} / route_empty_pool"
         f" {fa['l2_route_empty_pool']} / panel_starved {fa['panel_starved']}"
-        f" / pv_skipped {fa['pv_skipped']} / pv_schema_fail {fa['pv_schema_fail']}",
+        f" / panel_budget_skipped {fa['panel_budget_skipped']}"
+        f" / pv_skipped {fa['pv_skipped']} / pv_budget_skipped"
+        f" {fa['pv_budget_skipped']} / pv_schema_fail {fa['pv_schema_fail']}",
         "",
     ]
     return "\n".join(lines)
@@ -468,16 +480,21 @@ def _index_repo_tree(root: Path, cache_dir: str | Path | None):
 
 
 def _candidate_block(root: Path, cand: dict, ctx_lines: int) -> ContextBlock:
-    """候选深诊块：span ± ctx_lines 行窗（L2 深诊档窗宽，SPEC-8 §6）。"""
+    """候选深诊块：span ± ctx_lines 行窗（L2 深诊档窗宽，SPEC-8 §6）。
+
+    L1 家族猜测行附 FAMILY_GLOSS 注解（prompts.gloss 单一源）：裸家族标签与
+    代码具体漏洞形态可错位（2026-10-20 实证），考试 claim 已带注解——生产面
+    同源注入消除 eval/production 偏移。"""
     source = (root / cand["path"]).read_text(encoding="utf-8", errors="replace")
     lines = source.splitlines()
     start = max(1, cand["span"][0] - ctx_lines)
     end = min(len(lines), cand["span"][1] + ctx_lines)
+    guess = cand["guess_family"]
     content = (
         f"candidate_id: {cand['candidate_id']}\n"
         f"path: {cand['path']}\n"
         f"span: {cand['span'][0]}-{cand['span'][1]}\n"
-        f"L1 家族猜测: {cand['guess_family'] or '无'}\n"
+        f"L1 家族猜测: {family_display(guess) if guess else '无'}\n"
         + "\n".join(lines[start - 1:end])
     )
     return ContextBlock(ref=f"{cand['path']}:{start}-{end}", content=content)
@@ -556,7 +573,9 @@ def _finding_block(
     body = [
         f"finding_id: {anchor}",
         f"title: {row[6]} | severity: {row[7]} | confidence: {row[8]} | cwe: {row[9] or '-'}",
-        f"位置: {row[0]}:{row[1]}-{row[2]} ({row[3]}) 家族: {row[4]}/{row[5] or '-'}",
+        # 家族行附 FAMILY_GLOSS 注解（prompts.gloss 单一源，与考试 claim 同形）。
+        f"位置: {row[0]}:{row[1]}-{row[2]} ({row[3]}) 家族:"
+        f" {family_display(str(row[4]))}/{row[5] or '-'}",
         "证据链:",
         *[f"  {n[0]}. [{n[1]}] {n[2]}:{n[3]} found={n[4]}" for n in nodes],
         "簇成员: " + ", ".join(f"{m[0]}(reporter={m[1]})" for m in mem_rows),
@@ -602,6 +621,19 @@ def _by_ref(pool: list[tuple[str, str]], agent_id: str) -> str:
 def _next_by_load(pool: list[tuple[str, str]], load: dict[str, int], exclude: str) -> str:
     cands = sorted((a for _r, a in pool if a != exclude), key=lambda a: (load.get(a, 0), a))
     return cands[0] if cands else exclude
+
+
+def _spent_from_runs(ledger: KernelLedger, run_id: str) -> int:
+    """runs.spent_cents 现值（幂等重跑/追加预算场景的预算判定起点）。
+
+    此前以 ``report.spent_cents``（初值 0）起算——同 run_id 重跑（明确支持的
+    幂等场景）首个候选照派、多花一次 L2 成本后状态才纠正；面板/预裁决门控
+    也依赖本读数（2026-10-20 修复）。run 行缺失（理论不可达：open_run 先行）
+    → 0。"""
+    row = ledger.conn.execute(
+        "SELECT spent_cents FROM runs WHERE run_id = ?", (run_id,)
+    ).fetchone()
+    return int(row[0]) if row is not None and row[0] is not None else 0
 
 
 # ── L2 深诊（单候选全生命周期；§2.2）─────────────────────────────
@@ -791,7 +823,7 @@ def _run_panel(
     panel_params = params.model_copy(deep=True)
     panel_params.panel.SIZE = len(panel)          # 收口阈值随实际人数（D31 可变语义）
     anchor_row = ledger.conn.execute(
-        "SELECT family, type FROM findings WHERE id = ?", (anchor,)
+        "SELECT family, type, severity FROM findings WHERE id = ?", (anchor,)
     ).fetchone()
     node = str(anchor_row[0])
     for i, reviewer in enumerate(panel):
@@ -892,11 +924,23 @@ def _run_panel(
     rep = ledger.conn.execute(
         "SELECT confidence, disagreement_json FROM findings WHERE id = ?", (anchor,)
     ).fetchone()
+    # 报告字段真实化（2026-10-20 修复）：direction = 票向符号和的符号（与
+    # aggregate_votes 同式，D22）；disagreement 解析 disagreement_json（close_panel
+    # 写入 {"disagreement": bool}——此前对 JSON 字符串取 bool 恒 True）；severity
+    # 读 findings 行（此前恒空串）。findings_detail 只在票齐收口后追加（上方
+    # 票不足已 return），此处 vote_rows 必为全量面板票。
+    vote_sum = sum(int(d) for _r, d in vote_rows)
+    try:
+        disagreement = bool(json.loads(str(rep[1])).get("disagreement"))
+    except (TypeError, ValueError):
+        disagreement = False
     report.findings_detail.append({
         "finding_id": anchor, "cluster_id": cluster_id,
         "family": str(anchor_row[0]), "type": (str(anchor_row[1]) if anchor_row[1] else None),
-        "severity": "", "confidence": (float(rep[0]) if rep[0] is not None else None),
-        "panel": len(panel), "direction": 0, "disagreement": bool(rep[1]),
+        "severity": (str(anchor_row[2]) if anchor_row[2] else ""),
+        "confidence": (float(rep[0]) if rep[0] is not None else None),
+        "panel": len(panel), "direction": (vote_sum > 0) - (vote_sum < 0),
+        "disagreement": disagreement,
     })
 
 
@@ -1032,6 +1076,7 @@ def run_consult(
     hop = {"fast": 0, "pr": 1, "full": 2}.get(str(mode), 0)
 
     finding_scouts: dict[str, list[str]] = {}     # finding_id → L1 侦察蜂谱系
+    report.spent_cents = _spent_from_runs(ledger, run_id)
     state = budget_state(report.spent_cents, policy, params=params)
     for seq, cand in enumerate(cands, start=1):
         if state.degraded or state.quota_l2 <= 0 or not _time_left():
@@ -1061,6 +1106,7 @@ def run_consult(
         )
         if fid:
             finding_scouts[fid] = scouts.get(cand["candidate_id"], ())
+        report.spent_cents = _spent_from_runs(ledger, run_id)
         state = budget_state(report.spent_cents, policy, params=params)
 
     # 粗聚类（§2.3）：本 run 新 finding 全量归属
@@ -1078,17 +1124,24 @@ def run_consult(
         coarse_clusters.setdefault(cid, []).append(fid)
     report.clusters_coarse = len(coarse_clusters)
 
-    # 面板（每簇一投票，锚点收口 + 成员传播）
+    # 面板（每簇一投票，锚点收口 + 成员传播）——预算门控（§2.7「预算尽 → 停新
+    # 派单」对面板票同样成立：面板票与预裁决单都是付费调用；此前两阶段无任何
+    # degraded/quota 检查，熔断触发后仍持续产生付费调用，2026-10-20 修复）。
     reviewers = active_reviewers(ledger)
     for cid in sorted(coarse_clusters):
         if not _time_left():
             break
+        if state.degraded or state.quota_s2 <= 0:
+            report.panel_budget_skipped += 1
+            continue
         _run_panel(
             ledger, root=root, cluster_id=cid, members=sorted(coarse_clusters[cid]),
             run_id=run_id, reviewers=reviewers, load=load, finding_scouts=finding_scouts,
             adapter=adapter, params=params, policy=policy, report=report,
             deadline_s=deadline_s,
         )
+        report.spent_cents = _spent_from_runs(ledger, run_id)
+        state = budget_state(report.spent_cents, policy, params=params)
 
     # 精聚类（§2.5）：粗簇内 fine 提案落簇（Jaccard v1）
     fine_clusters: dict[str, list[str]] = {}
@@ -1109,12 +1162,15 @@ def run_consult(
                 fine_clusters[m] = [m]
     report.clusters_fine = len(fine_clusters)
 
-    # 预裁决单（§2.6）
+    # 预裁决单（§2.6）——预算门控同面板（quota_s2 口径：pv 按 S2 成本入账）。
     verifiers = active_verifiers(ledger)
     store = Path(store_dir)
     for anchor in sorted(fine_clusters):
         if not _time_left():
             report.pv_skipped += 1
+            continue
+        if state.degraded or state.quota_s2 <= 0:
+            report.pv_budget_skipped += 1
             continue
         _run_preverdict(
             ledger, root=root, cluster_id=anchor, members=fine_clusters[anchor],
@@ -1122,6 +1178,8 @@ def run_consult(
             params=params, policy=policy, report=report, store_dir=store,
             deadline_s=deadline_s,
         )
+        report.spent_cents = _spent_from_runs(ledger, run_id)
+        state = budget_state(report.spent_cents, policy, params=params)
 
     # open 收口过期（§2.7：只 expired 未开面板的 open；voted 不动）
     for fid in new_ids:

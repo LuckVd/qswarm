@@ -124,3 +124,47 @@ def test_verify_ready_fail_closed(tmp_path):
 def test_bootstrap_missing_seed(tmp_path):
     with pytest.raises(ValueError, match="种子账本不存在"):
         init_prod_ledger(tmp_path / "p.db", seed_db_path=tmp_path / "nope.db")
+
+
+def test_bootstrap_reimport_new_seed_db_imports_new_cells(tmp_path, seed_db):
+    """跨播种库重导（2026-10-20 修复）：幂等键 = 格键 (agent, role, taxonomy_path)
+    ——新播种库 seq 从 1 重编不与旧库 src_seq 碰撞；旧格跳过、新格（重考/补播
+    产生）导入。修复前 (origin=exam, src_seq) 查重使新库 seq 1..N 与首导全量
+    碰撞、「新库重导更新编制」通道断裂。"""
+    prod_path = tmp_path / "prod.db"
+    init_prod_ledger(prod_path, seed_db_path=seed_db, clock=FixedClock(m3_harness.T0))
+
+    # 第二播种库：同编制行 + 一笔新格考试存款（seq=1——与旧库首笔 src_seq=1 相同，
+    # 旧逻辑据此误判「已导入」；格键按 (agent, role, family) 判定为新格）。
+    new_seed = tmp_path / "seed2.db"
+    with KernelLedger(new_seed, clock=FixedClock(m3_harness.T0)) as led:
+        src = sqlite3.connect(f"file:{seed_db}?mode=ro", uri=True)
+        agents = src.execute(
+            "SELECT agent_id, model_ref, contract_version, status, created_at,"
+            " last_active_at FROM agents ORDER BY agent_id"
+        ).fetchall()
+        hats = src.execute(
+            "SELECT agent_id, role, pool_class FROM hats ORDER BY agent_id, role"
+        ).fetchall()
+        src.close()
+        led.conn.executemany(
+            "INSERT INTO agents (agent_id, model_ref, contract_version, status,"
+            " created_at, last_active_at) VALUES (?, ?, ?, ?, ?, ?)", agents)
+        led.conn.executemany(
+            "INSERT INTO hats (agent_id, role, pool_class) VALUES (?, ?, ?)", hats)
+        led.conn.commit()
+        led.append("deposit", {
+            "finding": None, "cluster": None,
+            "agent": agents[0][0], "role": "reviewer",
+            "taxonomy_path": ["injection"], "signal_tier": "S1",
+            "direction": 1, "weight": 0.3, "origin": "exam",
+        })
+
+    report = init_prod_ledger(prod_path, seed_db_path=new_seed,
+                              clock=FixedClock(m3_harness.T0))
+    assert report.agents_imported == 0 and report.agents_skipped == 4
+    assert report.deposits_imported == 1 and report.deposits_skipped == 0
+    with KernelLedger(prod_path, clock=FixedClock(m3_harness.T0)) as prod:
+        n = sum(1 for ev in prod.read(kinds=(LedgerKind.DEPOSIT,))
+                if ev.payload.get("origin") == "exam")
+        assert n == 21                                   # 20 旧格 + 1 新格，零重复

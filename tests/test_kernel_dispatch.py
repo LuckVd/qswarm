@@ -914,3 +914,64 @@ def test_submit_rejects_task_not_dispatched():
         assert h.task_row(led, tid2)["state"] == "dispatched"
     finally:
         led.close()
+
+
+def test_submit_verifier_vr_attempts_derived_and_terminal_member_skipped():
+    """VR 行号派生 + 终态成员守卫（2026-10-20 修复）：
+
+    - ``attempts`` = 同簇库内 MAX+1（D20 同型口径）——模型自报 attempts 不再作
+      主键段：同簇第二次验证自报同值时撞主键抛 IntegrityError（非 ValueError，
+      编排层 except 接不住、整编排崩）；
+    - 簇内已被 S3 直答进终态（D8 voted→confirmed 边）的成员不阻断整笔验证——
+      只流转迁移表合法成员，终态成员保持原判（append-only）。"""
+    led = new_ledger()
+    try:
+        h.seed_run(led)
+        f1 = h.seed_finding(led, "F-20260101-000001", state="voted")
+        f2 = h.seed_finding(led, "F-20260101-000002", reporter="A-auditor-2",
+                            state="confirmed")            # S3 直答终态
+        h.seed_cluster(led, "C-20260101-000001", members=(f1, f2))
+        led.conn.execute(
+            "UPDATE findings SET cluster_id = ? WHERE id IN (?, ?)",
+            ("C-20260101-000001", f1, f2),
+        )
+        led.conn.commit()
+        ctx = VerdictContext(
+            members=(
+                MemberFacts(finding_id=f1, reporter="A-auditor-1", reporter_role="auditor"),
+                MemberFacts(finding_id=f2, reporter="A-auditor-2", reporter_role="auditor"),
+            ),
+            verifier_id="A-verifier-1",
+        )
+
+        def _verify(outcome: VerifyOutcome, **kwargs):
+            task_id = h.new_task(led, role="verifier", node="injection/sqli",
+                                 shard={"cluster_id": "C-20260101-000001"})
+            decision = h.make_decision(task_id, role="verifier", assignee="A-verifier-1")
+            contract = build_contract(object(), decision, mode="full", deadline_s=600)
+            dispatch(led, task_id, contract, decision)
+            report = VerifierReport(
+                cluster_id="C-20260101-000001", outcome=outcome,
+                env_base="python:3.11", deps_ref="artifact://lock",
+                trigger_path=[], assertions=[], attempts=1, duration_s=1.5,
+                logs_ref="artifact://run", **kwargs,
+            )
+            return submit(led, task_id, report, contract=contract, ctx=ctx)
+
+        # 第一次：verify_error——f1(voted→inconclusive 合法) 流转，f2 终态跳过
+        events = _verify(VerifyOutcome.VERIFY_ERROR, error_kind=VerifyErrorKind.POC_FAIL)
+        assert [e.kind for e in events] == [LedgerKind.VERIFY_RESULT, LedgerKind.FINDING]
+        assert h.finding_state(led, f1) == "inconclusive"
+        assert h.finding_state(led, f2) == "confirmed"   # 终态保持原判（append-only）
+        # 第二次：verified_fp（自报 attempts 仍 1）——行号派生 VR-…-2 不撞主键；
+        # f1 inconclusive→rejected 合法流转
+        _verify(VerifyOutcome.VERIFIED_FP, blocking=BlockingEvidence(
+            kind=BlockingKind.SANITIZER, where="views.py:80", ref="artifact://b"))
+        assert h.finding_state(led, f1) == "rejected"
+        rows = led.conn.execute(
+            "SELECT id, attempts FROM verify_results"
+            " WHERE cluster_id = 'C-20260101-000001' ORDER BY attempts"
+        ).fetchall()
+        assert rows == [("VR-C-20260101-000001-1", 1), ("VR-C-20260101-000001-2", 2)]
+    finally:
+        led.close()

@@ -261,7 +261,7 @@ def agg_cells(
     - 只需要视图、不落表的调用用 :func:`view_cells`（同一折叠与重放实现）。
     """
     view = view_cells(ledger, as_of, params=params)
-    _write_cells(ledger.conn, view)
+    _write_cells(ledger.conn, view, in_managed_txn=getattr(ledger, "_txn_depth", 0) > 0)
     return view
 
 
@@ -365,8 +365,13 @@ def _replay_status_into(view: "CellView", events: Sequence, as_of_dt: datetime) 
             )
 
 
-def _write_cells(conn, view: "CellView") -> int:
-    """cells 写口本体（kernel 包内）：全量重建 = 先清后插，单事务提交。"""
+def _write_cells(conn, view: "CellView", *, in_managed_txn: bool = False) -> int:
+    """cells 写口本体（kernel 包内）：全量重建 = 先清后插，单事务提交。
+
+    ``in_managed_txn``（2026-10-20 修复）：调用方处于可重入 ``transaction()``
+    （``_txn_depth > 0``）内时沿用外层边界（异常随外层回滚）；顶层调用照旧
+    即时提交（DML 的隐式事务必须在此收口，否则连接悬挂事务、后续 BEGIN
+    IMMEDIATE 报 cannot start a transaction within a transaction）。"""
     rows = [
         (
             c.agent_id, c.role, c.node, c.pos_w, c.neg_w, c.n_eff, c.n_eff_s2s3,
@@ -381,7 +386,8 @@ def _write_cells(conn, view: "CellView") -> int:
         " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         rows,
     )
-    conn.commit()
+    if not in_managed_txn:
+        conn.commit()
     return len(rows)
 
 
