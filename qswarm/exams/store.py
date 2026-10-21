@@ -167,11 +167,12 @@ def artifact_hash(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
-#: 工件 kind 词表（M2 两类 + M3 感知层两类 + M4 会诊两类：repo_map 切片与
-#: verifier 预裁决单，SPEC-8 §1.3/§2.6——写口审计词表不变（artifacts 不在
+#: 工件 kind 词表（M2 两类 + M3 感知层两类 + M4 会诊两类 + M5 沙箱三类：PoC 脚本/
+#: 执行日志/依赖清单，仲裁件一类——SPEC-9 §1.3；写口审计词表不变（artifacts 不在
 #: WRITE_TABLES），零账本直写纪律由 tests/test_m3_invariants.py 钉死）。
 ARTIFACT_KINDS: frozenset[str] = frozenset(
-    {"seed", "exam_log", "l0_candidates", "l0_index", "repo_map", "pre_verdict"}
+    {"seed", "exam_log", "l0_candidates", "l0_index", "repo_map", "pre_verdict",
+     "poc_script", "poc_log", "poc_deps", "arbitration"}
 )
 
 

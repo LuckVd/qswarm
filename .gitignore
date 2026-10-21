@@ -44,6 +44,11 @@ out/m4-seeding-v3/cache-r4/
 out/m4-smoke/cache/
 out/m4-smoke/repo/
 
+# ── M5 S2 沙箱与真验证（同先例：交付报告 + G2 前置离线试跑文本证据入库）──
+!out/_m5_final
+!out/m5-trial
+# out/sandbox-env/ 为 env 缓存（env_cache_dir，可再生），保持忽略
+
 # ── SQLite 附生文件（如 results 侧未来出现）────────────────────────
 *.db-shm
 *.db-wal

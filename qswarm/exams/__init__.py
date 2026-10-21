@@ -91,6 +91,7 @@ __all__ = [
     "cache_key",
     "cache_put",
     "deposit_exists",
+    "exam_deposit_net",
     "run_entry_cell",
     # seeding（§4.2/§4.4）
     "seed_entry",

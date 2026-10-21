@@ -33,6 +33,7 @@ promote_scan 影子挂接（§3.2）：每轮循环尾部照常执行，但直�
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -88,6 +89,7 @@ class ScanLoopReport:
     l1_no_family: int = 0
     deposits_written: int = 0
     promote_transitions: int = 0
+    dark_exam_enabled: bool = False                # G5：暗考回调本轮是否接线
 
     def to_dict(self) -> dict:
         return {
@@ -106,6 +108,7 @@ class ScanLoopReport:
             },
             "deposits_written": self.deposits_written,
             "promote_transitions": self.promote_transitions,
+            "dark_exam_enabled": self.dark_exam_enabled,
         }
 
 
@@ -394,17 +397,28 @@ def run_scan(
     rules_runner=None,
     clock: KernelClock | None = None,
     promote: bool = True,
+    bank=None,
 ) -> ScanLoopReport:
     """一轮生产扫描（L0→L1→影子 promote；会话管理 §3）。
 
     - 开工前校验（verify_ready：4 active + ≥20 考试存款）→ open_run → L0 扫描
       （候选集入工件库）→ candidates 入表 → L1 分片派单 → 影子 promote_scan；
-    - ``promote=False`` 供测试隔离 L0→L1 面（影子挂接由 M3 卷 §1.5 独立判据）；"""
+    - ``promote=False`` 供测试隔离 L0→L1 面（影子挂接由 M3 卷 §1.5 独立判据）；
+    - ``rules_runner=None`` → 通道 C 生产显式装配（G6 清账，SPEC-9 §8：D30 必选
+      件 enabled 时按 params.perception.rules.timeout_s 装配 semgrep runner，
+      不再静默缺席）；
+    - ``bank``：暗考回调面（G5，SPEC-9 §7）——params.exam.DARK_EXAM_ENABLED=True
+      ∧ bank 注入才接线（开启归 D35 批准面，默认关 = M3-7 预留点原样）。"""
     ready = verify_ready(ledger)
     _ = ready                                     # 对账面：调用方可读（防空账本启动）
     clock = clock if clock is not None else WallClock()
     root = Path(repo_root)
     report = ScanLoopReport(run_id=run_id, mode=str(mode))
+
+    if rules_runner is None and params.perception.rules.enabled:
+        from qswarm.perception.channels import default_rules_runner
+
+        rules_runner = default_rules_runner(int(params.perception.rules.timeout_s))
 
     open_run(ledger, run_id=run_id, mode=str(mode), repo_url=str(root))
 
@@ -462,8 +476,23 @@ def run_scan(
         shadow_params.exam.ENTRY_DIRECT = 0.0
         shadow_params.exam.ENTRY_TOP_FRAC = 0.0
         shadow_params.exam.TYPE_ENTRY = 0.0
+        # 暗考回调接线（G5，SPEC-9 §7）：开关默认关（params.exam.DARK_EXAM_ENABLED，
+        # 开启归 D35 批准面）∧ bank 注入——否则维持 M3-7 预留点原样（exam=None）。
+        exam_cb = None
+        if getattr(params.exam, "DARK_EXAM_ENABLED", False) and bank is not None:
+            from qswarm.exams.dark import make_dark_exam
+
+            seed_int = int.from_bytes(
+                hashlib.blake2b(str(run_id).encode("utf-8"), digest_size=8).digest(),
+                "big",
+            )
+            exam_cb = make_dark_exam(
+                ledger, bank=bank, adapter=adapter, seed=seed_int,
+                cache_dir=cache_dir, store_dir=store_dir, params=params,
+            )
+            report.dark_exam_enabled = True
         transitions = promote_scan(
-            ledger, as_of=clock.now(), params=shadow_params, exam=None, run_id=run_id,
+            ledger, as_of=clock.now(), params=shadow_params, exam=exam_cb, run_id=run_id,
         )
         report.promote_transitions = len(transitions)
     return report

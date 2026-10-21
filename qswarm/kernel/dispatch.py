@@ -109,12 +109,14 @@ ROLE_OUTPUT_SCHEMA: Mapping[str, str] = {
 
 #: ③ 工具与信息源边界：§4.1 权限边界列的机器可读形态（只读仓 / repo map 只读 /
 #: finding 与工件只读 / 沙箱可写+仓只读）。verifier 的 sandbox:rw 仅指隔离沙箱，
-#: 永不触生产（§4.1）。
+#: 永不触生产（§4.1）。queen_advisor 行为 M5 顾问接线落位（SPEC-3 §6/E7 预告：
+#: ③④ 段常量随顾问接线落位；SPEC-9 §6，2026-10-21）——只读簇证据与工件。
 ROLE_TOOL_BOUNDS: Mapping[str, tuple[str, ...]] = {
     "scout": ("repo:ro",),
     "auditor": ("repo:ro", "repomap:ro"),
     "reviewer": ("finding:ro", "artifact:ro"),
     "verifier": ("repo:ro", "sandbox:rw"),
+    "queen_advisor": ("finding:ro", "artifact:ro"),
 }
 
 #: ④ 任务边界缺省模板（一句话；SPEC-3 提示词模板细化时引用同一文案源）。
@@ -123,6 +125,8 @@ ROLE_TASK_BOUNDS: Mapping[str, str] = {
     "auditor": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
     "reviewer": "只按四维独立打票；不复用报告者结论、不产新 finding。",
     "verifier": "只对指名簇做沙箱复现并产三分类结构化结果；不投票、不产 finding。",
+    "queen_advisor": "只按注入的簇材料起草结构化仲裁摘要建议稿；不产 finding、不投票、"
+                     "不改变任何系统状态（仅建议权，§16.7-9）。",
 }
 
 #: 深挖跳数（§2.2 档位表逐字：fast=0 / pr=1 / full=2；§2.1 repo map 按
@@ -204,12 +208,17 @@ def build_contract(
 
     ``task`` 为分片载体（鸭子类型，保留 §2.2 签名形态；缺省四件套全部由
     ``decision`` 派生，shard 细节由 context_refs 以 artifact:// 引用携带——工蜂
-    产出只回传引用，输入同样只给引用，§4.3）。queen_advisor 与未知角色不在
-    角色表内（不派产 finding 任务）→ ValueError。
+    产出只回传引用，输入同样只给引用，§4.3）。queen_advisor 显式拒绝（顾问永不进
+    派单状态机，§4.2/§16.7-9；③④ 段常量已落位供 render 装配，M5 SPEC-9 §6——
+    建议任务由 kernel.arbitrate 直装契约，不经本函数）与未知角色 → ValueError。
     """
     role = str(decision.role)
     node = decision.node if node is None else node
-    if role not in ROLE_OUTPUT_SCHEMA or role not in ROLE_TOOL_BOUNDS or role not in ROLE_TASK_BOUNDS:
+    if role == "queen_advisor" or (
+        role not in ROLE_OUTPUT_SCHEMA
+        or role not in ROLE_TOOL_BOUNDS
+        or role not in ROLE_TASK_BOUNDS
+    ):
         raise ValueError(
             f"未知派单角色：{role!r}（四件套角色表仅含 {sorted(ROLE_OUTPUT_SCHEMA)}；"
             "queen_advisor 不派产 finding 任务，§4.2/§16.7-9）"

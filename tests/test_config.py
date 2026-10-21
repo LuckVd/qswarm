@@ -157,6 +157,27 @@ M4_FINAL_KNOBS: dict[str, dict[str, object]] = {
 for _section, _pins in M4_FINAL_KNOBS.items():
     ALL_PINNED_KNOBS.setdefault(_section, dict(_pins))
 
+# ── M5 沙箱/真验证/暗考开关旋钮逐键钉值（SPEC-9 §2/§4/§6；D38–D43 拍板回填，
+#    2026-10-21）──缺省=规格逐字值（sandbox 缺省 process 档=开发/CI 档；verify
+#    独立预算/实编配额；DARK_EXAM_ENABLED 缺省关=「开启归 D35 批准面」）。
+
+M5_FINAL_KNOBS: dict[str, dict[str, object]] = {
+    "exam": {"DARK_EXAM_ENABLED": False},
+    "sandbox": {
+        "tier": "process", "timeout_s": 340, "mem_mb": 512, "cpus": 1.0,
+        "nofile": 64, "nproc": 32, "tmpfs_mb": 64, "network": "none",
+        "read_only_root": True, "user": "nobody",
+        "env_cache_dir": "out/sandbox-env",
+    },
+    "verify": {
+        "budget_cents": 200, "max_clusters": 10,
+        "poc_attempts": 2, "wall_clock_budget_s": 3600,
+    },
+}
+for _section, _pins in M5_FINAL_KNOBS.items():
+    ALL_PINNED_KNOBS.setdefault(_section, {})
+    ALL_PINNED_KNOBS[_section].update(dict(_pins))
+
 
 def test_m3_perception_knobs_pinned():
     """M3 perception 节 7 键逐键钉值（SPEC-7 §6 回填；extra=forbid 由根模型管）。"""
@@ -253,7 +274,13 @@ def test_load_default_taxonomy():
     assert set(tax.families) >= {
         "injection", "deser", "crypto", "authz", "config_dep", "mem_safety"
     }
-    assert tax.families["injection"].types == ["sqli", "cmdi", "xss", "ssrf", "xxe"]
+    # M5 types 面补齐（SPEC-9 §8）：injection += command_injection（bank v3 实产
+    # type 标签，2026-10-20 smoke 实证）、authz += path_traversal（authz 族实收
+    # 题型 = CWE-23/36 路径穿越）。
+    assert tax.families["injection"].types == [
+        "sqli", "cmdi", "command_injection", "xss", "ssrf", "xxe"
+    ]
+    assert "path_traversal" in tax.families["authz"].types
     assert tax.families["mem_safety"].v1_weight == pytest.approx(0.3)
     # 未显式给 v1_weight 的家族缺省 1.0
     assert tax.families["injection"].v1_weight == pytest.approx(1.0)
@@ -349,3 +376,44 @@ def test_non_mapping_yaml_rejected(tmp_path):
 def test_copy_of_valid_params_still_valid():
     assert ParamsConfig.model_validate(_params_dict()) is not None
     assert copy.deepcopy(_taxonomy_dict())["families"]
+
+
+def test_m5_sandbox_verify_knobs_pinned():
+    """M5 sandbox/verify 节逐键钉值（SPEC-9 §2/§4 回填；D38–D43 拍板值）。"""
+    p = load_params()
+    assert p.sandbox.tier == "process"                   # D38：缺省开发/CI 档
+    assert p.sandbox.timeout_s == 340                    # 一簇 340s 量级（设计示例）
+    assert p.sandbox.mem_mb == 512
+    assert p.sandbox.cpus == pytest.approx(1.0)
+    assert p.sandbox.nofile == 64
+    assert p.sandbox.nproc == 32
+    assert p.sandbox.tmpfs_mb == 64
+    assert p.sandbox.network == "none"                   # 默认禁网（§16.7-5）
+    assert p.sandbox.read_only_root is True
+    assert p.sandbox.user == "nobody"
+    assert p.sandbox.env_cache_dir == "out/sandbox-env"
+    assert p.verify.budget_cents == 200                  # D40-b 独立预算档
+    assert p.verify.max_clusters == 10                   # 分批补验
+    assert p.verify.poc_attempts == 2                    # D39 attempts=2 既有口径
+    assert p.verify.wall_clock_budget_s == 3600
+    assert p.exam.DARK_EXAM_ENABLED is False             # G5：默认关（D35 批准面）
+
+
+def test_params_sandbox_verify_sections_optional_with_spec_defaults():
+    """黄金兼容面：无 sandbox/verify 节的旧参数集回落规格缺省（M3/M4 同款）。"""
+    data = _params_dict()
+    data.pop("sandbox")
+    data.pop("verify")
+    params = ParamsConfig.model_validate(data)
+    assert params.sandbox.tier == "process"
+    assert params.verify.budget_cents == 200
+    assert params.exam.DARK_EXAM_ENABLED is False
+
+
+def test_params_sandbox_verify_extra_forbidden():
+    """sandbox/verify 节越键拒绝（extra=forbid 纪律，M5 卷 B 组判据）。"""
+    data = _params_dict()
+    data["sandbox"]["rogue_knob"] = 1
+    data["verify"]["rogue_knob"] = 1
+    with pytest.raises(ValidationError):
+        ParamsConfig.model_validate(data)

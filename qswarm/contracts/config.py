@@ -6,6 +6,7 @@ YAML → pydantic 严格校验：缺字段、未知字段（extra=forbid）、�
 """
 
 from pathlib import Path
+from typing import Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -109,6 +110,10 @@ class ExamParams(BaseModel):
     # 提名候选人的暗考宽限天数（0 = 关闭=§8.2 逐字：当夜即考）：宽限期内直晋
     # 候选人等待生产佐证（ENTRY_CORROB_S2S3），期满仍未佐证才落 §8.2 暗考。
     ENTRY_GRACE_DAYS: int = Field(default=0, ge=0)
+    # ── M5 暗考接线开关（SPEC-9 §6；默认关=「开启归 D35 批准面」的机器化落点，
+    # 放行行 62b9ed3：影子期只积累票流，暗考回调在 loop.run_scan 尾部预留点接线、
+    # 开关默认关——True 时 run_scan 须同时注入 bank 才会真正接线，否则如实计数）。──
+    DARK_EXAM_ENABLED: bool = Field(default=False)
     # 生产佐证门槛（0 = 关闭）：直晋候选人格 n_eff_s2s3（纯生产 S2/S3 当量，
     # §8.4 考试存款不计）≥ 该值且 C* 高于同 (role,node) LOO 基线时，免暗考
     # 直转 active（考试提名 + 生产佐证双闸；宽限期内每晚复查）。
@@ -242,6 +247,48 @@ class ConsultParams(BaseModel):
     l2_context_lines: int = Field(default=40, ge=1)        # L2 候选块窗（深诊档）
 
 
+class SandboxParams(BaseModel):
+    """S2 沙箱红线配置（SPEC-9 §2/D38/D43；全缺省 = process 档规格逐字值）。
+
+    tier：container = Docker 分级隔离档（S2 生产存款唯一口径，D43-a）；
+    process = subprocess+rlimits 近似档（开发/CI 档，只产工件与报告、
+    不写生产账本）。红线逐条：timeout_s 墙钟（超时 → error_kind=timeout）、
+    mem_mb/cpus 资源上限、nofile/nproc rlimits、network="none" 默认禁网
+    （§16.7-5；逐例白名单归后续里程碑，v1 词表只收 "none"）、read_only_root
+    只读根 + tmpfs_mb 可写点、user 非特权。缺节回落同款缺省（黄金兼容）。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tier: Literal["container", "process"] = "process"
+    timeout_s: int = Field(default=340, ge=1)              # 设计示例一簇 340s 量级
+    mem_mb: int = Field(default=512, ge=1)
+    cpus: float = Field(default=1.0, gt=0)
+    nofile: int = Field(default=64, ge=4)
+    nproc: int = Field(default=32, ge=1)
+    tmpfs_mb: int = Field(default=64, ge=1)
+    network: Literal["none"] = "none"
+    read_only_root: bool = True
+    user: str = "nobody"
+    env_cache_dir: str = "out/sandbox-env"
+
+
+class VerifyParams(BaseModel):
+    """S2 真验证独立入口旋钮（SPEC-9 §4/D40/R7；extra=forbid 纪律同根模型）。
+
+    budget_cents = run_verify 独立预算档（D40-b 独立排程入口的配额独立面，
+    不与 consult 共享 run 预算）；quota_s2 存活数 = active verifier 实编
+    （R7-①：quota_l2 代理在独立入口下不成立，防容量高估）；max_clusters =
+    单轮补验簇数上限（分批补验，D40）；poc_attempts = PoC 重试语义上界
+    （D39 attempts=2 既有口径）；wall_clock_budget_s 同 consult 旋钮形态。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    budget_cents: int = Field(default=200, ge=0)
+    max_clusters: int = Field(default=10, ge=1)
+    poc_attempts: int = Field(default=2, ge=1)
+    wall_clock_budget_s: int = Field(default=3600, gt=0)
+
+
 class PerceptionParams(BaseModel):
     """感知层旋钮根（SPEC-7 §6；extra=forbid 纪律同根模型）。"""
 
@@ -273,6 +320,8 @@ class ParamsConfig(BaseModel):
     roster: RosterParams
     perception: PerceptionParams = PerceptionParams()
     consult: ConsultParams = ConsultParams()
+    sandbox: SandboxParams = SandboxParams()
+    verify: VerifyParams = VerifyParams()
 
 
 # ── taxonomy.yaml（§5.3）────────────────────────────────────────

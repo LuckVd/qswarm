@@ -1,10 +1,14 @@
 # taxonomy.yaml —— 家族树（SPEC-1 §5.3；种子版六家族，可扩展；v1_weight 缺省 1.0）
+# M5 types 面补齐（SPEC-9 §8；HANDOVER §5「authz types 面与实收题型错位」清账）：
+#   injection += command_injection（bank v3 审查蜂实产 type 标签，2026-10-20 smoke
+#   实证）；authz += path_traversal（bank v3 authz 族实收题型 = CWE-23/36 路径穿越）。
+#   均为增量扩展，既有类型与 v1_weight 零改动。
 # 注：SPEC §5.3 原文 config_dep:/mem_safety: 冒号后缺空格（YAML 不可解析的笔误），
 #     此处补空格修正，键值内容逐字不变——见 docs/spec/DECISIONS.md 2026-10-08 条目。
 families:
-  injection: {types: [sqli, cmdi, xss, ssrf, xxe]}
+  injection: {types: [sqli, cmdi, command_injection, xss, ssrf, xxe]}
   deser:     {types: [java_gadget, py_pickle]}
   crypto:    {types: [weak_algo, hardcoded_key, weak_random]}
-  authz:     {types: [idor, session_fixation, logic_bypass]}
+  authz:     {types: [idor, session_fixation, logic_bypass, path_traversal]}
   config_dep: {types: [secret_leak, outdated_dep, misconfig]}
   mem_safety: {types: [overflow, uaf], v1_weight: 0.3}   # §16.2.5 降权

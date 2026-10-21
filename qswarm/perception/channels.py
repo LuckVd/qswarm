@@ -355,6 +355,9 @@ def channel_c_scan(
       "rule_channel_skipped")``——该轮缺席，漏斗不停摆（§1.4 红线）；
     - 家族映射：规则 ``extra.metadata.family``（仓内规则包自带）→ 反查失败回落
       check_id ``qsw.<family>.<name>`` 前缀 → 仍失败 = taxonomy_hint=None；
+    - 命中路径归一（G6 清账，SPEC-9 §8；DECISIONS 2026-10-12 记档项）：semgrep 对
+      绝对路径输入回吐绝对路径，Candidate.path 须与其余通道同为仓库相对 posix 形
+      （``repo_root`` 前缀剥离 + ``./`` 归一）；
     - clue = check_id（candidate_id 内容寻址输入）。"""
     try:
         stdout = rules_runner(paths)
@@ -365,6 +368,9 @@ def channel_c_scan(
     except Exception as exc:                      # noqa: BLE001 — 缺席语义（含超时）
         _ = exc
         return RulesOutcome(None, "rule_channel_skipped")
+    root_prefix = ""
+    if repo_root is not None:
+        root_prefix = str(Path(repo_root)).rstrip("/") + "/"
     out: list[Candidate] = []
     for hit in results:
         if not isinstance(hit, dict):
@@ -373,6 +379,10 @@ def channel_c_scan(
         if not check_id:
             continue
         path = str(hit.get("path") or "")
+        if root_prefix and path.startswith(root_prefix):
+            path = path[len(root_prefix):]
+        while path.startswith("./"):
+            path = path[2:]
         start = (hit.get("start") or {}).get("line")
         end = (hit.get("end") or {}).get("line")
         if not path or not isinstance(start, int) or not isinstance(end, int) or start < 1 or end < start:

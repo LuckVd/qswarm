@@ -1,0 +1,5 @@
+$ /opt/projects/qswarm/.venv/bin/python /tmp/qswarm-sb-w45no_69/poc.py
+--- stdout ---
+ASSERT|injection_payload_executed|PASS|stage=import marker=QSWARM_POC_0
+
+--- stderr ---

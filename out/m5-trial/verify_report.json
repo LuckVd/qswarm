@@ -1,0 +1,54 @@
+{
+  "deposits_written": 0,
+  "detail": [
+    {
+      "attempts": 1,
+      "cluster_id": "C-20261020-000001",
+      "duration_s": 0.05,
+      "error_kind": null,
+      "expected": "confirmed",
+      "expected_source": "s1_projection",
+      "match": true,
+      "outcome": "verified_real",
+      "poc_source": "template"
+    },
+    {
+      "attempts": 1,
+      "cluster_id": "C-20261020-000002",
+      "duration_s": 0.056,
+      "error_kind": null,
+      "expected": "confirmed",
+      "expected_source": "s1_projection",
+      "match": true,
+      "outcome": "verified_real",
+      "poc_source": "template"
+    }
+  ],
+  "failures": {
+    "bee_schema_fail": 0,
+    "err_env_build_fail": 0,
+    "err_flaky": 0,
+    "err_poc_fail": 0,
+    "err_timeout": 0,
+    "template_unsupported": 0
+  },
+  "funnel": {
+    "clusters_eligible": 2,
+    "clusters_selected": 2,
+    "skipped_budget": 0,
+    "skipped_no_verifier": 0,
+    "verified_fp": 0,
+    "verified_real": 2,
+    "verify_error": 0
+  },
+  "mode": "pr",
+  "run_id": "TRIAL-prod",
+  "sandbox_disclosure": {
+    "env_build_s": 0.0,
+    "note": "沙箱轮成本为非 LLM 资源（env 构建 CPU/墙钟 ×簇数），与 D33 双轨 LLM 名义价分列（SPEC-9 §4.6）",
+    "sandbox_runs": 2,
+    "sandbox_wall_s": 0.106
+  },
+  "spent_cents": 0,
+  "tier": "process"
+}

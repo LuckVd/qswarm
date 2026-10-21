@@ -1028,6 +1028,7 @@ def run_consult(
     cache_dir: str | Path | None = None,
     deadline_s: int = 600,
     report_dir: str | Path | None = None,
+    monotonic=time.monotonic,
 ) -> ConsultReport:
     """一轮 L2 会诊（verify_ready → open_run → 深诊 → 聚类 → 面板 → 预裁决 → 报告）。
 
@@ -1036,7 +1037,9 @@ def run_consult(
       「已 done 跳过、其余重派」收敛（§2.8）；
     - 预算：budget_for_mode(mode) 名义价；on_cost 逐次入账，budget_state 判熔断，
       尽 → 停新派单 + open finding 收口过期（§2.7）；
-    - ``report_dir``：最小报告落盘目录（缺省 ``out/<run_id>``；只读环境静默跳过）。"""
+    - ``report_dir``：最小报告落盘目录（缺省 ``out/<run_id>``；只读环境静默跳过）；
+    - ``monotonic``：墙钟注入（M5 收口 M4 判据缺口①——wall_clock 停机判据的
+      机器可检形态，SPEC-9 §8；缺省真实时钟零行为差）。"""
     params = params if params is not None else load_params()
     ready = verify_ready(ledger)
     _ = ready
@@ -1053,11 +1056,11 @@ def run_consult(
     open_run(ledger, run_id=run_id, mode=str(mode), repo_url=str(root),
              budget_cents=policy.budget_cents)
 
-    t0 = time.monotonic()
+    t0 = monotonic()
     budget_s = int(params.consult.wall_clock_budget_s)
 
     def _time_left() -> bool:
-        if time.monotonic() - t0 < budget_s:
+        if monotonic() - t0 < budget_s:
             return True
         report.wall_clock_exceeded = True
         return False

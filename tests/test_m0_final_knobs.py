@@ -102,10 +102,11 @@ def test_effective_m_literal_when_off():
 def test_effective_m_prorate_by_expected_cluster_share():
     """M_PRORATE=True：最高份额节点保持 M，其余按 (v1_weight/扇出)/max 等比缩放。
 
-    taxonomy：injection(1.0, 5 类型) / deser(1.0, 2) / crypto·authz·config_dep(1.0, 3)
-    / mem_safety(0.3, 2)。per-type 份额：deser 0.5（max）、crypto 等 1/3、
-    injection 0.2、mem_safety 0.15 → M=30 时：deser type 30、crypto/authz/config_dep
-    type 20、injection type 12、mem_safety type 9；家族级（无扇出）：weight-1.0 → 30、
+    taxonomy（M5 types 面补齐后，SPEC-9 §8）：injection(1.0, 6 类型)
+    / deser(1.0, 2) / crypto·config_dep(1.0, 3) / authz(1.0, 4) / mem_safety(0.3, 2)。
+    per-type 份额：deser 0.5（max）、crypto·config_dep 1/3、authz 1/4、injection 1/6、
+    mem_safety 0.15 → M=30 时：deser type 30、crypto/config_dep type 20、authz
+    type 15、injection type 10、mem_safety type 9；家族级（无扇出）：weight-1.0 → 30、
     mem_safety → 9；未知家族容错回 M。
     """
     p = params_with(**{"promote.M_PRORATE": True})
@@ -114,10 +115,10 @@ def test_effective_m_prorate_by_expected_cluster_share():
     assert effective_M("deser/java_gadget", params=p) == 30
     assert effective_M("crypto", params=p) == 30
     assert effective_M("crypto/weak_algo", params=p) == 20
-    assert effective_M("authz/idor", params=p) == 20
+    assert effective_M("authz/idor", params=p) == 15
     assert effective_M("config_dep/secret_leak", params=p) == 20
     assert effective_M("injection", params=p) == 30
-    assert effective_M("injection/sqli", params=p) == 12
+    assert effective_M("injection/sqli", params=p) == 10
     assert effective_M("mem_safety", params=p) == 9
     assert effective_M("mem_safety/overflow", params=p) == 9
     assert effective_M("no_such_family", params=p) == 30      # 未知家族容错
@@ -125,8 +126,8 @@ def test_effective_m_prorate_by_expected_cluster_share():
 
 
 def test_traffic_criterion_uses_effective_m(tmp_path):
-    """判据③端到端：prorate 下 12 簇恰达 injection type 门槛（12），11 簇被卡。"""
-    for clusters, ok in ((12, True), (11, False)):
+    """判据③端到端：prorate 下 10 簇恰达 injection type 门槛（10），9 簇被卡。"""
+    for clusters, ok in ((10, True), (9, False)):
         db = tmp_path / f"l{clusters}.db"
         for _ in range(5):
             dep(db, days_ago(3), agent="a", path=("injection", "sqli"))
@@ -144,7 +145,7 @@ def test_traffic_criterion_uses_effective_m(tmp_path):
             )
         assert snap.traffic == clusters
         assert snap.traffic_ok is ok
-        assert snap.m_eff == 12
+        assert snap.m_eff == 10
 
 
 # ══ promote.UNIQUE_PER_FAMILY：同族唯一专员 ═══════════════════════

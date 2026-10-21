@@ -12,6 +12,7 @@ qswarm/kernel/      编排内核（SPEC-2 滚动导出后实现；账本唯一�
 qswarm/prompts/     蜂角色提示词模板与输出解析（SPEC-3，M2；纯函数零 IO）
 qswarm/exams/       种子题库装载/出卷/判分/考试播种（SPEC-6，M2；agents/hats/exam_* 四表唯一写口）
 qswarm/supply/      供给适配层 models.yaml + UrllibAdapter（SPEC-6 §5，M2；全仓唯一网络落点）
+qswarm/sandbox/     S2 沙箱执行面（SPEC-9，M5；双档 runner/env 缓存/PoC 生成 + trial 试跑 CLI）
 qswarm/simulator/   M0 机制仿真器（SPEC-4：直接复用 kernel 实现）
 scripts/build_seeds/ 题库三源构建流水线（M2，外网侧；缓存优先可离线重放）
 tests/              pytest 测试（枚举逐字对照 / DDL 触发器 / 配置校验 / 契约模型 / 内核 / 考试播种）

@@ -104,3 +104,16 @@ consult: {wall_clock_budget_s: 3600, min_panel: 2, s1_rho: 0.4, l2_context_lines
 # ExamWorldParams.entry_items=12（§8.4「8–12 题」上限）与 type_quiz_items=56
 # （类型 quiz 无规格值；席位保真度随题量上升，Round 41-49 网格实测 56 为
 # ①② 联合可达档），随仿真世界参数记录于 DECISIONS 2026-10-09 v2 条。
+# ── M5 沙箱与真验证新旋钮（SPEC-9 §2/§4；D38–D43 拍板回填，缺省=规格逐字值）──
+# sandbox.tier=process：D38 双档并存——container 档为 S2 生产存款唯一口径（D43-a），
+#   process 档为开发/CI 档（只产工件与报告、不写生产账本）；红线逐条见
+#   SandboxParams docstring（timeout/mem/cpus/rlimits/禁网/只读根/非特权）。
+# verify.budget_cents=200：run_verify 独立预算档（D40-b 独立排程入口）；quota_s2
+#   存活数 = active verifier 实编（R7-①，不再用 quota_l2 代理）；max_clusters=10
+#   分批补验；poc_attempts=2（D39 verifier 一体产重试语义既有口径）。
+sandbox: {tier: "process", timeout_s: 340, mem_mb: 512, cpus: 1.0, nofile: 64,
+          nproc: 32, tmpfs_mb: 64, network: "none", read_only_root: true,
+          user: "nobody", env_cache_dir: "out/sandbox-env"}
+verify: {budget_cents: 200, max_clusters: 10, poc_attempts: 2, wall_clock_budget_s: 3600}
+# exam.DARK_EXAM_ENABLED=false（缺省关=「开启归 D35 批准面」；接线在 loop.run_scan
+# 尾部 promote_scan(exam=...)，True 且注入 bank 才生效）。

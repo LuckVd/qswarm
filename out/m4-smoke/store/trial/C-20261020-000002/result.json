@@ -1,0 +1,16 @@
+{
+  "attempts": 1,
+  "cluster_id": "C-20261020-000002",
+  "duration_s": 0.055574717989657074,
+  "error_kind": null,
+  "expected": "confirmed",
+  "expected_source": "s1_projection",
+  "mitigations": {
+    "network": "unshare-net",
+    "rlimits": "nofile=64,nproc=32,as=512m",
+    "rootfs": "repo-snapshot-copy",
+    "user": "nobody"
+  },
+  "outcome": "verified_real",
+  "poc_source": "template"
+}

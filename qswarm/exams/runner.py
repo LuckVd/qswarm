@@ -67,6 +67,7 @@ __all__ = [
     "cache_put",
     "run_entry_cell",
     "deposit_exists",
+    "exam_deposit_net",
 ]
 
 #: 考试调用 deadline（任务头行渲染值；考试面常数，DECISIONS M2 实现期行）。
@@ -231,7 +232,9 @@ def deposit_exists(ledger: KernelLedger, agent_id: str, role: str, family: str) 
 
     幂等键 = 格键 ``(agent, role, taxonomy_path=[family], origin=exam)``——
     PAYLOAD_SCHEMA 对 deposit 事件按基类校验（M0 既定形态），载荷中的 exam_id
-    不入账本 payload_json，故以格键判定（语义等价：一格恰一笔考试存款）。"""
+    不入账本 payload_json，故以格键判定。M5 起「一格恰一笔」放松为「一格 ≥1 笔 +
+    版本化补偿」（:func:`exam_deposit_net`，SPEC-9 §8）——重考刷新经补偿存款承载，
+    本函数语义保持「已有首笔」。"""
     for ev in ledger.read(kinds=(LedgerKind.DEPOSIT,)):
         payload = ev.payload
         if (
@@ -242,6 +245,29 @@ def deposit_exists(ledger: KernelLedger, agent_id: str, role: str, family: str) 
         ):
             return True
     return False
+
+
+def exam_deposit_net(
+    ledger: KernelLedger, agent_id: str, role: str, family: str
+) -> float | None:
+    """格考试存款账面净值（带符号求和；无考试存款 → None）。
+
+    M5 存款值版本化刷新的收敛判定基准：净值 = Σ(方向 × 幅值)——补偿存款计入，
+    cells 聚合器零改动（M0 黄金逐位不受影响）而净值收敛到最新重考结果。"""
+    net = 0.0
+    found = False
+    for ev in ledger.read(kinds=(LedgerKind.DEPOSIT,)):
+        payload = ev.payload
+        if (
+            payload.get("agent") == agent_id
+            and payload.get("role") == role
+            and list(payload.get("taxonomy_path") or ()) == [family]
+            and payload.get("origin") == str(DepositOrigin.EXAM.value)
+        ):
+            found = True
+            sign = 1 if int(payload.get("direction") or 0) > 0 else -1
+            net += sign * float(payload.get("weight") or 0.0)
+    return net if found else None
 
 
 def _build_contract(agent_id: str, role: str, family: str) -> DispatchContract:
@@ -522,7 +548,8 @@ def run_entry_cell(
             accuracy = real_correct / real_n if real_n else None
             if accuracy is not None:
                 direction, weight = centered_exam_weight(accuracy)
-                if not deposit_exists(ledger, agent_id, role, family):
+                net = exam_deposit_net(ledger, agent_id, role, family)
+                if net is None:
                     ledger.append(
                         "deposit",
                         ExamDepositPayload(
@@ -539,6 +566,31 @@ def run_entry_cell(
                         ),
                     )
                     deposit_written = True
+                else:
+                    # M5 存款值版本化刷新（SPEC-9 §8；HANDOVER §5「重考不刷新权重」
+                    # 清账项）：重考（新 bank_version 重判）后账面净值 ≠ 本次结果 →
+                    # 补偿存款（方向 = 补偿方向、权重 = 净差幅值）——§6.2 append-only
+                    # 不回滚旧存款，cells 聚合器零改动而净值收敛到刷新值；幂等按
+                    # 收敛判定（净值已等 → 零新事件，重跑收敛）。
+                    desired = float(weight) if int(direction) > 0 else -float(weight)
+                    delta = desired - net
+                    if abs(delta) >= 1e-9:
+                        ledger.append(
+                            "deposit",
+                            ExamDepositPayload(
+                                finding=None,
+                                cluster=None,
+                                agent=agent_id,
+                                role=Role(role),
+                                taxonomy_path=[family],
+                                signal_tier=SignalTier.S1,
+                                direction=(1 if delta > 0 else -1),
+                                weight=round(abs(delta), 9),
+                                origin=DepositOrigin.EXAM,
+                                exam_id=exam_id,
+                            ),
+                        )
+                        deposit_written = True
     except _CellInvalid:
         # 整格回滚已由 transaction 上下文完成（零存款、零行）；判分明细如实置空。
         outcomes = [

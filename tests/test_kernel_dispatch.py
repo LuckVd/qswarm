@@ -78,8 +78,9 @@ def test_role_literal_tables():
     """SPEC-5 §1.2：ROLE_* 三表与 FINDING_TRANSITIONS 逐字表（§2.2/§2.4）。
 
     ROLE_OUTPUT_SCHEMA 含 queen_advisor 行（SPEC-3 §6 契约面登记，DECISIONS
-    2026-10-11）；ROLE_TOOL_BOUNDS / ROLE_TASK_BOUNDS 不含 advisor——三表合取
-    校验使 build_contract 对 advisor 仍 ValueError（顾问不进派单状态机）。"""
+    2026-10-11）；ROLE_TOOL_BOUNDS / ROLE_TASK_BOUNDS 的 advisor 行为 M5 顾问
+    接线落位（SPEC-3 §6/E7 预告；SPEC-9 §6，2026-10-21——③④ 段常量供 render
+    装配），build_contract 对 advisor 仍显式 ValueError（顾问不进派单状态机）。"""
     assert ROLE_OUTPUT_SCHEMA == {
         "scout": "ScoutReport",
         "auditor": "AuditorFinding",
@@ -92,12 +93,15 @@ def test_role_literal_tables():
         "auditor": ("repo:ro", "repomap:ro"),
         "reviewer": ("finding:ro", "artifact:ro"),
         "verifier": ("repo:ro", "sandbox:rw"),
+        "queen_advisor": ("finding:ro", "artifact:ro"),
     }
     assert ROLE_TASK_BOUNDS == {
         "scout": "只分诊给定候选点并给出类型猜测；不做深挖、不产 finding。",
         "auditor": "只分析派单节点指名的可疑点×类型并产带证据链 finding；不扩面、不改结论分级。",
         "reviewer": "只按四维独立打票；不复用报告者结论、不产新 finding。",
         "verifier": "只对指名簇做沙箱复现并产三分类结构化结果；不投票、不产 finding。",
+        "queen_advisor": "只按注入的簇材料起草结构化仲裁摘要建议稿；不产 finding、不投票、"
+                         "不改变任何系统状态（仅建议权，§16.7-9）。",
     }
     assert {
         state.value: {to.value for to in outs}
