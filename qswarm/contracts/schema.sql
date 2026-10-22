@@ -203,6 +203,29 @@ CREATE TABLE hats (                          -- 角色是帽子（§4.1）
   PRIMARY KEY (agent_id, role)
 );
 
+-- ── 角色资格投影（SPEC-10 §3；可重建投影，唯一写口 = exams/roster.py）──
+-- IF NOT EXISTS：既有账本经写口自愈建表（roster._ensure_rq_table），
+-- DDL 仍以本文件为单一真源（SPEC-1 §2 逐字同步）。
+CREATE TABLE IF NOT EXISTS role_qualifications (
+  id            TEXT PRIMARY KEY,            -- 'RQ-<seq>'
+  agent_id      TEXT NOT NULL REFERENCES agents(agent_id),
+  role          TEXT NOT NULL,               -- Role
+  profile_id    TEXT NOT NULL,               -- execution_profile_id（SPEC-10 §2）
+  policy_version TEXT NOT NULL,              -- qualification_policy_version
+  status        TEXT NOT NULL,               -- QualificationStatus
+  reason        TEXT,                        -- failed/stale/revoked 说明（passed 可空）
+  exam_run_id   TEXT,                        -- 资格来源考试轮（可空=管理/迁移动作）
+  bank_version  INTEGER,                     -- 考试数据版本（可空）
+  paper_id      TEXT,                        -- 卷 id（可空）
+  scoring_version TEXT,                      -- 判分策略版本（可空）
+  accuracy      REAL,                        -- 考试计算值（只参考，不冒充本体状态）
+  started_at    TEXT NOT NULL,               -- 考试/动作开始时间（乱序写守卫）
+  superseded_by TEXT REFERENCES role_qualifications(id),  -- 被替代资格引用
+  created_at    TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rq_lookup ON role_qualifications(
+  agent_id, role, profile_id, policy_version, status);
+
 -- ── 题库与考试（§8.2/§8.4）────────────────────────────────
 CREATE TABLE exam_items (
   item_id     TEXT PRIMARY KEY,              -- 'SEED-<seq>'

@@ -40,7 +40,17 @@
         "status": "str"
       },
       "role": "str",
-      "tier": "str"
+      "tier": "str",
+      "agent_status": "str",
+      "role_qualification": {
+        "accuracy": "float",
+        "exam_run_id": "str",
+        "policy_version": "str",
+        "profile_id": "str",
+        "qualification_id": "str",
+        "reason": "NoneType",
+        "status": "str"
+      }
     }
   ],
   "bank_version": "int",

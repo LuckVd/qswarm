@@ -64,7 +64,8 @@ __all__ = [
 # ── 写口词表与正则（SPEC-2 §6.1 唯一写口表；SPEC-5 §2.1 判据 2 同一口径）────
 
 #: SPEC-2 §6.1 全部写表（穷尽枚举；M2 扩展：agents/hats/exam_items/exam_results
-#: 四表唯一写口 = qswarm/exams，DECISIONS 2026-10-11 写口表扩展行）。
+#: 四表唯一写口 = qswarm/exams，DECISIONS 2026-10-11 写口表扩展行；P0 扩展：
+#: role_qualifications 唯一写口 = qswarm/exams/roster.py，SPEC-10 §3/D46）。
 WRITE_TABLES: tuple[str, ...] = (
     "ledger",
     "cells",
@@ -79,6 +80,7 @@ WRITE_TABLES: tuple[str, ...] = (
     "runs",
     "agents",
     "hats",
+    "role_qualifications",
     "exam_items",
     "exam_results",
 )
@@ -94,7 +96,8 @@ EXAMS_PREFIX = "exams/"
 #: 表 → 唯一写口模块（SPEC-2 §6.1 表逐行编码；包根相对 posix 路径）。
 #: runs 行的「run 生命周期入口」按 §2.3/D19 取 dispatch（expire_run 等收尾口）。
 #: M2 四表（SPEC-6 §0.2/S4）：roster.py 注册 agents/hats，store.py 承担
-#: exam_items UPSERT-by-version 与 exam_results 行签发。
+#: exam_items UPSERT-by-version 与 exam_results 行签发。P0：role_qualifications
+#: 唯一写口 = roster.py（record/revoke/migrate 三函数；SPEC-10 §3/D46）。
 EXPECTED_WRITE_PORTS: dict[str, tuple[str, ...]] = {
     "ledger": ("kernel/ledger.py",),
     "cells": ("kernel/cells.py",),
@@ -109,6 +112,7 @@ EXPECTED_WRITE_PORTS: dict[str, tuple[str, ...]] = {
     "runs": ("kernel/budget.py", "kernel/dispatch.py"),
     "agents": ("exams/roster.py",),
     "hats": ("exams/roster.py",),
+    "role_qualifications": ("exams/roster.py",),
     "exam_items": ("exams/store.py",),
     "exam_results": ("exams/store.py",),
 }
@@ -119,7 +123,8 @@ EXPECTED_WRITE_PORTS: dict[str, tuple[str, ...]] = {
 _SANCTIFIED_PREFIX: dict[str, str] = {
     table: (
         EXAMS_PREFIX
-        if table in ("agents", "hats", "exam_items", "exam_results")
+        if table in ("agents", "hats", "role_qualifications",
+                     "exam_items", "exam_results")
         else KERNEL_PREFIX
     )
     for table in WRITE_TABLES

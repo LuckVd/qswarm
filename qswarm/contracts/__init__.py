@@ -19,6 +19,7 @@ from .config import (
     PanelParams,
     ParamsConfig,
     PromoteParams,
+    QualificationParams,
     RosterParams,
     ShrinkParams,
     TaxonomyConfig,
@@ -39,6 +40,7 @@ from .enums import (
     L0Channel,
     LedgerKind,
     PoolClass,
+    QualificationStatus,
     Role,
     RunMode,
     RunStatus,
@@ -81,7 +83,8 @@ __all__ = [
     # 枚举
     "AgentStatus", "BlockingKind", "CellStatus", "DepositOrigin", "ExamItemSource",
     "ExamPurpose", "Family", "FindingState", "Grade", "L0Channel", "LedgerKind",
-    "PoolClass", "Role", "RunMode", "RunStatus", "Severity", "SignalTier",
+    "PoolClass", "QualificationStatus", "Role", "RunMode", "RunStatus",
+    "Severity", "SignalTier",
     "VerifyErrorKind", "VerifyOutcome",
     # 蜂 I/O 契约
     "ArbitrationDraft", "Assertion", "AuditorFinding", "BlockingEvidence",
@@ -96,7 +99,8 @@ __all__ = [
     # 配置
     "DEFAULT_PARAMS_PATH", "DEFAULT_TAXONOMY_PATH", "BudgetParams", "DecayParams",
     "DemoteParams", "DepositsParams", "ExamParams", "ExploreParams", "FamilySpec",
-    "PanelParams", "ParamsConfig", "PromoteParams", "RosterParams", "ShrinkParams",
+    "PanelParams", "ParamsConfig", "PromoteParams", "QualificationParams",
+    "RosterParams", "ShrinkParams",
     "TaxonomyConfig", "TiltParams", "load_params", "load_taxonomy",
 ]
 

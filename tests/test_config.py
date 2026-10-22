@@ -178,6 +178,22 @@ for _section, _pins in M5_FINAL_KNOBS.items():
     ALL_PINNED_KNOBS.setdefault(_section, {})
     ALL_PINNED_KNOBS[_section].update(dict(_pins))
 
+# ── P0 角色资格门旋钮逐键钉值（SPEC-10 §5/D46 拍板回填，2026-10-22）──缺省=
+#    关闭（enforce=False = M5 逐位兼容；安全门启用后缺记录即拒派）；enforce_roles
+#    先对 verifier 强制生效（方案 §3.3 逐角色启用序）；qp-v1 = 判据版本锚。
+
+P0_FINAL_KNOBS: dict[str, dict[str, object]] = {
+    "qualification": {
+        "enforce": False,
+        "enforce_roles": ["verifier"],
+        "policy_version": "qp-v1",
+        "production_temp": 0.2,
+    },
+}
+for _section, _pins in P0_FINAL_KNOBS.items():
+    ALL_PINNED_KNOBS.setdefault(_section, {})
+    ALL_PINNED_KNOBS[_section].update(dict(_pins))
+
 
 def test_m3_perception_knobs_pinned():
     """M3 perception 节 7 键逐键钉值（SPEC-7 §6 回填；extra=forbid 由根模型管）。"""

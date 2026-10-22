@@ -56,6 +56,7 @@ from qswarm.kernel.dispatch import (
 )
 from qswarm.kernel.ledger import KernelClock, KernelLedger, WallClock, transaction
 from qswarm.kernel.promote_scan import promote_scan
+from qswarm.kernel.qualification import QualificationGate, gate_from_params
 from qswarm.kernel.route import RouteDecision
 from qswarm.perception import Candidate, ScanReport, scan_repo
 from qswarm.prompts import EXAM_TEMPERATURE, ContextBlock, parse_output, render
@@ -114,15 +115,21 @@ class ScanLoopReport:
 
 # ── temp 池（§2.2：active scout × least-loaded，不按口碑路由）─────────
 
-def active_scouts(ledger: KernelLedger) -> list[tuple[str, str]]:
-    """active 侦察蜂池 [(model_ref, agent_id)]（agents×hats 读取面；字典序）。"""
+def active_scouts(
+    ledger: KernelLedger, gate: "QualificationGate | None" = None
+) -> list[tuple[str, str]]:
+    """active 侦察蜂池 [(model_ref, agent_id)]（agents×hats 读取面；字典序；
+    SPEC-10 §5.2 资格门——gate=None 零过滤）。"""
     rows = ledger.conn.execute(
         "SELECT a.agent_id, a.model_ref FROM agents a JOIN hats h"
         " ON a.agent_id = h.agent_id WHERE h.role = 'scout' AND a.status = ?"
         " ORDER BY a.agent_id",
         (AgentStatus.ACTIVE.value,),
     ).fetchall()
-    return [(str(model_ref), str(agent_id)) for agent_id, model_ref in rows]
+    pairs = [(str(model_ref), str(agent_id)) for agent_id, model_ref in rows]
+    if gate is not None:
+        pairs, _filtered = gate.filter_pairs(ledger, "scout", pairs)
+    return pairs
 
 
 def least_loaded_picker(scouts: list[tuple[str, str]]):
@@ -422,7 +429,7 @@ def run_scan(
 
     open_run(ledger, run_id=run_id, mode=str(mode), repo_url=str(root))
 
-    scouts = active_scouts(ledger)
+    scouts = active_scouts(ledger, gate=gate_from_params(params))
     picker = least_loaded_picker(scouts)
 
     scan_report: ScanReport = scan_repo(

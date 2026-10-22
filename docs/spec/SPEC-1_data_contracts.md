@@ -28,6 +28,10 @@ class AgentStatus(StrEnum):
     PROVISIONING = "provisioning"; ACTIVE = "active"
     DRAINING = "draining"; DORMANT = "dormant"; RETIRED = "retired"
 
+class QualificationStatus(StrEnum):  # SPEC-10 §3 角色资格（本体状态与角色资格分列）
+    PENDING = "pending"; PASSED = "passed"; FAILED = "failed"
+    STALE = "stale"; REVOKED = "revoked"
+
 class Family(StrEnum):         # §7.2 种子版六家族；taxonomy.yaml 可扩展
     INJECTION = "injection"; DESER = "deser"; CRYPTO = "crypto"
     AUTHZ = "authz"; CONFIG_DEP = "config_dep"; MEM_SAFETY = "mem_safety"
@@ -288,6 +292,29 @@ CREATE TABLE hats (                          -- 角色是帽子（§4.1）
   pool_class TEXT NOT NULL,                  -- PoolClass
   PRIMARY KEY (agent_id, role)
 );
+
+-- ── 角色资格投影（SPEC-10 §3；可重建投影，唯一写口 = exams/roster.py）──
+-- IF NOT EXISTS：既有账本经写口自愈建表（roster._ensure_rq_table），
+-- DDL 仍以本节为单一真源（contracts/schema.sql 逐字同步）。
+CREATE TABLE IF NOT EXISTS role_qualifications (
+  id            TEXT PRIMARY KEY,            -- 'RQ-<seq>'
+  agent_id      TEXT NOT NULL REFERENCES agents(agent_id),
+  role          TEXT NOT NULL,               -- Role
+  profile_id    TEXT NOT NULL,               -- execution_profile_id（SPEC-10 §2）
+  policy_version TEXT NOT NULL,              -- qualification_policy_version
+  status        TEXT NOT NULL,               -- QualificationStatus
+  reason        TEXT,                        -- failed/stale/revoked 说明（passed 可空）
+  exam_run_id   TEXT,                        -- 资格来源考试轮（可空=管理/迁移动作）
+  bank_version  INTEGER,                     -- 考试数据版本（可空）
+  paper_id      TEXT,                        -- 卷 id（可空）
+  scoring_version TEXT,                      -- 判分策略版本（可空）
+  accuracy      REAL,                        -- 考试计算值（只参考，不冒充本体状态）
+  started_at    TEXT NOT NULL,               -- 考试/动作开始时间（乱序写守卫）
+  superseded_by TEXT REFERENCES role_qualifications(id),  -- 被替代资格引用
+  created_at    TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rq_lookup ON role_qualifications(
+  agent_id, role, profile_id, policy_version, status);
 
 -- ── 题库与考试（§8.2/§8.4）────────────────────────────────
 CREATE TABLE exam_items (

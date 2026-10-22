@@ -35,15 +35,23 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from qswarm.contracts import PoolClass, load_taxonomy
+from qswarm.contracts import PoolClass, QualificationStatus, load_params, load_taxonomy
 from qswarm.kernel import KernelLedger, WallClock, agg_cells, iso_utc
+from qswarm.kernel.qualification import QualificationGate, profile_id
 from qswarm.prompts import CONTRACT_VERSION
 from qswarm.supply import CandidateAdapter, ModelsConfig, UrllibAdapter, load_models
 from qswarm.supply.config import ROLE_TIER
 
 from .bank import SeedBank
 from .paper import ENTRY_ITEMS
-from .roster import Candidate, apply_qc_decision, attach_hat, expand_candidates, register_roster
+from .roster import (
+    Candidate,
+    apply_qc_decision,
+    attach_hat,
+    expand_candidates,
+    record_qualification,
+    register_roster,
+)
 from .runner import CellOutcome, SnapshotStore, run_entry_cell
 from .judge import entry_qc_pass
 from .store import upsert_exam_items
@@ -111,9 +119,15 @@ def build_report(
     candidates: list[Candidate],
     outcomes: list[CellOutcome],
     qc: dict[str, dict],
+    agent_status: dict[str, str],
+    role_qualification: dict[str, dict],
     generated_at: str,
 ) -> dict:
-    """播种报告 JSON（§4.4；键集/类型黄金回归——tests/test_exam_runner.py 钉）。"""
+    """播种报告 JSON（§4.4；键集/类型黄金回归——tests/test_exam_runner.py 钉）。
+
+    SPEC-10 §3.2-7 分列：``agent_status`` = agents 表现值；
+    ``role_qualification`` = 资格 effective 行摘要——``qc.status`` 是考试计算值，
+    不再冒充数据库本体状态。"""
     cells_total = len(outcomes)
     invalid = [o for o in outcomes if o.infra_invalid]
     deposits = sum(1 for o in outcomes if o.deposit_written)
@@ -137,6 +151,8 @@ def build_report(
                 "pool_class": PoolClass.TEMP.value if cand.role == "scout" else PoolClass.FORMAL.value,
                 "contract_version": CONTRACT_VERSION,
                 "qc": qc[cand.agent_id],
+                "agent_status": agent_status.get(cand.agent_id),
+                "role_qualification": role_qualification.get(cand.agent_id),
                 "cells": [_cell_record(cand, o) for o in mine],
             }
         )
@@ -192,14 +208,18 @@ def write_report(report: dict, out_dir: str | Path) -> tuple[Path, Path]:
         f" {report['invalid_cell_ratio']:.4f}）",
         f"- totals: {json.dumps(report['totals'], ensure_ascii=False)}",
         "",
-        "| agent | role | tier | QC min_pass | accuracy | passed | status |",
-        "|---|---|---|---|---|---|---|",
+        "| agent | role | tier | agent_status | role_qualification"
+        " | QC min_pass | accuracy | passed | qc.status |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for agent in report["agents"]:
         qc = agent["qc"]
         acc = "—" if qc["accuracy"] is None else f"{qc['accuracy']:.4f}"
+        rq = agent.get("role_qualification") or {}
         lines.append(
             f"| {agent['agent_id']} | {agent['role']} | {agent['tier']}"
+            f" | {agent.get('agent_status')}"
+            f" | {rq.get('status', 'none')}"
             f" | {qc['min_pass']} | {acc} | {qc['passed']} | {qc['status']} |"
         )
     lines += ["", "## 逐格判定", ""]
@@ -230,6 +250,7 @@ def seed_entry(
     store_dir: str | Path | None = None,
     resolve_text=None,
     out_dir: str | Path | None = None,
+    params=None,
 ) -> dict:
     """播种总编排（§4.2）：注册 → 逐格考试/存款 → agg_cells 折叠 → QC → 报告。
 
@@ -237,6 +258,11 @@ def seed_entry(
     本轮考试（帽注册走 roster.attach_hat 唯一写口；考试格按 ROLE_TIER 档位展开）。
     帽兼任蜂的 QC 失败只记告警不降编（agents.status 属蜂本体非帽；帽摘除随 M5
     编制管理面）。
+
+    角色资格（SPEC-10 §3.2，P0）：开考前逐 candidate 写 ``pending`` 资格行；
+    QC 判定后原子写 ``passed``/``failed``（只影响对应 (agent, role)，帽/本体
+    流转不变）；报告分列 ``agent_status`` 与 ``role_qualification``。判据版本与
+    profile 温度锚取 ``params.qualification``（None → load_params() 缺省）。
 
     返回报告 dict（``out_dir`` 给定时同步落盘 ``seeding_report.{json,md}``）。"""
     candidates = list(expand_candidates(models, roles=tuple(roles)))
@@ -267,6 +293,26 @@ def seed_entry(
     # exam_items 行在位保障（§4.3 UPSERT-by-version 幂等；exam_results.item_id 外键
     # 前件——bank loader 带 db 装载时已写，此处兜底重放同批行，内容不进不退）。
     upsert_exam_items(ledger, bank)
+
+    # 角色资格（SPEC-10 §3.2-2）：开考先写 pending——中断/失败不得留下 passed。
+    qual = (params if params is not None else load_params()).qualification
+    exam_run_id = f"entry-seed{seed}"
+    started_at = iso_utc(ledger._clock.now())
+    for cand in candidates:
+        record_qualification(
+            ledger,
+            agent_id=cand.agent_id,
+            role=cand.role,
+            profile_id=profile_id(
+                cand.model_ref, cand.role, production_temp=qual.production_temp
+            ),
+            policy_version=qual.policy_version,
+            status=QualificationStatus.PENDING.value,
+            started_at=started_at,
+            exam_run_id=exam_run_id,
+            bank_version=bank.bank_version,
+            scoring_version="s11-agent-total",
+        )
 
     # v0.1：只对题库实有家族播种（taxonomy.yaml 序保确定性；§1.2 v0.1 起 deser 无
     # 考试材料——其格冷启动走生产存款，无考试通道，DECISIONS 同日行）。
@@ -307,6 +353,42 @@ def seed_entry(
             continue
         apply_qc_decision(ledger, cand.agent_id, passed=record["passed"])
 
+    # 资格终态（SPEC-10 §3.2-4）：QC 判定原子写 passed/failed，只影响对应
+    # (agent, role)；帽兼任蜂同样落资格行（帽考失败 = 该角色资格失败，本体不动）。
+    gate = QualificationGate(
+        policy_version=qual.policy_version,
+        enforce_roles=tuple(ROLE_TIER),
+        production_temp=qual.production_temp,
+    )
+    agent_status: dict[str, str] = {}
+    role_qualification: dict[str, dict] = {}
+    for cand in candidates:
+        record_qualification(
+            ledger,
+            agent_id=cand.agent_id,
+            role=cand.role,
+            profile_id=profile_id(
+                cand.model_ref, cand.role, production_temp=qual.production_temp
+            ),
+            policy_version=qual.policy_version,
+            status=(
+                QualificationStatus.PASSED.value if qc[cand.agent_id]["passed"]
+                else QualificationStatus.FAILED.value
+            ),
+            started_at=started_at,
+            exam_run_id=exam_run_id,
+            bank_version=bank.bank_version,
+            scoring_version="s11-agent-total",
+            accuracy=qc[cand.agent_id]["accuracy"],
+        )
+        row = ledger.conn.execute(
+            "SELECT status FROM agents WHERE agent_id = ?", (cand.agent_id,)
+        ).fetchone()
+        agent_status[cand.agent_id] = str(row[0]) if row else None
+        # 报告呈现真资格状态（任意态；SPEC-10 §3.2-7 分列纪律）
+        current = gate.latest_row(ledger, cand.agent_id, cand.role, cand.model_ref)
+        role_qualification[cand.agent_id] = current or {"status": "none"}
+
     report = build_report(
         bank=bank,
         seed=seed,
@@ -314,6 +396,8 @@ def seed_entry(
         candidates=candidates,
         outcomes=outcomes,
         qc=qc,
+        agent_status=agent_status,
+        role_qualification=role_qualification,
         generated_at=as_of,
     )
     if out_dir is not None:

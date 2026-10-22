@@ -9,13 +9,18 @@ M0 仿真规模（§16.7-7「仿真器 M0 校准规模」），不约束真实�
 
 编制注册（agents + hats 两表唯一写口在本模块，SQL 直落）：幂等——agent_id 已
 存在且字段全等 → 跳过；存在但字段不等 → ValueError（身份冲突，人工介入）。
+
+角色资格写口（SPEC-10 §3/D46，P0）：role_qualifications 表唯一写口同在本模块
+（record_qualification / revoke_qualification / migrate_qualifications）——帽
+（attach_hat）只声明角色不授予资格；资格状态机 pending→passed/failed、
+stale/revoked 与乱序写守卫见 SPEC-10 §3.2/§3.3。
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from qswarm.contracts import AgentStatus, PoolClass, Role
+from qswarm.contracts import AgentStatus, PoolClass, QualificationStatus, Role
 from qswarm.kernel import KernelLedger, iso_utc, transaction
 from qswarm.prompts import CONTRACT_VERSION
 from qswarm.supply import ROLE_TIER, ModelsConfig
@@ -27,6 +32,9 @@ __all__ = [
     "register_roster",
     "apply_qc_decision",
     "attach_hat",
+    "record_qualification",
+    "revoke_qualification",
+    "migrate_qualifications",
 ]
 
 
@@ -226,3 +234,218 @@ def attach_hat(ledger: KernelLedger, agent_id: str, role: str) -> bool:
             (agent_id, role, pool_class),
         )
         return cur.rowcount > 0
+
+
+# ── 角色资格写口（SPEC-10 §3/D46；role_qualifications 表唯一写口）──────────
+
+_TERMINAL_STATUSES = frozenset(
+    {QualificationStatus.PASSED, QualificationStatus.FAILED,
+     QualificationStatus.STALE, QualificationStatus.REVOKED}
+)
+
+
+def _ensure_rq_table(ledger: KernelLedger) -> None:
+    """既有账本自愈建表（SPEC-10 §3.4）：DDL 逐字取自 contracts/schema.sql
+    单一真源，IF NOT EXISTS 幂等——新库由全量建库承载，旧库首写补齐。"""
+    from qswarm.contracts import schema_sql
+
+    for stmt in schema_sql().split(";"):
+        s = stmt.strip()
+        if s and "role_qualifications" in s and (
+            "CREATE TABLE" in s.upper() or "CREATE INDEX" in s.upper()
+        ):
+            ledger.conn.execute(s)
+
+
+def _next_rq_id(ledger: KernelLedger) -> str:
+    row = ledger.conn.execute(
+        "SELECT MAX(CAST(substr(id, 4) AS INTEGER)) FROM role_qualifications"
+    ).fetchone()
+    return f"RQ-{(int(row[0]) if row and row[0] is not None else 0) + 1}"
+
+
+def _effective_passed(
+    ledger: KernelLedger, agent_id: str, role: str, profile_id: str, policy_version: str
+) -> tuple[str, str] | None:
+    """最新 effective passed 行 → (id, started_at)；查无 → None（SPEC-10 §3.1）。"""
+    row = ledger.conn.execute(
+        "SELECT id, started_at FROM role_qualifications"
+        " WHERE agent_id = ? AND role = ? AND profile_id = ? AND policy_version = ?"
+        " AND status = 'passed' AND superseded_by IS NULL"
+        " ORDER BY started_at DESC, id DESC LIMIT 1",
+        (agent_id, role, profile_id, policy_version),
+    ).fetchone()
+    return (str(row[0]), str(row[1])) if row is not None else None
+
+
+def record_qualification(
+    ledger: KernelLedger,
+    *,
+    agent_id: str,
+    role: str,
+    profile_id: str,
+    policy_version: str,
+    status: str,
+    started_at: str,
+    reason: str | None = None,
+    exam_run_id: str | None = None,
+    bank_version: int | None = None,
+    paper_id: str | None = None,
+    scoring_version: str | None = None,
+    accuracy: float | None = None,
+) -> str:
+    """资格行签发（pending / 终态；SPEC-10 §3.2/§3.3）。返回新行 id。
+
+    - ``status`` ∈ QualificationStatus（pending 不替代旧行；终态行替代同键全部
+      未替代 pending/passed）；
+    - 乱序写守卫：同键存在 effective passed 且其 started_at 严格晚于本行 →
+      ValueError（旧考试轮不得覆盖新资格；并发考试/资格更新不互相降级）。"""
+    if status not in {s.value for s in QualificationStatus}:
+        raise ValueError(
+            f"资格状态越词表：{status!r}（合法值：{sorted(s.value for s in QualificationStatus)}）"
+        )
+    with transaction(ledger):
+        _ensure_rq_table(ledger)
+        prior = _effective_passed(ledger, agent_id, role, profile_id, policy_version)
+        if prior is not None and status != QualificationStatus.PASSED.value:
+            if str(prior[1]) > started_at:
+                raise ValueError(
+                    f"乱序资格写被拒：agent {agent_id!r} role {role!r} 已有更晚 "
+                    f"passed（started_at={prior[1]} > {started_at}）——旧结果不得覆盖新资格"
+                )
+        new_id = _next_rq_id(ledger)
+        ledger.conn.execute(
+            "INSERT INTO role_qualifications (id, agent_id, role, profile_id,"
+            " policy_version, status, reason, exam_run_id, bank_version, paper_id,"
+            " scoring_version, accuracy, started_at, superseded_by, created_at)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)",
+            (
+                new_id, agent_id, role, profile_id, policy_version, status, reason,
+                exam_run_id, bank_version, paper_id, scoring_version, accuracy,
+                started_at, iso_utc(ledger._clock.now()),
+            ),
+        )
+        if status in {s.value for s in _TERMINAL_STATUSES}:
+            ledger.conn.execute(
+                "UPDATE role_qualifications SET superseded_by = ?"
+                " WHERE agent_id = ? AND role = ? AND profile_id = ?"
+                " AND policy_version = ? AND status IN ('pending', 'passed')"
+                " AND superseded_by IS NULL AND id != ?",
+                (new_id, agent_id, role, profile_id, policy_version, new_id),
+            )
+    return new_id
+
+
+def revoke_qualification(
+    ledger: KernelLedger,
+    *,
+    agent_id: str,
+    role: str,
+    profile_id: str,
+    policy_version: str,
+    reason: str,
+    started_at: str | None = None,
+) -> str:
+    """管理撤销（SPEC-10 §3.2；终态 revoked 替代既有 passed——dispatch 前复验
+    据此阻断排队中任务）。返回新行 id。"""
+    if not reason:
+        raise ValueError("revoke_qualification 需要 reason（撤销不留无因行）")
+    return record_qualification(
+        ledger,
+        agent_id=agent_id, role=role, profile_id=profile_id,
+        policy_version=policy_version, status=QualificationStatus.REVOKED.value,
+        started_at=started_at if started_at is not None else iso_utc(ledger._clock.now()),
+        reason=reason,
+    )
+
+
+def migrate_qualifications(
+    ledger: KernelLedger,
+    *,
+    dry_run: bool = True,
+    policy_version: str = "qp-v1",
+    production_temp: float = 0.2,
+    supply_temp: float | None = None,
+    now: str | None = None,
+    profile_fn=None,
+) -> dict:
+    """历史编制 → 资格投影迁移（SPEC-10 §4；方案 §3.3 逐字：无法证明者 stale）。
+
+    - 判定器恒判 ``stale(reason=legacy_unverifiable)``：历史行无 profile 记录，
+      不通过既有帽或正 cells 反推合格；profile_id 取当前配置计算的现值（标记
+      「现配置下已知未证」）；
+    - ``dry_run=True``（缺省）零写只出 manifest；幂等：同键已有非替代 stale 行
+      跳过；同键已有 effective passed（迁移后考取）→ 跳过（迁移永不降级真资格）；
+    - ``supply_temp``：models.yaml runtime 参考值（可注入对账）——与
+      ``production_temp`` 不等时 manifest 顶层 ``temp_anchor_mismatch=true``
+      如实披露（SPEC-10 §4.3，不静默）。"""
+    profile_fn = profile_fn if profile_fn is not None else _default_profile_fn
+    stamp = now if now is not None else iso_utc(ledger._clock.now())
+    rows_out: list[dict] = []
+    written = would = skipped = 0
+    with transaction(ledger):
+        _ensure_rq_table(ledger)
+        pairs = ledger.conn.execute(
+            "SELECT h.agent_id, h.role, a.model_ref FROM hats h"
+            " JOIN agents a ON a.agent_id = h.agent_id ORDER BY h.agent_id, h.role"
+        ).fetchall()
+        for agent_id, role, model_ref in pairs:
+            pid = profile_fn(str(model_ref), str(role), production_temp=production_temp)
+            existing = ledger.conn.execute(
+                "SELECT status, reason, superseded_by FROM role_qualifications"
+                " WHERE agent_id = ? AND role = ? AND profile_id = ?"
+                " AND policy_version = ?"
+                " ORDER BY started_at DESC, id DESC LIMIT 1",
+                (agent_id, role, pid, policy_version),
+            ).fetchone()
+            if existing is not None and (
+                existing[2] is None and existing[0] in
+                (QualificationStatus.PASSED.value, QualificationStatus.STALE.value,
+                 QualificationStatus.FAILED.value, QualificationStatus.REVOKED.value)
+            ):
+                action = "skip"
+                skipped += 1
+            elif dry_run:
+                action = "would_write"
+                would += 1
+            else:
+                record_qualification(
+                    ledger,
+                    agent_id=str(agent_id), role=str(role), profile_id=pid,
+                    policy_version=policy_version,
+                    status=QualificationStatus.STALE.value,
+                    started_at=stamp, reason="legacy_unverifiable",
+                )
+                action = "written"
+                written += 1
+            rows_out.append({
+                "agent_id": str(agent_id),
+                "role": str(role),
+                "profile_id": pid,
+                "status": "stale",
+                "reason": "legacy_unverifiable",
+                "action": action,
+            })
+    return {
+        "kind": "qualification_migration_manifest",
+        "spec": "SPEC-10 §4",
+        "dry_run": bool(dry_run),
+        "policy_version": policy_version,
+        "profile_temp_anchor": production_temp,
+        "supply_temp": supply_temp,
+        "temp_anchor_mismatch": (
+            supply_temp is not None and float(supply_temp) != float(production_temp)
+        ),
+        "pairs_total": len(rows_out),
+        "stale_written": written,
+        "would_write": would,
+        "skipped": skipped,
+        "rows": rows_out,
+    }
+
+
+def _default_profile_fn(model_ref: str, role: str, *, production_temp: float) -> str:
+    """延迟导入内核只读面（exams → kernel 单向依赖，与既有 import 同向）。"""
+    from qswarm.kernel.qualification import profile_id as _profile_id
+
+    return _profile_id(model_ref, role, production_temp=production_temp)

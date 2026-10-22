@@ -89,17 +89,20 @@ def _make_pkg(root: Path, files: dict[str, str]) -> Path:
 # ══ 词表与写口映射：对齐 SPEC-2 §6.1 / SPEC-5 §2.1 判据 2 ══════════
 
 def test_wordlist_and_port_map_match_spec():
-    """词表 15 表逐字对齐 §6.1 穷尽枚举 + M2 四表扩展（SPEC-6 §0.2；词表自身
-    漂移也要红）；内核两表与 M2 考试域四表的圣化写口模块逐字钉死。"""
+    """词表 16 表逐字对齐 §6.1 穷尽枚举 + M2 四表扩展（SPEC-6 §0.2）+ P0 资格表
+    扩展（SPEC-10 §3/D46；词表自身漂移也要红）；内核两表、M2 考试域四表与资格
+    表的圣化写口模块逐字钉死。"""
     assert WRITE_TABLES == (
         "ledger", "cells", "findings", "evidence_nodes", "votes",
         "verify_results", "clusters", "cluster_members", "tasks",
-        "candidates", "runs", "agents", "hats", "exam_items", "exam_results",
+        "candidates", "runs", "agents", "hats", "role_qualifications",
+        "exam_items", "exam_results",
     )
     assert EXPECTED_WRITE_PORTS["ledger"] == ("kernel/ledger.py",)
     assert EXPECTED_WRITE_PORTS["cells"] == ("kernel/cells.py",)
     assert EXPECTED_WRITE_PORTS["agents"] == ("exams/roster.py",)
     assert EXPECTED_WRITE_PORTS["hats"] == ("exams/roster.py",)
+    assert EXPECTED_WRITE_PORTS["role_qualifications"] == ("exams/roster.py",)
     assert EXPECTED_WRITE_PORTS["exam_items"] == ("exams/store.py",)
     assert EXPECTED_WRITE_PORTS["exam_results"] == ("exams/store.py",)
 

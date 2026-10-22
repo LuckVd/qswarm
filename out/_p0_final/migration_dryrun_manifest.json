@@ -1,0 +1,79 @@
+{
+  "kind": "qualification_migration_manifest",
+  "spec": "SPEC-10 §4",
+  "dry_run": true,
+  "policy_version": "qp-v1",
+  "profile_temp_anchor": 0.2,
+  "supply_temp": 0.2,
+  "temp_anchor_mismatch": false,
+  "pairs_total": 8,
+  "stale_written": 0,
+  "would_write": 8,
+  "skipped": 0,
+  "rows": [
+    {
+      "agent_id": "cheap:zhipu/glm-4.5-air@cv1",
+      "role": "reviewer",
+      "profile_id": "ep-113eda16219f755e",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "cheap:zhipu/glm-4.5-air@cv1",
+      "role": "scout",
+      "profile_id": "ep-8574729a7e0b1dae",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "cheap:zhipu/glm-4.6@cv1",
+      "role": "reviewer",
+      "profile_id": "ep-f5f824e1f7a2c2ad",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "cheap:zhipu/glm-4.6@cv1",
+      "role": "scout",
+      "profile_id": "ep-d165863b149158bf",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "engineering:zhipu/glm-5.3-flash@cv1",
+      "role": "verifier",
+      "profile_id": "ep-192727b9eea0cd8e",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "mid:zhipu/glm-5.3-flash@cv1",
+      "role": "reviewer",
+      "profile_id": "ep-79dcc30515e71d06",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "strong:zhipu/glm-5.3-flash@cv1",
+      "role": "auditor",
+      "profile_id": "ep-cdbb4c4226a975b1",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    },
+    {
+      "agent_id": "strong:zhipu/glm-5.3-flash@cv1",
+      "role": "verifier",
+      "profile_id": "ep-192727b9eea0cd8e",
+      "status": "stale",
+      "reason": "legacy_unverifiable",
+      "action": "would_write"
+    }
+  ]
+}

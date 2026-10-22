@@ -63,9 +63,10 @@ def _runtime_enums() -> dict[str, type[StrEnum]]:
 
 
 def test_spec_parse_sanity_check():
-    """护栏：解析器本身没坏——SPEC-1 §1 必须解析出全部 19 个枚举类（显式点名）。"""
+    """护栏：解析器本身没坏——SPEC-1 §1 必须解析出全部 20 个枚举类（显式点名）。"""
     assert set(SPEC_ENUMS) == {
         "RunMode", "RunStatus", "Role", "PoolClass", "AgentStatus",
+        "QualificationStatus",
         "Family", "Severity", "Grade", "FindingState", "SignalTier",
         "CellStatus", "LedgerKind", "DepositOrigin", "VerifyOutcome",
         "VerifyErrorKind", "BlockingKind", "ExamPurpose", "ExamItemSource",

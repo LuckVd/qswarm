@@ -112,3 +112,26 @@ R3（供血风险 / 全 flash 判码能力未实证）从评估文的风险判�
 | `out/m5-e2e/exam_strong_hat.py` | 帽考脚本（seed_entry roles=() 直调，§2 理由） |
 | `out/m5-e2e/smoke_verify.py` | smoke 待命脚本（三面判据 + R7-② 披露） |
 | 账本 `out/m4-seeding-v3/prod.db` | exam_results +120 行 / cells verifier 5 格 / hats verifier ×2 / agents 状态两处如实 |
+
+## §8 勘误与新状态（2026-10-22，P0 轮补记；原文保留不改）
+
+依据 `docs/DESIGN_REVISION_AND_EXPERIMENT_PLAN_20261022.md`（方案）与 SPEC-10
+v0.1 / DECISIONS 2026-10-22 D46 行，本报告以下推断**勘误**：
+
+1. **R3「两蜂同卷失分同构」不成立**。两卷 seed 相同但出卷派生种子含 agent_id
+   （`qswarm/exams/paper.py::derive_seed`），实测两卷题目重合仅 **38/60**
+   （逐题 id 对账：engineering 22 独有 / strong-hat 22 独有）。「同卷」前提为假，
+   0.775 vs 0.725 的分差既不能估计同卷波动，也不构成「能力边界」证据——该结论
+   降级为**不可比观察**，原文 §3-R3 保留作历史记录。
+2. **QC 分数口径**：0.775 / 0.725 为真题正确率（31/40、29/40），FP 拒判
+   14/20、16/20 分列——不得当总体准确率引用（方案 §1.1 行 4 同口径）。
+3. **结构性修复落地**：§5-② 派单门 QC 门槛缺失（D45 候选）已由 SPEC-10 P0
+   修复——蜂池读取与 verifier 生产派单复验现按 `role_qualifications` effective
+   passed 门禁（`params.qualification`，缺省 enforce=False；开启后本报告两条
+   未过线腿在现有 profile/判据下结构性出局，「未过线蜂产生产 ×0.5 存款」路径
+   封死）。
+4. **D44 状态**：三路径仍待负责人拍板；但 (b) re-roll 与任何「凑线」路径现在
+   必须经资格门（新卷考取 = 新资格行生效，旧线不沿用），D46 已冻结实验预算
+   （¥500 / 4 周）与「接受收缩」承诺，方案 §13.5 生效。
+5. 本报告 §2「smoke 结构性受阻不执行」的判断与 P0 修复方向一致，维持有效；
+   smoke 待命脚本改为在资格门开启且出现合格 verifier 后执行。

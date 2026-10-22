@@ -22,6 +22,10 @@ class AgentStatus(StrEnum):
     PROVISIONING = "provisioning"; ACTIVE = "active"
     DRAINING = "draining"; DORMANT = "dormant"; RETIRED = "retired"
 
+class QualificationStatus(StrEnum):  # SPEC-10 §3 角色资格（本体状态与角色资格分列）
+    PENDING = "pending"; PASSED = "passed"; FAILED = "failed"
+    STALE = "stale"; REVOKED = "revoked"
+
 class Family(StrEnum):         # §7.2 种子版六家族；taxonomy.yaml 可扩展
     INJECTION = "injection"; DESER = "deser"; CRYPTO = "crypto"
     AUTHZ = "authz"; CONFIG_DEP = "config_dep"; MEM_SAFETY = "mem_safety"

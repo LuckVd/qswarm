@@ -190,6 +190,25 @@ class UrllibAdapter:
         ``timeout_s`` 显式传值覆盖配置；缺省 None → 落 ``runtime.exam_timeout_s``
         （构造缺省 120.0）；网络失败/非 2xx/超时/响应缺产出 →
         AdapterError（不含 key 值）；重试归调用方（S6/S7）。"""
+        text, _meta = self.complete_with_meta(
+            model_ref=model_ref, messages=messages, temperature=temperature,
+            timeout_s=timeout_s,
+        )
+        return text
+
+    def complete_with_meta(
+        self,
+        *,
+        model_ref: str,
+        messages: "list[Message]",
+        temperature: float,
+        timeout_s: float | None = None,
+    ) -> tuple[str, dict]:
+        """一次补全调用，返回 ``(输出文本, 身份元数据)``（SPEC-10 §2/D46；P0 面）。
+
+        元数据记录供应商**回显的 served model 原样值**（不回显 → ``unknown``）——
+        不把请求名当服务身份、别名不当异构证明（方案 §3.1「供应商不披露时写
+        unknown」逐字）。消费面（考试/运行记录落档）随 E 阶段 paper manifest 接线。"""
         entry = self._resolve(model_ref)
         key = self._api_key(entry)
         tier = model_ref.partition(":")[0]
@@ -239,7 +258,20 @@ class UrllibAdapter:
             raise AdapterError(
                 f"adapter 响应非 JSON：provider={entry.provider} model={entry.model}"
             ) from exc
-        return self._extract_text(entry, data)
+        text = self._extract_text(entry, data)
+        served = data.get("model") if isinstance(data, dict) else None
+        meta = {
+            "requested_model": entry.model,
+            "provider": entry.provider,
+            "wire": (
+                "anthropic" if is_anthropic_wire(entry.provider)
+                else "openai_compatible"
+            ),
+            # 供应商不披露真实服务身份时如实 unknown，不由请求名推定（D46 红线配套）。
+            "served_model": served if isinstance(served, str) and served else "unknown",
+            "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        }
+        return text, meta
 
     @staticmethod
     def _extract_text(entry: "ModelEntry", data: dict) -> str:

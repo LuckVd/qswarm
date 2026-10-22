@@ -65,6 +65,7 @@ from qswarm.kernel.budget import (
 )
 from qswarm.kernel.cluster import MemberFacts, VerdictContext
 from qswarm.kernel.consult import _active_by_role, _cluster_block, _spent_from_runs
+from qswarm.kernel.qualification import gate_from_params
 from qswarm.kernel.dispatch import (
     build_contract,
     create_task,
@@ -141,6 +142,9 @@ class VerifyRunReport:
     err_flaky: int = 0
     skipped_budget: int = 0
     skipped_no_verifier: int = 0
+    verifiers_pool: int = 0            # SPEC-10 §5.2：资格门前池大小
+    verifiers_qualified: int = 0       # SPEC-10 §5.2：门后合格 verifier 数
+    gate_revoked_midrun: int = 0       # SPEC-10 §5.3：dispatch 前复验阻断簇数
     template_unsupported: int = 0
     bee_schema_fail: int = 0
     deposits_written: int = 0
@@ -163,6 +167,9 @@ class VerifyRunReport:
                 "verify_error": self.verify_error,
                 "skipped_budget": self.skipped_budget,
                 "skipped_no_verifier": self.skipped_no_verifier,
+                "verifiers_pool": self.verifiers_pool,
+                "verifiers_qualified": self.verifiers_qualified,
+                "gate_revoked_midrun": self.gate_revoked_midrun,
             },
             "failures": {
                 "err_env_build_fail": self.err_env_build_fail,
@@ -480,7 +487,14 @@ def run_verify(
     store = Path(store_dir)
     report = VerifyRunReport(run_id=run_id, tier=cfg.tier, mode=str(mode))
     policy: BudgetPolicy | None = None
-    verifiers = _active_by_role(ledger, Role.VERIFIER.value)
+    gate = gate_from_params(params)   # SPEC-10 §5：enforce=False → None（零行为差）
+    verifiers_pool = _active_by_role(ledger, Role.VERIFIER.value)
+    verifiers, gate_filtered = (
+        gate.filter_pairs(ledger, Role.VERIFIER.value, verifiers_pool)
+        if gate is not None else (verifiers_pool, 0)
+    )
+    report.verifiers_pool = len(verifiers_pool)
+    report.verifiers_qualified = len(verifiers)
 
     if production:
         verify_ready(ledger)
@@ -547,6 +561,7 @@ def run_verify(
             policy=policy,
             report=report,
             seed=seed,
+            gate=gate,
         )
 
     report.env_build_s = float(getattr(runner, "env_build_s", 0.0) or 0.0)
@@ -597,6 +612,7 @@ def _verify_one(
     policy: BudgetPolicy | None,
     report: VerifyRunReport,
     seed: int,
+    gate=None,
 ) -> int:
     """单簇：材料装配 → 蜂一体产（D39，可选）→ 沙箱执行 ×attempts → reconcile →
     container 档 submit / process 档纯工件。返回更新后 spent。"""
@@ -633,11 +649,19 @@ def _verify_one(
             "SELECT 1 FROM tasks WHERE task_id = ?", (task_id,)
         ).fetchone() is not None:
             return _spent_from_runs(ledger, run_id)     # 幂等：重跑跳过已建任务
-        model_ref = _by_ref(verifiers, min(a for _r, a in verifiers))
+        assignee = min(a for _r, a in verifiers)
+        if production and gate is not None and not gate.recheck(
+            ledger, assignee, Role.VERIFIER.value, _by_ref(verifiers, assignee)
+        ):
+            # SPEC-10 §5.3：dispatch 前复验——建任务/派单前阻断排队后被撤资格
+            # 或 profile 失配的 verifier（fail-closed：零调用零写，簇如实计数）。
+            report.gate_revoked_midrun += 1
+            return _spent_from_runs(ledger, run_id)
+        model_ref = _by_ref(verifiers, assignee)
         decision = RouteDecision(
             task_id=task_id, role=Role.VERIFIER.value,
             family=family, node=f"{family}/{ftype}" if ftype else family,
-            assignee=min(a for _r, a in verifiers),
+            assignee=assignee,
             channel="explore", reason="verify_least_loaded",
             tilt=None, raw_tilt=None, specs=(), spec_c_stars=(),
         )

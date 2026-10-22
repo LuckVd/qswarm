@@ -46,6 +46,7 @@ from qswarm.contracts import (
 )
 from qswarm.contracts.models import PreVerdictSlip
 from qswarm.kernel.bootstrap import verify_ready
+from qswarm.kernel.qualification import QualificationGate, gate_from_params
 from qswarm.kernel.budget import (
     BudgetPolicy,
     budget_for_mode,
@@ -144,30 +145,43 @@ def resolve_real_model(model_ref: str) -> str:
 # ── 蜂池读取面（agents×hats join；字典序确定性）────────────────────
 
 
-def _active_by_role(ledger: KernelLedger, role: str) -> list[tuple[str, str]]:
+def _active_by_role(
+    ledger: KernelLedger, role: str, gate=None
+) -> list[tuple[str, str]]:
     rows = ledger.conn.execute(
         "SELECT a.agent_id, a.model_ref FROM agents a JOIN hats h"
         " ON a.agent_id = h.agent_id WHERE h.role = ? AND a.status = ?"
         " ORDER BY a.agent_id",
         (role, AgentStatus.ACTIVE.value),
     ).fetchall()
-    return [(str(model_ref), str(agent_id)) for agent_id, model_ref in rows]
+    pairs = [(str(model_ref), str(agent_id)) for agent_id, model_ref in rows]
+    if gate is not None:
+        # 角色资格门（SPEC-10 §5.2）：effective passed 才入池；gate=None 零过滤
+        # （缺省关闭 = M5 逐位兼容）。
+        pairs, _filtered = gate.filter_pairs(ledger, role, pairs)
+    return pairs
 
 
-def active_auditors(ledger: KernelLedger) -> list[tuple[str, str]]:
+def active_auditors(
+    ledger: KernelLedger, gate: "QualificationGate | None" = None
+) -> list[tuple[str, str]]:
     """active 审查蜂池 [(model_ref, agent_id)]（route() 探索池 = 全量 auditor，
     家族过滤由 route 内部按格子节点完成）。"""
-    return _active_by_role(ledger, Role.AUDITOR.value)
+    return _active_by_role(ledger, Role.AUDITOR.value, gate)
 
 
-def active_reviewers(ledger: KernelLedger) -> list[tuple[str, str]]:
-    """active 评审蜂池（帽兼任池，D31；qualified = 帽 ∧ active 双条件）。"""
-    return _active_by_role(ledger, Role.REVIEWER.value)
+def active_reviewers(
+    ledger: KernelLedger, gate: "QualificationGate | None" = None
+) -> list[tuple[str, str]]:
+    """active 评审蜂池（帽兼任池，D31；qualified = 帽 ∧ active ∧ 角色资格）。"""
+    return _active_by_role(ledger, Role.REVIEWER.value, gate)
 
 
-def active_verifiers(ledger: KernelLedger) -> list[tuple[str, str]]:
-    """active 验证蜂池（预裁决单面；D29）。"""
-    return _active_by_role(ledger, Role.VERIFIER.value)
+def active_verifiers(
+    ledger: KernelLedger, gate: "QualificationGate | None" = None
+) -> list[tuple[str, str]]:
+    """active 验证蜂池（预裁决单面；D29；SPEC-10 §5.2 资格门）。"""
+    return _active_by_role(ledger, Role.VERIFIER.value, gate)
 
 
 # ── 面板构造器（SPEC-8 §3；纯函数）───────────────────────────────
@@ -325,6 +339,7 @@ class ConsultReport:
     wall_clock_exceeded: bool = False
     route_specialist: int = 0
     route_explore: int = 0
+    gate_filtered: int = 0              # SPEC-10 §5.2：资格门过滤掉的池成员数
     findings_detail: list[dict] = field(default_factory=list)
     preverdict_detail: list[dict] = field(default_factory=list)
     shadow: dict = field(default_factory=dict)
@@ -345,6 +360,7 @@ class ConsultReport:
                 "findings_voted": self.findings_voted,
                 "preverdicts": self.preverdicts,
                 "expired_open": self.expired_open,
+                "gate_filtered": self.gate_filtered,
             },
             "failures": {
                 "l2_schema_fail": self.l2_schema_fail,
@@ -1043,6 +1059,7 @@ def run_consult(
     params = params if params is not None else load_params()
     ready = verify_ready(ledger)
     _ = ready
+    gate = gate_from_params(params)   # SPEC-10 §5：enforce=False → None（零行为差）
     clock = clock if clock is not None else WallClock()
     root = Path(repo_root)
     report = ConsultReport(run_id=run_id, mode=str(mode), scan_run_id=str(scan_run_id))
@@ -1068,7 +1085,11 @@ def run_consult(
     cands = _triaged_candidates(ledger, scan_run_id)
     report.candidates_total = len(cands)
     scouts = _l1_scout_lineage(ledger, scan_run_id)
-    auditors = active_auditors(ledger)
+    auditors = active_auditors(ledger, gate=gate)
+    if gate is not None:
+        report.gate_filtered += (
+            len(_active_by_role(ledger, Role.AUDITOR.value)) - len(auditors)
+        )
     cells = view_cells(ledger, clock.now(), params=params)
     load: dict[str, int] = {}
 
@@ -1130,7 +1151,11 @@ def run_consult(
     # 面板（每簇一投票，锚点收口 + 成员传播）——预算门控（§2.7「预算尽 → 停新
     # 派单」对面板票同样成立：面板票与预裁决单都是付费调用；此前两阶段无任何
     # degraded/quota 检查，熔断触发后仍持续产生付费调用，2026-10-20 修复）。
-    reviewers = active_reviewers(ledger)
+    reviewers = active_reviewers(ledger, gate=gate)
+    if gate is not None:
+        report.gate_filtered += (
+            len(_active_by_role(ledger, Role.REVIEWER.value)) - len(reviewers)
+        )
     for cid in sorted(coarse_clusters):
         if not _time_left():
             break
@@ -1166,7 +1191,11 @@ def run_consult(
     report.clusters_fine = len(fine_clusters)
 
     # 预裁决单（§2.6）——预算门控同面板（quota_s2 口径：pv 按 S2 成本入账）。
-    verifiers = active_verifiers(ledger)
+    verifiers = active_verifiers(ledger, gate=gate)
+    if gate is not None:
+        report.gate_filtered += (
+            len(_active_by_role(ledger, Role.VERIFIER.value)) - len(verifiers)
+        )
     store = Path(store_dir)
     for anchor in sorted(fine_clusters):
         if not _time_left():

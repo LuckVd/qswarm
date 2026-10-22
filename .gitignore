@@ -54,6 +54,10 @@ out/m4-smoke/repo/
 out/m5-e2e/exam-engineering/cache/
 out/m5-e2e/exam-strong-hat/cache/
 
+# ── P0 角色资格（同先例：交付报告 + 迁移 dry-run manifest 入库，db 副本不入）──
+!out/_p0_final
+out/_p0_final/migration_dryrun_copy.db*
+
 # ── SQLite 附生文件（如 results 侧未来出现）────────────────────────
 *.db-shm
 *.db-wal

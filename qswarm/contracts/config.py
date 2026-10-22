@@ -289,6 +289,25 @@ class VerifyParams(BaseModel):
     wall_clock_budget_s: int = Field(default=3600, gt=0)
 
 
+class QualificationParams(BaseModel):
+    """角色资格门旋钮（SPEC-10 §5/D46；全缺省 = 关闭 = 行为与 M5 逐位一致）。
+
+    enforce=True 时 ``enforce_roles`` 内角色的蜂池读取与派单复验按
+    role_qualifications 的 effective passed 行过滤——缺记录 / pending / failed /
+    stale / revoked 一律拒派（fail-closed：缺配置不回退漏洞模式，D46-SPEC-10
+    §5 安全门例外）；policy_version = 资格判据版本（换版即全体 stale 待重考）；
+    production_temp = execution profile 的采样温度锚（与 models.yaml runtime
+    参考值 0.2 同源缺省；生产调温变化属 profile 变更 → 旧资格不沿用，须重认证）。
+    缺节回落缺省（黄金 manifest 兼容，同 sandbox/verify 节纪律）。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    enforce: bool = False
+    enforce_roles: tuple[str, ...] = ("verifier",)
+    policy_version: str = "qp-v1"
+    production_temp: float = Field(default=0.2, ge=0, le=2)
+
+
 class PerceptionParams(BaseModel):
     """感知层旋钮根（SPEC-7 §6；extra=forbid 纪律同根模型）。"""
 
@@ -322,6 +341,7 @@ class ParamsConfig(BaseModel):
     consult: ConsultParams = ConsultParams()
     sandbox: SandboxParams = SandboxParams()
     verify: VerifyParams = VerifyParams()
+    qualification: QualificationParams = QualificationParams()
 
 
 # ── taxonomy.yaml（§5.3）────────────────────────────────────────

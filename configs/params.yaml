@@ -117,3 +117,12 @@ sandbox: {tier: "process", timeout_s: 340, mem_mb: 512, cpus: 1.0, nofile: 64,
 verify: {budget_cents: 200, max_clusters: 10, poc_attempts: 2, wall_clock_budget_s: 3600}
 # exam.DARK_EXAM_ENABLED=false（缺省关=「开启归 D35 批准面」；接线在 loop.run_scan
 # 尾部 promote_scan(exam=...)，True 且注入 bank 才生效）。
+# ── P0 角色资格门旋钮（SPEC-10 §5/D46 拍板回填，2026-10-22；缺省=规格逐字值）──
+# enforce=false 缺省关：M5 逐位兼容；true 时 enforce_roles 内角色按
+# role_qualifications effective passed 过滤——缺记录/pending/failed/stale/
+# revoked 一律拒派（fail-closed，缺配置不回退漏洞模式）。enforce_roles 先对
+# verifier 强制生效（方案 §3.3 逐角色启用序）；policy_version=qp-v1 判据版本
+# 锚（换版即全体待重考）；production_temp=profile 采样温度锚（0.2，与
+# models.yaml runtime 参考值同源；调温属 profile 变更须重认证）。
+qualification: {enforce: false, enforce_roles: [verifier], policy_version: "qp-v1",
+                production_temp: 0.2}
