@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0083",
+ "taxonomy_path": [
+  "config_dep"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0083/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "hard",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0083-533cef39",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 83
+ }
+}

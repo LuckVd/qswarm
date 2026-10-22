@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0010",
+ "taxonomy_path": [
+  "injection"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0010/",
+ "planted": true,
+ "expected": "real",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0010-a5d232bf",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 10
+ }
+}

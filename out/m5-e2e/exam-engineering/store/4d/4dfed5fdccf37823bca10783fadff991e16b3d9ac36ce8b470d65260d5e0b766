@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0067",
+ "taxonomy_path": [
+  "authz"
+ ],
+ "lang": "c",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0067/",
+ "planted": true,
+ "expected": "fp",
+ "difficulty": "medium",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0067-a20c5508",
+ "source": "juliet_mutation",
+ "snapshot_files": [
+  "source.cpp"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 67
+ }
+}

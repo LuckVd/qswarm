@@ -49,6 +49,11 @@ out/m4-smoke/repo/
 !out/m5-trial
 # out/sandbox-env/ 为 env 缓存（env_cache_dir，可再生），保持忽略
 
+# ── M5 E 组真蜂联调（同先例：播种报告/工件库/脚本入库，响应缓存不入）──
+!out/m5-e2e
+out/m5-e2e/exam-engineering/cache/
+out/m5-e2e/exam-strong-hat/cache/
+
 # ── SQLite 附生文件（如 results 侧未来出现）────────────────────────
 *.db-shm
 *.db-wal

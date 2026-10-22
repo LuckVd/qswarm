@@ -1,0 +1,26 @@
+{
+ "item_id": "SEED-0069",
+ "taxonomy_path": [
+  "config_dep"
+ ],
+ "lang": "java",
+ "repo_snapshot_ref": "artifact://seeds/SEED-0069/",
+ "planted": true,
+ "expected": "real",
+ "difficulty": "easy",
+ "version": 1,
+ "canary": "qsw-canary-SEED-0069-4383d011",
+ "source": "owasp_mutation",
+ "snapshot_files": [
+  "source.java"
+ ],
+ "mutation": {
+  "kinds": [
+   "rename",
+   "reorder",
+   "dead_code",
+   "restructure"
+  ],
+  "seed": 69
+ }
+}
