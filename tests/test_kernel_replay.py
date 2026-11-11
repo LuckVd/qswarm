@@ -427,7 +427,7 @@ def _cluster_scenario():
 
     for fid, s, e in [("F1", 10, 20), ("F2", 12, 18), ("F3", 100, 110),
                       ("F4", 200, 210), ("F5", 202, 212)]:
-        seed(fid, s, e)
+        seed(fid, s, e, reporter=f"A{fid[1:]}")
     for r, d in [("R1", 1), ("R2", 1), ("R3", -1)]:
         led.conn.execute(
             "INSERT INTO votes (vote_id, finding_id, reviewer, dim_completeness,"
@@ -471,10 +471,17 @@ def _cluster_scenario():
         key_cwe="CWE-79", key_lang="py", line_window=(10, 110), sim_min=None,
     )], run_id="R-C")
     mark()
-    # ② S2 传播（verify_result → S2 存款 + verdict 投影）
-    vsev = led.append("verify_result", {"cluster_id": cid1, "outcome": "verified_real"})
+    # ② S2 传播（verify_result → S2 存款 + verdict 投影；R1-T2 带授权播种）
+    import tempfile
+    from pathlib import Path
+
+    import m1_harness as _h
+
+    _store = Path(tempfile.mkdtemp(prefix="qswarm-rp-store-"))
+    vsev, _ = _h.append_authorized_verify_result(
+        led, _store, cluster_id=cid1, outcome="verified_real")
     propagate_verdict(led, cid1, tier=_ST.S2, direction=1, source_seq=vsev.seq,
-                      source_kind=_LK.VERIFY_RESULT, ctx=ctx)
+                      source_kind=_LK.VERIFY_RESULT, ctx=ctx, store_dir=_store)
     mark()
     # ③ panel 收口（open→voted + S1 存款）
     close_panel(led, "F1", ctx=ctx, expected_votes=3)
@@ -486,8 +493,16 @@ def _cluster_scenario():
     split_cluster(led, cid1, [["F1", "F2"], ["F3"]], actor="human")
     mark()
     # ⑥ 崩溃窗：verify_result(verified_fp) 已落、派生存款未落 → propagate_pending 补齐
-    led.append("verify_result", {"cluster_id": cid1, "outcome": "verified_fp"})
-    rep = propagate_pending(led, lineage=lambda c: ctx if c == cid1 else None)
+    #    （R1-T2：带授权事件才可补发——同提交 eligibility）
+    repair_cid = led.conn.execute(
+        "SELECT cluster_id FROM cluster_members WHERE finding_id='F1'"
+    ).fetchone()[0]
+    _h.append_authorized_verify_result(
+        led, _store, cluster_id=repair_cid, outcome="verified_fp")
+    repair_ctx = VerdictContext(members=tuple(m for m in ctx.members if m.finding_id != "F3"),
+                                verifier_id=ctx.verifier_id)
+    rep = propagate_pending(led, store_dir=_store,
+                            lineage=lambda c: repair_ctx if c == repair_cid else None)
     assert rep.events, "崩溃窗修复必须补出存款"
     mark()
     # ⑦ fine 建簇（F4/F5）+ S3 直答 0（忽略：落事件零存款零状态）
@@ -545,9 +560,11 @@ def test_rebuild_clusters_from_events():
     assert sum(1 for c in proj.values() if c.split) == 1
     c1 = next(c for c in proj.values() if c.split)
     assert c1.members == ()                            # 拆分后成员清空
-    # C1 verdict 折叠取最后报告者行：S3(+1) 之后又被崩溃窗修复的 S2(fp −1) 覆盖
-    assert (c1.verdict_tier, c1.verdict_dir) == ("S2", -1)
+    # R2 cannot reauthorize an empty split parent: repair targets its actual child.
+    assert (c1.verdict_tier, c1.verdict_dir) == ("S3", 1)
     live = [c for c in proj.values() if not c.split]
+    repaired = next(c for c in live if "F1" in c.members)
+    assert (repaired.verdict_tier, repaired.verdict_dir) == ("S2", -1)
     assert {c.level for c in live} == {"coarse", "fine"}
     c2 = next(c for c in live if "F4" in c.members)
     assert (c2.verdict_tier, c2.verdict_dir, c2.verdict_at) == (None, None, None)  # 忽略态

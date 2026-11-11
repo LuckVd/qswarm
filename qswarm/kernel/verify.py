@@ -79,11 +79,15 @@ from qswarm.prompts import EXAM_TEMPERATURE, ContextBlock, parse_output, render
 from qswarm.sandbox import (
     SandboxConfig,
     SandboxResult,
+    UntrustedExecutionError,
     extract_poc,
     make_runner,
     parse_assertions,
     template_poc,
 )
+from qswarm.sandbox.oracle import assess_single
+from qswarm.sandbox.pocgen import CONTROL_ASSERTIONS, VIOLATION_ASSERTIONS
+from qswarm.kernel.trust import normalize_outcome
 
 __all__ = [
     "PRODUCTION_TIER",
@@ -130,6 +134,7 @@ class VerifyRunReport:
 
     run_id: str
     tier: str
+    trial_only: bool = False
     mode: str = "pr"
     clusters_eligible: int = 0
     clusters_selected: int = 0
@@ -140,6 +145,7 @@ class VerifyRunReport:
     err_poc_fail: int = 0
     err_timeout: int = 0
     err_flaky: int = 0
+    err_no_trust: int = 0                 # R1-T2：无授权高可信主张 → 保守无结论
     skipped_budget: int = 0
     skipped_no_verifier: int = 0
     verifiers_pool: int = 0            # SPEC-10 §5.2：资格门前池大小
@@ -147,6 +153,8 @@ class VerifyRunReport:
     gate_revoked_midrun: int = 0       # SPEC-10 §5.3：dispatch 前复验阻断簇数
     template_unsupported: int = 0
     bee_schema_fail: int = 0
+    claim_supported: int = 0             # P1-D 双层结果：判层 supported 计数
+    claim_inconclusive: int = 0          # P1-D 双层结果：判层 inconclusive 计数
     deposits_written: int = 0
     spent_cents: int = 0
     sandbox_wall_s: float = 0.0        # R7-② 披露面：沙箱执行墙钟（非 LLM）
@@ -158,6 +166,7 @@ class VerifyRunReport:
         return {
             "run_id": self.run_id,
             "tier": self.tier,
+            "trial_only": self.trial_only,
             "mode": self.mode,
             "funnel": {
                 "clusters_eligible": self.clusters_eligible,
@@ -176,8 +185,17 @@ class VerifyRunReport:
                 "err_poc_fail": self.err_poc_fail,
                 "err_timeout": self.err_timeout,
                 "err_flaky": self.err_flaky,
+                "err_no_trust": self.err_no_trust,
                 "template_unsupported": self.template_unsupported,
                 "bee_schema_fail": self.bee_schema_fail,
+            },
+            "claim_validation": {              # P1-D 双层结果（SPEC-10 §8）
+                "supported": self.claim_supported,
+                "inconclusive": self.claim_inconclusive,
+                "oracle_version": "oc-v2",
+                "note": "mechanical_single（① 无配对降格）；R1-T2：单次支持不"
+                        "自动授予 paired 级高可信结论——无授权 real/fp 规范化为"
+                        " verify_error（零 L3 零 S2）",
             },
             "deposits_written": self.deposits_written,
             "spent_cents": self.spent_cents,
@@ -225,6 +243,7 @@ class VerifyRunReport:
             "",
             f"- env_build_fail {fa['err_env_build_fail']} / poc_fail {fa['err_poc_fail']}"
             f" / timeout {fa['err_timeout']} / flaky {fa['err_flaky']}"
+            f" / no_trust {fa['err_no_trust']}"
             f" / template_unsupported {fa['template_unsupported']}"
             f" / bee_schema_fail {fa['bee_schema_fail']}",
             f"- 沙箱墙钟 {self.sandbox_wall_s:.1f}s（{self.sandbox_runs} 次）·"
@@ -468,6 +487,7 @@ def run_verify(
     runner=None,
     report_dir: str | Path | None = None,
     max_clusters: int | None = None,
+    trial_only: bool = False,
     monotonic=time.monotonic,
 ) -> VerifyRunReport:
     """一轮 S2 真验证（D40-b 独立入口；D43 双档；幂等 = 已验簇不入选取面）。
@@ -475,17 +495,24 @@ def run_verify(
     - ``tier``：None → params.sandbox.tier；container = 生产全链（需 adapter 与
       active verifier 编制）；process = 开发/CI 档（**零账本写**，G2 离线试跑同款，
       adapter 可注入做生成面演练）；
+    - ``trial_only``：显式离线试跑，process/container 均只写报告工件，禁止 adapter；
+      container 的生产模式仍为缺省，试跑不会铸造授权或写业务账本；
     - ``runner``：SandboxRunner 注入（测试 FakeRunner；None → 按配置实装）；
     - ``monotonic``：墙钟注入（M4 判据缺口①的机器可检收口）。"""
+    # R2: offline trial is a write policy, not an execution tier. A container
+    # trial must not silently acquire production writes or require a model call.
+    if trial_only and adapter is not None:
+        raise ValueError("trial_only 禁止 adapter：离线试跑必须零模型调用")
     params = params if params is not None else load_params()
     cfg = SandboxConfig.from_params(params, tier=tier)
-    production = cfg.tier == PRODUCTION_TIER
+    production = cfg.tier == PRODUCTION_TIER and not trial_only
     if production:
         assert_production_tier(cfg.tier)
     clock = clock if clock is not None else WallClock()
     root = Path(repo_root)
     store = Path(store_dir)
-    report = VerifyRunReport(run_id=run_id, tier=cfg.tier, mode=str(mode))
+    report = VerifyRunReport(run_id=run_id, tier=cfg.tier, mode=str(mode),
+                             trial_only=trial_only)
     policy: BudgetPolicy | None = None
     gate = gate_from_params(params)   # SPEC-10 §5：enforce=False → None（零行为差）
     verifiers_pool = _active_by_role(ledger, Role.VERIFIER.value)
@@ -658,6 +685,21 @@ def _verify_one(
             report.gate_revoked_midrun += 1
             return _spent_from_runs(ledger, run_id)
         model_ref = _by_ref(verifiers, assignee)
+        if not model_ref:
+            # R1-T4：合法 model_ref 缺席 → 显式失败分类（不空串调用、不记普通
+            # infra——蜂池映射残缺是结构性问题，如实暴露）
+            report.bee_schema_fail += 1
+            report.detail.append({
+                "cluster_id": cid, "outcome": "verify_error",
+                "outcome_raw": "verify_error", "trust_gate": "none",
+                "error_kind": None, "attempts": 0, "poc_source": "none",
+                "duration_s": 0.0, "expected": expected,
+                "expected_source": expected_source, "match": None,
+                "claim_validation": "inconclusive", "oracle_kind": "none",
+                "oracle_reason": "model_ref_missing",
+            })
+            report.verify_error += 1
+            return _spent_from_runs(ledger, run_id)
         decision = RouteDecision(
             task_id=task_id, role=Role.VERIFIER.value,
             family=family, node=f"{family}/{ftype}" if ftype else family,
@@ -737,11 +779,27 @@ def _verify_one(
     attempts = 0
     flaky = False
     total_dur = 0.0
+
+    def _execute(script: str, seed_tag: str) -> SandboxResult:
+        """单次沙箱执行（R1-T1：不可信输入拒绝 = env_build_fail 面如实记档，
+        不中断整轮其余簇——fail-closed 零硬凑）。"""
+        try:
+            return runner.execute(script, repo=root, deps=deps, seed=seed_tag)
+        except UntrustedExecutionError as exc:
+            return SandboxResult(
+                tier=getattr(runner, "tier", "process"),
+                ok=False, exit_code=None, timed_out=False, duration_s=0.0,
+                stdout="", stderr=f"untrusted_input_rejected: {exc}",
+                env_key="", env_base=getattr(runner, "tier", "process"),
+                workdir=None,
+                mitigations={"trust": "rejected"},
+                error_kind="env_build_fail",
+                log_text=f"untrusted_input_rejected: {exc}",
+            )
+
     if poc_source != "none":
         max_attempts = max(1, int(params.verify.poc_attempts))
-        exec_result = runner.execute(
-            poc_script, repo=root, deps=deps, seed=f"{seed}-{1}"
-        )
+        exec_result = _execute(poc_script, f"{seed}-{1}")
         attempts = 1
         report.sandbox_runs += 1
         report.sandbox_wall_s += float(exec_result.duration_s)
@@ -751,9 +809,7 @@ def _verify_one(
             and attempts < max_attempts
         ):
             # 执行红：同 PoC 重执行一次判 flaky（结果集 >1）vs 稳定 poc_fail。
-            probe = runner.execute(
-                poc_script, repo=root, deps=deps, seed=f"{seed}-flaky"
-            )
+            probe = _execute(poc_script, f"{seed}-flaky")
             attempts += 1
             report.sandbox_runs += 1
             report.sandbox_wall_s += float(probe.duration_s)
@@ -768,6 +824,21 @@ def _verify_one(
         bee_report.blocking if bee_report else None,
         exec_result, flaky=flaky, poc_available=(poc_source != "none"),
     )
+    # ── R1-T2 信任门（内核裁定规范化；docs/R1_CHANGE_NOTE.md §1-T2）────
+    # run_verify 的 R1 判据面（mechanical_single / 蜂自报 blocking）均不构成
+    # 成对独立验证 → 不铸造授权 → 高可信结论规范化为 verify_error
+    # （零 L3 零 S2；决策表 HANDOVER §6.3 行 1/3/7）。受信成对判据
+    # （execution_paired + 健康控制）的铸造面 = kernel.trust.mint_authorization
+    # （E0/回归语料面），run_verify 生产链在 R1 不经过。
+    authorization = None
+    outcome_raw = outcome
+    outcome, error_kind, trust_reason = normalize_outcome(
+        outcome.value if outcome else "verify_error",
+        error_kind.value if error_kind else None,
+        authorization,
+    )
+    outcome = VerifyOutcome(outcome)
+    error_kind = VerifyErrorKind(error_kind) if error_kind else None
     logs_text = exec_result.log_text if exec_result is not None else (
         f"no executable PoC (source={poc_source}) for cluster {cid}"
     )
@@ -784,6 +855,22 @@ def _verify_one(
                 expect="poc_exit_0", observed=bool(exec_result.ok),
                 log="artifact://pending",
             )]
+
+    # ── 双层结果（P1 工作包 D；SPEC-10 §8）───────────────────────
+    # 判层面 claim_validation（mechanical_single——① 的无配对降格形态）：
+    # 冻结断言白名单判据 + 对照门；蜂产 PoC 自报非独立判据 → 如实 inconclusive。
+    # 纯报告面增量——不改 reconcile 三分类 outcome 行为（方案 §6.1 双层结果）。
+    oracle_verdict = assess_single(
+        sandbox_ok=bool(exec_result.ok) if exec_result is not None else False,
+        timed_out=bool(exec_result.timed_out) if exec_result is not None else False,
+        exit_code=exec_result.exit_code if exec_result is not None else None,
+        assertions=[(a.expect, bool(a.observed), "") for a in assertions],
+        violation_assertions=list(VIOLATION_ASSERTIONS.get(family.casefold(), ())),
+        control_assertions=list(CONTROL_ASSERTIONS.get(family.casefold(), ())),
+        poc_source=poc_source,
+        target=f"{arow[2]}:{arow[3]}",
+        env_base=exec_result.env_base if exec_result is not None else "unknown",
+    )
 
     # ── 落账（container）/ 纯工件（process）──────────────────────
     if production:
@@ -813,7 +900,13 @@ def _verify_one(
                 else [f"entry: {arow[2]}:{arow[3]}", f"sink: {arow[2]}:{arow[3]}"]
             ),
             assertions=assertions,
-            blocking=bee_report.blocking if bee_report is not None else None,
+            # R1-T2：blocking 仅随授权后的 verified_fp 提交（蜂自报 blocking 不足
+            # 以确认误报——规范化为 verify_error 时剥除，主张面进报告 detail）。
+            blocking=(
+                bee_report.blocking
+                if bee_report is not None and outcome is VerifyOutcome.VERIFIED_FP
+                else None
+            ),
             error_kind=error_kind,
             attempts=attempts,
             duration_s=total_dur,
@@ -831,6 +924,8 @@ def _verify_one(
             ),
             params=params,
             run_id=run_id,
+            authorization=authorization,          # 缺可信 paired 授权仍 verify_error
+            store_dir=store,                       # R2：高可信提交必须复核实际工件
         )
     else:
         _trial_store_put(store, cid, "poc.py", poc_script or "")
@@ -840,6 +935,8 @@ def _verify_one(
             json.dumps(
                 {
                     "cluster_id": cid, "outcome": outcome.value,
+                    "outcome_raw": outcome_raw.value,
+                    "trust_gate": trust_reason,
                     "error_kind": (error_kind.value if error_kind else None),
                     "expected": expected, "expected_source": expected_source,
                     "poc_source": poc_source, "attempts": attempts,
@@ -847,14 +944,17 @@ def _verify_one(
                     "mitigations": (
                         exec_result.mitigations if exec_result is not None else {}
                     ),
+                    "oracle": oracle_verdict.to_dict(),   # P1-D 双层结果（oc-v2）
                 },
                 ensure_ascii=False, indent=2, sort_keys=True,
-            ),
+            )
         )
 
     report.detail.append({
         "cluster_id": cid,
         "outcome": outcome.value,
+        "outcome_raw": outcome_raw.value,          # R1-T2：reconcile 原始裁定留档
+        "trust_gate": trust_reason,                # authorized|no_trusted_authorization
         "error_kind": (error_kind.value if error_kind else None),
         "attempts": attempts,
         "poc_source": poc_source,
@@ -862,14 +962,23 @@ def _verify_one(
         "expected": expected,
         "expected_source": expected_source,
         "match": _match(expected, outcome),
+        "claim_validation": oracle_verdict.claim_validation.value,
+        "oracle_kind": oracle_verdict.oracle_kind.value,
+        "oracle_reason": oracle_verdict.reason,
     })
+    if oracle_verdict.claim_validation.value == "supported":
+        report.claim_supported += 1
+    else:
+        report.claim_inconclusive += 1
     if outcome is VerifyOutcome.VERIFIED_REAL:
         report.verified_real += 1
     elif outcome is VerifyOutcome.VERIFIED_FP:
         report.verified_fp += 1
     else:
         report.verify_error += 1
-        if error_kind is VerifyErrorKind.ENV_BUILD_FAIL:
+        if trust_reason == "no_trusted_authorization":
+            report.err_no_trust += 1               # R1-T2：无授权高可信主张（如实）
+        elif error_kind is VerifyErrorKind.ENV_BUILD_FAIL:
             report.err_env_build_fail += 1
         elif error_kind is VerifyErrorKind.POC_FAIL:
             report.err_poc_fail += 1

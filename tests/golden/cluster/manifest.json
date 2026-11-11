@@ -15,6 +15,12 @@
    "PR_CENTS": 100,
    "RESCAN_WEEKLY": 0.07
   },
+  "consult": {
+   "l2_context_lines": 40,
+   "min_panel": 2,
+   "s1_rho": 0.4,
+   "wall_clock_budget_s": 3600
+  },
   "decay": {
    "EPS_FLOOR": 0.5,
    "T_HALF_DAYS": 30.0,
@@ -38,6 +44,7 @@
   },
   "exam": {
    "COOLDOWN_DAYS": 1,
+   "DARK_EXAM_ENABLED": false,
    "ENTRY_CORROB_S2S3": 2.0,
    "ENTRY_DIRECT": 0.3,
    "ENTRY_GRACE_DAYS": 3,
@@ -59,6 +66,29 @@
    "MIN_FAMILIES": 2,
    "SIZE": 3
   },
+  "perception": {
+   "l0": {
+    "max_file_lines": 800
+   },
+   "l1": {
+    "fast_top_k": 3,
+    "files_per_shard": 20
+   },
+   "model": {
+    "enabled": true
+   },
+   "repomap": {
+    "max_files": 12,
+    "max_lines": 1500
+   },
+   "rules": {
+    "enabled": true,
+    "timeout_s": 120
+   },
+   "scan": {
+    "rescan_sample_frac": 0.05
+   }
+  },
   "promote": {
    "DELTA": 0.05,
    "M": 30,
@@ -69,11 +99,36 @@
    "UNIQUE_PER_FAMILY": true,
    "WINDOW_ADVANTAGE": 2
   },
+  "qualification": {
+   "enforce": false,
+   "enforce_roles": [
+    "verifier"
+   ],
+   "policy_version": "qp-v1",
+   "production_temp": 0.2
+  },
   "roster": {
    "auditor": 5,
    "reviewer": 4,
    "scout": 6,
    "verifier": 3
+  },
+  "sandbox": {
+   "container_allow_build": false,
+   "cpus": 1.0,
+   "env_cache_dir": "out/sandbox-env",
+   "mem_mb": 512,
+   "network": "none",
+   "nofile": 64,
+   "nproc": 32,
+   "process_allow_install": false,
+   "process_require_isolation": true,
+   "read_only_root": true,
+   "tier": "process",
+   "timeout_s": 340,
+   "tmpfs_mb": 64,
+   "trusted_roots": [],
+   "user": "nobody"
   },
   "shrink": {
    "LAMBDA": 5.0
@@ -83,6 +138,12 @@
    "T_BASE": 0.6,
    "T_MAX": 0.9,
    "T_MIN": 0.5
+  },
+  "verify": {
+   "budget_cents": 200,
+   "max_clusters": 10,
+   "poc_attempts": 2,
+   "wall_clock_budget_s": 3600
   }
  },
  "params_base": "configs/params.yaml",

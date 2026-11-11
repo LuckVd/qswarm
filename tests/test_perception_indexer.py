@@ -128,7 +128,7 @@ def test_index_cache_dir_roundtrip_and_corruption(tmp_path):
     assert cache2.parse_count == 0
     assert e2.to_json() == e1.to_json()
     # 损坏缓存 → 新实例重析（零抛错；内容寻址保证重建一致）
-    key = cache2.file_key(PY_SRC)
+    key = cache2.file_key(PY_SRC, "python")
     (tmp_path / f"{key}.json").write_text("{broken", encoding="utf-8")
     cache3 = IndexCache(tmp_path)
     e3 = cache3.get_or_parse("a.py", "python", PY_SRC)

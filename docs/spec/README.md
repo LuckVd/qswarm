@@ -27,7 +27,11 @@
 | SPEC-7 | 感知层 L0 v2 + L1 侦察路由 v1 + promote_scan 接线 + reviewer/verifier 补播（M3 实现级规格） | ✅ **定稿 v1.0（2026-10-12，D25–D30 六项全部负责人拍板；D26/D28/D30 按裁决偏离建议稿，逐条见 §9 与 DECISIONS 同日行）** |
 | SPEC-8 | L2 会诊 + repo map 切片注入 + route() 生产接线 + 影子期指标（M4 实现级规格） | ✅ **定稿 v1.0（2026-10-13，D31–D34/D37/Q1 拍板见 DECISIONS 同日行；验收卷 SPEC-5_m4_acceptance 随日导出）** |
 | SPEC-9 | S2 沙箱 + 真验证 + D34 仲裁件 + 暗考接线（M5 实现级规格） | ✅ **定稿 v1.0（2026-10-21，D38–D43 拍板见 DECISIONS 同日行；验收卷 SPEC-5_m5_acceptance 同轮导出；E 组真蜂联调轮为后续前置件）** |
-| SPEC-10 | 证据与评测体系（P0 角色资格与配置身份 v0.1 精度面；oracle 分级与校准门 D46；B/C/D/E 工作包骨架随阶段升版） | ✅ **v0.1 已导出并实施 P0 面（2026-10-22，D46 拍板 + 负责人「按建议值」放行 P0；依据 DESIGN_REVISION_AND_EXPERIMENT_PLAN_20261022 方案；判据见本卷 §10，交付 out/_p0_final/）** |
+| SPEC-10 | 证据与评测体系（P0 角色资格与配置身份 §1–§5；P1 可信测量最小闭环 §6–§9 精度面：oracle oc-v1 判据/证据投影/漏斗 trace/实验登记） | ✅ **v0.2（2026-10-24，P1 轮：负责人「开工」放行；§6–§9 骨架升精度面——sandbox/oracle.py + 九类夹具 + 模板 v2 + evidence_v2 投影 + funnel trace + experiments/design_revision + E0 runner C1–C5 真机全过；判据见本卷 §10，交付 out/_p1_final/）** |
+
+### R2 最新修订（2026-10-29）
+
+当前运行语义补充见 [SPEC-9 §11](<SPEC-9_m5_sandbox.md#L239>) 与 [SPEC-10 §12](<SPEC-10_evidence_and_evaluation.md#L355>)：显式离线 trial、非终态恢复、安全快照、r2-tv1 内容/上下文核验、历史漏斗 unknown。旧里程碑表保留历史，不把机械验收等同生产成对观察或效果实验完成；本轮范围见 [R2 计划](<../R2_IMPLEMENTATION_PLAN_20261029.md>)。
 
 ## 滚动协议（负责人已拍板：混合模式）
 

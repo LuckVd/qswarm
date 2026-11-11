@@ -37,6 +37,10 @@ out/m2-seeding-replay/
 !out/m4-seeding-rv
 !out/m4-seeding-v3
 !out/m4-smoke
+
+# ── P1 交付与 E0 报告（文本证据入库；P0/M5 白名单见上）──────────
+!out/_p1_final
+!out/design-revision
 out/m4-seeding-rv/cache/
 out/m4-seeding-rv/cache-r2/
 out/m4-seeding-v3/cache-r3/

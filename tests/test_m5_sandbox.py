@@ -92,14 +92,19 @@ def test_parse_assertions_harness_contract():
 
 
 def test_template_poc_families_and_unsupported():
-    """家族模板：python 注入/穿越可生成；他族如实 None（不硬凑，§3.3）。"""
+    """家族模板 v2（oc-v1 副作用金丝雀）：python 注入/穿越可生成；他族如实 None。"""
     poc = template_poc("injection", "command_injection", path="src/api.py",
                        line_start=5, lang="python", seed="ab12")
     assert poc is not None and "QSWARM_POC_ab12" in poc
     assert "importlib" in poc                         # 双级驱动（函数内 sink 形态）
+    assert "canary_" in poc and "ASSERT|injection_payload_executed|" in poc
+    # v2 判据：金丝雀文件副作用（PoC 绝不自己创建），非 stdout 回显
+    assert "marker in blob" not in poc and "> \" + canary" in poc
     trav = template_poc("authz", "path_traversal", path="src/t.py",
                         line_start=3, lang="python", seed="cd34")
-    assert trav is not None and "qswarm_canary" in trav
+    assert trav is not None and "qsw-trav-cd34" in trav
+    assert "ASSERT|path_traversal_read|" in trav       # 冻结 violation 断言名
+    assert "ASSERT|legal_control|" in trav             # 合法对照门（§6.2）
     assert template_poc("mem_safety", "overflow", path="x.c", line_start=1,
                         lang="c", seed="x") is None
     assert template_poc("injection", "cmdi", path="a.py", line_start=1,
@@ -146,11 +151,19 @@ def _make_vuln_repo(root: Path) -> Path:
     return root
 
 
+def _dev_cfg(tmp_path, **kw):
+    """R1-T1 测试配置：tmp 合成仓经 ``trusted_roots`` 显式核验（开发输入面）；
+    生产面不可信仓库拒绝路径由 tests/test_r1_hardening.py 反例钉死。"""
+    kw.setdefault("tier", "process")
+    kw.setdefault("timeout_s", 60)
+    kw.setdefault("env_cache_dir", str(tmp_path / "env"))
+    return SandboxConfig(trusted_roots=(str(tmp_path),), **kw)
+
+
 def test_process_runner_real_execution_confirm_and_fail(tmp_path):
     """process 档真执行：注入靶复现 PASS（exit 0）、干净靶如实 FAIL（exit 1）。"""
     repo = _make_vuln_repo(tmp_path / "repo")
-    cfg = SandboxConfig(tier="process", timeout_s=60,
-                        env_cache_dir=str(tmp_path / "env"))
+    cfg = _dev_cfg(tmp_path)
     runner = make_runner(cfg)
     assert isinstance(runner, ProcessRunner)
     poc = template_poc("injection", "command_injection", path="src/top_tool.py",
@@ -178,8 +191,7 @@ def test_process_runner_real_execution_confirm_and_fail(tmp_path):
 def test_process_runner_timeout_classification(tmp_path):
     """墙钟超时 → error_kind=timeout（§6.3 四分类红线项）。"""
     repo = _make_vuln_repo(tmp_path / "repo")
-    cfg = SandboxConfig(tier="process", timeout_s=2,
-                        env_cache_dir=str(tmp_path / "env"))
+    cfg = _dev_cfg(tmp_path, timeout_s=2)
     runner = make_runner(cfg)
     res = runner.execute("import time\ntime.sleep(60)\n", repo=repo, deps=[],
                          seed="t1")
@@ -191,8 +203,7 @@ def test_process_runner_timeout_classification(tmp_path):
 def test_process_runner_env_cache_reuse(tmp_path):
     """env 缓存：同 deps 重跑复用（env_key 恒等 + 标记文件在；§16.4）。"""
     repo = _make_vuln_repo(tmp_path / "repo")
-    cfg = SandboxConfig(tier="process", timeout_s=60,
-                        env_cache_dir=str(tmp_path / "env"))
+    cfg = _dev_cfg(tmp_path)
     runner = make_runner(cfg)
     poc = template_poc("injection", "command_injection", path="src/top_tool.py",
                        line_start=2, lang="python", seed="s")
@@ -230,12 +241,41 @@ def test_make_runner_tier_guard():
         ContainerRunner(SandboxConfig(tier="process"))
 
 
-# ── container 档真 docker（环境可用时实跑；缺 docker 跳过）─────────
+# ── container 档真 docker（环境可用时实跑；daemon 不可达显式 skip）─────
+#
+# R1-T8（HANDOVER §13）：skip 条件必须探**守护进程**可用性（退出码 + stderr），
+# 不能只查 docker CLI 是否存在——CLI 在而 daemon 不可达时，旧条件误跑真机
+# 断言 → env_build_fail 面 KeyError（2026-10-28 审查唯一失败项）。本测试为
+# **开发可选**项：skip ≠ container 红线验收 PASS；release gate 需真机全红线条
+# 项时另按 NOT VERIFIED/BLOCKED 报告。
 
 import shutil as _shutil
+import subprocess as _subprocess
+
+
+def _docker_daemon_ok() -> tuple[bool, str]:
+    """daemon 探针：docker info 退出码 0 且 stdout 含 ok（双条件，防只串匹配）。"""
+    if _shutil.which("docker") is None:
+        return False, "docker CLI 不可用"
+    try:
+        proc = _subprocess.run(
+            ["docker", "info", "--format", "ok"], capture_output=True, text=True,
+            timeout=30,
+        )
+    except (_subprocess.TimeoutExpired, OSError) as exc:
+        return False, f"docker info 探针异常：{type(exc).__name__}"
+    if proc.returncode != 0:
+        tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-1:]
+        return False, f"docker daemon 不可达（rc={proc.returncode}：{tail}）"
+    if proc.stdout.strip() != "ok":
+        return False, f"docker info 输出异常：{proc.stdout[:80]!r}"
+    return True, ""
+
+
+_DAEMON_OK, _DAEMON_WHY = _docker_daemon_ok()
 
 pytestmark_real = pytest.mark.skipif(
-    _shutil.which("docker") is None, reason="docker 不可用（D38-a 环境面）"
+    not _DAEMON_OK, reason=f"container 真机验收环境阻断（开发可选项，非 PASS）：{_DAEMON_WHY}"
 )
 
 

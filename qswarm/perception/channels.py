@@ -338,7 +338,11 @@ def default_rules_runner(timeout_s: int, *, rules_path: str | Path | None = None
 
 
 def _default_rules_file() -> Path:
-    return Path(__file__).resolve().parents[2] / "configs" / "semgrep_rules.yaml"
+    """R1-T7：默认规则 = 包内 canonical 副本（qswarm/defaults/；仓内 configs/
+    哈希同步测试钉死）。缺件 → 显式错误（通道 C 如实缺席，不静默换路径）。"""
+    from qswarm.contracts.config import _packaged_default
+
+    return _packaged_default("semgrep_rules.yaml")
 
 
 def channel_c_scan(

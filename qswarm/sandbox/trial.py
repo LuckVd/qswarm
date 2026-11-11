@@ -42,11 +42,23 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--tier", choices=("process", "container"), default="process",
                     help="执行档（D38；container 需 docker 可用；两者均零账本写——"
                          "container 档生产全链走 kernel.verify.run_verify 编排入口）")
+    ap.add_argument("--trusted-repo", action="append", default=None, metavar="PATH",
+                    help="R1-T1 开发专用：显式核验的可信仓根（process 档可信门；"
+                         "可重复传）。合成夹具仓必须经本参数或 params.sandbox."
+                         "trusted_roots 核验后才执行——不可信仓库一律拒绝。")
     args = ap.parse_args(argv)
 
     report_dir = Path(args.report_dir) if args.report_dir else (
         Path(args.store) / "trial-report"
     )
+    from qswarm.contracts import load_params
+
+    params = load_params()
+    if args.trusted_repo:
+        roots = tuple(
+            {*(params.sandbox.trusted_roots or ()), *map(str, args.trusted_repo)}
+        )
+        params.sandbox.trusted_roots = roots
     with KernelLedger(args.db) as ledger:
         report = run_verify(
             ledger,
@@ -55,6 +67,8 @@ def main(argv: list[str] | None = None) -> int:
             consult_run_id=args.consult_run,
             store_dir=args.store,
             tier=args.tier,
+            params=params,
+            trial_only=True,
             report_dir=report_dir,
             max_clusters=args.max_clusters,
         )

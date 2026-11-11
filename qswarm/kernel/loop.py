@@ -46,6 +46,7 @@ from qswarm.contracts import (
 )
 from qswarm.kernel.bootstrap import verify_ready
 from qswarm.kernel.dispatch import (
+    DISPATCH_MAX_ATTEMPTS,
     build_contract,
     create_task,
     dispatch,
@@ -53,6 +54,12 @@ from qswarm.kernel.dispatch import (
     re_dispatch,
     register_candidates,
     submit,
+)
+from qswarm.kernel.identity import (
+    candidate_occurrence_id,
+    ensure_run_manifest,
+    l1_task_id,
+    run_manifest,
 )
 from qswarm.kernel.ledger import KernelClock, KernelLedger, WallClock, transaction
 from qswarm.kernel.promote_scan import promote_scan
@@ -85,6 +92,8 @@ class ScanLoopReport:
     tasks_dispatched: int = 0
     tasks_done: int = 0
     tasks_failed: int = 0
+    recovery_blocked: int = 0                         # 已 failed 终态，需显式新 attempt
+    recovery_notes: list[str] = field(default_factory=list)
     l1_schema_fail: int = 0
     l1_infra_fail: int = 0
     l1_no_family: int = 0
@@ -103,6 +112,8 @@ class ScanLoopReport:
                 "dispatched": self.tasks_dispatched,
                 "done": self.tasks_done,
                 "failed": self.tasks_failed,
+                "recovery_blocked": self.recovery_blocked,
+                "recovery_notes": list(self.recovery_notes),
                 "l1_schema_fail": self.l1_schema_fail,
                 "l1_infra_fail": self.l1_infra_fail,
                 "l1_no_family": self.l1_no_family,
@@ -246,38 +257,63 @@ def _dispatch_one_candidate(
 ) -> None:
     """单候选 L1 任务全生命周期（create → dispatch → 调用 → submit → 存款 ×0.2）。
 
-    失败语义见模块 docstring；任何二次失败 → 任务 failed、计数、零存款、不抛穿
-    （侦察面宽松，单点失败不停漏斗）。"""
-    task_id = f"{L1_TASK_PREFIX}{shard['shard_id']}:{seq:03d}"
-    # 幂等（D 组判据：同仓库重跑零新候选、账本零重复存款）：任务行已存在 →
-    # 该候选已在此 run 处理过（任务 id 由 (run_id, 候选确定性序) 派生），跳过。
+    R1-T3：``task_id = l1:{run}:{occurrence}``（内容寻址含 run——同库第二 run
+    扫同仓不再被首轮同名任务吞掉；候选重排不改变既有任务身份）。失败语义见
+    模块 docstring；任何二次失败 → 任务 failed、计数、零存款、不抛穿
+    （侦察面宽松，单点失败不停漏斗）。同 run 重入时 done 零副作用，queued
+    正常派单，dispatched 恢复当前 attempt；failed 保持终态并显式报告。
+    调用方须保证同 run 单编排器；中断后的模型调用/计费不保证恰好一次。"""
+    task_id = l1_task_id(run_id, str(getattr(cand, "candidate_id")))
+    # 只有 done 代表 submit + deposit 已提交；行存在不代表完成。
     existing = ledger.conn.execute(
-        "SELECT state FROM tasks WHERE task_id = ?", (task_id,)
+        "SELECT state, assignee, attempts, node FROM tasks WHERE task_id = ?", (task_id,)
     ).fetchone()
-    if existing is not None:
+    if existing is not None and existing[0] == "done":
         return
-    node = shard["node"]
-    model_ref, agent_id = picker(task_id, seq)
-    if not model_ref:
-        # 空池：留 queued（D10 empty_pool 语义），如实计数不派单。
+    if existing is not None and existing[0] == "failed":
+        # failed 为终态，禁止在编排层绕过 dispatch 写口复活或清零预算。
+        report.tasks_failed += 1
+        report.recovery_blocked += 1
+        report.recovery_notes.append(
+            f"{task_id}: failed is terminal; use a new run, or an explicit new-attempt"
+            " task via a dispatch recovery API (not currently available)."
+        )
+        return
+    node = existing[3] if existing is not None else shard["node"]
+    if existing is not None and existing[0] not in {"queued", "dispatched"}:
+        raise ValueError(f"Unknown L1 task state: {existing[0]!r}")
+    if existing is None:
         create_task(
             ledger, run_id=run_id, role="scout", node=node,
             shard={"candidate_id": cand.candidate_id, "path": cand.path,
-                   "span": list(cand.span), "family_hint": cand.taxonomy_hint},
+                   "span": list(cand.span), "family_hint": cand.taxonomy_hint,
+                   "shard_node": node},
             task_id=task_id,
         )
+    attempts = 1
+    if existing is not None and existing[0] == "dispatched":
+        agent_id = str(existing[1] or "")
+        attempts = int(existing[2])
+        if not 1 <= attempts <= DISPATCH_MAX_ATTEMPTS:
+            raise ValueError(f"Invalid L1 attempts for {task_id}: {attempts}")
+        model_ref = by_agent_ref(scouts, agent_id)
+        if not model_ref:
+            # 旧蜂不再合格：有池时经既有重派写口换蜂，预算仍累计。
+            model_ref, agent_id = picker(task_id, seq)
+            if model_ref:
+                try:
+                    re_dispatch(ledger, task_id, to_agent=agent_id,
+                                reason="timeout", run_id=run_id)
+                except ValueError:
+                    report.tasks_failed += 1
+                    report.l1_infra_fail += 1
+                    return
+                attempts += 1
+    else:
+        model_ref, agent_id = picker(task_id, seq)
+    if not model_ref:
+        # 无供给时保持 queued/dispatched，后续重入仍可继续，不消耗派单预算。
         return
-    shard_payload = {
-        "candidate_id": cand.candidate_id,
-        "path": cand.path,
-        "span": list(cand.span),
-        "family_hint": cand.taxonomy_hint,
-        "shard_node": node,
-    }
-    create_task(
-        ledger, run_id=run_id, role="scout", node=node, shard=shard_payload,
-        task_id=task_id,
-    )
     decision = RouteDecision(
         task_id=task_id, role="scout", family=str(node).partition("/")[0],
         node=str(node), assignee=agent_id, channel="explore", reason="temp_pool",
@@ -290,14 +326,17 @@ def _dispatch_one_candidate(
         deadline_s=600,
         goal="L1 初筛：可疑点标记 + 初步类型猜测",
     )
-    dispatch(ledger, task_id, contract, decision, run_id=run_id)
-    report.tasks_dispatched += 1
+    if existing is None or existing[0] == "queued":
+        dispatch(ledger, task_id, contract, decision, run_id=run_id)
+        report.tasks_dispatched += 1
 
     messages = render("scout", contract=contract, blocks=[_candidate_block(root, cand)])
     current_agent = agent_id
     last_error = ""
     output = None
-    for _attempt in (1, 2):                       # §16.7-8：初派 1 + 重派 1
+    # 未持久化的模型输出可能需要重取（调用/计费不是恰好一次）；已提交的
+    # 业务结果由 done 守卫去重。恢复当前 attempt，不重新签发两次重试预算。
+    for _attempt in range(attempts, DISPATCH_MAX_ATTEMPTS + 1):
         try:
             raw = adapter.complete(
                 model_ref=by_agent_ref(scouts, current_agent),
@@ -428,6 +467,13 @@ def run_scan(
         rules_runner = default_rules_runner(int(params.perception.rules.timeout_s))
 
     open_run(ledger, run_id=run_id, mode=str(mode), repo_url=str(root))
+    # R1-T3：冻结 run 输入身份——同 run 换仓/改源码/改 scope/改关键参数 →
+    # 新写入前拒绝（要求新 run）；manifest 落 runs.meta_json（版本化区）。
+    ensure_run_manifest(
+        ledger, run_id=run_id,
+        manifest=run_manifest(root, stage="l0_l1", mode=str(mode),
+                              changed_paths=changed_paths, params=params),
+    )
 
     scouts = active_scouts(ledger, gate=gate_from_params(params))
     picker = least_loaded_picker(scouts)
@@ -447,11 +493,23 @@ def run_scan(
     )
     report.scan = scan_report.to_dict()
 
-    registered = register_candidates(ledger, run_id=run_id, candidates=scan_report.candidates)
+    # R1-T3：候选 occurrence 绑定——纯感知 locator（perception candidate_id）
+    # → (identity_version, scan_run_id, locator) 入表主键；跨 run 各自一行。
+    bound: list[Candidate] = []
+    for cand in scan_report.candidates:
+        occ = candidate_occurrence_id(run_id, str(cand.candidate_id))
+        bound.append(
+            Candidate(
+                path=cand.path, span=cand.span, kind=cand.kind, clue=cand.clue,
+                channels=cand.channels, taxonomy_hint=cand.taxonomy_hint,
+                candidate_id=occ,
+            )
+        )
+    registered = register_candidates(ledger, run_id=run_id, candidates=bound)
     report.candidates_registered = len(registered)
 
     shards = shard_candidates(
-        scan_report.candidates,
+        bound,
         mode=str(mode),
         files_per_shard=params.perception.l1.files_per_shard,
     )

@@ -1,5 +1,7 @@
 # SPEC-9：S2 沙箱与真验证（M5 实现级规格）
 
+> 版本 v1.1（2026-10-24，P1 增补 §10：模板 v2 副作用金丝雀判据 oc-v1 +
+> tmpfs mode=1777 钉死；判据语义详见 SPEC-10 v0.2 §6）。
 > 版本 v1.0（2026-10-21）。依据：设计文档 v0.3.4 §6.3/§10.4/§16.4/§16.6-8/§16.7-5、
 > SPEC-1（契约词表）/SPEC-2 §2.4（S2 映射/写口）/SPEC-8 §2.6（预裁决单）、
 > `docs/m5_assessment_20261021.md`（开工评估）与 D38–D43 拍板（DECISIONS 同日行）。
@@ -124,6 +126,14 @@ verifier 池 least-loaded；蜂调用失败（schema/供给）→ 计 `bee_schem
 
 ### 4.4 reconciliation（内核 owned；纯函数 `reconcile`）
 
+> **R1 修订（2026-10-28，docs/R1_CHANGE_NOTE.md §1-T1/T2）**：reconcile 保持
+> 纯函数产出**原始裁定**；其上新增内核信任门（`kernel/trust.normalize_outcome`，
+> policy r1-tv1）——无授权的 real/fp 规范化为 verify_error（决策表 HANDOVER
+> §6.3）。执行边界收紧：process 档可信根门（打包 fixtures + 显式
+> trusted_roots）、依赖串拒绝矩阵（两档）、缺省拒绝运行时宿主 pip / 联网
+> docker build 与镜像拉取、子进程环境最小 allowlist、输出限额读取时生效
+> （进程组收割）、禁网探针失败 fail-closed。
+
 蜂主张 × 沙箱实证：无 PoC → verify_error(poc_fail)；env_build_fail/timeout →
 直判；执行绿 → real（或 bee=None 试跑面纯执行语义）／fp 不升格／error 如实保留；
 执行红 → fp∧blocking 维持 verified_fp（§10.4 正面证据独立于 PoC 绿）／flaky →
@@ -196,3 +206,45 @@ bank 注入`双前提（默认关 = 「开启归 D35 批准面」机器化）；
 754 passed（712 基线零回归 + 42 新增）。写口审计（scripts/audit_write_ports.py
 --strict）维持 PASS：本里程碑零新表、零新账本直写（kernel.verify /
 kernel.arbitrate 全走 dispatch 既有写口）。
+
+## 10. 增补（P1，2026-10-24）：模板 v2 判据升级 + tmpfs mode 钉死
+
+**模板 v2（oc-v1，SPEC-10 §6 精度面承载）**：§3 的两族模板断言从 echo-marker
+（stdout 回显可满足——仅回显安全版可击穿，P1 开工前实证仪器缺陷）升级为
+**副作用金丝雀判据**：
+
+- 命令注入：判据 = 注入命令在**目标进程内**执行并创建含 marker 的金丝雀文件
+  （PoC 自身绝不创建；仅回显目标的 stdout 结构性不可能满足）；观察目录按
+  「WORK 可写优先（container 档 = tmpfs；process 档 drop 场景回落系统临时
+  目录）」两级取向；
+- 路径穿越：判据 = 目标输出含 nonce（nonce 只存在于允许根〔REPO〕之外的金丝雀
+  **文件内容**里，回显路径不可能命中）；附合法对照断言（读 REPO 内既存文件，
+  诊断面）；
+- 冻结断言名（判据面单一真源，`VIOLATION_ASSERTIONS`/`CONTROL_ASSERTIONS`）：
+  `injection_payload_executed` / `path_traversal_read`（violation 面）+
+  `legal_control`（对照门，只降不升）。断言名变更 = 判据变更，须升 oracle
+  版本。
+
+内核 run_verify 双层结果接线（SPEC-10 §6 mechanical_single）：`assess_single`
+判层面落 process 档 result.json `oracle` 节 + VerifyRunReport
+`claim_validation` 计数与 detail 行；**reconcile 三分类 outcome 行为零改**
+（M5 语义 D40/D43 冻结）。
+
+**tmpfs mode=1777 钉死（环境漂移修复）**：container 档 `--tmpfs /work:rw`
+未钉 mode 时缺省随 docker 版本漂移——server 29.2.1 实测 0755 root 属主 →
+非特权用户 EACCES，「只读根 + tmpfs 可写点」红线名存实亡（2026-10-23 通过属
+版本缺省差异）。修：`/work:rw,nosuid,size=<n>m,mode=1777`。九类验收集与
+oracle 判据模块见 SPEC-10 §6（`qswarm/sandbox/oracle.py` + `fixtures/`）。
+
+## 11. R2 执行与试跑修订（2026-10-29）
+
+本节随负责人本轮授权实施，保留原生产库与事件；具体授权校验改为 SPEC-10 §12 的 r2-tv1，不再使用旧「蜂报 real + 单次执行绿即可信」语义。
+
+1. **trial 与执行档分离**：`run_verify(trial_only=True)` 在 process/container 均零模型调用、零业务表/事件写入，只输出试跑工件与报告；传 adapter 即执行前拒绝。CLI trial 显式传入加载的 params，`--trusted-repo` 不再丢失。生产 container 入口仍要求正式 adapter/编制/资格/预算，trial 不铸造授权。
+2. **容器红线强制**：拒绝空用户、root/UID0、可写根。追加 cap-drop ALL、no-new-privileges、pids-limit；资源限制/禁网/只读根与1777 tmpfs继续施加。显式有界 docker rm -f 与临时目录回收，任一失败不得返回成功。
+3. **process 实际执行失败即拒绝**：不仅探测禁网；真实 preexec 的 unshare/rlimit/降权失败在严格模式下阻止 exec。父进程必须得到设置成功确认。宽松开发模式不构成生产降级；process 仍仅可信开发输入。
+4. **安全冻结快照**：两个 runner 均用 safe_snapshot；container 不再挂载 live 仓库。源/目标逐级 dirfd 与 O_NOFOLLOW，普通文件 O_EXCL 安全复制；拒绝符号链接、hardlink、特殊文件、跨设备、可检测的换 inode/读中变更。跳过 VCS/环境/依赖缓存目录。上限：20k文件、100k条目、深64、单32MiB、总256MiB、协作I/O 30s。
+5. **快照边界如实**：摘要标识实际复制字节与相对路径，不是 commit、根因或原子全仓文件系统事务；协作期限不能中断内核阻塞I/O。拥有宿主 root/同UID控制区权限者不在该隔离承诺内。
+6. **恢复**：L1 done 幂等；queued/dispatched 复用既有任务与剩余 attempts，不因行已存在就吞任务；failed 保持终态并显式报告，需要新 run 或未来独立 attempt 接口，不由 loop 直接 SQL 复活。业务提交幂等不等于外部模型调用/计费恰好一次。
+
+本机 Docker 复验使用既有 Desktop proxy 与既有 WSL 桥接挂载，仅选择进程级 DOCKER_HOST/TMPDIR，不重启服务、不拉取镜像、不改全局挂载。真机通过只说明受控沙箱红线，不说明真实仓库效果、成对生产观察或自适应收益。

@@ -1,0 +1,388 @@
+{
+  "all_pass": true,
+  "checks": {
+    "C1_nine_class_controls": {
+      "pass": true,
+      "rows": [
+        {
+          "evidence": "canary=canary_58329c2ad6ed8f55 content=nonce",
+          "expected_violation": true,
+          "family": "injection",
+          "item": "1:vuln_effective_poc",
+          "observed_violation": true,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "2:fix_negative_control",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "3:echo_safe_only",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "4:unreachable_sink",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "5:missing_dep",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 1,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "6:timeout_wallclock",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": true
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "7:unconditional_pass_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "8:target_not_called",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "canary_absent",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "9:real_vuln_ineffective_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_in_target_output",
+          "expected_violation": true,
+          "family": "path_traversal",
+          "item": "1:vuln_effective_poc",
+          "observed_violation": true,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_not_in_target_output",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "2:fix_negative_control",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 2,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_not_in_target_output",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "3:echo_safe_only",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_not_in_target_output",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "4:unreachable_sink",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_not_in_target_output",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "5:missing_dep",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 1,
+          "timed_out": false
+        },
+        {
+          "evidence": "target_output_absent",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "6:timeout_wallclock",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": true
+        },
+        {
+          "evidence": "target_output_absent",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "7:unconditional_pass_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "target_output_absent",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "8:target_not_called",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "nonce_not_in_target_output",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "9:real_vuln_ineffective_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "claim_validation": "supported",
+          "expected_violation": null,
+          "family": "injection",
+          "item": "1:injection paired(validate_pair)",
+          "pass": true,
+          "reason": "vuln_violates_fix_does_not"
+        },
+        {
+          "claim_validation": "supported",
+          "expected_violation": null,
+          "family": "path_traversal",
+          "item": "1:path_traversal paired(validate_pair)",
+          "pass": true,
+          "reason": "vuln_violates_fix_does_not"
+        }
+      ]
+    },
+    "C2_template_regression": {
+      "pass": true,
+      "rows": [
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        }
+      ]
+    },
+    "C3_metric_denominators": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "mixed_formula",
+          "pass": true,
+          "summary": {
+            "decision_counts": {
+              "verified_fp": 0,
+              "verified_real": 3,
+              "verify_error": 0
+            },
+            "fp": 1,
+            "labeled_precision": 0.5,
+            "n_logical_root_causes": 3,
+            "n_observations": 3,
+            "note": "界限为未知标签范围，非统计置信区间（§4.4）；不参与派单",
+            "report_precision_bounds": [
+              0.3333,
+              0.6667
+            ],
+            "tp": 1,
+            "truth_known": 2,
+            "truth_unknown": 1,
+            "u": 1
+          }
+        },
+        {
+          "case": "empty_not_estimable",
+          "pass": true,
+          "summary": {}
+        },
+        {
+          "case": "all_unknown_bounds_full_range",
+          "pass": true,
+          "summary": {
+            "decision_counts": {
+              "verified_fp": 1,
+              "verified_real": 1,
+              "verify_error": 0
+            },
+            "fp": 0,
+            "labeled_precision": "not_estimable",
+            "n_logical_root_causes": 2,
+            "n_observations": 2,
+            "note": "界限为未知标签范围，非统计置信区间（§4.4）；不参与派单",
+            "report_precision_bounds": [
+              0.0,
+              1.0
+            ],
+            "tp": 0,
+            "truth_known": 0,
+            "truth_unknown": 2,
+            "u": 2
+          }
+        }
+      ]
+    },
+    "C4_projection_determinism": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "same_as_of_same_hash",
+          "hash": "ev2-0fc310ec789687e4",
+          "n": 2,
+          "pass": true
+        },
+        {
+          "case": "correction_no_root_cause_inflation",
+          "n_effective": 2,
+          "n_records": 3,
+          "pass": true
+        },
+        {
+          "case": "future_truth_not_in_history",
+          "full_truths": [
+            "real",
+            "unknown"
+          ],
+          "history_truths": [
+            "unknown"
+          ],
+          "pass": true
+        },
+        {
+          "case": "conflicting_verdicts_disputed",
+          "disputed": [
+            "C-1"
+          ],
+          "pass": true
+        }
+      ]
+    },
+    "C5_funnel_assembly": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "seven_stages_ordered",
+          "pass": true,
+          "stages": [
+            "L0_uncovered",
+            "L1_discarded",
+            "L2_unreported",
+            "review_rejected",
+            "budget_not_run",
+            "s2_error",
+            "confirmed_reported"
+          ]
+        },
+        {
+          "case": "gold_replay_no_finding_honest",
+          "pass": true,
+          "replay": {
+            "assessable_layers": {
+              "L0_uncovered": "not_assessable",
+              "L1_discarded": "not_assessable",
+              "L2_unreported": "lost"
+            },
+            "evidence_refs": [],
+            "family": "injection",
+            "first_loss_layer": "not_assessable",
+            "item_id": "K-1",
+            "note": "无 finding 行——首次漏失在 L2 或更早（L0/L1 逐条存量不可得，不伪造定位）",
+            "path": "src/missing.py"
+          }
+        }
+      ]
+    }
+  },
+  "experiment": "E0-deterministic",
+  "notes": [
+    "人工校准面（20–30 例）不在本 runner：题目冻结于 manifests/e0_calibration_set.jsonl，供给与调用待批（D47-A）",
+    "container 档九类真机复验可选（docker 桥接环境；本报告为 process 档）"
+  ],
+  "oracle_version": "oc-v1",
+  "ran_at": "20261024T030747Z"
+}

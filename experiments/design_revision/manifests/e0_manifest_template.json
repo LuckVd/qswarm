@@ -1,0 +1,43 @@
+{
+  "calibration_face": {
+    "items_file": "e0_calibration_set.jsonl",
+    "judge_selection": "待批（D47-A：E1 开工前另行批；GLM 族禁任主裁判）",
+    "protocol": "负责人人工判 20–30 例 → 与跨族主裁判一致率（D46 E0 校准门）",
+    "status": "题目冻结；材料/工具就位（calibration/：judging_sheet 25 例盲卷 + judge_materials 裁判盲卷 + judge_prompt_template + compute_agreement + RUNBOOK，2026-10-24）；待负责人 25 例判定与跨族供给批准（D47）",
+    "threshold": "pilot 前冻结（D46；未过换裁判或加人工）"
+  },
+  "experiment_id": "E0-TEMPLATE",
+  "frozen_fields": {
+    "approval_record": "P1 放行 2026-10-24（负责人「开工」）；线上调用零",
+    "budget": {
+      "cents_cap": 50000,
+      "wall_clock_weeks": 4
+    },
+    "data_hash": "<sha256 of fixture/bank inputs>",
+    "minimal_interesting_effect": "不适用（E0 为门禁非比较实验）",
+    "network_scope": "none（全部离线）",
+    "paper_manifest": "<artifact://…>",
+    "primary_metric": "九类负对照行为符合预期率（期望 1.0）",
+    "profile_prompt_hashes": {
+      "<role>": "<sha16>"
+    },
+    "retry_rules": "同 PoC 重复执行结果集 >1 → flaky（SPEC-9 §3.4）；其余不重试",
+    "root_cause_grouping": "相同源码变异/同一 CVE 多快照/漏洞-修复对同组（§7.1）",
+    "sampling": {
+      "params": {},
+      "seed": "<int>"
+    },
+    "software_versions": {
+      "oracle": "oc-v1",
+      "qswarm": "<git sha>"
+    },
+    "splits": {
+      "dev": "<refs>",
+      "holdout": "<refs>",
+      "validation": "<refs>"
+    },
+    "statistical_analysis": "确定性断言，无区间估计",
+    "stopping_rules": "E0：确定性判据任一不过即停（仪器不可信，后续实验无意义）"
+  },
+  "title": "仪器与标签可靠性检查（方案 §7.2）——确定性判据面 manifest 模板"
+}

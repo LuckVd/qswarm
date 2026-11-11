@@ -252,13 +252,14 @@ def register_candidates(
       channels/taxonomy_hint/clue`` 属性；:data:`L0Channel` 词表映射 A→struct、
       B→model、C→rule，``channels`` 列逗号串按词表序）；
     - ``candidate_id`` = 'CD-<run>-<L0 序>'？非——perception Candidate 自带内容
-      寻址 id（blake2b 16B hex，SPEC-7 §1.1/D27），直接作主键（表 TEXT PK 无
-      形态约束；``CD-`` 序号形态归 M0 世界侧仿真候选，两形态并存、内容寻址 id
-      自明出处）；
+      寻址 id（blake2b 16B hex，SPEC-7 §1.1/D27）直接作主键；**R1-T3 起 run_scan
+      传 occurrence 形态**（H(identity_version, scan_run_id, locator)——
+      kernel.identity 三身份分立），两形态并存、内容寻址 id 自明出处；
     - 幂等（读侧）：同 candidate_id 且字段全等 → 跳过；字段不等 → ValueError
-      （写侧非法，§6.4 界线；同 roster 幂等口径）；
+      （写侧非法，§6.4 界线；同 roster 幂等口径）；**R1-T3：同 id 归属不同
+      run → ValueError（owner-run 守卫，跨 run 不串档不移动旧行）**；
     - channel_score = 候选优先级（多通道命中加权，§2.1；归并层值直落）；
-      rule_id = kind=rule_hit 时的规则 id（clue 承载）；guess_family = 
+      rule_id = kind=rule_hit 时的规则 id（clue 承载）；guess_family =
       taxonomy_hint（L0 初始猜测，侦察回填走 submit 的 COALESCE 语义）；
     - 全部行同事务落库（§7.1 复合写原子性；行插入无账本事件——创建即初态，
       与 create_task 同型纪律）。"""
@@ -272,16 +273,22 @@ def register_candidates(
             span = getattr(cand, "span")
             cid = str(getattr(cand, "candidate_id"))
             row = ledger.conn.execute(
-                "SELECT path, line_start, line_end, channels FROM candidates"
+                "SELECT run_id, path, line_start, line_end, channels FROM candidates"
                 " WHERE candidate_id = ?",
                 (cid,),
             ).fetchone()
             if row is not None:
+                if str(row[0]) != str(run_id):
+                    raise ValueError(
+                        f"候选点归属冲突：candidate_id={cid!r} 已属于 run"
+                        f" {row[0]!r}，不能以 run {run_id!r} 重注册（R1-T3"
+                        " owner-run 守卫；跨 run 各自注册 occurrence）"
+                    )
                 if (
-                    str(row[0]) != str(getattr(cand, "path"))
-                    or int(row[1]) != int(span[0])
-                    or int(row[2]) != int(span[1])
-                    or str(row[3]) != channels
+                    str(row[1]) != str(getattr(cand, "path"))
+                    or int(row[2]) != int(span[0])
+                    or int(row[3]) != int(span[1])
+                    or str(row[4]) != channels
                 ):
                     raise ValueError(
                         f"候选点身份冲突：candidate_id={cid!r} 已存在且字段不等"
@@ -351,6 +358,17 @@ def open_run(
             ),
         )
     return run_id
+
+
+def set_run_manifest(ledger: KernelLedger, run_id: str, meta_json: str) -> None:
+    """runs.meta_json 整体回写（**唯一写口**；R1-T3 manifest 绑定面）。
+
+    调用方（kernel.identity.ensure_run_manifest）负责读-改-写一致性与冲突
+    判定；本函数只承担写口纪律（runs 表 UPDATE 归 dispatch，§6.1/审计词表）。"""
+    with transaction(ledger):
+        ledger.conn.execute(
+            "UPDATE runs SET meta_json = ? WHERE run_id = ?", (meta_json, run_id)
+        )
 
 
 # ── 任务行装配口（§6.1：tasks 表唯一写口在本模块）────────────────
@@ -861,13 +879,30 @@ def _submit_scout(
       §5 事件总表未为分诊设 kind）→ 本分支零事件（DECISIONS 2026-10-11 submit 行）；
     - 「标高优先」的机制形态（同上 DECISIONS 行）：candidates 无优先级列，落
       channel_score=1.0（多通道命中加权上界 = 最高优先，L2 排序消费面）；
-    - 候选点不存在 → ValueError（写侧非法）。
+    - 候选点不存在 → ValueError（写侧非法）；
+    - **R1-T3 归属核验**：提交候选 = 任务分片预期候选 ∧ 候选行归属 task 的
+      run（跨 run 指认/换候选指认 → ValueError，先于一切写）。
     """
     with transaction(ledger):
-        if ledger.conn.execute(
-            "SELECT 1 FROM candidates WHERE candidate_id = ?", (output.candidate_id,)
-        ).fetchone() is None:
+        _owner_row = ledger.conn.execute(
+            "SELECT run_id FROM candidates WHERE candidate_id = ?",
+            (output.candidate_id,),
+        ).fetchone()
+        if _owner_row is None:
             raise ValueError(f"候选点不存在：{output.candidate_id!r}")
+        if str(_owner_row[0]) != str(task["run_id"]):
+            raise ValueError(
+                f"侦察提交候选归属失配：candidate {output.candidate_id!r} 属 run"
+                f" {_owner_row[0]!r}，task {task['task_id']!r} 属 run"
+                f" {task['run_id']!r}（R1-T3：不能替别的 run 处理候选）"
+            )
+        _expected = (_task_shard(task) or {}).get("candidate_id")
+        if _expected is not None and str(_expected) != str(output.candidate_id):
+            raise ValueError(
+                f"侦察提交候选失配：task {task['task_id']!r} 预期候选"
+                f" {_expected!r}，实际提交 {output.candidate_id!r}"
+                "（R1-T3：候选指认不可换）"
+            )
         guess_family = (
             output.guess_family.value if output.guess_family is not None else None
         )
@@ -1083,6 +1118,60 @@ def _submit_reviewer(
     return events
 
 
+def bind_verification_context(
+    ledger, task_id, *, store_dir, cluster_id, execution_profile_id,
+    snapshot_ref, target_ref, poc_ref, pair_ref, execution_policy,
+):
+    """Host-only binding before verification; immutable for this task attempt.
+
+    References must identify actual host artifacts, not model-declared digests.
+    Task writes stay in dispatch; trust only reads independently saved context.
+    """
+    from dataclasses import asdict
+    from .trust import build_verification_context
+    with transaction(ledger):
+        row = ledger.conn.execute(
+            "SELECT shard_json, state FROM tasks WHERE task_id=?", (task_id,),
+        ).fetchone()
+        if row is None or row[1] != "dispatched":
+            raise ValueError("context 仅可绑定实际 dispatched task")
+        shard = json.loads(row[0])
+        context = build_verification_context(
+            ledger, store_dir, task_id=task_id, cluster_id=cluster_id,
+            execution_profile_id=execution_profile_id, snapshot_ref=snapshot_ref,
+            target_ref=target_ref, poc_ref=poc_ref, pair_ref=pair_ref,
+            execution_policy=execution_policy,
+        )
+        if "verification_context_digest" in shard:
+            if shard["verification_context_digest"] != context.digest:
+                raise ValueError("task verification context 已冻结，不可换绑")
+            return context
+        shard["verification_context"] = asdict(context)
+        shard["verification_context_digest"] = context.digest
+        ledger.conn.execute("UPDATE tasks SET shard_json=? WHERE task_id=?",
+                            (json.dumps(shard, sort_keys=True), task_id))
+    return context
+
+
+def _seal_verification_authorization(ledger, proof):
+    """Trusted mint issuance record, not a public model submission capability."""
+    with transaction(ledger):
+        row = ledger.conn.execute(
+            "SELECT shard_json, state FROM tasks WHERE task_id=?", (proof.task_id,),
+        ).fetchone()
+        if row is None or row[1] != "dispatched":
+            raise ValueError("授权只能由受信 mint 为 dispatched task 签发")
+        shard = json.loads(row[0])
+        if shard.get("verification_context_digest") != proof.context_digest:
+            raise ValueError("授权签发 context 失配")
+        issued = {"artifact_ref": proof.artifact_ref, "digest": proof.digest}
+        if shard.get("verification_authorization", issued) != issued:
+            raise ValueError("task 授权已冻结，不可重签其他 proof")
+        shard["verification_authorization"] = issued
+        ledger.conn.execute("UPDATE tasks SET shard_json=? WHERE task_id=?",
+                            (json.dumps(shard, sort_keys=True), proof.task_id))
+
+
 def _submit_verifier(
     ledger: KernelLedger,
     task: dict,
@@ -1091,10 +1180,17 @@ def _submit_verifier(
     ctx: "VerdictContext | None",
     params: "ParamsConfig | None",
     run: str | None,
+    authorization=None,
+    store_dir=None,
 ) -> list[LedgerEvent]:
     """verifier 分支（§2.5）：verify_results 行 + verify_result 事件 + §2.4 S2
     状态映射 + propagate_verdict(S2)（§1.4），同事务。
 
+    - **R1-T2 可信写入门**：outcome ∈ {verified_real, verified_fp} 必须携带内核
+      铸造的 :class:`qswarm.kernel.trust.AuthorizationProof`（``authorization``
+      实参）——缺失/policy 未知/绑定失配/工件不在库 → ValueError，**先于一切写**
+      （零行零事件，任务留 dispatched）；verify_error 不需要授权（保守结论面）。
+      授权面写入事件载荷（authorized/auth_digest）供 S2 派生补偿同策略复核；
     - §10.4 改判守卫：verified_fp 缺 blocking_evidence → 强制改判
       verify_error(error_kind=poc_fail)（不改蜂产出行，判定以内核映射为准）；
     - verify_error 缺 error_kind → SchemaRejected（§6.3 必填）；blocking 与
@@ -1110,6 +1206,8 @@ def _submit_verifier(
         raise ValueError(
             "submit(verifier) 需谱系 ctx（S2 存款归属展开，§1.4/D14）"
         )
+    from .trust import validate_authorization
+
     outcome = output.outcome
     error_kind = output.error_kind
     if outcome is VerifyOutcome.VERIFIED_FP and output.blocking is None:
@@ -1120,6 +1218,16 @@ def _submit_verifier(
     if output.blocking is not None and outcome is not VerifyOutcome.VERIFIED_FP:
         raise SchemaRejected("blocking_evidence 仅 verified_fp 可携带（§10.4）→ 退回")
     cluster_id = str(output.cluster_id)
+    if outcome is not VerifyOutcome.VERIFY_ERROR:
+        # R1-T2：高可信结论先过授权门（ValueError 先于一切写，任务留 dispatched）
+        validate_authorization(
+            ledger, store_dir, authorization,
+            run_id=run, task_id=task["task_id"], cluster_id=cluster_id,
+            outcome=outcome.value,
+        )
+        auth_digest = authorization.artifact_ref
+    else:
+        auth_digest = None
     events: list[LedgerEvent] = []
     with transaction(ledger):
         if ledger.conn.execute(
@@ -1161,8 +1269,13 @@ def _submit_verifier(
         )
         ev = ledger.append(
             LedgerKind.VERIFY_RESULT,
-            VerifyResultPayload(cluster_id=cluster_id, outcome=outcome,
-                                error_kind=error_kind),
+            VerifyResultPayload(
+                cluster_id=cluster_id, outcome=outcome, error_kind=error_kind,
+                authorized=(outcome is not VerifyOutcome.VERIFY_ERROR),
+                auth_digest=auth_digest,
+                task_id=task["task_id"] if auth_digest else None,
+                context_digest=authorization.context_digest if auth_digest else None,
+            ),
             run_id=run,
         )
         events.append(ev)
@@ -1216,6 +1329,7 @@ def _submit_verifier(
                     direction=1 if outcome is VerifyOutcome.VERIFIED_REAL else -1,
                     source_seq=ev.seq,
                     source_kind=LedgerKind.VERIFY_RESULT,
+                    store_dir=store_dir,
                     ctx=ctx,
                     params=params,
                     run_id=run,
@@ -1234,6 +1348,8 @@ def submit(
     ctx: "VerdictContext | None" = None,
     params: "ParamsConfig | None" = None,
     run_id: str | None = None,
+    authorization=None,
+    store_dir=None,
 ) -> list[LedgerEvent]:
     """代落账（§2.5）：pydantic 校验（构造时）→ 表行 + 账本事件 + 状态机流转，
     单事务（§7.1/D24）。按 output 类型分发四分支——scout/auditor/reviewer/verifier
@@ -1242,6 +1358,9 @@ def submit(
 
     - 前件守卫先于一切写：任务不存在 / state ≠ 'dispatched' → ValueError（§2.5；
       dispatch() 落派、产出代落账收口的同一状态机）；
+    - **R1-T2**：``authorization``（verifier 高可信结论的可信授权，
+      :class:`qswarm.kernel.trust.AuthorizationProof`）——verified_real/
+      verified_fp 必填，其余分支忽略；
     - 全量代落账成功 → tasks.state='done'（§2.3，与分支写同事务）；
     - SchemaRejected（② 不合格）零落库零事件，任务留 dispatched——调用方据 reason
       走 re_dispatch(schema_fail) 或 failed；
@@ -1249,6 +1368,8 @@ def submit(
     """
     task = _submitted_task(ledger, task_id)
     run = run_id if run_id is not None else task["run_id"]
+    if run != task["run_id"] or contract.task_id != task_id:
+        raise ValueError("submit run/task 与实际任务归属失配")
     if isinstance(output, ScoutReport):
         return _submit_scout(ledger, task, output, contract, ctx, params, run)
     if isinstance(output, AuditorFinding):
@@ -1256,7 +1377,8 @@ def submit(
     if isinstance(output, ReviewerVote):
         return _submit_reviewer(ledger, task, output, contract, ctx, params, run)
     if isinstance(output, VerifierReport):
-        return _submit_verifier(ledger, task, output, contract, ctx, params, run)
+        return _submit_verifier(ledger, task, output, contract, ctx, params, run,
+                                authorization, store_dir)
     raise SchemaRejected(
         f"未知输出类型：{type(output).__name__}（② 输出契约词表："
         "ScoutReport|AuditorFinding|ReviewerVote|VerifierReport，SPEC-1 §4.2）"

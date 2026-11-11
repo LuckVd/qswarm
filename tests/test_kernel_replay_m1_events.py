@@ -84,6 +84,24 @@ STRIDE = 8                 # 世界 finding 等距子采样步长（控制账本
 HARNESS_DAYS = (2, 5)      # 注入 harness finding 的仿真日（真实归并保证：同槽位共簇）
 T0 = datetime(2032, 5, 6, tzinfo=timezone.utc)   # 轨迹时间轴原点（SteppedClock 起点）
 RUN_ID = "R-REPLAY-EVENTS"
+
+import tempfile
+from pathlib import Path
+_STORE_TMP = tempfile.TemporaryDirectory(prefix="qswarm-ev-store-")
+STORE_DIR = Path(_STORE_TMP.name)
+
+
+def _auth_vr(led, cid, outcome):
+    """R1-T2：带授权 verify_result 播种（S2 派生面；正规铸造）。"""
+    import tempfile
+    from pathlib import Path
+
+    import m1_harness as _h
+
+    return _h.append_authorized_verify_result(
+        led, STORE_DIR,
+        cluster_id=cid, outcome=outcome, run_id=RUN_ID)[0]
+
 REROUTE_FROM = "offroute"  # 猜测格弱存款的孤立 node（无任何其他存款会落此格）
 
 ALL_CELL_FIELDS = tuple(CellAgg.__dataclass_fields__)   # 全字段口径（含 updated_at）
@@ -301,12 +319,10 @@ def _run_eventful(db, seed: int) -> _RunInfo:
             info["h1"] = h1
             target = cluster_of[h1]
             info["split_target"] = target
-            vsev = led.append(
-                "verify_result", {"cluster_id": target, "outcome": "verified_real"}
-            )
+            vsev = _auth_vr(led, target, "verified_real")
             propagate_verdict(
                 led, target, tier=SignalTier.S2, direction=1, source_seq=vsev.seq,
-                source_kind=LedgerKind.VERIFY_RESULT, ctx=member_ctx(target),
+                source_kind=LedgerKind.VERIFY_RESULT, store_dir=STORE_DIR, ctx=member_ctx(target),
                 run_id=RUN_ID,
             )
             mark("d2:s2-parent-pre-split")
@@ -350,12 +366,10 @@ def _run_eventful(db, seed: int) -> _RunInfo:
         if day == 5:
             # 子簇承接拆分后存款：verify_fp → S2(−1)（存款归属判定的正样本）
             child0 = info["split_children"][0]
-            vsev = led.append(
-                "verify_result", {"cluster_id": child0, "outcome": "verified_fp"}
-            )
+            vsev = _auth_vr(led, child0, "verified_fp")
             propagate_verdict(
                 led, child0, tier=SignalTier.S2, direction=-1, source_seq=vsev.seq,
-                source_kind=LedgerKind.VERIFY_RESULT, ctx=member_ctx(child0),
+                source_kind=LedgerKind.VERIFY_RESULT, store_dir=STORE_DIR, ctx=member_ctx(child0),
                 run_id=RUN_ID,
             )
             mark("d5:s2-child-post-split")
@@ -365,10 +379,7 @@ def _run_eventful(db, seed: int) -> _RunInfo:
             others = [c for c in live_cids() if c != target and c not in children]
             assert len(others) >= 4, "其余活簇不足（日程动作覆盖不足）"
             info["crash_cluster"] = others[0]
-            led.append(
-                "verify_result",
-                {"cluster_id": others[0], "outcome": "verified_real"},
-            )
+            _auth_vr(led, others[0], "verified_real")
 
         if day == 6:
             # 其余簇的常规 S2（含 verify_error 零存款路径）+ 崩溃窗批处理修复
@@ -378,14 +389,19 @@ def _run_eventful(db, seed: int) -> _RunInfo:
             info["verdict_clusters"] = tuple(others[1:4])
             for i, cid in enumerate(info["verdict_clusters"]):
                 outcome = "verify_error" if i == 2 else "verified_real"
-                vsev = led.append("verify_result", {"cluster_id": cid, "outcome": outcome})
+                vsev = (
+                    _auth_vr(led, cid, outcome)
+                    if outcome != "verify_error" else
+                    led.append("verify_result",
+                               {"cluster_id": cid, "outcome": outcome})
+                )
                 if outcome != "verify_error":
                     propagate_verdict(
                         led, cid, tier=SignalTier.S2, direction=1, source_seq=vsev.seq,
-                        source_kind=LedgerKind.VERIFY_RESULT, ctx=member_ctx(cid),
+                        source_kind=LedgerKind.VERIFY_RESULT, store_dir=STORE_DIR, ctx=member_ctx(cid),
                         run_id=RUN_ID,
                     )
-            rep = propagate_pending(led, lineage=lambda c: member_ctx(c) if c in set(live_cids()) else None)
+            rep = propagate_pending(led, store_dir=STORE_DIR, lineage=lambda c: member_ctx(c) if c in set(live_cids()) else None)
             assert any(
                 e.payload.get("cluster") == info["crash_cluster"] for e in rep.events
             ), "崩溃窗修复必须补出 crash 簇的派生存款"

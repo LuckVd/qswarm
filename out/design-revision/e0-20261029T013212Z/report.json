@@ -1,0 +1,513 @@
+{
+  "all_pass": false,
+  "checks": {
+    "C1_nine_class_controls": {
+      "pass": false,
+      "rows": [
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": true,
+          "family": "injection",
+          "item": "1:vuln_effective_poc",
+          "observed_violation": false,
+          "pass": false,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "2:fix_negative_control",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "3:echo_safe_only",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "4:unreachable_sink",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "5:missing_dep",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 1,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "6:timeout_wallclock",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": true
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "7:unconditional_pass_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "8:target_not_called",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "injection",
+          "item": "9:real_vuln_ineffective_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": true,
+          "family": "path_traversal",
+          "item": "1:vuln_effective_poc",
+          "observed_violation": false,
+          "pass": false,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "2:fix_negative_control",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 2,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "3:echo_safe_only",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "4:unreachable_sink",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "5:missing_dep",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": 1,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "6:timeout_wallclock",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": true
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "7:unconditional_pass_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "8:target_not_called",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "evidence": "obs_path_untrusted",
+          "expected_violation": false,
+          "family": "path_traversal",
+          "item": "9:real_vuln_ineffective_poc",
+          "observed_violation": false,
+          "pass": true,
+          "target_exit_code": null,
+          "timed_out": false
+        },
+        {
+          "claim_validation": "inconclusive",
+          "expected_violation": null,
+          "family": "injection",
+          "item": "1:injection paired(validate_pair)",
+          "pass": false,
+          "reason": "violation_not_observed"
+        },
+        {
+          "claim_validation": "inconclusive",
+          "expected_violation": null,
+          "family": "path_traversal",
+          "item": "1:path_traversal paired(validate_pair)",
+          "pass": false,
+          "reason": "fix_target_unhealthy"
+        }
+      ]
+    },
+    "C2_template_regression": {
+      "pass": true,
+      "rows": [
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true
+        }
+      ]
+    },
+    "C3_metric_denominators": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "mixed_formula",
+          "pass": true,
+          "summary": {
+            "correct_rejection_rate": "not_estimable",
+            "correct_rejections": 0,
+            "decision_counts": {
+              "verified_fp": 0,
+              "verified_real": 3,
+              "verify_error": 0
+            },
+            "fp": 1,
+            "n_logical_root_causes": 3,
+            "n_observations": 3,
+            "negative_misjudgments": 0,
+            "note": "population 分立（R1-T5）：precision 只含正向报告集；未知界非统计置信区间（§4.4）；不参与派单",
+            "positive_report_precision": 0.5,
+            "positive_report_unknown_bounds": [
+              0.3333,
+              0.6667
+            ],
+            "positive_reports": 3,
+            "tp": 1,
+            "u": 1
+          }
+        },
+        {
+          "case": "rejections_not_in_precision",
+          "pass": true,
+          "summary": {
+            "correct_rejection_rate": 1.0,
+            "correct_rejections": 9,
+            "decision_counts": {
+              "verified_fp": 9,
+              "verified_real": 1,
+              "verify_error": 0
+            },
+            "fp": 1,
+            "n_logical_root_causes": 2,
+            "n_observations": 10,
+            "negative_misjudgments": 0,
+            "note": "population 分立（R1-T5）：precision 只含正向报告集；未知界非统计置信区间（§4.4）；不参与派单",
+            "positive_report_precision": 0.0,
+            "positive_report_unknown_bounds": [
+              0.0,
+              0.0
+            ],
+            "positive_reports": 1,
+            "tp": 0,
+            "u": 0
+          }
+        },
+        {
+          "case": "empty_not_estimable",
+          "pass": true,
+          "summary": {}
+        },
+        {
+          "case": "all_unknown_bounds_full_range",
+          "pass": true,
+          "summary": {
+            "correct_rejection_rate": "not_estimable",
+            "correct_rejections": 0,
+            "decision_counts": {
+              "verified_fp": 1,
+              "verified_real": 1,
+              "verify_error": 0
+            },
+            "fp": 0,
+            "n_logical_root_causes": 2,
+            "n_observations": 2,
+            "negative_misjudgments": 0,
+            "note": "population 分立（R1-T5）：precision 只含正向报告集；未知界非统计置信区间（§4.4）；不参与派单",
+            "positive_report_precision": "not_estimable",
+            "positive_report_unknown_bounds": [
+              0.0,
+              1.0
+            ],
+            "positive_reports": 1,
+            "tp": 0,
+            "u": 1
+          }
+        }
+      ]
+    },
+    "C4_projection_determinism": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "same_as_of_same_hash",
+          "hash": "ev3-aa0b4cd82c6bdb5f",
+          "n": 2,
+          "pass": true
+        },
+        {
+          "case": "correction_no_root_cause_inflation",
+          "n_effective": 2,
+          "n_records": 3,
+          "pass": true
+        },
+        {
+          "case": "future_truth_not_in_history",
+          "full_truths": [
+            "real",
+            "unknown"
+          ],
+          "history_truths": [
+            "unknown"
+          ],
+          "pass": true
+        },
+        {
+          "case": "conflicting_verdicts_disputed",
+          "disputed": [
+            "C-1"
+          ],
+          "pass": true
+        }
+      ]
+    },
+    "C5_funnel_assembly": {
+      "pass": true,
+      "rows": [
+        {
+          "case": "seven_stages_ordered",
+          "pass": true,
+          "stages": [
+            "L0_uncovered",
+            "L1_discarded",
+            "L2_unreported",
+            "review_rejected",
+            "budget_not_run",
+            "s2_error",
+            "confirmed_reported"
+          ]
+        },
+        {
+          "case": "gold_replay_no_finding_honest",
+          "pass": true,
+          "replay": {
+            "assessable_layers": {
+              "L0_uncovered": "not_assessable",
+              "L1_discarded": "not_assessable",
+              "L2_unreported": "lost"
+            },
+            "evidence_refs": [],
+            "family": "injection",
+            "first_loss_layer": "not_assessable",
+            "item_id": "K-1",
+            "note": "无 finding 行——首次漏失在 L2 或更早（L0/L1 逐条存量不可得，不伪造定位）",
+            "path": "src/missing.py"
+          }
+        }
+      ]
+    },
+    "C6_container_template": {
+      "pass": true,
+      "rows": [
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:src/inj_echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/vuln.py",
+          "expected": true,
+          "observed": true,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/fix.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "path_traversal_read",
+          "case": "authz:src/echo.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:injection/vuln/target.py",
+          "expected": true,
+          "observed": true,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:injection/fix/target.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:injection/echo_safe/target.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:injection/unreachable/target.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        },
+        {
+          "assertion": "injection_payload_executed",
+          "case": "injection:injection/missing_dep/target.py",
+          "expected": false,
+          "observed": false,
+          "pass": true,
+          "tier": "container"
+        }
+      ]
+    }
+  },
+  "experiment": "E0-deterministic",
+  "notes": [
+    "人工校准面（20–30 例）不在本 runner：题目冻结于 manifests/e0_calibration_set.jsonl，供给与调用待批（D47-A）",
+    "C1 九类为 process 档观察器面（宿主判读需观察目录文件可见性，container 跨 ns 属生产面另行设计，P1 仅 process）",
+    "C6 = container 档模板判据复验（五项红线施加）：C2 判据面 + injection 夹具①–⑤；traversal 夹具（SERVE_ROOT 驱动接口）与⑥⑦⑧⑨驱动变体类不属模板面，如实不虚跑"
+  ],
+  "oracle_version": "oc-v2",
+  "ran_at": "20261029T013212Z",
+  "tier": "container"
+}

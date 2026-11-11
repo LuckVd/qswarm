@@ -39,6 +39,8 @@ DispatchPayload 形状），落账由调用方经 ``KernelLedger.append`` 执行
 - ``pool``：显式探索池（agent_id 序列）；缺省从 cells 派生 = 同 role 且格子
   节点落在该家族（family 或 family/*）的全部 agent。池先排序再抽样，跨运行
   稳定；池中无格子的 agent 权重取收缩链根先验 ROOT_PRIOR（§5.1 永不死锁）。
+  **R1-T4**：显式 pool 是**完整可派范围**（专员通道同受约束——池外专员不可
+  选；``pool=[]`` → assignee=None/empty_pool）；``pool=None`` 保留旧推导语义。
 - 无 active 专员时 ``tilt=None``（无专员通道可言）。
 """
 
@@ -224,8 +226,14 @@ def route(
     def _overloaded(agent: str) -> bool:
         return max_load is not None and load is not None and load.get(agent, 0) >= max_load
 
-    # 专员集合：active 格子按 C* 降序，剔过载后截 K（§5.2 [:K]）
+    # 专员集合：active 格子按 C* 降序，剔过载后截 K（§5.2 [:K]）。
+    # R1-T4：显式 pool 是本次调用的**完整可派范围**——专员/探索/平手/重试全
+    # 过滤池内（pool=[] → 专员集空 → 无专员通道 → empty_pool）；pool=None 保留
+    # 旧推导语义（同 role 家族格全体）。
     scored = [(a, c) for a, c in active_specialists(cells, role, node) if not _overloaded(a)]
+    if pool is not None:
+        _pool_ids = set(pool)
+        scored = [(a, c) for a, c in scored if a in _pool_ids]
     top = scored[:SPEC_CAP]
     specs = tuple(a for a, _ in top)
     spec_scores = tuple(c for _, c in top)

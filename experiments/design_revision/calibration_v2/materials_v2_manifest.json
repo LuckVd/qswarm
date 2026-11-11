@@ -1,0 +1,6 @@
+{
+  "generator": "gen_materials_v2.py",
+  "n_items": 25,
+  "content_hash": "ed136f940e2ac7dd",
+  "leak_gate": "生成器内嵌泄题词硬门（_assert_no_leak）"
+}

@@ -78,6 +78,23 @@ _T0 = datetime(2030, 1, 1, tzinfo=timezone.utc)   # 轨迹时间轴原点
 _RUN = "R-REQ"
 ALL_CELL_FIELDS = tuple(CellAgg.__dataclass_fields__)   # 全字段口径（含 updated_at）
 
+import tempfile
+_STORE_TMP = tempfile.TemporaryDirectory(prefix="qswarm-eq-store-")
+STORE_DIR = Path(_STORE_TMP.name)
+
+
+def _auth_vr(led, cid, outcome, run_id):
+    """R1-T2：带授权 verify_result 播种（正规铸造面）。"""
+    import tempfile
+    from pathlib import Path
+
+    import m1_harness as _h
+
+    return _h.append_authorized_verify_result(
+        led, STORE_DIR,
+        cluster_id=cid, outcome=outcome, run_id=run_id)[0]
+
+
 # ── M1 复合操作的确定性事实面 ────────────────────────────────────
 
 _FA, _FB, _FC, _FD, _F4 = "F-REQ-1", "F-REQ-2", "F-REQ-3", "F-REQ-4", "F-REQ-5"
@@ -175,10 +192,9 @@ def _trajectory(seed: int) -> tuple[list[_Step], dict]:
 
     def _verdict_s2() -> _Step:
         def apply(led: KernelLedger) -> None:
-            vsev = led.append("verify_result",
-                              {"cluster_id": out["cid1"], "outcome": "verified_real"})
+            vsev = _auth_vr(led, out["cid1"], "verified_real", _RUN)
             deps = [e for e in propagate_verdict(
-                led, out["cid1"], tier=SignalTier.S2, direction=1,
+                led, out["cid1"], tier=SignalTier.S2, direction=1, store_dir=STORE_DIR,
                 source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT,
                 ctx=_ctx((_FA, _FB, _FC, _F4)))
                 if e.kind is LedgerKind.DEPOSIT]

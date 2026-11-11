@@ -49,11 +49,31 @@ from qswarm.kernel import (
     split_cluster,
 )
 
+import tempfile
+from pathlib import Path
+
+_STORE_TMP = tempfile.TemporaryDirectory(prefix="qswarm-cluster-store-")
+STORE_DIR = Path(_STORE_TMP.name)
+
 T0 = datetime(2031, 3, 4, tzinfo=timezone.utc)
 DEPOSITS = LedgerKind.DEPOSIT
 
 
 # ── 夹具：账本 + findings/votes 行种子 ────────────────────────────
+
+def _authorized_vr(led, cid: str, outcome: str = "verified_real"):
+    """R1-T2：播种**带授权**的 verify_result 事件（正规铸造面；S2 派生测试用）。"""
+    import tempfile
+    from pathlib import Path
+
+    import m1_harness as _h
+
+    store = STORE_DIR
+    ev, _proof = _h.append_authorized_verify_result(
+        led, store, cluster_id=cid, outcome=outcome, run_id="R-T",
+    )
+    return ev
+
 
 def _ledger() -> KernelLedger:
     led = KernelLedger(":memory:", clock=SteppedClock(T0, 1.0))
@@ -319,17 +339,17 @@ def test_split_cluster_zero_deposit_and_verdict_reset():
     """拆分零存款、子簇 verdict_* 清空（NULL 建行）、groups<2 / 并集≠全集 /
     簇不存在 / 已拆分 → ValueError；子簇成员进账本（cluster_merge 事件）。"""
     led = _ledger()
-    _seed_finding(led, "F1"); _seed_finding(led, "F2", line_start=12, line_end=18)
-    _seed_finding(led, "F3", line_start=25, line_end=30)
+    _seed_finding(led, "F1"); _seed_finding(led, "F2", line_start=12, line_end=18, reporter="A2")
+    _seed_finding(led, "F3", line_start=25, line_end=30, reporter="A3")
     led.conn.commit()
     ev = apply_merges(led, [ClusterProposal(
         level="coarse", member_ids=("F1", "F2", "F3"), key_path="a.py",
         key_cwe="CWE-79", key_lang="py", line_window=(10, 30), sim_min=None)])
     cid = ev[0].payload["cluster_id"]
-    vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verified_real"})
+    vsev = _authorized_vr(led, cid, "verified_real")
     ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"), ("F3", "A3", "auditor"),
                verifier="V9")
-    propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+    propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                       source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     n_deposits_before = len(_deposits(led))
     n_events_before = led.latest_seq()
@@ -394,13 +414,13 @@ def test_propagate_verdict_expansion_order_and_weights():
     params = load_params()
     led = _ledger()
     cid = _cluster_with_members(led)
-    vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verified_real"})
+    vsev = _authorized_vr(led, cid, "verified_real")
     ctx = _ctx(
         ("F2", "A2", "auditor"), ("F1", "A1", "auditor"),
         scouts=("S2", "S1"), votes=(("R2", 1), ("R1", -1)), verifier="V9",
     )
     events = propagate_verdict(
-        led, cid, tier=SignalTier.S2, direction=1, source_seq=vsev.seq,
+        led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1, source_seq=vsev.seq,
         source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx,
     )
     rows = [(e.payload["agent"], e.payload["role"], e.payload["direction"],
@@ -425,19 +445,19 @@ def test_propagate_verdict_expansion_order_and_weights():
     # S1 源权重下沿
     fsev = led.append("finding", {"finding_id": "F1", "reporter": "A1",
                                   "cluster": cid, "state": "voted"})
-    s1 = propagate_verdict(led, cid, tier=SignalTier.S1, direction=1,
+    s1 = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S1, direction=1,
                            source_seq=fsev.seq, source_kind=LedgerKind.FINDING, ctx=ctx)
     assert s1[0].payload["weight"] == pytest.approx(S1_SOURCE_W)
     # S3：先验 S2 → 验证行；同向 CONFIRM / 反向 CONFLICT（§6.5）
     hsev = led.append("human_verdict", {"cluster_id": cid, "direction": -1,
                                         "actor": "h"})
-    s3 = propagate_verdict(led, cid, tier=SignalTier.S3, direction=-1,
+    s3 = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S3, direction=-1,
                            source_seq=hsev.seq, source_kind=LedgerKind.HUMAN_VERDICT, ctx=ctx)
     vrow = s3[-1].payload
     assert (vrow["agent"], vrow["role"], vrow["signal_tier"], vrow["direction"],
             vrow["weight"]) == ("V9", "verifier", "S3", -1, params.deposits.VERIFIER_CONFLICT)
     hsev2 = led.append("human_verdict", {"cluster_id": cid, "direction": 1, "actor": "h"})
-    s3b = propagate_verdict(led, cid, tier=SignalTier.S3, direction=1,
+    s3b = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S3, direction=1,
                             source_seq=hsev2.seq, source_kind=LedgerKind.HUMAN_VERDICT,
                             ctx=_ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"),
                                      verifier="V9"))
@@ -446,7 +466,7 @@ def test_propagate_verdict_expansion_order_and_weights():
     # verifier_id 缺失 + 先验存在 → ValueError
     hsev3 = led.append("human_verdict", {"cluster_id": cid, "direction": -1, "actor": "h"})
     with pytest.raises(ValueError, match="verifier_id"):
-        propagate_verdict(led, cid, tier=SignalTier.S3, direction=-1,
+        propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S3, direction=-1,
                           source_seq=hsev3.seq, source_kind=LedgerKind.HUMAN_VERDICT,
                           ctx=_ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor")))
     led.close()
@@ -457,31 +477,31 @@ def test_propagate_verdict_idempotent_by_cluster_tier_src_seq():
     led = _ledger()
     cid = _cluster_with_members(led)
     ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"))
-    vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verified_real"})
-    first = propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+    vsev = _authorized_vr(led, cid, "verified_real")
+    first = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                               source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     assert len(first) == 2                              # 恰 2 成员报告者行（无侦察/评审行）
-    assert propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+    assert propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                              source_seq=vsev.seq,
                              source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx) == []
     n = led.latest_seq()
-    assert propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+    assert propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                              source_seq=vsev.seq,
                              source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx) == []
     assert led.latest_seq() == n
     # 同源事件不同 tier → 独立成立（幂等键含 tier）
-    s1 = propagate_verdict(led, cid, tier=SignalTier.S1, direction=1,
+    s1 = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S1, direction=1,
                            source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     assert s1 and all(e.payload["src_seq"] == vsev.seq for e in s1)
     # 源事件校验（D23）：seq 不存在 / kind 不符 → ValueError
     with pytest.raises(ValueError, match="不存在"):
-        propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+        propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                           source_seq=99999, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     with pytest.raises(ValueError, match="kind"):
-        propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+        propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                           source_seq=vsev.seq, source_kind=LedgerKind.VOTE, ctx=ctx)
     with pytest.raises(ValueError, match="source_kind"):
-        propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+        propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                           source_seq=vsev.seq, source_kind="nonsense", ctx=ctx)
     led.close()
 
@@ -491,11 +511,11 @@ def test_propagate_verdict_conflict_appends_not_rolls_back():
     led = _ledger()
     cid = _cluster_with_members(led)
     ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"), verifier="V9")
-    vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verified_real"})
-    s2 = propagate_verdict(led, cid, tier=SignalTier.S2, direction=1,
+    vsev = _authorized_vr(led, cid, "verified_real")
+    s2 = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=1,
                            source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     hsev = led.append("human_verdict", {"cluster_id": cid, "direction": -1, "actor": "h"})
-    s3 = propagate_verdict(led, cid, tier=SignalTier.S3, direction=-1,
+    s3 = propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S3, direction=-1,
                            source_seq=hsev.seq, source_kind=LedgerKind.HUMAN_VERDICT, ctx=ctx)
     dirs = [e.payload["direction"] for e in _deposits(led)]
     assert dirs[: len(s2)] == [1] * len(s2)             # 旧 S2 存款原样保留（无回滚）
@@ -514,7 +534,7 @@ def test_propagate_verdict_zero_direction_no_deposit():
     cid = _cluster_with_members(led)
     ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"))
     vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verify_error"})
-    assert propagate_verdict(led, cid, tier=SignalTier.S2, direction=0,
+    assert propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=0,
                              source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT,
                              ctx=ctx) == []
     assert _deposits(led) == []
@@ -523,7 +543,7 @@ def test_propagate_verdict_zero_direction_no_deposit():
         (cid,),
     ).fetchone() == (None, None, None)
     with pytest.raises(ValueError, match="direction"):
-        propagate_verdict(led, cid, tier=SignalTier.S2, direction=2,
+        propagate_verdict(led, cid, store_dir=STORE_DIR, tier=SignalTier.S2, direction=2,
                           source_seq=vsev.seq, source_kind=LedgerKind.VERIFY_RESULT, ctx=ctx)
     led.close()
 
@@ -537,13 +557,15 @@ def test_propagate_pending_repairs_crash_window():
     led.conn.commit()
     ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"))
     # 崩溃窗口 ①：verify_result 已落、S2 存款未落
-    vsev = led.append("verify_result", {"cluster_id": cid, "outcome": "verified_fp"})
+    vsev = _authorized_vr(led, cid, "verified_fp")
     # 崩溃窗口 ②：human_verdict 已落、S3 存款未落（verify_error 路径零存款 → 不补）
     hsev = led.append("human_verdict", {"cluster_id": cid, "direction": 1, "actor": "h"})
     # 无谱系簇（M0 世界侧形态）：verify_result 落了但 lineage 缺失 → skipped
-    orphan = led.append("verify_result", {"cluster_id": "C-PLACEHOLDER", "outcome": "verified_real"})
+    import m1_harness as _h
+    _h.seed_cluster(led, "C-PLACEHOLDER", members=("F9",))
+    orphan = _authorized_vr(led, "C-PLACEHOLDER", "verified_real")
     full_ctx = _ctx(("F1", "A1", "auditor"), ("F2", "A2", "auditor"), verifier="V9")
-    rep = propagate_pending(led, lineage=lambda c: full_ctx if c == cid else None)
+    rep = propagate_pending(led, store_dir=STORE_DIR, lineage=lambda c: full_ctx if c == cid else None)
     assert set(rep.skipped) == {"C-PLACEHOLDER"}        # 缺谱系 → 跳过不报错
     paid = {(e.payload["signal_tier"], e.payload["src_seq"]) for e in rep.events}
     assert paid == {("S2", vsev.seq), ("S3", hsev.seq)}
@@ -554,7 +576,7 @@ def test_propagate_pending_repairs_crash_window():
         by_tier.setdefault(e.payload["signal_tier"], []).append(e.payload["direction"])
     assert by_tier == {"S2": [-1, -1], "S3": [1, 1, -1]}
     # 收敛：二次扫描零新事件（幂等键判定）
-    rep2 = propagate_pending(led, lineage=lambda c: full_ctx if c == cid else None)
+    rep2 = propagate_pending(led, store_dir=STORE_DIR, lineage=lambda c: full_ctx if c == cid else None)
     assert rep2.events == () and rep2.skipped == ("C-PLACEHOLDER",)
     # verify_error（零存款路径）不补
     led2 = _ledger()

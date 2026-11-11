@@ -1,0 +1,321 @@
+{
+  "items": {
+    "E0C-BANK-SEED-0001": {
+      "blind_id": "J2-782464b12c",
+      "design_truth_claim": "real",
+      "family": "injection",
+      "item_ref": "seeds/items/SEED-0001",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0001",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0001",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0002": {
+      "blind_id": "J2-39ce24c9da",
+      "design_truth_claim": "real",
+      "family": "injection",
+      "item_ref": "seeds/items/SEED-0002",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0002",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0002",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0003": {
+      "blind_id": "J2-175aef3548",
+      "design_truth_claim": "real",
+      "family": "injection",
+      "item_ref": "seeds/items/SEED-0003",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0003",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0003",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0004": {
+      "blind_id": "J2-5ce9d29773",
+      "design_truth_claim": "real",
+      "family": "injection",
+      "item_ref": "seeds/items/SEED-0004",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0004",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0004",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0049": {
+      "blind_id": "J2-457903c1e3",
+      "design_truth_claim": "real",
+      "family": "authz",
+      "item_ref": "seeds/items/SEED-0049",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0049",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0049",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0050": {
+      "blind_id": "J2-a168acc030",
+      "design_truth_claim": "real",
+      "family": "authz",
+      "item_ref": "seeds/items/SEED-0050",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0050",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0050",
+      "source": "seed_bank"
+    },
+    "E0C-BANK-SEED-0051": {
+      "blind_id": "J2-34f3fca613",
+      "design_truth_claim": "real",
+      "family": "authz",
+      "item_ref": "seeds/items/SEED-0051",
+      "klass": null,
+      "old_item_id": "E0C-BANK-SEED-0051",
+      "root_cause_group": "rcg-bank-E0C-BANK-SEED-0051",
+      "source": "seed_bank"
+    },
+    "E0C-INJ-01": {
+      "blind_id": "J2-59e6f3a808",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 1,
+      "old_item_id": "E0C-INJ-01",
+      "root_cause_group": "rcg-fixture-vuln-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-02": {
+      "blind_id": "J2-72b4d783a2",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 2,
+      "old_item_id": "E0C-INJ-02",
+      "root_cause_group": "rcg-fixture-fix-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-03": {
+      "blind_id": "J2-4583b65f97",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 3,
+      "old_item_id": "E0C-INJ-03",
+      "root_cause_group": "rcg-fixture-echo-safe-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-04": {
+      "blind_id": "J2-18f8f3500a",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 4,
+      "old_item_id": "E0C-INJ-04",
+      "root_cause_group": "rcg-fixture-unreachable-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-05": {
+      "blind_id": "J2-bc4871ca25",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 5,
+      "old_item_id": "E0C-INJ-05",
+      "root_cause_group": "rcg-fixture-missing-dep-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-06": {
+      "blind_id": "J2-f4a925bd51",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 6,
+      "old_item_id": "E0C-INJ-06",
+      "root_cause_group": "rcg-fixture-timeout-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-07": {
+      "blind_id": "J2-638001a6ec",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 7,
+      "old_item_id": "E0C-INJ-07",
+      "root_cause_group": "rcg-fixture-vuln-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-08": {
+      "blind_id": "J2-74e9d6cb80",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 8,
+      "old_item_id": "E0C-INJ-08",
+      "root_cause_group": "rcg-fixture-vuln-injection",
+      "source": "fixture"
+    },
+    "E0C-INJ-09": {
+      "blind_id": "J2-db37d27953",
+      "design_truth_claim": "fixture_design",
+      "family": "injection",
+      "item_ref": "qswarm/sandbox/fixtures/injection",
+      "klass": 9,
+      "old_item_id": "E0C-INJ-09",
+      "root_cause_group": "rcg-fixture-vuln-injection",
+      "source": "fixture"
+    },
+    "E0C-PAT-01": {
+      "blind_id": "J2-6fb0b5187d",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 1,
+      "old_item_id": "E0C-PAT-01",
+      "root_cause_group": "rcg-fixture-vuln-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-02": {
+      "blind_id": "J2-4085dc37bb",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 2,
+      "old_item_id": "E0C-PAT-02",
+      "root_cause_group": "rcg-fixture-fix-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-03": {
+      "blind_id": "J2-9f7771cb39",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 3,
+      "old_item_id": "E0C-PAT-03",
+      "root_cause_group": "rcg-fixture-echo-safe-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-04": {
+      "blind_id": "J2-c9916328af",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 4,
+      "old_item_id": "E0C-PAT-04",
+      "root_cause_group": "rcg-fixture-unreachable-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-05": {
+      "blind_id": "J2-71a44b3ea7",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 5,
+      "old_item_id": "E0C-PAT-05",
+      "root_cause_group": "rcg-fixture-missing-dep-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-06": {
+      "blind_id": "J2-fb2ac1c3ee",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 6,
+      "old_item_id": "E0C-PAT-06",
+      "root_cause_group": "rcg-fixture-timeout-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-07": {
+      "blind_id": "J2-2a367f802f",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 7,
+      "old_item_id": "E0C-PAT-07",
+      "root_cause_group": "rcg-fixture-vuln-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-08": {
+      "blind_id": "J2-269bd8f329",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 8,
+      "old_item_id": "E0C-PAT-08",
+      "root_cause_group": "rcg-fixture-vuln-path_traversal",
+      "source": "fixture"
+    },
+    "E0C-PAT-09": {
+      "blind_id": "J2-1813219aca",
+      "design_truth_claim": "fixture_design",
+      "family": "path_traversal",
+      "item_ref": "qswarm/sandbox/fixtures/path_traversal",
+      "klass": 9,
+      "old_item_id": "E0C-PAT-09",
+      "root_cause_group": "rcg-fixture-vuln-path_traversal",
+      "source": "fixture"
+    }
+  },
+  "n_items": 25,
+  "root_cause_groups": {
+    "rcg-bank-E0C-BANK-SEED-0001": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0002": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0003": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0004": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0049": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0050": [
+      "real"
+    ],
+    "rcg-bank-E0C-BANK-SEED-0051": [
+      "real"
+    ],
+    "rcg-fixture-echo-safe-injection": [
+      "fixture_design"
+    ],
+    "rcg-fixture-echo-safe-path_traversal": [
+      "fixture_design"
+    ],
+    "rcg-fixture-fix-injection": [
+      "fixture_design"
+    ],
+    "rcg-fixture-fix-path_traversal": [
+      "fixture_design"
+    ],
+    "rcg-fixture-missing-dep-injection": [
+      "fixture_design"
+    ],
+    "rcg-fixture-missing-dep-path_traversal": [
+      "fixture_design"
+    ],
+    "rcg-fixture-timeout-injection": [
+      "fixture_design"
+    ],
+    "rcg-fixture-timeout-path_traversal": [
+      "fixture_design"
+    ],
+    "rcg-fixture-unreachable-injection": [
+      "fixture_design"
+    ],
+    "rcg-fixture-unreachable-path_traversal": [
+      "fixture_design"
+    ],
+    "rcg-fixture-vuln-injection": [
+      "fixture_design",
+      "fixture_design",
+      "fixture_design",
+      "fixture_design"
+    ],
+    "rcg-fixture-vuln-path_traversal": [
+      "fixture_design",
+      "fixture_design",
+      "fixture_design",
+      "fixture_design"
+    ]
+  },
+  "version": "e0-cal-v2"
+}

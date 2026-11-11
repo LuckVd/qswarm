@@ -16,12 +16,13 @@ PatchEval Docker 验证管线参照）见 :mod:`sandbox.pocgen`。
 """
 
 from .config import SandboxConfig
-from .envcache import EnvBuildError, EnvHandle, env_key_for
+from .envcache import EnvBuildError, EnvHandle, env_key_for, validate_deps_spec
 from .pocgen import extract_poc, parse_assertions, template_poc
 from .runner import (
     FakeRunner,
     ProcessRunner,
     SandboxResult,
+    UntrustedExecutionError,
     classify_result,
     make_runner,
 )
@@ -33,10 +34,12 @@ __all__ = [
     "ProcessRunner",
     "SandboxConfig",
     "SandboxResult",
+    "UntrustedExecutionError",
     "classify_result",
     "env_key_for",
     "extract_poc",
     "make_runner",
     "parse_assertions",
     "template_poc",
+    "validate_deps_spec",
 ]

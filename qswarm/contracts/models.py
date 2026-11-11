@@ -167,6 +167,14 @@ class VerifyResultPayload(BaseModel):          # kind=verify_result
     cluster_id: str
     outcome: VerifyOutcome
     error_kind: VerifyErrorKind | None = None
+    # R1-T2（additive）：高可信结论的授权面——authorized=True 须伴随内核铸造的
+    # verify_auth 工件引用（auth_digest）；旧事件无字段 → 恒 False（S2 派生
+    # eligibility 与提交同一策略，propagate 补偿不为旧事件补发新存款）。
+    authorized: bool = False
+    auth_digest: str | None = None
+    # R2: source task and its independently host-bound verification context.
+    task_id: str | None = None
+    context_digest: str | None = None
 
 
 class HumanVerdictPayload(BaseModel):          # kind=human_verdict

@@ -5,7 +5,7 @@
 
 ## 设计调整提案
 
-[设计调整与验证方案（2026-10-22）](docs/DESIGN_REVISION_AND_EXPERIMENT_PLAN_20261022.md)：角色资格、证据纠错、漏检抽查、S2 负对照及同预算学习效果实验；包含文件级改动、迁移与分阶段验收。**P0（角色资格门 + 历史勘误 + 测量协议冻结）已获批实施（D46 / SPEC-10 v0.1，交付 `out/_p0_final/`）；其余阶段（P1–P4）逐门待负责人批准，未批准前不改变现行生产行为与调用纪律。**
+[设计调整与验证方案（2026-10-22）](<docs/DESIGN_REVISION_AND_EXPERIMENT_PLAN_20261022.md>)：先证明专长稳定，再验证同预算路由收益。P0/P1 与 R1 的工程实现已落位，不代表蜂群效果或生产可信验证已获证实。当前按负责人授权推进 [R2 收口计划](<docs/R2_IMPLEMENTATION_PLAN_20261029.md>)：恢复、历史口径、执行/工件安全、可信授权与运行入口；P2–P4 的实际效果仍待校准与对照实验，不提前宣称通过。
 
 ## 布局
 
@@ -29,6 +29,29 @@ pip install -e '.[dev]'   # 或依赖已在环境中时跳过
 pytest                    # 全部测试
 python -c "import qswarm.contracts, qswarm.kernel, qswarm.simulator"
 ```
+
+## 统一入口与运行边界（R2）
+
+源码环境可用 `python -m qswarm`，安装 wheel 后可用 `qswarm`：
+
+```bash
+python -m qswarm doctor                    # 不读密钥、不建账本、不调用模型
+python -m qswarm doctor --check-tools      # Semgrep/Docker 启动探针
+python -m qswarm trial --help              # process/container 离线试跑；零模型、零业务写入
+python -m qswarm scan --help
+python -m qswarm consult --help
+python -m qswarm verify --help
+```
+
+生产三个入口均需既有账本、供给配置、显式 `--allow-model-calls --max-calls N`，不会自动创建假蜂或放宽 readiness。CLI 对四个模型角色强制检查资格；库级历史兼容默认仍保持不变。请求上限包含失败/重试，但**不是实际货币账单上限**；付费对照实验仍必须冻结协议并逐笔登记预算。`verify` 只走容器生产档；缺可信成对授权仍保守无结论。`trial --tier container` 只是容器离线执行，不写生产结果或奖励；`--trusted-repo` 仅用于明确审核的 process 开发输入，不是任意仓库的安全降级入口。
+
+干净安装验收使用隔离构建/运行环境，既有项目虚拟环境不安装、不卸载：
+
+```bash
+.venv/bin/python scripts/verify_install.py
+```
+
+本地已有的第三方运行依赖离线复制到新的运行环境；sdist → wheel → 非 editable 安装 → 无关 cwd / 清 PYTHONPATH 导入与命令入口均实际执行。构建工件和指纹保留在 `out/r2-hardening/`，不声称执行了联网依赖解析或真实模型效果实验。
 
 ## 实验矩阵（SPEC-4 §3）
 

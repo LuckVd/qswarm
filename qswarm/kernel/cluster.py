@@ -904,6 +904,7 @@ def propagate_verdict(
     ctx: VerdictContext,
     params: ParamsConfig | None = None,
     run_id: str | None = None,
+    store_dir=None,
 ) -> list[LedgerEvent]:
     """簇 verdict → clusters.verdict_* 投影更新 + §6.5 归属展开 deposit 事件（同事务）。
 
@@ -944,7 +945,42 @@ def propagate_verdict(
             "（D23 一致性校验）"
         )
     if direction == 0:
-        return []                        # 无方向：零存款零投影更新
+        return []                        # 无方向：零存款零投影更新（§6.2/§6.3）
+    if tier is SignalTier.S3 and (
+        source_kind is not LedgerKind.HUMAN_VERDICT
+        or src[0].payload.get("cluster_id") != cluster_id
+        or src[0].payload.get("direction") != direction
+    ):
+        raise ValueError("S3 必须来自同簇同方向的真实 human_verdict，不能换 tier 绕过授权")
+    if tier is SignalTier.S2:
+        if source_kind is not LedgerKind.VERIFY_RESULT:
+            raise ValueError("S2 只能来自经授权的 verify_result，不能借其他 source kind 绕过")
+        # R1-T2：S2 派生与提交同一 eligibility——源 verify_result 事件必须携带
+        # 内核铸造授权（authorized + verify_auth 工件在库）；旧事件（无字段）
+        # 恒不派生（§12.2「历史重放 ≠ 现在补发新奖励」）。
+        from .trust import s2_source_authorized
+
+        if not s2_source_authorized(ledger, store_dir, src[0], cluster_id=cluster_id,
+                                    direction=direction):
+            raise ValueError(
+                f"S2 派生 eligibility 不通过：源 verify_result(seq={source_seq})"
+                "未经可信授权（R1-T2：authorized/auth_digest 缺失或 verify_auth"
+                " 工件不在库）——高可信存款须受信成对判据铸造授权后展开"
+            )
+    if tier is SignalTier.S2:
+        actual_members = tuple(ledger.conn.execute(
+            "SELECT f.id, f.reporter, f.reporter_role FROM findings f"
+            " JOIN cluster_members cm ON cm.finding_id=f.id"
+            " WHERE cm.cluster_id=? ORDER BY f.id", (cluster_id,),
+        ))
+        supplied = tuple(sorted((m.finding_id, m.reporter, m.reporter_role) for m in ctx.members))
+        # Partial lineage may omit recipients, never invent/duplicate them.
+        # The independent authorization still binds the full actual member set.
+        if (not supplied or len(set(supplied)) != len(supplied)
+                or not set(supplied).issubset(set(actual_members))):
+            raise ValueError("S2 谱系成员与实际受验簇失配")
+        if run_id is not None and run_id != src[0].run_id:
+            raise ValueError("S2 run 与源事件归属失配")
     if _deposit_already_paid(ledger, cluster_id, tier, source_seq):
         return []                        # 幂等命中：零新事件
     p = params or load_params()
@@ -970,7 +1006,8 @@ def propagate_verdict(
 
 @dataclass(frozen=True)
 class RepairReport:
-    """propagate_pending 的修复结果：补齐的派生事件 + 谱系缺失被跳过的簇。
+    """propagate_pending 的修复结果：补齐的派生事件 + 谱系缺失被跳过的簇 +
+    R1-T2 不可派生（未授权）的源事件。
 
     （SPEC-2 §1.4 签名标注 list[LedgerEvent]、正文要求 skipped 列表随返回值——
     两者合取为结构化报告，见 DECISIONS 2026-10-10-CL4。）
@@ -978,6 +1015,7 @@ class RepairReport:
 
     events: tuple[LedgerEvent, ...]
     skipped: tuple[str, ...]
+    ineligible: tuple[str, ...] = ()      # R1-T2：cluster_id（未授权 S2 源）
 
 
 def _vote_direction_from_ledger(ledger: KernelLedger, finding_id: str) -> int:
@@ -997,21 +1035,27 @@ def propagate_pending(
     from_seq: int = 0,
     upto_seq: int | None = None,
     params: ParamsConfig | None = None,
+    store_dir=None,
 ) -> RepairReport:
     """批处理修复口（§6.3 可重放不变量的运行时配套）：扫描窗口内全部
     verify_result / human_verdict / vote 收口（S1）源事件，凡「应派生而未派生」
     的存款（按 (cluster, tier, src_seq) 幂等键比对）逐个补齐。
 
     - verify_result：verified_real → (S2, +1)；verified_fp → (S2, −1)；
-      verify_error → 无存款，跳过；
+      verify_error → 无存款，跳过；**R1-T2：S2 补发与提交同一 eligibility——
+      源事件未携带可信授权（旧事件无 authorized 字段 / 工件不在库）→ 不补发**，
+      簇记入返回值 ``ineligible``（§12.2：历史重放 ≠ 现在补发新奖励）；
     - human_verdict：direction ±1 → (S3, direction)；0 → 跳过；
     - finding（state=voted，S1 收口）：方向 = 该 finding 账本 vote 事件票向符号
       和的符号（0 → 跳过）；
     - lineage 返回 None（谱系缺失，如 M0 世界侧未接簇）→ 跳过该簇并保留在返回值
       的 skipped 列表，不报错。
     """
+    from .trust import s2_source_authorized
+
     events: list[LedgerEvent] = []
     skipped: list[str] = []
+    ineligible: list[str] = []
     done: set[tuple[str, str, int]] = set()
     for ev in ledger.read(from_seq=from_seq, to_seq=upto_seq):
         p = ev.payload
@@ -1039,6 +1083,15 @@ def propagate_pending(
         if key in done or _deposit_already_paid(ledger, cid, tier, ev.seq):
             done.add(key)
             continue
+        if (
+            tier is SignalTier.S2
+            and kind is LedgerKind.VERIFY_RESULT
+            and not s2_source_authorized(ledger, store_dir, ev, cluster_id=cid,
+                                         direction=direction)
+        ):
+            ineligible.append(cid)               # R1-T2：未授权不补发（如实记）
+            done.add(key)
+            continue
         ctx = lineage(cid)
         if ctx is None:
             skipped.append(cid)
@@ -1046,11 +1099,15 @@ def propagate_pending(
         events.extend(
             propagate_verdict(
                 ledger, cid, tier=tier, direction=direction, source_seq=ev.seq,
-                source_kind=kind, ctx=ctx, params=params,
+                source_kind=kind, ctx=ctx, params=params, store_dir=store_dir,
+                run_id=ev.run_id,
             )
         )
         done.add(key)
-    return RepairReport(events=tuple(events), skipped=tuple(sorted(set(skipped))))
+    return RepairReport(
+        events=tuple(events), skipped=tuple(sorted(set(skipped))),
+        ineligible=tuple(sorted(set(ineligible))),
+    )
 
 
 def apply_human_verdict(

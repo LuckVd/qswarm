@@ -291,10 +291,15 @@ def test_process_tier_zero_ledger_writes_with_fake_runner(consulted):
     assert after == before                        # D43-a：零账本写（机器可检）
     assert rep.tier == "process"
     assert rep.clusters_eligible >= 1 and rep.clusters_selected >= 1
-    assert rep.verified_real == rep.clusters_selected
+    # R1-T2：模板单次判据不构成成对独立验证 → 全数保守无结论（零 L3 零 S2）
+    assert rep.verified_real == 0 and rep.verified_fp == 0
+    assert rep.verify_error == rep.clusters_selected
+    assert rep.err_no_trust == rep.clusters_selected
     for c in rep.detail:
         assert c["poc_source"] == "template"
-        assert c["match"] is True                 # 已知答案比对（pv confirmed × 绿执行）
+        assert c["outcome_raw"] == "verified_real"        # reconcile 原始裁定留档
+        assert c["trust_gate"] == "no_trusted_authorization"
+        assert c["match"] is False                   # 已知答案比对落空（保守面如实）
         assert c["expected_source"] == "pre_verdict"
     # 工件文件面（零索引）
     trial_dirs = list((tmp / "store" / "trial").iterdir())
@@ -308,8 +313,12 @@ def test_process_tier_zero_ledger_writes_with_fake_runner(consulted):
 
 def test_process_tier_real_sandbox_known_answer(consulted):
     """G2 判据：process 档真沙箱（真子进程）——模板 PoC 对注入靶复现，
-    已知答案（预裁决单 confirmed）比对命中；结论如实不外推。"""
+    已知答案（预裁决单 confirmed）比对命中；结论如实不外推。
+
+    R1-T1：合成仓经 params.sandbox.trusted_roots 显式核验（开发输入面）；
+    无此核验的不可信仓库拒绝路径由 tests/test_r1_hardening.py 钉死。"""
     tmp, repo, params = consulted
+    params.sandbox.trusted_roots = (str(repo),)
     with KernelLedger(tmp / "prod.db", clock=FixedClock(T0)) as led:
         rep = run_verify(
             led, repo_root=repo, run_id="R-VERIFY-REAL", consult_run_id="R-CONSULT",
@@ -317,8 +326,13 @@ def test_process_tier_real_sandbox_known_answer(consulted):
             clock=FixedClock(T0), tier="process",
         )
     assert rep.tier == "process"
-    assert rep.verified_real >= 1                 # m3 仓 api.py run(cmd) 注入可复现
-    assert all(c["match"] is True for c in rep.detail)
+    # R1-T2：执行绿（reconcile 原始裁定 real）但无成对独立授权 → 保守 verify_error；
+    # 复现事实经 outcome_raw + oracle 断言面留档（claim 层），不外推高可信结论。
+    assert rep.verified_real == 0 and rep.verify_error == rep.clusters_selected >= 1
+    assert all(c["outcome_raw"] == "verified_real"
+               and c["trust_gate"] == "no_trusted_authorization"
+               for c in rep.detail)
+    assert all(c["match"] is False for c in rep.detail)
     assert rep.sandbox_wall_s > 0                 # R7-② 披露面在位
     # 零账本写（重申：真执行也不破 D43-a）
     with KernelLedger(tmp / "prod.db", clock=FixedClock(T0)) as led:
@@ -329,8 +343,10 @@ def test_process_tier_real_sandbox_known_answer(consulted):
 
 
 def test_container_tier_full_chain_verified_real(consulted):
-    """container 档（D43-a 唯一生产口径）：蜂一体产 + 沙箱绿 → submit 全链——
-    VR 行 + verify_result 事件 + §2.4 映射（verified→L3）+ S2 存款 ×0.5 + 任务 done。"""
+    """container 档（D43-a 唯一生产口径）+ R1-T2 信任门：蜂一体产 + 沙箱绿，
+    但无成对独立授权 → 全链 submit 走 **verify_error 保守面**——VR 行 +
+    verify_result 事件（authorized=False）+ §2.4 映射（inconclusive）+ 零 S2 存款 +
+    零 L3 + 任务 done（写口全通、fail-closed 不硬凑）。"""
     tmp, repo, params = consulted
     runner = FakeRunner(script=True)
     adapter = ScriptedConsultAdapter()
@@ -342,8 +358,13 @@ def test_container_tier_full_chain_verified_real(consulted):
             report_dir=tmp / "out-vp",
         )
         assert rep.tier == "container"
-        assert rep.verified_real == rep.clusters_selected >= 1
-        # 写口面（全走 dispatch：tasks/vote/verify_results）
+        # R1-T2：无授权高可信主张 → 全数保守无结论（reconcile 原始裁定留档）
+        assert rep.verified_real == 0 and rep.verify_error == rep.clusters_selected >= 1
+        assert rep.err_no_trust == rep.clusters_selected
+        assert all(c["outcome_raw"] == "verified_real" and
+                   c["trust_gate"] == "no_trusted_authorization"
+                   for c in rep.detail)
+        # 写口面（全走 dispatch：tasks/verify_results——保守面同样全链落账）
         assert led.conn.execute(
             "SELECT COUNT(*) FROM verify_results").fetchone()[0] == rep.clusters_selected
         rows = led.conn.execute(
@@ -351,21 +372,18 @@ def test_container_tier_full_chain_verified_real(consulted):
         ).fetchall()
         assert len(rows) == rep.clusters_selected
         assert all(r[1] == "verifier" and r[2] == "done" for r in rows)
-        # §2.4 映射：簇成员 verified + grade L3
+        # §2.4 映射：verify_error → 全员 inconclusive、grade 不动（零 L3）
         states = dict(led.conn.execute("SELECT id, state FROM findings").fetchall())
         grades = dict(led.conn.execute("SELECT id, grade FROM findings").fetchall())
-        assert set(states.values()) == {"verified"}
-        assert set(grades.values()) == {"L3"}
-        # verify_result 事件 + S2 存款（×0.5 源权重：成员 0.25 / 侦察 0.05 / 评审 0.125）
+        assert set(states.values()) == {"inconclusive"}
+        assert "L3" not in set(grades.values())
+        # verify_result 事件（authorized=False——S2 派生恒不可发）+ 零 S2 存款
         vr_events = [e for e in led.read(kinds=(LedgerKind.VERIFY_RESULT,))]
         assert len(vr_events) == rep.clusters_selected
+        assert all(not e.payload.get("authorized") for e in vr_events)
         s2 = [e for e in led.read(kinds=(LedgerKind.DEPOSIT,))
               if e.payload.get("signal_tier") == "S2" and e.run_id == "R-VERIFY-PROD"]
-        assert s2
-        expected = {"auditor": 0.5 * 1.0, "scout": 0.5 * 0.2, "reviewer": 0.5 * 0.5}
-        for ev in s2:
-            assert ev.payload["weight"] == pytest.approx(expected[ev.payload["role"]],
-                                                         rel=1e-6)
+        assert s2 == []
         # 工件三件套（poc_deps/poc_log/poc_script）+ 断言 log 回填真实引用
         kinds = {r[0] for r in led.conn.execute(
             "SELECT DISTINCT kind FROM artifacts WHERE kind LIKE 'poc_%'")}
@@ -382,6 +400,81 @@ def test_container_tier_full_chain_verified_real(consulted):
         assert spent == rep.clusters_selected * int(params.budget.COST_PER_S2_CENTS)
         # D39：蜂调用面发生（verify 场景）
         assert ("verify", "") in adapter.calls
+
+
+def test_container_tier_authorized_real_full_chain(consulted):
+    """R1-T2 正向面（授权后放行）：受信成对判据铸造授权 → submit(verified_real)
+    全链——verified + L3 + S2 存款 ×0.5 + authorized 事件载荷。
+
+    授权经 kernel.trust.mint_authorization 正规铸造（execution_paired + oc-v2
+    健康分立对照面）——run_verify 生产链 R1 不铸造（mechanical_single 不自动
+    授予 paired 级结论），本测试直接驱动唯一写口验证「有授权则放行」。"""
+    from qswarm.kernel.dispatch import build_contract as _bc
+    from qswarm.kernel.dispatch import dispatch as _dispatch
+    from qswarm.kernel.dispatch import submit as _submit
+    from qswarm.kernel.route import RouteDecision as _RD
+    from m1_harness import mint_test_authorization
+    from qswarm.contracts.models import VerifierReport as _VR, Assertion as _A
+
+    tmp, repo, params = consulted
+    with KernelLedger(tmp / "prod.db", clock=FixedClock(T0)) as led:
+        cid_row = led.conn.execute(
+            "SELECT cm.cluster_id, f.id FROM cluster_members cm"
+            " JOIN findings f ON f.id = cm.finding_id"
+            " JOIN clusters c ON c.cluster_id = cm.cluster_id"
+            " GROUP BY cm.cluster_id HAVING COUNT(*) >= 1 LIMIT 1"
+        ).fetchone()
+        cid = cid_row[0]
+        from qswarm.kernel.dispatch import open_run as _open_run
+        _open_run(led, run_id="R-AUTH", mode="pr", repo_url=str(repo), budget_cents=200)
+        decision = _RD(task_id=f"vf:{cid}-auth", role="verifier", family="injection",
+                       node="injection/sqli", assignee="strong:anthropic/claude-sonnet-4-5@cv1",
+                       channel="explore", reason="test", tilt=None, raw_tilt=None,
+                       specs=(), spec_c_stars=())
+        contract = _bc(object(), decision, mode="full", deadline_s=600)
+        led.conn.execute(
+            "INSERT INTO tasks (task_id, run_id, role, node, shard_json, state,"
+            " assignee, attempts, dispatched_at, created_at)"
+            " VALUES (?, 'R-AUTH', 'verifier', 'injection/sqli', ?, 'queued',"
+            " NULL, 0, NULL, ?)",
+            (f"vf:{cid}-auth", json.dumps({"cluster_id": cid}), T0),
+        )
+        led.conn.commit()
+        _dispatch(led, f"vf:{cid}-auth", contract, decision, run_id="R-AUTH")
+        proof = mint_test_authorization(
+            led, tmp / "store", run_id="R-AUTH",
+            task_id=f"vf:{cid}-auth", cluster_id=cid,
+        )
+        vr = _VR(
+            cluster_id=cid, outcome=VerifyOutcome.VERIFIED_REAL,
+            env_base="python:3.11", deps_ref="artifact://d",
+            trigger_path=["entry: src/api.py:5"], assertions=[_A(
+                expect="injection_payload_executed", observed=True,
+                log="artifact://l")],
+            attempts=1, duration_s=1.0, logs_ref="artifact://r",
+        )
+        member_rows = led.conn.execute(
+            "SELECT f.id, f.reporter, f.reporter_role FROM cluster_members cm"
+            " JOIN findings f ON f.id = cm.finding_id WHERE cm.cluster_id = ?", (cid,)
+        ).fetchall()
+        members = [r[0] for r in member_rows]
+        from qswarm.kernel.cluster import MemberFacts, VerdictContext
+        ctx = VerdictContext(
+            members=tuple(
+                MemberFacts(finding_id=m, reporter=reporter, reporter_role=role)
+                for m, reporter, role in member_rows),
+            verifier_id="strong:anthropic/claude-sonnet-4-5@cv1",
+        )
+        events = _submit(led, f"vf:{cid}-auth", vr, contract=contract, ctx=ctx,
+                         run_id="R-AUTH", authorization=proof, store_dir=tmp / "store")
+        assert events[0].payload["authorized"] is True
+        assert events[0].payload["auth_digest"] == proof.artifact_ref
+        s2 = [e for e in events if e.kind is LedgerKind.DEPOSIT]
+        assert s2 and all(e.payload["signal_tier"] == "S2" for e in s2)
+        grades = dict(led.conn.execute(
+            "SELECT id, grade FROM findings WHERE id IN (%s)"
+            % ",".join("?" * len(members)), members).fetchall())
+        assert set(grades.values()) == {"L3"}
 
 
 def test_container_tier_env_build_fail_zero_deposits(consulted):
@@ -413,7 +506,8 @@ def test_container_tier_env_build_fail_zero_deposits(consulted):
 
 
 def test_container_tier_verified_fp_with_blocking(consulted):
-    """verified_fp + blocking（§10.4）：rejected 映射 + S2 反向存款。"""
+    """R1-T2 语义修订（HANDOVER §6.3 行 7）：蜂报 fp + 仅格式完整 blocking——
+    无独立证据确认误报 → 保守 verify_error（inconclusive、零 S2 反向存款）。"""
     tmp, repo, params = consulted
     blocking = {"kind": "sanitizer", "where": "src/api.py:9", "ref": "artifact://pending"}
     report = {
@@ -439,12 +533,13 @@ def test_container_tier_verified_fp_with_blocking(consulted):
             store_dir=tmp / "store", params=params, clock=FixedClock(T0),
             tier="container", runner=FakeRunner(script=red),
         )
-        assert rep.verified_fp == rep.clusters_selected >= 1
+        assert rep.verified_fp == 0 and rep.verify_error == rep.clusters_selected >= 1
+        assert rep.err_no_trust == rep.clusters_selected
         states = dict(led.conn.execute("SELECT id, state FROM findings").fetchall())
-        assert set(states.values()) == {"rejected"}
+        assert set(states.values()) == {"inconclusive"}    # §6.3：不得自动 fp
         s2 = [e for e in led.read(kinds=(LedgerKind.DEPOSIT,))
               if e.payload.get("signal_tier") == "S2"]
-        assert s2 and all(ev.payload["direction"] == -1 for ev in s2)
+        assert s2 == []
 
 
 def test_container_tier_quota_by_verifier_headcount(consulted):

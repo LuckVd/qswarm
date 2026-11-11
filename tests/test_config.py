@@ -178,6 +178,20 @@ for _section, _pins in M5_FINAL_KNOBS.items():
     ALL_PINNED_KNOBS.setdefault(_section, {})
     ALL_PINNED_KNOBS[_section].update(dict(_pins))
 
+# ── R1-T1 执行边界旋钮逐键钉值（HANDOVER §5.2；2026-10-28）──缺省全 fail-closed：
+#    trusted_roots 空（仅打包 fixtures 自动在内）= process 档只信已核验开发输入；
+#    process_require_isolation=True = 禁网探针失败即拒；process_allow_install/
+#    container_allow_build=False = 缺省拒绝运行时宿主 pip 与联网 docker build。
+R1_FINAL_KNOBS: dict[str, dict[str, object]] = {
+    "sandbox": {
+        "trusted_roots": (), "process_require_isolation": True,
+        "process_allow_install": False, "container_allow_build": False,
+    },
+}
+for _section, _pins in R1_FINAL_KNOBS.items():
+    ALL_PINNED_KNOBS.setdefault(_section, {})
+    ALL_PINNED_KNOBS[_section].update(dict(_pins))
+
 # ── P0 角色资格门旋钮逐键钉值（SPEC-10 §5/D46 拍板回填，2026-10-22）──缺省=
 #    关闭（enforce=False = M5 逐位兼容；安全门启用后缺记录即拒派）；enforce_roles
 #    先对 verifier 强制生效（方案 §3.3 逐角色启用序）；qp-v1 = 判据版本锚。

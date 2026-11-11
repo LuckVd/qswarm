@@ -815,7 +815,8 @@ def _cluster_ops_by_checkpoint() -> list[list[dict]]:
                 {"reviewer": "R3", "direction": -1, "dims": [0.4, 0.4, 0.4, 0.4]}]},
             {"op": "propagate", "cluster_id": "C-20310304-000001", "tier": "S2",
              "direction": 1, "source": {"kind": "verify_result",
-             "payload": {"cluster_id": "C-20310304-000001", "outcome": "verified_real"}},
+             "payload": {"cluster_id": "C-20310304-000001", "outcome": "verified_real",
+                         "authorized": True, "auth_digest": "artifact://" + "g" * 64}},
              "ctx": ctx_c1},
             {"op": "close_panel", "finding_id": "F1", "expected_votes": 3, "ctx": ctx_c1},
             {"op": "human_verdict", "cluster_id": "C-20310304-000001", "direction": -1,
@@ -826,9 +827,11 @@ def _cluster_ops_by_checkpoint() -> list[list[dict]]:
         # ── 检查点 3：崩溃窗修复 + 谱系缺失跳过 + 忽略态 ──
         [
             {"op": "append", "kind": "verify_result",
-             "payload": {"cluster_id": "C-20310304-000002", "outcome": "verified_real"}},
+             "payload": {"cluster_id": "C-20310304-000002", "outcome": "verified_real",
+                         "authorized": True, "auth_digest": "artifact://" + "g" * 64}},
             {"op": "append", "kind": "verify_result",
-             "payload": {"cluster_id": "C-PLACEHOLDER", "outcome": "verified_real"}},
+             "payload": {"cluster_id": "C-PLACEHOLDER", "outcome": "verified_real",
+                         "authorized": True, "auth_digest": "artifact://" + "g" * 64}},
             {"op": "propagate_pending", "lineage": {
                 "C-20310304-000002": ctx_c2,
                 "C-PLACEHOLDER": None}},                         # None → skipped 不报错

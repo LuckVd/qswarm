@@ -24,8 +24,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import sqlite3
+import stat
+from contextlib import contextmanager
 from pathlib import Path
 
 from qswarm.contracts import ExamPurpose
@@ -41,6 +44,8 @@ __all__ = [
     "artifact_put",
     "artifact_get",
     "artifact_hash",
+    "artifact_get_verified",
+    "ARTIFACT_MAX_BYTES",
 ]
 
 _ER_SEQ_RE = re.compile(r"^ER-(\d{6,})$")
@@ -172,8 +177,97 @@ def artifact_hash(content: bytes) -> str:
 #: WRITE_TABLES），零账本直写纪律由 tests/test_m3_invariants.py 钉死）。
 ARTIFACT_KINDS: frozenset[str] = frozenset(
     {"seed", "exam_log", "l0_candidates", "l0_index", "repo_map", "pre_verdict",
-     "poc_script", "poc_log", "poc_deps", "arbitration"}
+     "poc_script", "poc_log", "poc_deps", "arbitration", "verify_auth"}
 )
+
+
+# R2：默认每件 64 MiB，可由调用方按证据类型显式收紧/调整，禁止无限读取。
+ARTIFACT_MAX_BYTES = 64 * 1024 * 1024
+_ARTIFACT_HASH_RE = re.compile(r"[0-9a-f]{64}\Z")
+
+
+@contextmanager
+def _artifact_directory(store_dir: Path, digest: str, *, create: bool = False):
+    """逐级 dirfd + O_NOFOLLOW；包括库根祖先也不接受链接，避免检查/打开竞态。
+
+    POSIX/Linux 工件库边界；缺少安全 open 标志的平台拒绝操作而不降级。
+    返回的 fd 固定目录，不再从未经核验的绝对路径打开工件。
+    """
+    path = Path(store_dir).absolute()
+    if ".." in path.parts:
+        raise ValueError("工件库路径不得含 '..'")
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    directory = os.open(path.anchor, flags)
+    try:
+        for part in (*path.parts[1:], digest[:2]):
+            if create:
+                try:
+                    os.mkdir(part, mode=0o700, dir_fd=directory)
+                except FileExistsError:
+                    pass
+            child = os.open(part, flags, dir_fd=directory)
+            os.close(directory)
+            directory = child
+        yield directory
+    finally:
+        os.close(directory)
+
+
+def _read_artifact_bytes(directory: int, digest: str, max_bytes: int) -> bytes:
+    """只读普通文件；NONBLOCK 防 FIFO 卡住，读取量永不超过 max_bytes+1。"""
+    fd = os.open(digest, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                 dir_fd=directory)
+    try:
+        before = os.fstat(fd)
+        if not stat.S_ISREG(before.st_mode) or before.st_size > max_bytes:
+            raise ValueError("工件不是有界普通文件")
+        data = bytearray()
+        while len(data) <= max_bytes:
+            chunk = os.read(fd, min(65536, max_bytes + 1 - len(data)))
+            if not chunk:
+                break
+            data.extend(chunk)
+        after = os.fstat(fd)
+        if (len(data) > max_bytes or len(data) != before.st_size
+                or after.st_size != before.st_size
+                or after.st_mtime_ns != before.st_mtime_ns
+                or artifact_hash(data) != digest):
+            raise ValueError("工件内容/大小/摘要不一致")
+        return bytes(data)
+    finally:
+        os.close(fd)
+
+
+def artifact_get_verified(
+    ledger: KernelLedger,
+    store_dir: Path,
+    hash_hex: str,
+    *,
+    expected_kind: str | None = None,
+    max_bytes: int = ARTIFACT_MAX_BYTES,
+) -> bytes | None:
+    """R2 安全读：规范小写 SHA256、索引 size/kind、普通文件及实际摘要全部复核。
+
+    缺索引/缺文件/不可读/越界/链接/超限/损坏一律 None；不修复或覆盖工件。
+    ``expected_kind=None`` 只检查 kind 在已知词表；安全调用者应指名用途。
+    旧 artifact_get 的兼容语义不变。
+    """
+    if (not isinstance(hash_hex, str) or not _ARTIFACT_HASH_RE.fullmatch(hash_hex)
+            or type(max_bytes) is not int or max_bytes < 1):
+        return None
+    row = ledger.conn.execute(
+        "SELECT size, kind FROM artifacts WHERE hash = ?", (hash_hex,)
+    ).fetchone()
+    if (row is None or type(row[0]) is not int or not 0 <= row[0] <= max_bytes
+            or row[1] not in ARTIFACT_KINDS
+            or (expected_kind is not None and row[1] != expected_kind)):
+        return None
+    try:
+        with _artifact_directory(store_dir, hash_hex) as directory:
+            content = _read_artifact_bytes(directory, hash_hex, max_bytes)
+        return content if len(content) == row[0] else None
+    except (OSError, ValueError, TypeError, AttributeError, NotImplementedError):
+        return None
 
 
 def artifact_put(
@@ -184,22 +278,53 @@ def artifact_put(
     mime: str,
     kind: str,
     producer: str,
+    max_bytes: int = ARTIFACT_MAX_BYTES,
 ) -> str:
-    """写内容寻址工件（文件 + artifacts 索引行；幂等：同 hash 跳过）。返回 hash。
+    """写入或复核内容寻址工件；既存污染拒绝、绝不静默覆盖，检查先于索引写。
 
-    ``kind`` 限定 :data:`ARTIFACT_KINDS`（M2 seed|exam_log + M3 l0_candidates|
-    l0_index + M4 repo_map|pre_verdict；其余 kind 属后续里程碑的工件面）。"""
+    兼容策略：非授权用途共享相同内容时保留首次 kind/mime/producer；涉及
+    verify_auth 的 kind 冲突拒绝（不能把普通工件当授权，或反向复用授权）。
+    已有索引 size 必须一致；文件新建用 O_EXCL，目录逐级拒绝符号链接。
+    """
     if kind not in ARTIFACT_KINDS:
         raise ValueError(
             f"工件 kind 越词表：{kind!r}（合法值：{sorted(ARTIFACT_KINDS)}）"
         )
+    if (type(max_bytes) is not int or max_bytes < 1
+            or not isinstance(content, bytes) or len(content) > max_bytes):
+        raise ValueError("工件内容或大小上限非法/超限")
     h = artifact_hash(content)
-    path = Path(store_dir) / h[:2] / h
-    if not path.exists():
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(content)
-    now = iso_utc(ledger._clock.now())
     with transaction(ledger):
+        row = ledger.conn.execute(
+            "SELECT size, kind FROM artifacts WHERE hash = ?", (h,)
+        ).fetchone()
+        if row is not None and (
+            row[0] != len(content) or row[1] not in ARTIFACT_KINDS
+            or (row[1] != kind and "verify_auth" in (row[1], kind))
+        ):
+            raise ValueError("工件索引 size/kind 冲突")
+        try:
+            with _artifact_directory(store_dir, h, create=True) as directory:
+                try:
+                    fd = os.open(h, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                                 0o600, dir_fd=directory)
+                except FileExistsError:
+                    if _read_artifact_bytes(directory, h, max_bytes) != content:
+                        raise ValueError("既存工件污染")
+                else:
+                    try:
+                        view = memoryview(content)
+                        while view:
+                            written = os.write(fd, view)
+                            if written <= 0:
+                                raise OSError("工件写入未完成")
+                            view = view[written:]
+                        os.fsync(fd)
+                    finally:
+                        os.close(fd)
+        except (OSError, AttributeError, NotImplementedError) as exc:
+            raise ValueError("工件路径不安全或无法读写") from exc
+        now = iso_utc(ledger._clock.now())
         ledger.conn.execute(
             "INSERT OR IGNORE INTO artifacts (hash, size, mime, kind, producer, created_at)"
             " VALUES (?, ?, ?, ?, ?, ?)",

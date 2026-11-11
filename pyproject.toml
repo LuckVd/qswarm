@@ -12,6 +12,9 @@ dependencies = [
     "pyyaml>=6.0",
 ]
 
+[project.scripts]
+qswarm = "qswarm.cli:main"
+
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 # M3 感知层可选依赖（SPEC-7 §1.2 D25 探测式分级：代码运行时探测 import 可用性，
@@ -34,10 +37,21 @@ packages = [
     "qswarm.kernel",
     "qswarm.simulator",
     "qswarm.perception",
+    "qswarm.prompts",
+    "qswarm.exams",
+    "qswarm.supply",
+    "qswarm.sandbox",
+    "qswarm.sandbox.fixtures",
+    "qswarm.defaults",
 ]
 
+# R1-T7：运行必需资源随包发布——DDL（既有）+ 默认配置/规则 canonical 副本
+# （与仓内 configs/ 哈希同步测试钉死）。tests/scripts/out/缓存/私有 DB/密钥
+# 不入包（wheel 清单验收钉死，tests/test_r1_packaging.py）。
 [tool.setuptools.package-data]
 qswarm = ["contracts/*.sql"]
+"qswarm.defaults" = ["*.yaml"]
+"qswarm.sandbox.fixtures" = ["*/*.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -804,7 +804,7 @@ def _seed_cluster_votes(led, finding_id: str, votes: list[dict]) -> None:
         )
 
 
-def _run_cluster_op(led, op: dict, params, world_findings=()) -> None:
+def _run_cluster_op(led, op: dict, params, world_findings=(), *, store_dir=None, auth_aliases=None) -> None:
     """执行一个复合操作（op 词表见 freeze_golden._cluster_scenario）。"""
     from qswarm.kernel import (
         ClusterProposal,
@@ -818,6 +818,26 @@ def _run_cluster_op(led, op: dict, params, world_findings=()) -> None:
         split_cluster,
     )
     from qswarm.contracts import LedgerKind, SignalTier
+
+    def authorized_payload(payload):
+        payload = dict(payload)
+        if payload.get("authorized") and payload.get("auth_digest"):
+            members = led.conn.execute(
+                "SELECT 1 FROM cluster_members WHERE cluster_id=? LIMIT 1",
+                (payload["cluster_id"],),
+            ).fetchone()
+            if members is not None:
+                import m1_harness as h
+                proof = h.mint_test_authorization(
+                    led, store_dir, cluster_id=payload["cluster_id"],
+                    task_id=f"golden-vf:{led.latest_seq()}", run_id=CLUSTER_RUN_ID,
+                    outcome=payload["outcome"],
+                )
+                auth_aliases[proof.artifact_ref] = payload["auth_digest"]
+                payload.update(auth_digest=proof.artifact_ref, task_id=proof.task_id,
+                               context_digest=proof.context_digest)
+            # Missing-cluster legacy sources remain ineligible; never invent a context.
+        return payload
 
     kind = op["op"]
     if kind == "seed_votes":
@@ -860,13 +880,17 @@ def _run_cluster_op(led, op: dict, params, world_findings=()) -> None:
                       run_id=CLUSTER_RUN_ID)
         return
     if kind == "append":
-        led.append(op["kind"], op["payload"], run_id=CLUSTER_RUN_ID)
+        payload = (authorized_payload(op["payload"]) if op["kind"] == "verify_result"
+                   else op["payload"])
+        led.append(op["kind"], payload, run_id=CLUSTER_RUN_ID)
         return
     if kind == "propagate":
-        src = led.append(op["source"]["kind"], op["source"]["payload"],
+        sp = op["source"]["payload"]
+        payload = authorized_payload(sp) if op["source"]["kind"] == "verify_result" else sp
+        src = led.append(op["source"]["kind"], payload,
                          run_id=CLUSTER_RUN_ID)
         propagate_verdict(
-            led, op["cluster_id"], tier=SignalTier(op["tier"]),
+            led, op["cluster_id"], tier=SignalTier(op["tier"]), store_dir=store_dir,
             direction=op["direction"], source_seq=src.seq,
             source_kind=LedgerKind(op.get("declared_kind", op["source"]["kind"])),
             ctx=_cluster_ctx(op.get("ctx")), params=params, run_id=CLUSTER_RUN_ID,
@@ -887,7 +911,7 @@ def _run_cluster_op(led, op: dict, params, world_findings=()) -> None:
     if kind == "propagate_pending":
         lineage_doc = op.get("lineage", {})
         propagate_pending(
-            led, lineage=lambda c: (
+            led, store_dir=store_dir, lineage=lambda c: (
                 _cluster_ctx(lineage_doc[c]) if lineage_doc.get(c) is not None else None
             ),
             params=params,
@@ -904,6 +928,10 @@ def execute_cluster_case(case: dict, *, params: ParamsConfig | None = None) -> d
 
     p = params or manifest_params()
     led = KernelLedger(":memory:", clock=SteppedClock(CLUSTER_T0, 1.0))
+    import tempfile
+    store = tempfile.TemporaryDirectory(prefix="qswarm-golden-store-")
+    store_dir = Path(store.name)
+    auth_aliases = {}
     try:
         _seed_cluster_world(led, case["inputs"]["findings"])
         led.conn.commit()
@@ -911,18 +939,28 @@ def execute_cluster_case(case: dict, *, params: ParamsConfig | None = None) -> d
             if op["op"] == "expect_error":
                 before = led.latest_seq()
                 with pytest.raises(ValueError, match=op["match"]):
-                    _run_cluster_op(led, op["call"], p, case["inputs"]["findings"])
+                    _run_cluster_op(led, op["call"], p, case["inputs"]["findings"],
+                                    store_dir=store_dir, auth_aliases=auth_aliases)
                 # propagate op 的源事件 append 属 harness 侧（先于被守卫的
                 # propagate_verdict）；守卫本身必须零新增事件。
                 allowed = before + (1 if op["call"]["op"] == "propagate" else 0)
                 assert led.latest_seq() == allowed, (
                     f"{op['call']['op']}: 守卫失败必须零落库")
             else:
-                _run_cluster_op(led, op, p, case["inputs"]["findings"])
-        events = [
-            {"kind": ev.kind.value, "ts": ev.ts, "payload": ev.payload}
-            for ev in led.read()
-        ]
+                _run_cluster_op(led, op, p, case["inputs"]["findings"],
+                                store_dir=store_dir, auth_aliases=auth_aliases)
+        def frozen_event_view(ev):
+            payload = dict(ev.payload)
+            if ev.kind.value == "verify_result":
+                # Compare the frozen mechanism schema, not ephemeral CAS names.
+                # Actual ledger bytes retain R2 bindings; no event is rewritten.
+                payload["auth_digest"] = auth_aliases.get(payload.get("auth_digest"),
+                                                         payload.get("auth_digest"))
+                payload.pop("task_id", None)
+                payload.pop("context_digest", None)
+            return {"kind": ev.kind.value, "ts": ev.ts, "payload": payload}
+
+        events = [frozen_event_view(ev) for ev in led.read()]
         clusters = {
             cid: {
                 "level": c.level, "members": list(c.members),
@@ -951,6 +989,7 @@ def execute_cluster_case(case: dict, *, params: ParamsConfig | None = None) -> d
                 "cells": cells}
     finally:
         led.close()
+        store.cleanup()
 
 
 def check_cluster_case(case: dict, *, params: ParamsConfig | None = None) -> list[str]:

@@ -11,10 +11,29 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+# R1-T7：默认资源 = 包内 canonical 副本（qswarm/defaults/，importlib.resources
+# 读取——安装包可用；与仓内 configs/ 冻结件的哈希同步由
+# tests/test_r1_packaging.py 钉死，不维护两套默默漂移的默认值）。显式路径
+# 优先且不存在即报错（不偷偷回落默认）。
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 CONFIGS_DIR = _REPO_ROOT / "configs"
-DEFAULT_PARAMS_PATH = CONFIGS_DIR / "params.yaml"
-DEFAULT_TAXONOMY_PATH = CONFIGS_DIR / "taxonomy.yaml"
+
+
+def _packaged_default(name: str) -> Path:
+    """包内默认资源路径（安装/源码两态皆可读；缺件 → 显式错误不回落）。"""
+    from importlib.resources import files
+
+    res = files("qswarm.defaults").joinpath(name)
+    if not res.is_file():
+        raise FileNotFoundError(
+            f"包内默认资源缺失：qswarm/defaults/{name}（安装包不完整——"
+            "显式传入配置路径可绕开）"
+        )
+    return Path(str(res))
+
+
+DEFAULT_PARAMS_PATH = _packaged_default("params.yaml")
+DEFAULT_TAXONOMY_PATH = _packaged_default("taxonomy.yaml")
 
 
 # ── params.yaml（§5.2）──────────────────────────────────────────
@@ -270,6 +289,16 @@ class SandboxParams(BaseModel):
     read_only_root: bool = True
     user: str = "nobody"
     env_cache_dir: str = "out/sandbox-env"
+    # ── R1-T1 执行边界（HANDOVER §5.2；缺省 = fail-closed 收紧值）─────
+    # trusted_roots：process 档宿主侧可信根（已核验夹具/开发输入；打包 fixtures
+    #   目录自动在内）。process_require_isolation：禁网探针失败时拒绝执行而非
+    #   降级记录（弱隔离显式 opt-out = dev-only，不构成生产降级入口）。
+    # process_allow_install / container_allow_build：运行时宿主 pip / 联网
+    #   docker build 的显式 dev 授权（缺省全拒）。
+    trusted_roots: tuple[str, ...] = ()
+    process_require_isolation: bool = True
+    process_allow_install: bool = False
+    container_allow_build: bool = False
 
 
 class VerifyParams(BaseModel):

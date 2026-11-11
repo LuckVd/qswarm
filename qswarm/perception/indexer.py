@@ -298,40 +298,65 @@ def parse_index(path: str, lang: str, source: bytes) -> IndexEntry:
     )
 
 
-# ── 内容寻址缓存（§2.1：key=blake2b(file_bytes)，未变不重析）─────────
+# ── 内容寻址缓存（§2.1；R1-T3：key 扩维 + 实例重绑）─────────────────
+#
+# R1-T3 修复（HANDOVER §7.6；2026-10-28 审查「同 bytes 的 a.py/b.py 返回相同
+# 旧 path」）：旧 key = blake2b(file_bytes) 只绑内容——同 bytes 不同 path/语言
+# 命中返回**另一文件的 IndexEntry 实例**（path/lang 串档）。新面：
+# - key = blake2b(cache_version, lang, grammar 指纹, bytes)——解析器/grammar
+#   版本变化即 miss；旧缓存文件（键空间不同）自然视为 miss，不迁移；
+# - 命中返回**重绑当前 (path, lang) 的新实例**——解析产物可共享，文件实例
+#   不共享（IndexEntry frozen，重绑零拷贝成本可控）。
+
+#: 缓存结构版本（键空间/载荷形状变更须升版；旧版本缓存文件视为 miss）。
+CACHE_VERSION = "idx-v2"
+
+
+def _grammar_fingerprint(lang: str) -> str:
+    """语言 → grammar 指纹（发行版名@版本；探测失败 = lang 名兜底）。"""
+    try:
+        dist = importlib.metadata.version(f"tree-sitter-{lang}")
+    except importlib.metadata.PackageNotFoundError:
+        return lang
+    return f"{lang}@{dist}"
+
 
 class IndexCache:
-    """盘上解析缓存：<cache_dir>/<key>.json（key = blake2b(file_bytes) hex）。
+    """盘上解析缓存：``<cache_dir>/<key>.json``（key = blake2b(版本·语言·指纹·bytes)）。
 
-    - ``get_or_parse``：命中 → (entry, parse_count=0)；未中 → 解析并落缓存；
-      返回解析计数供测试断言「内容未变不重析」（时间断言的确定性替身）；
+    - ``get_or_parse``：命中 → 重绑当前 (path, lang) 的实例（parse_count=0）；
+      未中 → 解析并落缓存；返回解析计数供测试断言「内容未变不重析」；
     - 缓存损坏（陈旧 JSON/半写）→ 视为未命中重析（fail-open 重建，内容寻址
       保证重建结果与首析逐位一致）。"""
 
     def __init__(self, cache_dir: str | Path | None = None) -> None:
         self._dir = Path(cache_dir) if cache_dir is not None else None
-        # 进程内 memo：同 key 同对象（同仓库两跑同进程场景零重复解析）。
+        # 进程内 memo：同 key 同解析产物（同仓库两跑同进程场景零重复解析）。
         self._memo: dict[str, IndexEntry] = {}
         # 累计解析计数（测试面：缓存跳过断言）。
         self.parse_count = 0
 
-    def file_key(self, source: bytes) -> str:
+    def file_key(self, source: bytes, lang: str = "") -> str:
+        """缓存键 = blake2b(CACHE_VERSION, lang, grammar 指纹, bytes)。"""
         h = hashlib.blake2b(digest_size=16)
+        for part in (CACHE_VERSION, lang, _grammar_fingerprint(lang) if lang else ""):
+            h.update(part.encode("utf-8"))
+            h.update(b"\x00")
         h.update(source)
         return h.hexdigest()
 
     def get_or_parse(self, path: str, lang: str, source: bytes) -> IndexEntry:
-        key = self.file_key(source)
+        key = self.file_key(source, lang)
         memo = self._memo.get(key)
         if memo is not None:
-            return memo
+            return _rebind(memo, path, lang)         # R1-T3：返回当前文件实例
         if self._dir is not None:
             cache_file = self._dir / f"{key}.json"
             if cache_file.exists():
                 try:
                     entry = IndexEntry.from_json(cache_file.read_text(encoding="utf-8"))
                     self._memo[key] = entry
-                    return entry
+                    return _rebind(entry, path, lang)
                 except (ValueError, KeyError, TypeError):
                     pass                     # 损坏缓存 → 重析（见类注）
         self.parse_count += 1
@@ -342,6 +367,16 @@ class IndexCache:
             cache_file.write_text(entry.to_json(), encoding="utf-8")
         self._memo[key] = entry
         return entry
+
+
+def _rebind(entry: IndexEntry, path: str, lang: str) -> IndexEntry:
+    """缓存命中的实例重绑（R1-T3）：解析产物共享、文件身份归当前调用。"""
+    if entry.path == path and entry.lang == lang:
+        return entry
+    return IndexEntry(
+        path=path, lang=lang, calls=entry.calls, idents=entry.idents,
+        defs=entry.defs, all_calls=entry.all_calls, parse_ok=entry.parse_ok,
+    )
 
 
 def index_repo(

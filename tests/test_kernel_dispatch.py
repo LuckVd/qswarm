@@ -754,6 +754,8 @@ def test_submit_verifier_fp_without_blocking_forced_verify_error():
         assert events[0].payload == {
             "cluster_id": "C-20260101-000001",
             "outcome": "verify_error", "error_kind": "poc_fail",   # §10.4 强制改判
+            "authorized": False, "auth_digest": None,   # R1-T2：保守结论零授权面
+            "task_id": None, "context_digest": None,
         }
         vr = led.conn.execute(
             "SELECT outcome, error_kind, blocking_kind, blocking_where, blocking_ref"
@@ -773,10 +775,12 @@ def test_submit_verifier_fp_without_blocking_forced_verify_error():
         led.close()
 
 
-def test_submit_verifier_outcome_mapping_and_s2_deposit():
-    """SPEC-5 §1.2：verified_real→verified+grade L3+tier=S2 dir=+1、verified_fp→
-    rejected+dir=−1、verify_error→inconclusive 零存款零投影（§2.4 表）。"""
+def test_submit_verifier_outcome_mapping_and_s2_deposit(tmp_path):
+    """SPEC-5 §1.2（R1-T2 授权面）：verified_real→verified+grade L3+tier=S2 dir=+1、
+    verified_fp→rejected+dir=−1、verify_error→inconclusive 零存款零投影（§2.4 表）。"""
     led = new_ledger()
+    tmp_store = tmp_path / "store"
+    tmp_store.mkdir()
     try:
         h.seed_run(led)
         blocking = BlockingEvidence(kind=BlockingKind.SANITIZER, where="views.py:80",
@@ -819,7 +823,16 @@ def test_submit_verifier_outcome_mapping_and_s2_deposit():
                 ),
                 verifier_id="A-verifier-1",
             )
-            return submit(led, task_id, report, contract=contract, ctx=ctx)
+            # R1-T2：高可信结论（real/fp）须携带内核铸造授权（夹具成对面）
+            authorization = None
+            if outcome is not VerifyOutcome.VERIFY_ERROR:
+                authorization = h.mint_test_authorization(
+                    led, tmp_store,
+                    cluster_id=cid, task_id=task_id, run_id="R-20260101-001",
+                    outcome=outcome.value,
+                )
+            return submit(led, task_id, report, contract=contract, ctx=ctx,
+                          authorization=authorization, store_dir=tmp_store)
 
         # verified_real：成员 verified + grade→L3 + S2 正向存款 + verdict 投影
         cid, members = specs[0]
@@ -920,7 +933,7 @@ def test_submit_rejects_task_not_dispatched():
         led.close()
 
 
-def test_submit_verifier_vr_attempts_derived_and_terminal_member_skipped():
+def test_submit_verifier_vr_attempts_derived_and_terminal_member_skipped(tmp_path):
     """VR 行号派生 + 终态成员守卫（2026-10-20 修复）：
 
     - ``attempts`` = 同簇库内 MAX+1（D20 同型口径）——模型自报 attempts 不再作
@@ -929,6 +942,8 @@ def test_submit_verifier_vr_attempts_derived_and_terminal_member_skipped():
     - 簇内已被 S3 直答进终态（D8 voted→confirmed 边）的成员不阻断整笔验证——
       只流转迁移表合法成员，终态成员保持原判（append-only）。"""
     led = new_ledger()
+    tmp_store = tmp_path / "store"
+    tmp_store.mkdir()
     try:
         h.seed_run(led)
         f1 = h.seed_finding(led, "F-20260101-000001", state="voted")
@@ -960,7 +975,15 @@ def test_submit_verifier_vr_attempts_derived_and_terminal_member_skipped():
                 trigger_path=[], assertions=[], attempts=1, duration_s=1.5,
                 logs_ref="artifact://run", **kwargs,
             )
-            return submit(led, task_id, report, contract=contract, ctx=ctx)
+            authorization = None
+            if outcome is not VerifyOutcome.VERIFY_ERROR:
+                authorization = h.mint_test_authorization(
+                    led, tmp_store, cluster_id="C-20260101-000001",
+                    task_id=task_id, run_id="R-20260101-001",
+                    outcome=outcome.value,
+                )
+            return submit(led, task_id, report, contract=contract, ctx=ctx,
+                          authorization=authorization, store_dir=tmp_store)
 
         # 第一次：verify_error——f1(voted→inconclusive 合法) 流转，f2 终态跳过
         events = _verify(VerifyOutcome.VERIFY_ERROR, error_kind=VerifyErrorKind.POC_FAIL)

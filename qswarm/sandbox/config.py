@@ -21,7 +21,13 @@ class SandboxConfig:
     ``tier``："container"（Docker 分级隔离档，S2 生产存款唯一口径，D43-a）|
     "process"（subprocess+rlimits 近似档，开发/CI 档，零账本写）。
     ``base_image`` 为 container 档 env 构建的 FROM 基底（v1 固定 python:3.11，
-    逐例镜像面随 env_requirements 演进）；process 档 base = 当前解释器。"""
+    逐例镜像面随 env_requirements 演进）；process 档 base = 当前解释器。
+
+    R1-T1 边界字段（docs/R1_CHANGE_NOTE.md §1-T1；缺省 fail-closed）：
+    ``trusted_roots`` process 档宿主侧可信根（打包 fixtures 自动并入）；
+    ``process_require_isolation`` 禁网探针失败即拒（弱隔离 opt-out = dev-only）；
+    ``process_allow_install``/``container_allow_build`` 运行时安装/联网构建的
+    显式 dev 授权（缺省全拒）。"""
 
     tier: str = "process"
     timeout_s: int = 340
@@ -35,6 +41,10 @@ class SandboxConfig:
     user: str = "nobody"
     env_cache_dir: str = "out/sandbox-env"
     base_image: str = "python:3.11"
+    trusted_roots: tuple[str, ...] = ()
+    process_require_isolation: bool = True
+    process_allow_install: bool = False
+    container_allow_build: bool = False
 
     def __post_init__(self) -> None:
         if self.tier not in ("container", "process"):
@@ -45,6 +55,14 @@ class SandboxConfig:
             raise ValueError(
                 f"network 词表 v1 只收 'none'（默认禁网，§16.7-5），实际 {self.network!r}"
             )
+        if self.tier == "container":
+            user = str(self.user).strip()
+            uid = user.partition(":")[0]
+            if (not uid or user != self.user or uid.lower() == "root"
+                    or (uid.isdecimal() and int(uid) == 0)):
+                raise ValueError("container user 必须为非空、非 root 用户")
+            if self.read_only_root is not True:
+                raise ValueError("container read_only_root 必须为 true")
         for name in ("timeout_s", "mem_mb", "nofile", "nproc", "tmpfs_mb"):
             if int(getattr(self, name)) < 1:
                 raise ValueError(f"SandboxConfig.{name} 必须 ≥1")
@@ -68,6 +86,10 @@ class SandboxConfig:
             read_only_root=bool(s.read_only_root),
             user=str(s.user),
             env_cache_dir=str(s.env_cache_dir),
+            trusted_roots=tuple(str(r) for r in s.trusted_roots),
+            process_require_isolation=bool(s.process_require_isolation),
+            process_allow_install=bool(s.process_allow_install),
+            container_allow_build=bool(s.container_allow_build),
         )
 
     def redline_report(self) -> dict:

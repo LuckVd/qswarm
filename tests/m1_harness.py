@@ -225,3 +225,129 @@ __all__ = [
 
 #: 供外部断言用的时间锚（FixedClock 缺省整秒时刻）。
 DEFAULT_CLOCK_TS = _DEFAULT_CLOCK_TS
+
+
+# ── R1-T2 测试面：可信授权铸造辅助（经 kernel.trust 正规铸造，非自构）────────
+
+
+def mint_test_authorization(
+    ledger,
+    store_dir,
+    *,
+    cluster_id: str,
+    task_id: str,
+    run_id: str,
+    outcome: str = "verified_real",
+):
+    """经 kernel.trust.mint_authorization 正规铸造测试授权（夹具成对判据面）。"""
+    from pathlib import Path as _P
+
+    from qswarm.kernel.trust import FIXTURE_SAFE_TARGET, mint_authorization
+    from qswarm.kernel.dispatch import bind_verification_context
+    from qswarm.kernel import FixedClock
+    from qswarm.exams.store import artifact_put
+
+    # Harness-only immutable artifacts do not consume the event clock or seq.
+    clock = ledger._clock
+    ledger._clock = FixedClock(_DEFAULT_CLOCK_TS)
+    try:
+        if ledger.conn.execute("SELECT 1 FROM tasks WHERE task_id=?", (task_id,)).fetchone() is None:
+            ledger.conn.execute(
+                "INSERT INTO tasks (task_id,run_id,role,node,shard_json,state,assignee,created_at)"
+                " VALUES (?,?,'verifier','injection',?,'dispatched','fixture-verifier',?)",
+                (task_id, run_id, json.dumps({"cluster_id": cluster_id}), _DEFAULT_CLOCK_TS),
+            )
+            ledger.conn.commit()
+
+        def put(content, kind):
+            # Existing public kind vocabulary; purpose is separately proof-bound.
+            artifact_kind = "poc_script" if kind in ("poc", "target") else "poc_log"
+            return artifact_put(ledger, _P(store_dir), content=content,
+                                mime="application/json", kind=artifact_kind, producer="offline-fixture")
+
+        snapshot = put(json.dumps({"members": [r[0] for r in ledger.conn.execute(
+            "SELECT finding_id FROM cluster_members WHERE cluster_id=? ORDER BY finding_id",
+            (cluster_id,))]}, sort_keys=True).encode(), "snapshot_manifest")
+        target = put(FIXTURE_SAFE_TARGET if outcome == "verified_fp" else b"offline vulnerable fixture v1", "target")
+        poc = put(b"offline host driver v1", "poc")
+        pair = put(b"offline fixed counterpart manifest v1", "pair_manifest")
+        context = bind_verification_context(
+            ledger, task_id, store_dir=_P(store_dir), cluster_id=cluster_id,
+            execution_profile_id="fixture:profile", snapshot_ref=f"artifact://{snapshot}",
+            target_ref=f"artifact://{target}", poc_ref=f"artifact://{poc}",
+            pair_ref=f"artifact://{pair}", execution_policy="fixture:offline-mechanism-v1",
+        )
+        health = {"sandbox_ok": True, "timed_out": False, "target_executed": True,
+                  "target_health": "healthy", "legal_control": True}
+        summary = {"paired": True,
+                   "vulnerable": {**health, "violation_observed": outcome == "verified_real"},
+                   "fixed": {**health, "violation_observed": False}}
+        observation = put(json.dumps({
+            "context_digest": context.digest, "oracle_kind": "execution_paired",
+            "oracle_version": "oc-v2", "observer_version": "trusted-fixture-v1",
+            "control_summary": summary,
+        }, sort_keys=True).encode(), "paired_observation")
+        evidence = [(observation, "paired_observation")]
+        if outcome == "verified_fp":
+            refutation = put(json.dumps({
+                "kind": "frozen-safe-target-v1", "context_digest": context.digest,
+                "target_digest": context.target_digest,
+            }, sort_keys=True).encode(), "independent_refutation")
+            evidence.append((refutation, "independent_refutation"))
+        return mint_authorization(
+            ledger, _P(store_dir), context=context,
+            run_id=run_id, task_id=task_id, cluster_id=cluster_id,
+            execution_profile_id=context.execution_profile_id,
+            repo_key=context.repo_key, snapshot_digest=context.snapshot_digest,
+            target_digest=context.target_digest, poc_digest=context.poc_digest,
+            oracle_kind="execution_paired", oracle_version="oc-v2",
+            observer_version="trusted-fixture-v1", control_summary=summary,
+            evidence=evidence, execution_policy=context.execution_policy,
+            observed_at=_DEFAULT_CLOCK_TS, allowed_outcomes=[outcome],
+        )
+    finally:
+        ledger._clock = clock
+
+
+def append_authorized_verify_result(
+    ledger,
+    store_dir,
+    *,
+    cluster_id: str,
+    outcome: str = "verified_real",
+    run_id: str | None = None,
+):
+    """落一笔**带授权**的 verify_result 事件（S2 派生面测试的播种口）。
+
+    授权工件（verify_auth）随铸造落库；事件载荷携带 authorized/auth_digest——
+    与 kernel.dispatch._submit_verifier 的写入口径一致。"""
+    from qswarm.contracts import LedgerKind
+    from qswarm.contracts.models import VerifyResultPayload
+    from qswarm.contracts.enums import VerifyErrorKind
+
+    if run_id is None:
+        row = ledger.conn.execute(
+            "SELECT f.run_id FROM findings f JOIN cluster_members cm ON cm.finding_id=f.id"
+            " WHERE cm.cluster_id=? ORDER BY f.id LIMIT 1", (cluster_id,),
+        ).fetchone()
+        if row is None:
+            raise ValueError("fixture 需要实际簇成员/run")
+        run_id = row[0]
+    proof = mint_test_authorization(
+        ledger, store_dir, cluster_id=cluster_id,
+        task_id=f"vf:{cluster_id}:{ledger.latest_seq()}", run_id=run_id,
+        outcome=outcome,
+    )
+    return ledger.append(
+        LedgerKind.VERIFY_RESULT,
+        VerifyResultPayload(
+            cluster_id=cluster_id,
+            outcome=outcome,
+            error_kind=None if outcome != "verify_error" else VerifyErrorKind.POC_FAIL,
+            authorized=True,
+            auth_digest=proof.artifact_ref,
+            task_id=proof.task_id,
+            context_digest=proof.context_digest,
+        ),
+        run_id=run_id,
+    ), proof

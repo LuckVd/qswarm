@@ -46,6 +46,12 @@ from qswarm.contracts import (
 )
 from qswarm.contracts.models import PreVerdictSlip
 from qswarm.kernel.bootstrap import verify_ready
+from qswarm.kernel.identity import (
+    ensure_run_manifest,
+    l2_task_id,
+    load_run_manifest,
+    run_manifest,
+)
 from qswarm.kernel.qualification import QualificationGate, gate_from_params
 from qswarm.kernel.budget import (
     BudgetPolicy,
@@ -328,6 +334,8 @@ class ConsultReport:
     l2_infra_fail: int = 0
     l2_quota_skipped: int = 0
     l2_route_empty_pool: int = 0
+    l2_model_ref_missing: int = 0        # R1-T4：合法 model_ref 缺席（不空串调用）
+    l2_gate_revoked: int = 0             # R1-T4：派单/改派前资格复验阻断
     panel_starved: int = 0
     panel_budget_skipped: int = 0
     pv_skipped: int = 0
@@ -367,6 +375,8 @@ class ConsultReport:
                 "l2_infra_fail": self.l2_infra_fail,
                 "l2_quota_skipped": self.l2_quota_skipped,
                 "l2_route_empty_pool": self.l2_route_empty_pool,
+                "l2_model_ref_missing": self.l2_model_ref_missing,
+                "l2_gate_revoked": self.l2_gate_revoked,
                 "panel_starved": self.panel_starved,
                 "panel_budget_skipped": self.panel_budget_skipped,
                 "pv_skipped": self.pv_skipped,
@@ -449,7 +459,7 @@ def _report_md(rep: ConsultReport) -> str:
 def _triaged_candidates(ledger: KernelLedger, scan_run_id: str) -> list[dict]:
     rows = ledger.conn.execute(
         "SELECT candidate_id, path, line_start, line_end, channels, channel_score,"
-        " guess_family, guess_type FROM candidates"
+        " guess_family, guess_type, run_id FROM candidates"
         " WHERE run_id = ? AND triaged = 1 ORDER BY candidate_id",
         (scan_run_id,),
     ).fetchall()
@@ -460,6 +470,7 @@ def _triaged_candidates(ledger: KernelLedger, scan_run_id: str) -> list[dict]:
             "channel_score": float(r[5]),
             "guess_family": (str(r[6]) if r[6] else None),
             "guess_type": (str(r[7]) if r[7] else None),
+            "source_run_id": str(r[8]),      # R1-T3：候选归属 run（≠ consult run）
         }
         for r in rows
     ]
@@ -673,13 +684,17 @@ def _dispatch_l2_candidate(
     report: ConsultReport,
     repomap_block: ContextBlock | None,
     deadline_s: int = 600,
+    gate: "QualificationGate | None" = None,
 ) -> str | None:
     """route() 派 auditor → 深诊 → submit / declined / 失败语义（§2.2/§2.8）。
 
+    R1-T3：``task_id = l2:{consult_run}:{source_scan_run}:{occurrence}``（消费
+    谱系入键——同库多 consult/多 scan 各自存在；候选重排不改变任务身份）。
     返回新建 finding_id（候选→finding 谱系锚，供 S1 侦察行归属）；无建档 → None。"""
     guess = cand["guess_family"]
     node = guess if guess else "unassigned"
-    task_id = f"{L2_TASK_PREFIX}{cand['candidate_id'][:12]}:{seq:03d}"
+    task_id = l2_task_id(run_id, str(cand.get("source_run_id", run_id)),
+                         str(cand["candidate_id"]))
     if ledger.conn.execute(
         "SELECT 1 FROM tasks WHERE task_id = ?", (task_id,)
     ).fetchone() is not None:
@@ -713,6 +728,15 @@ def _dispatch_l2_candidate(
             channel="explore", reason="empty_pool_fallback",
             tilt=None, raw_tilt=None, specs=(), spec_c_stars=(),
         )
+    # R1-T4：合法 model_ref 缺席 → 显式失败分类（不用空串调用、不记普通 infra）
+    if not model_ref:
+        report.l2_model_ref_missing += 1
+        return None
+    # R1-T4：资格门启用时最终派单前 recheck（撤销/profile 变化 → 零调用零写）
+    if gate is not None and not gate.recheck(ledger, agent_id, Role.AUDITOR.value,
+                                             model_ref):
+        report.l2_gate_revoked += 1
+        return None
     load[agent_id] = load.get(agent_id, 0) + 1
     create_task(
         ledger, run_id=run_id, role=Role.AUDITOR.value, node=node,
@@ -760,6 +784,15 @@ def _dispatch_l2_candidate(
         except Exception as exc:                  # noqa: BLE001 — 供给失败族
             last_error = f"adapter:{type(exc).__name__}"
         nxt = _next_by_load(auditors, load, current)
+        # R1-T4：改派前资格复验 + 合法 model_ref 复核（缺席 → 显式失败分类）
+        if gate is not None and not gate.recheck(
+            ledger, nxt, Role.AUDITOR.value, _by_ref(auditors, nxt)
+        ):
+            report.l2_gate_revoked += 1
+            return None
+        if not _by_ref(auditors, nxt):
+            report.l2_model_ref_missing += 1
+            return None
         try:
             re_dispatch(
                 ledger, task_id, to_agent=nxt,
@@ -1072,6 +1105,30 @@ def run_consult(
     )
     open_run(ledger, run_id=run_id, mode=str(mode), repo_url=str(root),
              budget_cents=policy.budget_cents)
+    # R1-T3：consult 输入 manifest（自身 run 绑定）+ **源 scan 快照核验**——
+    # 源 run 有 manifest 时，本 consult 的仓快照必须与源扫描快照一致（不能拿
+    # A 的候选读 B 的代码）；legacy 源 run 无 manifest → 如实放行（描述面，
+    # 不伪造核验通过）。
+    ensure_run_manifest(
+        ledger, run_id=run_id,
+        manifest=run_manifest(root, stage="l2_consult", mode=str(mode),
+                              params=params),
+    )
+    _src_manifest = load_run_manifest(ledger, str(scan_run_id))
+    if _src_manifest is not None:
+        _this = run_manifest(root, stage="l0_l1", mode=str(_src_manifest.get("mode")),
+                             changed_paths=_src_manifest.get("scope"),
+                             params=None)
+        if _src_manifest.get("snapshot_digest") != _this.get("snapshot_digest"):
+            raise ValueError(
+                f"consult({run_id}) 仓快照与源 scan({scan_run_id}) 不一致——"
+                "不能拿 A 的候选读 B 的代码（R1-T3：源快照核验，要求新 run）"
+            )
+        if _src_manifest.get("repo_key") != _this.get("repo_key"):
+            raise ValueError(
+                f"consult({run_id}) 仓身份与源 scan({scan_run_id}) 不一致"
+                "（R1-T3：repo_key 核验）"
+            )
 
     t0 = monotonic()
     budget_s = int(params.consult.wall_clock_budget_s)
@@ -1126,7 +1183,7 @@ def run_consult(
             auditors=auditors, cells=cells, load=load,
             rng=random.Random(derive_seed(seed, "route", run_id, cand["candidate_id"])),
             adapter=adapter, params=params, policy=policy, report=report,
-            repomap_block=repomap_block, deadline_s=deadline_s,
+            repomap_block=repomap_block, deadline_s=deadline_s, gate=gate,
         )
         if fid:
             finding_scouts[fid] = scouts.get(cand["candidate_id"], ())
