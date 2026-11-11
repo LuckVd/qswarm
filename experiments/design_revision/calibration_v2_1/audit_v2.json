@@ -1,0 +1,51 @@
+{
+  "exact_duplicate_groups": [
+    [
+      "E0C-INJ-01",
+      "E0C-INJ-07",
+      "E0C-INJ-08",
+      "E0C-INJ-09"
+    ],
+    [
+      "E0C-INJ-06",
+      "E0C-PAT-06"
+    ],
+    [
+      "E0C-PAT-01",
+      "E0C-PAT-07",
+      "E0C-PAT-08",
+      "E0C-PAT-09"
+    ]
+  ],
+  "excess_duplicate_items": 7,
+  "fixture_poc_missing_count": 18,
+  "generic_claim_count": 25,
+  "hint_comment_count": 13,
+  "hint_comment_definition": "source/sink/阻断/运行分类等解释性注释的六种已核验模式，不等同于每句都直接给 verdict",
+  "hint_comment_items": [
+    "E0C-INJ-01",
+    "E0C-INJ-02",
+    "E0C-INJ-04",
+    "E0C-INJ-05",
+    "E0C-INJ-06",
+    "E0C-INJ-07",
+    "E0C-INJ-08",
+    "E0C-INJ-09",
+    "E0C-PAT-04",
+    "E0C-PAT-05",
+    "E0C-PAT-06",
+    "E0C-BANK-SEED-0050",
+    "E0C-BANK-SEED-0051"
+  ],
+  "interpretation": "旧成绩仅为带提示、重复且缺材料的旧卷描述性一致率；不支持可靠性资格结论。",
+  "n_items": 25,
+  "source_identity_comment_items": [
+    "E0C-BANK-SEED-0001",
+    "E0C-BANK-SEED-0049",
+    "E0C-BANK-SEED-0003",
+    "E0C-BANK-SEED-0004",
+    "E0C-BANK-SEED-0050",
+    "E0C-BANK-SEED-0051"
+  ],
+  "unique_complete_questions": 18
+}

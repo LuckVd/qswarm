@@ -1,0 +1,35 @@
+{
+  "artifacts": {
+    "audit_v2.json": "5375c0407790a2b81ebe3ce3fa29942466eb91ad04d8617c3f515cb221ee0ce2",
+    "changes_v2_1.json": "ae2050e13cf287c8f7579f397a661abc8d342be1ef7b8feac9ab502e531ecc8f",
+    "judge_materials_v2_1.jsonl": "8fa24d6b632cabf717aeefac066bd82b003600e9835562f5938e87eb8fe4fcb7",
+    "judging_sheet_v2_1.jsonl": "64c580e81590095e06a65f3f705b6123431b5e389625cf13cdd5723ae7846172",
+    "provenance_v2_1.json": "7049224eba39a991a1c4e145b66235e06cae7be4c4481f653882b43a0136c8fa",
+    "truth_map_v2_1.json": "5d9d1a6456880af2fecd16e4d9e61c9109e88c2c282fbf628130eefa8a0b266f"
+  },
+  "checks": [
+    "exact complete-question deduplication ignoring blind_id",
+    "Python AST syntax and token comment gate",
+    "private metadata/source identity hint gate",
+    "all owner labels empty",
+    "explicit18drivers7claim_only",
+    "valid claim/poc design enums"
+  ],
+  "claim_only_questions": 7,
+  "claim_questions": 25,
+  "frozen_v2_inventory_sha256": "e87acd08c9ba9d305686bcf3449ac528e03ce4d177ebf22f97f2d79c371b3d6d",
+  "generator": "gen_materials_v2_1.py",
+  "generator_sha256": "f2daa963a5ae92f6bf9fa31bedcae669c3c9cf0c8c0be3bad24ff47608c938db",
+  "label_status": "draft_requires_owner_confirmation",
+  "limitations": [
+    "25 items are 19 declared groups, not 25 independent vulnerability roots",
+    "7 snapshots remain static-only; no fabricated runtime labels",
+    "benchmark code identifiers can retain provenance; this is not source-anonymity research",
+    "draft design labels and fixture runs are not independent calibration evidence"
+  ],
+  "n_items": 25,
+  "poc_questions": 18,
+  "root_cause_groups": 19,
+  "unique_complete_questions": 25,
+  "version": "e0-cal-v2.1"
+}

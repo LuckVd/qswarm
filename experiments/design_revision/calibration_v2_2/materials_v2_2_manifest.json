@@ -1,0 +1,42 @@
+{
+  "artifacts": {
+    "changes_v2_2.json": "6686886472379fa409ff254808a1a89e0cc3e034fba799c7bdd303381c79a55b",
+    "hint_audit_v2_1.json": "e9c92400c6e15b2ba2674f6e283c9977af32a6e69782fd7cc2ba3b8af90e5c8b",
+    "judge_materials_v2_2.jsonl": "183a56691f427763790ad01ba0b44185b4d0033a5d777b0fcdec08babb06d422",
+    "judging_sheet_v2_2.jsonl": "84890489086a479cd630795e6bce85c0266858615d711dbb81b8682c2c560e10",
+    "provenance_v2_2.json": "cb1eae47ca10c058a1cd44f3334a564d1b5f6db47c4de6feb07b433ad4329a5c",
+    "truth_map_v2_2.json": "673004f61f717717a45e3690b7a5863554818e1d9261e27a4b0860df08e2af54"
+  },
+  "base_chain": [
+    "e0-cal-v2（calibration_v2，冻结清单见 calibration_v2_1/v2_frozen_inventory.json）",
+    "e0-cal-v2.1（calibration_v2_1，冻结清单见本目录 v21_frozen_inventory.json）"
+  ],
+  "checks": [
+    "exact complete-question deduplication ignoring blind_id",
+    "fixture byte-identity with v2.1 enforced by assertion",
+    "Python AST syntax and token comment gate",
+    "category-token negative gate: CWE23_, cmdi, OMITBAD, Relative_Path_Traversal",
+    "private metadata/source identity hint gate",
+    "all owner labels empty",
+    "explicit18drivers7claim_only",
+    "valid claim/poc design enums"
+  ],
+  "claim_only_questions": 7,
+  "claim_questions": 25,
+  "frozen_v21_inventory_sha256": "34ceb234d768a25a8ba94ca779892605a5f60b607ab95f3b9952feedbb52852e",
+  "generator": "gen_materials_v2_2.py",
+  "generator_sha256": "c5ab7d220bf81f3c912e7f2f3031b2eaa9e11750790fc071cae0ef48d80a23de",
+  "label_status": "draft_requires_owner_confirmation",
+  "limitations": [
+    "25 items are 19 declared groups, not 25 independent vulnerability roots",
+    "7 snapshots remain static-only; no fabricated runtime labels",
+    "upstream provenance naming is retained on purpose (aiohttp/Pillow/werkzeug/OWASP benchmark identifiers, getInsecureOSCommandString); category-bearing identifiers (CWE-typed namespaces/classes, OMITBAD guard, cmdi URL/message fragments) are neutralized in v2.2 display copies",
+    "draft design labels and fixture runs are not independent calibration evidence"
+  ],
+  "n_items": 25,
+  "poc_questions": 18,
+  "root_cause_groups": 19,
+  "scope_note": "v2.2 仅做 bank 展示本族别标识符中性化与换盲 ID/乱序；主张、PoC 任务、驱动与设计真值逐字不变；v2.1 从未用于任何裁判轮（零裁判调用零结果），本修订属仪器修复，不属「未达标重抽题」。",
+  "unique_complete_questions": 25,
+  "version": "e0-cal-v2.2"
+}

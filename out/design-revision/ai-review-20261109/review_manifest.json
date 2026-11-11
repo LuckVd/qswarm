@@ -1,0 +1,27 @@
+{
+  "review_kind": "AI source review, not independent human calibration",
+  "frozen_at": "2026-11-09T23:11:17.888508+08:00",
+  "reviewed_items": 25,
+  "provisional_claim_counts": {
+    "real": 10,
+    "refuted": 6,
+    "inconclusive": 9
+  },
+  "poc_counts": {
+    "unjudged_missing_materials": 18,
+    "not_applicable": 7
+  },
+  "effective_poc_certified": 0,
+  "target_executions": 0,
+  "paid_external_requests": 0,
+  "review_delegations": "Two same-session-family source reviewers; not independent cross-family judges.",
+  "truth_or_ai_reference_read": false,
+  "owner_sheet_changed": false,
+  "human_calibration_complete": false,
+  "gate_status": "NOT_VERIFIED",
+  "source_sha256": {
+    "experiments/design_revision/calibration_v2/judging_sheet_v2.jsonl": "eb2871805269bf835d773244d3e15c8d17685da3c8cd37d13ce37f097a7c266b",
+    "experiments/design_revision/calibration_v2/judge_materials_v2.jsonl": "64960a6e6c5463839afbd57177593235d7019559a02a5c48c9779f0aea41ee37"
+  },
+  "judgments_sha256": "8bfe62a0d686c30e3a74e3c7aa7133afe4c1cb88b9bf61d60926e4a70f355329"
+}

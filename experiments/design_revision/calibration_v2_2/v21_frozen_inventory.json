@@ -1,0 +1,19 @@
+{
+  "directory": "../calibration_v2_1",
+  "files_sha256": {
+    "__pycache__/compute_agreement_v2_1.cpython-312.pyc": "55434ef42d426449492f6ba7fac8da9bc7b269274620c41928452792c8a1e48c",
+    "__pycache__/gen_materials_v2_1.cpython-312.pyc": "84a2fd4eba1cd057151315960557d24ce5024dd30c98ac81dfaedd9f7a0bdbe0",
+    "audit_v2.json": "5375c0407790a2b81ebe3ce3fa29942466eb91ad04d8617c3f515cb221ee0ce2",
+    "changes_v2_1.json": "ae2050e13cf287c8f7579f397a661abc8d342be1ef7b8feac9ab502e531ecc8f",
+    "compute_agreement_v2_1.py": "f26c94b07b555adbe1f19ed3f04a808a5d94a4ab58cb072ad46ec18bdd0a6017",
+    "gen_materials_v2_1.py": "f2daa963a5ae92f6bf9fa31bedcae669c3c9cf0c8c0be3bad24ff47608c938db",
+    "judge_materials_v2_1.jsonl": "8fa24d6b632cabf717aeefac066bd82b003600e9835562f5938e87eb8fe4fcb7",
+    "judging_sheet_v2_1.jsonl": "64c580e81590095e06a65f3f705b6123431b5e389625cf13cdd5723ae7846172",
+    "materials_v2_1_manifest.json": "c3a33b88c739db3352f441eb0ef621b321c71740a934f6c2500eb8d702847ac7",
+    "provenance_v2_1.json": "7049224eba39a991a1c4e145b66235e06cae7be4c4481f653882b43a0136c8fa",
+    "runtime_checks_v2_1.json": "1fcabb911fa7be502b993d163d5264d52e35c7005fcf52197764e96181b65469",
+    "truth_map_v2_1.json": "5d9d1a6456880af2fecd16e4d9e61c9109e88c2c282fbf628130eefa8a0b266f",
+    "v2_frozen_inventory.json": "da39503b348d8e333a402b2d92652bc09de976da088062f6f6fe1bb1e2877b40"
+  },
+  "policy": "byte-for-byte frozen; do not regenerate v2.1 or reuse its score as v2.2"
+}

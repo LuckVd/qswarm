@@ -1,1 +1,4 @@
 {"record_type": "meta", "currency": "CNY", "hard_cap": 500.0, "wall_clock_weeks": 4, "anchor": "first_approved_online_call", "anchor_status": "provisional_per_p1_assessment_D48A_pending_owner_ratification", "spent_total": 0.0, "note": "P1 离线批零线上调用零消耗；起算锚为评估建议 A（首次获批线上调用日），正式拍板点保留至 E1 供给批准时追认"}
+{"record_type": "meta", "change": "budget_gate_removed", "decided_by": "owner", "decided_at": "2026-11-10", "hard_cap": null, "wall_clock_weeks": null, "note": "负责人拍板「你不要管预算 移除预算门禁」；DECISIONS 2026-11-10 预算门禁行；跨族裁判/禁同族红线不受影响", "spent_total": "untracked"}
+{"record_type": "call", "date": "2026-11-10", "purpose": "E0 校准跨族裁判盲判 25 题", "model": "gpt-6.1sol", "amount": null, "note": "金额未登记：负责人同日移除预算门禁"}
+{"record_type": "call", "date": "2026-11-11", "purpose": "E0 校准 v2.2 独立裁判盲判 25 题（全新无工具会话）", "model": "gpt-6.1sol", "amount": null, "note": "judge×owner claim 25/25，预登记门 ≥23/25 通过；金额未申报，尽力登记（预算门禁已移除）"}

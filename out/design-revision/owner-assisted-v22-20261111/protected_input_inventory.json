@@ -1,0 +1,41 @@
+{
+  "before": {
+    "experiments/design_revision/calibration_v2_2/v21_frozen_inventory.json": "34dcb47f5022ca1a8c4cd45ecc2b72cef5893462a78555e4715f3a342975723a",
+    "experiments/design_revision/calibration_v2_2/changes_v2_2.json": "6686886472379fa409ff254808a1a89e0cc3e034fba799c7bdd303381c79a55b",
+    "experiments/design_revision/calibration_v2_2/judging_sheet_v2_2.jsonl": "84890489086a479cd630795e6bce85c0266858615d711dbb81b8682c2c560e10",
+    "experiments/design_revision/calibration_v2_2/materials_v2_2_manifest.json": "62d7980039b1809c6f9f539686a7fdd3aa41b3526c317878851e7beb3ae7e40e",
+    "experiments/design_revision/calibration_v2_2/truth_map_v2_2.json": "673004f61f717717a45e3690b7a5863554818e1d9261e27a4b0860df08e2af54",
+    "experiments/design_revision/calibration_v2_2/hint_audit_v2_1.json": "e9c92400c6e15b2ba2674f6e283c9977af32a6e69782fd7cc2ba3b8af90e5c8b",
+    "experiments/design_revision/calibration_v2_2/judge_materials_v2_2.jsonl": "183a56691f427763790ad01ba0b44185b4d0033a5d777b0fcdec08babb06d422",
+    "experiments/design_revision/calibration_v2_2/runtime_checks_v2_2.json": "a190b008657262cd642d275ed8e8c05bf5fd19930e80006fb389ecf3d6d42a9e",
+    "experiments/design_revision/calibration_v2_2/provenance_v2_2.json": "cb1eae47ca10c058a1cd44f3334a564d1b5f6db47c4de6feb07b433ad4329a5c",
+    "experiments/design_revision/calibration_v2_2/gen_materials_v2_2.py": "c5ab7d220bf81f3c912e7f2f3031b2eaa9e11750790fc071cae0ef48d80a23de",
+    "experiments/design_revision/calibration_v2_2/compute_agreement_v2_2.py": "7402c251a1daca9b59d55fefe432a27a626ec98c69e82058e2e6cec4c6511539",
+    "experiments/design_revision/calibration_v2_2/__pycache__/gen_materials_v2_2.cpython-312.pyc": "70e874665d0890fb415af2969f55a59cdd0f9d1d67630f24ee6ced5409db13d8",
+    "experiments/design_revision/calibration_v2_2/__pycache__/compute_agreement_v2_2.cpython-312.pyc": "8380378d9d7b7a7de9465235b2883658728581100135a7501df7a2e1e1474a03",
+    "out/design-revision/owner-blind-v22-20261110/blind_paper_v2_2.md": "4df20a1d1f9f2048d4c592e68f27cfc310ea57454e4f3dacb024b02e50226872",
+    "out/design-revision/owner-blind-v22-20261110/apply_owner_judgments.py": "7136d924d6d2e40031b66a2215c41daa082538a7bf76458865f21c59f4f5f03b",
+    "out/design-revision/owner-blind-v22-20261110/owner_answers_v2_2.jsonl": "c79b3519739dae8abd69b2514407a5e2195bf93b16452ccd781ea94020b37373",
+    "out/design-revision/owner-blind-v22-20261110/owner_blind_manifest.json": "0cc37e4cc117aba124e7910668cd797127b4d096025c58fe75b794cebe23a67c"
+  },
+  "after": {
+    "experiments/design_revision/calibration_v2_2/v21_frozen_inventory.json": "34dcb47f5022ca1a8c4cd45ecc2b72cef5893462a78555e4715f3a342975723a",
+    "experiments/design_revision/calibration_v2_2/changes_v2_2.json": "6686886472379fa409ff254808a1a89e0cc3e034fba799c7bdd303381c79a55b",
+    "experiments/design_revision/calibration_v2_2/judging_sheet_v2_2.jsonl": "84890489086a479cd630795e6bce85c0266858615d711dbb81b8682c2c560e10",
+    "experiments/design_revision/calibration_v2_2/materials_v2_2_manifest.json": "62d7980039b1809c6f9f539686a7fdd3aa41b3526c317878851e7beb3ae7e40e",
+    "experiments/design_revision/calibration_v2_2/truth_map_v2_2.json": "673004f61f717717a45e3690b7a5863554818e1d9261e27a4b0860df08e2af54",
+    "experiments/design_revision/calibration_v2_2/hint_audit_v2_1.json": "e9c92400c6e15b2ba2674f6e283c9977af32a6e69782fd7cc2ba3b8af90e5c8b",
+    "experiments/design_revision/calibration_v2_2/judge_materials_v2_2.jsonl": "183a56691f427763790ad01ba0b44185b4d0033a5d777b0fcdec08babb06d422",
+    "experiments/design_revision/calibration_v2_2/runtime_checks_v2_2.json": "a190b008657262cd642d275ed8e8c05bf5fd19930e80006fb389ecf3d6d42a9e",
+    "experiments/design_revision/calibration_v2_2/provenance_v2_2.json": "cb1eae47ca10c058a1cd44f3334a564d1b5f6db47c4de6feb07b433ad4329a5c",
+    "experiments/design_revision/calibration_v2_2/gen_materials_v2_2.py": "c5ab7d220bf81f3c912e7f2f3031b2eaa9e11750790fc071cae0ef48d80a23de",
+    "experiments/design_revision/calibration_v2_2/compute_agreement_v2_2.py": "7402c251a1daca9b59d55fefe432a27a626ec98c69e82058e2e6cec4c6511539",
+    "experiments/design_revision/calibration_v2_2/__pycache__/gen_materials_v2_2.cpython-312.pyc": "70e874665d0890fb415af2969f55a59cdd0f9d1d67630f24ee6ced5409db13d8",
+    "experiments/design_revision/calibration_v2_2/__pycache__/compute_agreement_v2_2.cpython-312.pyc": "8380378d9d7b7a7de9465235b2883658728581100135a7501df7a2e1e1474a03",
+    "out/design-revision/owner-blind-v22-20261110/blind_paper_v2_2.md": "4df20a1d1f9f2048d4c592e68f27cfc310ea57454e4f3dacb024b02e50226872",
+    "out/design-revision/owner-blind-v22-20261110/apply_owner_judgments.py": "7136d924d6d2e40031b66a2215c41daa082538a7bf76458865f21c59f4f5f03b",
+    "out/design-revision/owner-blind-v22-20261110/owner_answers_v2_2.jsonl": "c79b3519739dae8abd69b2514407a5e2195bf93b16452ccd781ea94020b37373",
+    "out/design-revision/owner-blind-v22-20261110/owner_blind_manifest.json": "0cc37e4cc117aba124e7910668cd797127b4d096025c58fe75b794cebe23a67c"
+  },
+  "unchanged": true
+}

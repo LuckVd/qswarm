@@ -1,0 +1,259 @@
+{
+  "items": {
+    "E0C-BANK-SEED-0001": {
+      "blind_id": "J21-84b636f6a449",
+      "claim_evidence": "formdata.py:FormData.add_field/_gen_form_data：参数委托给未展示的 payload 和 Content-Disposition 序列化器，不能确认其换行转义。",
+      "design_truth_claim": "inconclusive",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-782464b12c",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0001"
+    },
+    "E0C-BANK-SEED-0002": {
+      "blind_id": "J21-a493ce160d06",
+      "claim_evidence": "ImageShow.py:DisplayViewer/XVViewer：字符串路径用 quote(title)，实际 show_file 将标题作为 argv 元素传给未启用 shell 的 Popen。",
+      "design_truth_claim": "refuted",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-39ce24c9da",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0002"
+    },
+    "E0C-BANK-SEED-0003": {
+      "blind_id": "J21-702eebb118a0",
+      "claim_evidence": "source.java:doPost：可见 sh -c 拼接意图，但 java.net.v543944 与 v2ae670 定义缺失，不能默修后断言给定版本运行利用。",
+      "design_truth_claim": "inconclusive",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-175aef3548",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0003"
+    },
+    "E0C-BANK-SEED-0004": {
+      "blind_id": "J21-8d46bc0e7d34",
+      "claim_evidence": "source.java:doPost：p 在局部声明前使用，实际执行命令由未展示 helper 生成；env 数组本身不是完整命令注入证明。",
+      "design_truth_claim": "inconclusive",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-5ce9d29773",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0004"
+    },
+    "E0C-BANK-SEED-0049": {
+      "blind_id": "J21-c66fd371176f",
+      "claim_evidence": "security.py:safe_join：设备集合匹配整个 filename.partition('.')[0]，sub/NUL 不命中且无其他拒绝条件，最后返回 a/sub/NUL；结论仅为 Windows 设备过滤契约。",
+      "design_truth_claim": "real",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-457903c1e3",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0049"
+    },
+    "E0C-BANK-SEED-0050": {
+      "blind_id": "J21-4c5de811aa3c",
+      "claim_evidence": "source.cpp:action：形参传入 fopen(wb+)，但 socket 输入、调用方、类声明和目录约束未展示，不能闭合题目主张。",
+      "design_truth_claim": "inconclusive",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-a168acc030",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0050"
+    },
+    "E0C-BANK-SEED-0051": {
+      "blind_id": "J21-308627b9044a",
+      "claim_evidence": "source.cpp:action：形参传入 ofstream.open，close 不作路径校验，但环境输入和调用链未展示，不能闭合题目主张。",
+      "design_truth_claim": "inconclusive",
+      "design_truth_poc": null,
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-34f3fca613",
+      "poc_evidence": "未设置 PoC 问题；这不是 ineffective、not_runnable 或 not_applicable 的运行标签。",
+      "root_cause_group": "snapshot-0051"
+    },
+    "E0C-INJ-01": {
+      "blind_id": "J21-4beeca843c16",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "effective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-59e6f3a808",
+      "poc_evidence": "driver_context.driver_source：实际调用目标，观察其越界副作用或内容。",
+      "root_cause_group": "fixture-inj-01"
+    },
+    "E0C-INJ-02": {
+      "blind_id": "J21-dd949312d81a",
+      "claim_evidence": "target_source:main：使用参数列表而不启用 shell，或 realpath 后核验根目录边界。",
+      "design_truth_claim": "refuted",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-72b4d783a2",
+      "poc_evidence": "driver_context.driver_source：目标将元字符视为参数数据或拒绝根外路径。",
+      "root_cause_group": "fixture-inj-02"
+    },
+    "E0C-INJ-03": {
+      "blind_id": "J21-d75d053c7b46",
+      "claim_evidence": "target_source:main：只有打印，没有相关命令执行/文件读取。",
+      "design_truth_claim": "refuted",
+      "design_truth_poc": "not_applicable",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-4583b65f97",
+      "poc_evidence": "driver_context.driver_source：目标只有打印，没有本题相关操作。",
+      "root_cause_group": "fixture-inj-03"
+    },
+    "E0C-INJ-04": {
+      "blind_id": "J21-fd0d3fe1e4f4",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-18f8f3500a",
+      "poc_evidence": "driver_context.driver_source：本次环境明确 QSWARM_FEATURE_FLAG=off，分支不执行。",
+      "root_cause_group": "fixture-inj-04"
+    },
+    "E0C-INJ-05": {
+      "blind_id": "J21-8a6bb92f8458",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "not_runnable",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-bc4871ca25",
+      "poc_evidence": "driver_context.driver_source：本次隔离环境不可导入 case_dependency，目标启动失败；main 中真实操作仍在静态主张范围。",
+      "root_cause_group": "fixture-inj-05"
+    },
+    "E0C-INJ-06": {
+      "blind_id": "J21-8ddac447efd1",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-f4a925bd51",
+      "poc_evidence": "driver_context.driver_source：目标已启动，但固定30秒等待超过驱动的0.5秒子进程限额，不能推导无漏洞。",
+      "root_cause_group": "fixture-inj-06"
+    },
+    "E0C-INJ-07": {
+      "blind_id": "J21-fe572671ce7d",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-638001a6ec",
+      "poc_evidence": "driver_context.driver_source：驱动仅输出 ok=true，没有调用目标。",
+      "root_cause_group": "fixture-inj-01"
+    },
+    "E0C-INJ-08": {
+      "blind_id": "J21-9bea1b2f5b7c",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-74e9d6cb80",
+      "poc_evidence": "driver_context.driver_source：驱动只创建 prepared.txt，没有调用目标。",
+      "root_cause_group": "fixture-inj-01"
+    },
+    "E0C-INJ-09": {
+      "blind_id": "J21-8e06737156b3",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-db37d27953",
+      "poc_evidence": "driver_context.driver_source：驱动调用目标但仅给普通参数或合法根内路径。",
+      "root_cause_group": "fixture-inj-01"
+    },
+    "E0C-PAT-01": {
+      "blind_id": "J21-e5cd09291a73",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "effective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-6fb0b5187d",
+      "poc_evidence": "driver_context.driver_source：实际调用目标，观察其越界副作用或内容。",
+      "root_cause_group": "fixture-pat-01"
+    },
+    "E0C-PAT-02": {
+      "blind_id": "J21-925c9826f4ca",
+      "claim_evidence": "target_source:main：使用参数列表而不启用 shell，或 realpath 后核验根目录边界。",
+      "design_truth_claim": "refuted",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-4085dc37bb",
+      "poc_evidence": "driver_context.driver_source：目标将元字符视为参数数据或拒绝根外路径。",
+      "root_cause_group": "fixture-pat-02"
+    },
+    "E0C-PAT-03": {
+      "blind_id": "J21-391e8a63ae6c",
+      "claim_evidence": "target_source:main：只有打印，没有相关命令执行/文件读取。",
+      "design_truth_claim": "refuted",
+      "design_truth_poc": "not_applicable",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-9f7771cb39",
+      "poc_evidence": "driver_context.driver_source：目标只有打印，没有本题相关操作。",
+      "root_cause_group": "fixture-pat-03"
+    },
+    "E0C-PAT-04": {
+      "blind_id": "J21-1a0cac59da95",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-c9916328af",
+      "poc_evidence": "driver_context.driver_source：本次环境明确 QSWARM_FEATURE_FLAG=off，分支不执行。",
+      "root_cause_group": "fixture-pat-04"
+    },
+    "E0C-PAT-05": {
+      "blind_id": "J21-e133078a4b20",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "not_runnable",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-71a44b3ea7",
+      "poc_evidence": "driver_context.driver_source：本次隔离环境不可导入 case_dependency，目标启动失败；main 中真实操作仍在静态主张范围。",
+      "root_cause_group": "fixture-pat-05"
+    },
+    "E0C-PAT-06": {
+      "blind_id": "J21-f3ed82fe52d1",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-fb2ac1c3ee",
+      "poc_evidence": "driver_context.driver_source：目标已启动，但固定30秒等待超过驱动的0.5秒子进程限额，不能推导无漏洞。",
+      "root_cause_group": "fixture-pat-06"
+    },
+    "E0C-PAT-07": {
+      "blind_id": "J21-89623551b3e2",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-2a367f802f",
+      "poc_evidence": "driver_context.driver_source：驱动仅输出 ok=true，没有调用目标。",
+      "root_cause_group": "fixture-pat-01"
+    },
+    "E0C-PAT-08": {
+      "blind_id": "J21-5946a68863ac",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-269bd8f329",
+      "poc_evidence": "driver_context.driver_source：驱动只创建 prepared.txt，没有调用目标。",
+      "root_cause_group": "fixture-pat-01"
+    },
+    "E0C-PAT-09": {
+      "blind_id": "J21-b28932088be6",
+      "claim_evidence": "target_source:main：受控参数未经边界保护进入命令字符串或文件打开；题面已声明静态评估配置，启动条件不消除这段逻辑。",
+      "design_truth_claim": "real",
+      "design_truth_poc": "ineffective",
+      "label_provenance": "ai_authored_design_draft_not_independent_human_truth",
+      "old_blind_id": "J2-1813219aca",
+      "poc_evidence": "driver_context.driver_source：驱动调用目标但仅给普通参数或合法根内路径。",
+      "root_cause_group": "fixture-pat-01"
+    }
+  },
+  "label_provenance": "AI-authored design and local trusted-fixture checks; not independent gold; user confirmation and independent judge required anew.",
+  "label_status": "draft_requires_owner_confirmation",
+  "n_items": 25,
+  "n_root_cause_groups": 19,
+  "version": "e0-cal-v2.1"
+}

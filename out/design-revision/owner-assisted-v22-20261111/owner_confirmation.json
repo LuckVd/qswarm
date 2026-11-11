@@ -1,0 +1,472 @@
+{
+  "date": "2026-11-11",
+  "version": "e0-cal-v2.2",
+  "label_provenance": "human_reviewed_ai_assisted",
+  "owner_face_status": "accepted_by_explicit_owner_instruction",
+  "human_review_completion_basis": "owner explicitly authorized treating AI-assisted review as human-reviewed complete",
+  "owner_quote": "可以 按照AI辅助复核 并且可以认为是人复核完成的",
+  "preceding_disclosure": "AI初判＋负责人复核确认；不登记为负责人独立盲判；不自动宣布校准通过，独立裁判轮仍保留。",
+  "authorization_timing": "before this review was generated",
+  "post_result_item_by_item_human_inspection_observed": false,
+  "independent_human_blind_review": false,
+  "independent_judge_run_performed": false,
+  "reviewer": "current construction AI (gpt-6.1-sol) with same-process auxiliary review; not an independent judge",
+  "method": "static review of public paper and driver context; no target execution, network, or paid judge call",
+  "decisions_sha256_before_design_comparison": "931c74b41cb0539808ece90ab7e5f64865c70d2be5c5f42829805e48f2a83db8",
+  "answers_sha256": "9e2365c368f8a4102b089c1acb713e34e47f52c1c662bd325bc9296aa38af6c2",
+  "derived_sheet_sha256": "ae599e30ce1d1c548e007634e5fa36f26211203b01c729d0706c312f89b4e685",
+  "distribution": {
+    "claim": {
+      "real": 15,
+      "inconclusive": 5,
+      "refuted": 5
+    },
+    "poc": {
+      "ineffective": 12,
+      "effective": 2,
+      "not_asked": 7,
+      "not_runnable": 2,
+      "not_applicable": 2
+    }
+  },
+  "coverage": {
+    "claim": "25/25",
+    "poc": "18/18",
+    "claim_only_null": "7/7"
+  },
+  "calibration_gate": {
+    "passed": false,
+    "status": "pending_independent_judge_and_preregistered_gate",
+    "reasons": [
+      "independent_v2_2_judge_missing",
+      "new_gate_not_preregistered",
+      "AI-assisted agreement is not independent validation"
+    ]
+  },
+  "raw_scorer_caveat": "Unmodified scorer hardcodes pending_owner_confirmation and draft labels. Owner acceptance is separately attributed here; raw scorer output is preserved, not patched or passed off as updated governance state.",
+  "descriptive_design_comparison": {
+    "claim": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 25,
+      "answered_overlap": 25,
+      "missing_overlap": 0,
+      "agreed": 25,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 19,
+      "answered_groups": 19,
+      "group_all_correct": 19,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0001": {
+          "members": [
+            "E0C-BANK-SEED-0001"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0002": {
+          "members": [
+            "E0C-BANK-SEED-0002"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0003": {
+          "members": [
+            "E0C-BANK-SEED-0003"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0004": {
+          "members": [
+            "E0C-BANK-SEED-0004"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0049": {
+          "members": [
+            "E0C-BANK-SEED-0049"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0050": {
+          "members": [
+            "E0C-BANK-SEED-0050"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0051": {
+          "members": [
+            "E0C-BANK-SEED-0051"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    },
+    "poc": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 18,
+      "answered_overlap": 18,
+      "missing_overlap": 0,
+      "agreed": 18,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 12,
+      "answered_groups": 12,
+      "group_all_correct": 12,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    }
+  },
+  "frozen_originals_unchanged": true
+}

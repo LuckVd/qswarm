@@ -1,0 +1,1783 @@
+{
+  "version": "e0-cal-v2.2",
+  "label_status": "draft_requires_owner_confirmation",
+  "status": "pending_owner_confirmation",
+  "calibration_gate": {
+    "passed": false,
+    "status": "pending_owner_confirmation",
+    "reasons": [
+      "draft_design_labels",
+      "owner_confirmation_not_verified",
+      "genuinely_independent_judge_not_verified"
+    ],
+    "automatic_score_threshold": null
+  },
+  "counts": {
+    "items": 25,
+    "claim_questions": 25,
+    "poc_questions": 18,
+    "claim_only_items": 7,
+    "root_cause_groups": 19
+  },
+  "interpretation": "Descriptive agreement with provisional design labels, not calibration approval. Items sharing a root_cause_group are not independent roots. Accuracy uses answered overlap; group_macro_accuracy equally weights groups with overlap; group_macro_full_denominator_accuracy and group_all_correct_rate retain all expected groups and give missing answers no credit.",
+  "per_item": [
+    {
+      "item_id": "E0C-BANK-SEED-0001",
+      "blind_id": "J22-478fc6082c58",
+      "root_cause_group": "snapshot-0001",
+      "claim": {
+        "expected": true,
+        "owner": "inconclusive",
+        "judge": "inconclusive",
+        "design_truth": "inconclusive",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0002",
+      "blind_id": "J22-0e99fabd2b55",
+      "root_cause_group": "snapshot-0002",
+      "claim": {
+        "expected": true,
+        "owner": "refuted",
+        "judge": "refuted",
+        "design_truth": "refuted",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0003",
+      "blind_id": "J22-89ed7b6399ee",
+      "root_cause_group": "snapshot-0003",
+      "claim": {
+        "expected": true,
+        "owner": "inconclusive",
+        "judge": "inconclusive",
+        "design_truth": "inconclusive",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0004",
+      "blind_id": "J22-77b12d0c87df",
+      "root_cause_group": "snapshot-0004",
+      "claim": {
+        "expected": true,
+        "owner": "inconclusive",
+        "judge": "inconclusive",
+        "design_truth": "inconclusive",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0049",
+      "blind_id": "J22-844c49773a36",
+      "root_cause_group": "snapshot-0049",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0050",
+      "blind_id": "J22-60cc86fb6ec0",
+      "root_cause_group": "snapshot-0050",
+      "claim": {
+        "expected": true,
+        "owner": "inconclusive",
+        "judge": "inconclusive",
+        "design_truth": "inconclusive",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0051",
+      "blind_id": "J22-5e8bcf28d70d",
+      "root_cause_group": "snapshot-0051",
+      "claim": {
+        "expected": true,
+        "owner": "inconclusive",
+        "judge": "inconclusive",
+        "design_truth": "inconclusive",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": false,
+        "owner": null,
+        "judge": null,
+        "design_truth": null,
+        "status": "not_asked"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-01",
+      "blind_id": "J22-904022e828a7",
+      "root_cause_group": "fixture-inj-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "effective",
+        "judge": "effective",
+        "design_truth": "effective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-02",
+      "blind_id": "J22-4db9bc6f6078",
+      "root_cause_group": "fixture-inj-02",
+      "claim": {
+        "expected": true,
+        "owner": "refuted",
+        "judge": "refuted",
+        "design_truth": "refuted",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-03",
+      "blind_id": "J22-d3a5404e8a88",
+      "root_cause_group": "fixture-inj-03",
+      "claim": {
+        "expected": true,
+        "owner": "refuted",
+        "judge": "refuted",
+        "design_truth": "refuted",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "not_applicable",
+        "judge": "not_applicable",
+        "design_truth": "not_applicable",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-04",
+      "blind_id": "J22-c9fc64e74e5e",
+      "root_cause_group": "fixture-inj-04",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-05",
+      "blind_id": "J22-a10e12215e1b",
+      "root_cause_group": "fixture-inj-05",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "not_runnable",
+        "judge": "not_runnable",
+        "design_truth": "not_runnable",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-06",
+      "blind_id": "J22-11160cd1bd26",
+      "root_cause_group": "fixture-inj-06",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-07",
+      "blind_id": "J22-253b14910e43",
+      "root_cause_group": "fixture-inj-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-08",
+      "blind_id": "J22-eea48a82d450",
+      "root_cause_group": "fixture-inj-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-INJ-09",
+      "blind_id": "J22-20c910a6be06",
+      "root_cause_group": "fixture-inj-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-01",
+      "blind_id": "J22-605f80cca520",
+      "root_cause_group": "fixture-pat-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "effective",
+        "judge": "effective",
+        "design_truth": "effective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-02",
+      "blind_id": "J22-b389e022c980",
+      "root_cause_group": "fixture-pat-02",
+      "claim": {
+        "expected": true,
+        "owner": "refuted",
+        "judge": "refuted",
+        "design_truth": "refuted",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-03",
+      "blind_id": "J22-36e465e626bf",
+      "root_cause_group": "fixture-pat-03",
+      "claim": {
+        "expected": true,
+        "owner": "refuted",
+        "judge": "refuted",
+        "design_truth": "refuted",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "not_applicable",
+        "judge": "not_applicable",
+        "design_truth": "not_applicable",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-04",
+      "blind_id": "J22-d5663c5570c4",
+      "root_cause_group": "fixture-pat-04",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-05",
+      "blind_id": "J22-716d146320ea",
+      "root_cause_group": "fixture-pat-05",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "not_runnable",
+        "judge": "not_runnable",
+        "design_truth": "not_runnable",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-06",
+      "blind_id": "J22-6bd66d19cd1a",
+      "root_cause_group": "fixture-pat-06",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-07",
+      "blind_id": "J22-1e9c9cd45dd9",
+      "root_cause_group": "fixture-pat-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-08",
+      "blind_id": "J22-9687f10676a9",
+      "root_cause_group": "fixture-pat-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    },
+    {
+      "item_id": "E0C-PAT-09",
+      "blind_id": "J22-64246acf8fb9",
+      "root_cause_group": "fixture-pat-01",
+      "claim": {
+        "expected": true,
+        "owner": "real",
+        "judge": "real",
+        "design_truth": "real",
+        "status": "complete"
+      },
+      "poc": {
+        "expected": true,
+        "owner": "ineffective",
+        "judge": "ineffective",
+        "design_truth": "ineffective",
+        "status": "complete"
+      }
+    }
+  ],
+  "claim": {
+    "status": "complete",
+    "expected": 25,
+    "owner_answered": 25,
+    "judge_answered": 25,
+    "owner_coverage": 1.0,
+    "judge_coverage": 1.0,
+    "owner_vs_truth": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 25,
+      "answered_overlap": 25,
+      "missing_overlap": 0,
+      "agreed": 25,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 19,
+      "answered_groups": 19,
+      "group_all_correct": 19,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0001": {
+          "members": [
+            "E0C-BANK-SEED-0001"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0002": {
+          "members": [
+            "E0C-BANK-SEED-0002"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0003": {
+          "members": [
+            "E0C-BANK-SEED-0003"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0004": {
+          "members": [
+            "E0C-BANK-SEED-0004"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0049": {
+          "members": [
+            "E0C-BANK-SEED-0049"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0050": {
+          "members": [
+            "E0C-BANK-SEED-0050"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0051": {
+          "members": [
+            "E0C-BANK-SEED-0051"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    },
+    "judge_vs_truth": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 25,
+      "answered_overlap": 25,
+      "missing_overlap": 0,
+      "agreed": 25,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 19,
+      "answered_groups": 19,
+      "group_all_correct": 19,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0001": {
+          "members": [
+            "E0C-BANK-SEED-0001"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0002": {
+          "members": [
+            "E0C-BANK-SEED-0002"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0003": {
+          "members": [
+            "E0C-BANK-SEED-0003"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0004": {
+          "members": [
+            "E0C-BANK-SEED-0004"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0049": {
+          "members": [
+            "E0C-BANK-SEED-0049"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0050": {
+          "members": [
+            "E0C-BANK-SEED-0050"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0051": {
+          "members": [
+            "E0C-BANK-SEED-0051"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    },
+    "judge_vs_owner": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 25,
+      "answered_overlap": 25,
+      "missing_overlap": 0,
+      "agreed": 25,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 19,
+      "answered_groups": 19,
+      "group_all_correct": 19,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0001": {
+          "members": [
+            "E0C-BANK-SEED-0001"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0002": {
+          "members": [
+            "E0C-BANK-SEED-0002"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0003": {
+          "members": [
+            "E0C-BANK-SEED-0003"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0004": {
+          "members": [
+            "E0C-BANK-SEED-0004"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0049": {
+          "members": [
+            "E0C-BANK-SEED-0049"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0050": {
+          "members": [
+            "E0C-BANK-SEED-0050"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "snapshot-0051": {
+          "members": [
+            "E0C-BANK-SEED-0051"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    }
+  },
+  "poc": {
+    "status": "complete",
+    "expected": 18,
+    "owner_answered": 18,
+    "judge_answered": 18,
+    "owner_coverage": 1.0,
+    "judge_coverage": 1.0,
+    "owner_vs_truth": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 18,
+      "answered_overlap": 18,
+      "missing_overlap": 0,
+      "agreed": 18,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 12,
+      "answered_groups": 12,
+      "group_all_correct": 12,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    },
+    "judge_vs_truth": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 18,
+      "answered_overlap": 18,
+      "missing_overlap": 0,
+      "agreed": 18,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 12,
+      "answered_groups": 12,
+      "group_all_correct": 12,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    },
+    "judge_vs_owner": {
+      "status": "complete",
+      "estimate_status": "estimable",
+      "expected": 18,
+      "answered_overlap": 18,
+      "missing_overlap": 0,
+      "agreed": 18,
+      "accuracy": 1.0,
+      "coverage": 1.0,
+      "full_denominator_accuracy": 1.0,
+      "expected_groups": 12,
+      "answered_groups": 12,
+      "group_all_correct": 12,
+      "group_all_correct_rate": 1.0,
+      "group_macro_accuracy": 1.0,
+      "group_macro_full_denominator_accuracy": 1.0,
+      "per_group": {
+        "fixture-inj-01": {
+          "members": [
+            "E0C-INJ-01",
+            "E0C-INJ-07",
+            "E0C-INJ-08",
+            "E0C-INJ-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-02": {
+          "members": [
+            "E0C-INJ-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-03": {
+          "members": [
+            "E0C-INJ-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-04": {
+          "members": [
+            "E0C-INJ-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-05": {
+          "members": [
+            "E0C-INJ-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-inj-06": {
+          "members": [
+            "E0C-INJ-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-01": {
+          "members": [
+            "E0C-PAT-01",
+            "E0C-PAT-07",
+            "E0C-PAT-08",
+            "E0C-PAT-09"
+          ],
+          "expected": 4,
+          "answered_overlap": 4,
+          "agreed": 4,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-02": {
+          "members": [
+            "E0C-PAT-02"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-03": {
+          "members": [
+            "E0C-PAT-03"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-04": {
+          "members": [
+            "E0C-PAT-04"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-05": {
+          "members": [
+            "E0C-PAT-05"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        },
+        "fixture-pat-06": {
+          "members": [
+            "E0C-PAT-06"
+          ],
+          "expected": 1,
+          "answered_overlap": 1,
+          "agreed": 1,
+          "coverage": 1.0,
+          "accuracy": 1.0,
+          "full_denominator_accuracy": 1.0,
+          "all_correct": true
+        }
+      }
+    }
+  },
+  "scoring_status": "complete"
+}

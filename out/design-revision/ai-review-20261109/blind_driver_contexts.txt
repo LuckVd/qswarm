@@ -1,0 +1,150 @@
+row 1 blind_id=J2-59e6f3a808
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 2 blind_id=J2-72b4d783a2
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 3 blind_id=J2-4583b65f97
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 4 blind_id=J2-18f8f3500a
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 5 blind_id=J2-bc4871ca25
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 6 blind_id=J2-f4a925bd51
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 7 blind_id=J2-638001a6ec
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 8 blind_id=J2-74e9d6cb80
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 9 blind_id=J2-db37d27953
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 10 blind_id=J2-6fb0b5187d
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 11 blind_id=J2-4085dc37bb
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 12 blind_id=J2-9f7771cb39
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 13 blind_id=J2-c9916328af
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 14 blind_id=J2-71a44b3ea7
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 15 blind_id=J2-fb2ac1c3ee
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 16 blind_id=J2-2a367f802f
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 17 blind_id=J2-269bd8f329
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 18 blind_id=J2-1813219aca
+driver_context: "该程序曾以下列方式被驱动执行：以命令行参数形式传入一段包含特殊字符的输入（payload 原文见下），并观察其行为。"
+lang: null
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: "另问（独立判定，不影响上一问）：文中描述的驱动输入若执行，能否有效触发上述缺陷？（effective / ineffective / not_applicable / not_runnable）"
+
+row 19 blind_id=J2-782464b12c
+driver_context: null
+lang: "python"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 20 blind_id=J2-39ce24c9da
+driver_context: null
+lang: "python"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 21 blind_id=J2-457903c1e3
+driver_context: null
+lang: "python"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 22 blind_id=J2-175aef3548
+driver_context: null
+lang: "java"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 23 blind_id=J2-5ce9d29773
+driver_context: null
+lang: "java"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 24 blind_id=J2-a168acc030
+driver_context: null
+lang: "c"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+
+row 25 blind_id=J2-34f3fca613
+driver_context: null
+lang: "c"
+question_claim: "读代码：该程序是否存在题目主张的安全缺陷？（real=存在 / refuted=不存在 / inconclusive=无法判定）"
+question_poc: null
+

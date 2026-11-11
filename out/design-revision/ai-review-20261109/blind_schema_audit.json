@@ -1,0 +1,533 @@
+{
+  "items": 25,
+  "blind_items": 25,
+  "sheet_keys": [
+    {
+      "id": "E0C-INJ-01",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-02",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-03",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-04",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-05",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-06",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-07",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-08",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-INJ-09",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-01",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-02",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-03",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-04",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-05",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-06",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-07",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-08",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-PAT-09",
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0001",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0002",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0049",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0003",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0004",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0050",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "id": "E0C-BANK-SEED-0051",
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    }
+  ],
+  "blind_structure": [
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "lang",
+        "target_source"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    },
+    {
+      "top_keys": [
+        "blind_id",
+        "driver_context",
+        "lang",
+        "materials",
+        "question_claim",
+        "question_poc"
+      ],
+      "material_keys": [
+        "snapshot_files",
+        "upstream"
+      ]
+    }
+  ]
+}

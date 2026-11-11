@@ -1,0 +1,40 @@
+{
+  "audited_artifact": "judge_materials_v2_1.jsonl",
+  "items": {
+    "J21-308627b9044a": {
+      "CWE23_": 3,
+      "CWE23_Relative_Path_Traversal__char_environment_ofstream_81": 3,
+      "CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad": 1,
+      "OMITBAD": 1,
+      "Relative_Path_Traversal": 3
+    },
+    "J21-4c5de811aa3c": {
+      "CWE23_": 2,
+      "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81": 2,
+      "OMITBAD": 1,
+      "Relative_Path_Traversal": 2
+    },
+    "J21-702eebb118a0": {
+      " executing cmdi - ": 1,
+      "/cmdi-00/": 1,
+      "cmdi": 2
+    },
+    "J21-8d46bc0e7d34": {
+      " executing cmdi - ": 1,
+      "/cmdi-00/": 1,
+      "cmdi": 2
+    }
+  },
+  "note": "v2.1 展示本中的族别提示残留量化（v2.2 的中性化依据）；getInsecureOSCommandString 属上游 API 命名按溯源豁免，不计入族别提示。",
+  "tokens": [
+    " executing cmdi - ",
+    "/cmdi-00/",
+    "CWE23_",
+    "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81",
+    "CWE23_Relative_Path_Traversal__char_environment_ofstream_81",
+    "CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad",
+    "OMITBAD",
+    "Relative_Path_Traversal",
+    "cmdi"
+  ]
+}

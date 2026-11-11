@@ -1,0 +1,51 @@
+[
+  {
+    "item_id": "E0C-BANK-SEED-0001",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0002",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0049",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0003",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0004",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0050",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  },
+  {
+    "item_id": "E0C-BANK-SEED-0051",
+    "materials_fields": [
+      "snapshot_files",
+      "upstream"
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "source_sha256": {
+    "experiments/design_revision/calibration_v2/judging_sheet_v2.jsonl": "eb2871805269bf835d773244d3e15c8d17685da3c8cd37d13ce37f097a7c266b",
+    "experiments/design_revision/calibration_v2/judge_materials_v2.jsonl": "64960a6e6c5463839afbd57177593235d7019559a02a5c48c9779f0aea41ee37"
+  },
+  "owner_fields_all_empty": true,
+  "item_count": 25,
+  "unique_item_ids": 25,
+  "fixture_poc_drivers_present": 0,
+  "bank_question_poc_null": 7,
+  "exact_source_duplicate_groups": [
+    {
+      "sha256": "a75ea1f7f533cd2a6d31da962f86a351c7e61e5b2f7aa84540fccb0355f2eede",
+      "items": [
+        "E0C-INJ-01",
+        "E0C-INJ-07",
+        "E0C-INJ-08",
+        "E0C-INJ-09"
+      ]
+    },
+    {
+      "sha256": "d7221b72db666a08d749a0c08e1afbe595c3d4512a0f2edfdf6f3b73781a2909",
+      "items": [
+        "E0C-INJ-06",
+        "E0C-PAT-06"
+      ]
+    },
+    {
+      "sha256": "3cb0a77e0e4c3da3347ed46739a79a00fa386dc830f644bf9eb91a375b0a1766",
+      "items": [
+        "E0C-PAT-01",
+        "E0C-PAT-07",
+        "E0C-PAT-08",
+        "E0C-PAT-09"
+      ]
+    }
+  ],
+  "blind_sheet_materials_same_in_current_row_order": true,
+  "pairing_policy": "Only attach blind driver context after exact material + question equality at each row; do not read truth mapping."
+}

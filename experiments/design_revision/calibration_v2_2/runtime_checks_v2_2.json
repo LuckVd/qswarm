@@ -1,0 +1,378 @@
+{
+  "interpretation": "trusted local fixture consistency only; not independent human truth or arbitrary-code sandbox evidence",
+  "n_executed": 18,
+  "problems": [],
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "results": [
+    {
+      "blind_id": "J22-253b14910e43",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "ok": true
+        }
+      ],
+      "target_invocations": 0,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-605f80cca520",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": true,
+      "legal_control_ok": true,
+      "observed_poc_verdict": "effective",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "PUBLIC_CONTENT_612a\n",
+          "timed_out": false
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "OBSERVATION_73ab901c\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-1e9c9cd45dd9",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "ok": true
+        }
+      ],
+      "target_invocations": 0,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-c9fc64e74e5e",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "processed: ; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-716d146320ea",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "not_runnable",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 1,
+          "stderr": "Traceback (most recent call last):\n  File \"{case_root}/target.py\", line 1, in <module>\n    import case_dependency\nModuleNotFoundError: No module named 'case_dependency'\n",
+          "stdout": "",
+          "timed_out": false
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": 1,
+          "stderr": "Traceback (most recent call last):\n  File \"{case_root}/target.py\", line 1, in <module>\n    import case_dependency\nModuleNotFoundError: No module named 'case_dependency'\n",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-20c910a6be06",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "normal-argument",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "hello normal-argument\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-9687f10676a9",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "prepared": true
+        }
+      ],
+      "target_invocations": 0,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-eea48a82d450",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "prepared": true
+        }
+      ],
+      "target_invocations": 0,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-36e465e626bf",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "not_applicable",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "requested path: ['allowed.txt']\n",
+          "timed_out": false
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "requested path: ['../secret.txt']\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-a10e12215e1b",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "not_runnable",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": 1,
+          "stderr": "Traceback (most recent call last):\n  File \"{case_root}/target.py\", line 1, in <module>\n    import case_dependency\nModuleNotFoundError: No module named 'case_dependency'\n",
+          "stdout": "",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-64246acf8fb9",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": true,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "PUBLIC_CONTENT_612a\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-d3a5404e8a88",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "not_applicable",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "requested: [\"; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'\"]\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-6bd66d19cd1a",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": null,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": true
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": null,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": true
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": true
+    },
+    {
+      "blind_id": "J22-b389e022c980",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": true,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "PUBLIC_CONTENT_612a\n",
+          "timed_out": false
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": 2,
+          "stderr": "",
+          "stdout": "rejected: outside serve root\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-4db9bc6f6078",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "hello ; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-d5663c5570c4",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": false,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "allowed.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "processed: allowed.txt\n",
+          "timed_out": false
+        },
+        {
+          "argument": "../secret.txt",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "processed: ../secret.txt\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 2,
+      "timed_out": false
+    },
+    {
+      "blind_id": "J22-11160cd1bd26",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": false,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "ineffective",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": null,
+          "stderr": "",
+          "stdout": "",
+          "timed_out": true
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": true
+    },
+    {
+      "blind_id": "J22-904022e828a7",
+      "driver_returncode": 0,
+      "driver_stderr": "",
+      "effect_observed": true,
+      "legal_control_ok": null,
+      "observed_poc_verdict": "effective",
+      "records": [
+        {
+          "argument": "; printf %s OBSERVATION_73ab901c > '{case_root}/observation.txt'",
+          "returncode": 0,
+          "stderr": "",
+          "stdout": "hello\n",
+          "timed_out": false
+        }
+      ],
+      "target_invocations": 1,
+      "timed_out": false
+    }
+  ],
+  "status": "pass",
+  "version": "e0-cal-v2.2"
+}

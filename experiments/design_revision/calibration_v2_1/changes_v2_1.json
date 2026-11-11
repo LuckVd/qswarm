@@ -1,0 +1,205 @@
+{
+  "items": [
+    {
+      "blind_id": "J21-4beeca843c16",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-01",
+      "new_question_sha256": "5e77b62641888a309f647e0c419574078113cdec51ebc1d8830035c8e99499f1",
+      "old_blind_id": "J2-59e6f3a808",
+      "old_question_sha256": "ad89c9533c9699ae8fb13f61a622e9bade1a95a146abd633ac2526ea4fc4eee0"
+    },
+    {
+      "blind_id": "J21-dd949312d81a",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-02",
+      "new_question_sha256": "f072f184d757f41ee0585af69472e8270f4c07a91038f2af0650d12c46a190ec",
+      "old_blind_id": "J2-72b4d783a2",
+      "old_question_sha256": "8ed7bfc789a4e50b4082781c2d05165b8c42af0d030bb25c317cb18b6bb87f55"
+    },
+    {
+      "blind_id": "J21-d75d053c7b46",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-03",
+      "new_question_sha256": "ddea7fc7ac25d3e9e092527b6d717b426e5018c3f19505408764b21f4c8623e0",
+      "old_blind_id": "J2-4583b65f97",
+      "old_question_sha256": "df97310d2878a2afd042ef4e5a9d7579342bdc45402ab762beb679933ff67d3a"
+    },
+    {
+      "blind_id": "J21-fd0d3fe1e4f4",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-04",
+      "new_question_sha256": "2f24ef04440b24cdf8ed5321507ab657f14110b19629710efdd92e2c4c681195",
+      "old_blind_id": "J2-18f8f3500a",
+      "old_question_sha256": "d60cc411017bfd8786a42d47adcaebc4341c987c84115370169c4ae4376f0e36"
+    },
+    {
+      "blind_id": "J21-8a6bb92f8458",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。替换旧 import/print 或 sleep/print 替身：在导入或休眠之后保留实际主逻辑；这不是旧题源码的等价清理，不能沿用旧判定。",
+      "item_id": "E0C-INJ-05",
+      "new_question_sha256": "c7a411555b4182735bbe71b7607ca8f8c843193025a49a6668a7851199348447",
+      "old_blind_id": "J2-bc4871ca25",
+      "old_question_sha256": "21c728875c4e6b4ead99daf2b4ae078e5693012a0fcca2b91ed07f5af1845fae"
+    },
+    {
+      "blind_id": "J21-8ddac447efd1",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。替换旧 import/print 或 sleep/print 替身：在导入或休眠之后保留实际主逻辑；这不是旧题源码的等价清理，不能沿用旧判定。",
+      "item_id": "E0C-INJ-06",
+      "new_question_sha256": "6e8f632d6d1ae3fd91eb15665b0510bfb845088c92275ff89ec9850232ed7704",
+      "old_blind_id": "J2-f4a925bd51",
+      "old_question_sha256": "09d96f0f0f1bf829eaec11851bd9d3695b59238bb63ba3565837438b6ba06796"
+    },
+    {
+      "blind_id": "J21-fe572671ce7d",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-07",
+      "new_question_sha256": "f4b13409e36d3f9c6a24d457b5c83097c9c0caa50e545958464da17c7e46643f",
+      "old_blind_id": "J2-638001a6ec",
+      "old_question_sha256": "ad89c9533c9699ae8fb13f61a622e9bade1a95a146abd633ac2526ea4fc4eee0"
+    },
+    {
+      "blind_id": "J21-9bea1b2f5b7c",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-08",
+      "new_question_sha256": "178f3f946f87638827c65b696b84436f5e1789d08099755f065867d8d993fff1",
+      "old_blind_id": "J2-74e9d6cb80",
+      "old_question_sha256": "ad89c9533c9699ae8fb13f61a622e9bade1a95a146abd633ac2526ea4fc4eee0"
+    },
+    {
+      "blind_id": "J21-8e06737156b3",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-INJ-09",
+      "new_question_sha256": "19b0a156b60ebc85c5d3f9638ddcc1c92747c8124a59b28d258e27a918306f2c",
+      "old_blind_id": "J2-db37d27953",
+      "old_question_sha256": "ad89c9533c9699ae8fb13f61a622e9bade1a95a146abd633ac2526ea4fc4eee0"
+    },
+    {
+      "blind_id": "J21-e5cd09291a73",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-01",
+      "new_question_sha256": "ec659e1856588306ab11ddf3a5f810d443a1041e3909538b708cf84d89635557",
+      "old_blind_id": "J2-6fb0b5187d",
+      "old_question_sha256": "0a2c366043d10d20e00f454b895507986a3b6b44578d1b8ee57d139ca909c769"
+    },
+    {
+      "blind_id": "J21-925c9826f4ca",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-02",
+      "new_question_sha256": "237100565275dd8fc29207c7d7dc3eb1bbb7c6b4721b8e6ee84953148bc50b6d",
+      "old_blind_id": "J2-4085dc37bb",
+      "old_question_sha256": "00616db46bee230d5d2abccaf518d273d7cbde9fad7c4b064395bb879c0aa513"
+    },
+    {
+      "blind_id": "J21-391e8a63ae6c",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-03",
+      "new_question_sha256": "b40d162eaa3309943e6b69a89c69e28eed18dc3e93a3a2575f89342f78e0eee9",
+      "old_blind_id": "J2-9f7771cb39",
+      "old_question_sha256": "5d15e9d15a5ad3faee595741d39b42033f97bd899333ec7b2f1fae737169dc8b"
+    },
+    {
+      "blind_id": "J21-1a0cac59da95",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-04",
+      "new_question_sha256": "3a1391648404cc3cee0d22c43f7127accbd225631427b68e3343936312b75a62",
+      "old_blind_id": "J2-c9916328af",
+      "old_question_sha256": "b4916d6017413ff15498c84f5ca46bbbd9814ebcdbbb366d34755ced6c18b5b4"
+    },
+    {
+      "blind_id": "J21-e133078a4b20",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。替换旧 import/print 或 sleep/print 替身：在导入或休眠之后保留实际主逻辑；这不是旧题源码的等价清理，不能沿用旧判定。",
+      "item_id": "E0C-PAT-05",
+      "new_question_sha256": "bd4f015d5061a9f636786f007bdc085c18ade20cc491b7c43de75c404efe0f10",
+      "old_blind_id": "J2-71a44b3ea7",
+      "old_question_sha256": "a40aa3eaf92bfb22de0492e5edba273ccb165d3527d20d4aca107584b822fd1f"
+    },
+    {
+      "blind_id": "J21-f3ed82fe52d1",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。替换旧 import/print 或 sleep/print 替身：在导入或休眠之后保留实际主逻辑；这不是旧题源码的等价清理，不能沿用旧判定。",
+      "item_id": "E0C-PAT-06",
+      "new_question_sha256": "065947c5c5abcd5fc35c37208ba67968a54654eb7fc220d919e7033b0fd2d666",
+      "old_blind_id": "J2-fb2ac1c3ee",
+      "old_question_sha256": "09d96f0f0f1bf829eaec11851bd9d3695b59238bb63ba3565837438b6ba06796"
+    },
+    {
+      "blind_id": "J21-89623551b3e2",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-07",
+      "new_question_sha256": "f1dc4c1a8f6defa28c10232b9767297a31ec1e236a2865e65f7a2fcd4fc7c5c8",
+      "old_blind_id": "J2-2a367f802f",
+      "old_question_sha256": "0a2c366043d10d20e00f454b895507986a3b6b44578d1b8ee57d139ca909c769"
+    },
+    {
+      "blind_id": "J21-5946a68863ac",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-08",
+      "new_question_sha256": "b06568b04425a81384565b92fe841146e34006f466045e1ad685a87307d6f19b",
+      "old_blind_id": "J2-269bd8f329",
+      "old_question_sha256": "0a2c366043d10d20e00f454b895507986a3b6b44578d1b8ee57d139ca909c769"
+    },
+    {
+      "blind_id": "J21-b28932088be6",
+      "change": "剥除注释、显式主张、完整可执行驱动、明确环境、超时和独立观察；不再使用泛化 payload 描述。",
+      "item_id": "E0C-PAT-09",
+      "new_question_sha256": "876d0ee304d95d265527e0ca20f609eb231d2afe5f8874331399187014eb3eb2",
+      "old_blind_id": "J2-1813219aca",
+      "old_question_sha256": "0a2c366043d10d20e00f454b895507986a3b6b44578d1b8ee57d139ca909c769"
+    },
+    {
+      "blind_id": "J21-84b636f6a449",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0001",
+      "new_question_sha256": "cbb95aa5c4f04839a9150b39807a5f953dc856c53da19962a2821fc694b83445",
+      "old_blind_id": "J2-782464b12c",
+      "old_question_sha256": "dcbfb831d54733723cfda2486eb388b04befafba3209d3d8191561e2c59f6f42"
+    },
+    {
+      "blind_id": "J21-a493ce160d06",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。从本地原快照恢复完整ImageShow.py，不再截到8000字符；限定POSIX两种查看器的title注入主张。",
+      "item_id": "E0C-BANK-SEED-0002",
+      "new_question_sha256": "544824c208d8ec68024021f10698f5b0267f03a2d662a36ae56ffc021c072fc6",
+      "old_blind_id": "J2-39ce24c9da",
+      "old_question_sha256": "5331eb6769d405d5b08c71fa9f5cc4e71cbbde7958c40b5ecf01932faeafc25e"
+    },
+    {
+      "blind_id": "J21-c66fd371176f",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0049",
+      "new_question_sha256": "3bef1e5c370c343da49ad668622404b9d7882148955980b7cc6b19ee2bd1d09f",
+      "old_blind_id": "J2-457903c1e3",
+      "old_question_sha256": "c3dd90a118800e2aeda5ce93a9415e363949b83350c47b57403d0328937bc25b"
+    },
+    {
+      "blind_id": "J21-702eebb118a0",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0003",
+      "new_question_sha256": "c98f269504b309144e9a9f58a371e165b3cd658619b64c0c63d8200c5cb4cd83",
+      "old_blind_id": "J2-175aef3548",
+      "old_question_sha256": "12505960fd7c6fd28087a9fc01a9aadf270a63b43c0925cdea391f76f4117c9d"
+    },
+    {
+      "blind_id": "J21-8d46bc0e7d34",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0004",
+      "new_question_sha256": "32ea54ee0ab171be668975c372876b5335afb7852ab26d2e67b821d63370ad1a",
+      "old_blind_id": "J2-5ce9d29773",
+      "old_question_sha256": "ff0839cd9b8f1b83381c29ea8e0b622a65482c15f97119c06790a7f5ebf82131"
+    },
+    {
+      "blind_id": "J21-4c5de811aa3c",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0050",
+      "new_question_sha256": "d734861569c69880f7b6ae3310a8465bcf7a14ff43b81ac7e74576c0150f2a6e",
+      "old_blind_id": "J2-a168acc030",
+      "old_question_sha256": "a66bfdc8565ecada81058e0a572afc39b094d4a5f9fbc9589788ce53d6ff043f"
+    },
+    {
+      "blind_id": "J21-308627b9044a",
+      "change": "清理 Python/Java/C++ 注释及来源ID，CVE/commit移到私有溯源；明确输入、平台和安全边界；无执行闭包不虚构PoC，显式claim_only。",
+      "item_id": "E0C-BANK-SEED-0051",
+      "new_question_sha256": "2b8ee91615a7a1cf74d6bce1febaf0862afc311c3fda3afde502e2c4092b020e",
+      "old_blind_id": "J2-34f3fca613",
+      "old_question_sha256": "71e2e7d457f708dd5e1160d2e8cee6b6d7fe7ab6b3d549409b34a558146ff8b9"
+    }
+  ],
+  "version": "e0-cal-v2.1"
+}

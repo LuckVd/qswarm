@@ -1,0 +1,101 @@
+{
+  "E0C-BANK-SEED-0001": {
+    "files": {
+      "formdata.py": {
+        "old_display_sha256": "b85efeb4a85b5d9ebbafe6dc706bcd719291194295b2409e52af22991f4ee2a0",
+        "source_path": "seeds/items/SEED-0001/snapshot/formdata.py",
+        "source_sha256": "b85efeb4a85b5d9ebbafe6dc706bcd719291194295b2409e52af22991f4ee2a0"
+      },
+      "test_formdata.py": {
+        "old_display_sha256": "83f861acf4c3c0fe7a4d86b243bad9710eb5359badc442566d2c6217001f1817",
+        "source_path": "seeds/items/SEED-0001/snapshot/test_formdata.py",
+        "source_sha256": "83f861acf4c3c0fe7a4d86b243bad9710eb5359badc442566d2c6217001f1817"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {
+      "commit_date": "2026-02-21",
+      "cve": "CVE-2026-34514",
+      "parent_sha": "39ae036bfa222bcaefa9a13cb5760b6523833387"
+    }
+  },
+  "E0C-BANK-SEED-0002": {
+    "files": {
+      "ImageShow.py": {
+        "old_display_sha256": "742b28ce8e05b40a25f2b3bf83c94aa72f5760981ba8e1196a341fbc5ec5940c",
+        "source_path": "seeds/items/SEED-0002/snapshot/ImageShow.py",
+        "source_sha256": "12f4ecb10ed2f8251539f7dfb76e0863cd32c4628071a44fa2cb34eb0251adff"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {
+      "commit_date": "2026-06-20",
+      "cve": "CVE-2026-55798",
+      "parent_sha": "87e788339e8746e7ceb8e901df9b0c7fda55e975"
+    }
+  },
+  "E0C-BANK-SEED-0003": {
+    "files": {
+      "source.java": {
+        "old_display_sha256": "37a39600b37c3630c8f2b0359351de0d7310e65e719dde98481fc3ac93b9e22b",
+        "source_path": "seeds/items/SEED-0003/snapshot/source.java",
+        "source_sha256": "37a39600b37c3630c8f2b0359351de0d7310e65e719dde98481fc3ac93b9e22b"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {}
+  },
+  "E0C-BANK-SEED-0004": {
+    "files": {
+      "source.java": {
+        "old_display_sha256": "01d95603c3825ba2cbe15b74e4754a5c811ca9d50903fc76657caa200b0023ea",
+        "source_path": "seeds/items/SEED-0004/snapshot/source.java",
+        "source_sha256": "01d95603c3825ba2cbe15b74e4754a5c811ca9d50903fc76657caa200b0023ea"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {}
+  },
+  "E0C-BANK-SEED-0049": {
+    "files": {
+      "security.py": {
+        "old_display_sha256": "2768225297be90295624822934d5307e549b656982a1c7c94d22e4734c66c7f4",
+        "source_path": "seeds/items/SEED-0049/snapshot/security.py",
+        "source_sha256": "2768225297be90295624822934d5307e549b656982a1c7c94d22e4734c66c7f4"
+      },
+      "test_security.py": {
+        "old_display_sha256": "869b9c34b4f32aebf4b42cb56a3dd21a0fb3e0a6fc5e776843d39d0d0f7127be",
+        "source_path": "seeds/items/SEED-0049/snapshot/test_security.py",
+        "source_sha256": "869b9c34b4f32aebf4b42cb56a3dd21a0fb3e0a6fc5e776843d39d0d0f7127be"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {
+      "commit_date": "2026-02-18",
+      "cve": "CVE-2026-27199",
+      "parent_sha": "d005985ef69ffe3275eda8fb6fb25e074dbe871b"
+    }
+  },
+  "E0C-BANK-SEED-0050": {
+    "files": {
+      "source.cpp": {
+        "old_display_sha256": "dc67f4abebee8119aa4add2cbe254fa9f602353a3b35dca4b62678bfb66231b1",
+        "source_path": "seeds/items/SEED-0050/snapshot/source.cpp",
+        "source_sha256": "dc67f4abebee8119aa4add2cbe254fa9f602353a3b35dca4b62678bfb66231b1"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {}
+  },
+  "E0C-BANK-SEED-0051": {
+    "files": {
+      "source.cpp": {
+        "old_display_sha256": "1121d2ba51b441c61f0730da30f52089fdeae68eee4c70378fe60c386b03a3fd",
+        "source_path": "seeds/items/SEED-0051/snapshot/source.cpp",
+        "source_sha256": "1121d2ba51b441c61f0730da30f52089fdeae68eee4c70378fe60c386b03a3fd"
+      }
+    },
+    "license_policy": "原本地 snapshot 与版权/许可注释完整保留；仅盲判展示本移除注释，禁止把盲卷展示本当作无许可来源的新代码。",
+    "upstream_background_only": {}
+  }
+}

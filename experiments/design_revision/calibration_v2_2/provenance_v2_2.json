@@ -1,0 +1,84 @@
+{
+  "neutralized_items": {
+    "E0C-BANK-SEED-0003": {
+      "carry_over_from": "experiments/design_revision/calibration_v2_1/provenance_v2_1.json",
+      "display_neutralization_v2_2": [
+        {
+          "count": 1,
+          "file": "source.java",
+          "new": "/",
+          "old": "/cmdi-00/"
+        },
+        {
+          "count": 1,
+          "file": "source.java",
+          "new": " executing task - ",
+          "old": " executing cmdi - "
+        }
+      ],
+      "exempted_upstream_naming": []
+    },
+    "E0C-BANK-SEED-0004": {
+      "carry_over_from": "experiments/design_revision/calibration_v2_1/provenance_v2_1.json",
+      "display_neutralization_v2_2": [
+        {
+          "count": 1,
+          "file": "source.java",
+          "new": "/",
+          "old": "/cmdi-00/"
+        },
+        {
+          "count": 1,
+          "file": "source.java",
+          "new": " executing task - ",
+          "old": " executing cmdi - "
+        }
+      ],
+      "exempted_upstream_naming": [
+        "org.owasp.benchmark.helpers.Utils.getInsecureOSCommandString：上游 API 命名，属溯源面不指判定；真值 inconclusive 不依赖该名称。"
+      ]
+    },
+    "E0C-BANK-SEED-0050": {
+      "carry_over_from": "experiments/design_revision/calibration_v2_1/provenance_v2_1.json",
+      "display_neutralization_v2_2": [
+        {
+          "count": 2,
+          "file": "source.cpp",
+          "new": "v3f9c2e7_81",
+          "old": "CWE23_Relative_Path_Traversal__char_connect_socket_fopen_81"
+        },
+        {
+          "count": 1,
+          "file": "source.cpp",
+          "new": "OMITGUARD",
+          "old": "OMITBAD"
+        }
+      ],
+      "exempted_upstream_naming": []
+    },
+    "E0C-BANK-SEED-0051": {
+      "carry_over_from": "experiments/design_revision/calibration_v2_1/provenance_v2_1.json",
+      "display_neutralization_v2_2": [
+        {
+          "count": 1,
+          "file": "source.cpp",
+          "new": "v2c7e913",
+          "old": "CWE23_Relative_Path_Traversal__char_environment_ofstream_81_bad"
+        },
+        {
+          "count": 2,
+          "file": "source.cpp",
+          "new": "v8d1b6a4_81",
+          "old": "CWE23_Relative_Path_Traversal__char_environment_ofstream_81"
+        },
+        {
+          "count": 1,
+          "file": "source.cpp",
+          "new": "OMITGUARD",
+          "old": "OMITBAD"
+        }
+      ],
+      "exempted_upstream_naming": []
+    }
+  }
+}

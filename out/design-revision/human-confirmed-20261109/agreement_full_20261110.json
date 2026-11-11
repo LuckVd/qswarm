@@ -1,0 +1,413 @@
+{
+  "status": "ok",
+  "n_items": 25,
+  "n_judged": 25,
+  "owner_vs_truth": {
+    "n": 7,
+    "agreed": 0,
+    "rate": 0.0
+  },
+  "judge_vs_owner": {
+    "n": 25,
+    "agreed": 22,
+    "rate": 0.88
+  },
+  "judge_vs_truth": {
+    "n": 7,
+    "agreed": 1,
+    "rate": 0.1429
+  },
+  "root_cause_groups": {
+    "rcg-bank-E0C-BANK-SEED-0001": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0001"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0002": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0002"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0003": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0003"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0004": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0004"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0049": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0049"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0050": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0050"
+      ]
+    },
+    "rcg-bank-E0C-BANK-SEED-0051": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": 0.0,
+      "members": [
+        "E0C-BANK-SEED-0051"
+      ]
+    },
+    "rcg-fixture-echo-safe-injection": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-03"
+      ]
+    },
+    "rcg-fixture-echo-safe-path_traversal": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-03"
+      ]
+    },
+    "rcg-fixture-fix-injection": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-02"
+      ]
+    },
+    "rcg-fixture-fix-path_traversal": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-02"
+      ]
+    },
+    "rcg-fixture-missing-dep-injection": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-05"
+      ]
+    },
+    "rcg-fixture-missing-dep-path_traversal": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-05"
+      ]
+    },
+    "rcg-fixture-timeout-injection": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-06"
+      ]
+    },
+    "rcg-fixture-timeout-path_traversal": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-06"
+      ]
+    },
+    "rcg-fixture-unreachable-injection": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-04"
+      ]
+    },
+    "rcg-fixture-unreachable-path_traversal": {
+      "n_items": 1,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-04"
+      ]
+    },
+    "rcg-fixture-vuln-injection": {
+      "n_items": 4,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-INJ-01",
+        "E0C-INJ-07",
+        "E0C-INJ-08",
+        "E0C-INJ-09"
+      ]
+    },
+    "rcg-fixture-vuln-path_traversal": {
+      "n_items": 4,
+      "agreed": 0,
+      "rate": "not_estimable",
+      "members": [
+        "E0C-PAT-01",
+        "E0C-PAT-07",
+        "E0C-PAT-08",
+        "E0C-PAT-09"
+      ]
+    }
+  },
+  "per_item": [
+    {
+      "item_id": "E0C-BANK-SEED-0001",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0001",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0002",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0002",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0003",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0003",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0004",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0004",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0049",
+      "owner": "inconclusive",
+      "judge": "real",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0049",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0050",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0050",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-BANK-SEED-0051",
+      "owner": "inconclusive",
+      "judge": "inconclusive",
+      "truth": "real",
+      "group": "rcg-bank-E0C-BANK-SEED-0051",
+      "contentious": false,
+      "poc_judgment": "not_applicable"
+    },
+    {
+      "item_id": "E0C-INJ-01",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-02",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-fix-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-03",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-echo-safe-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-04",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-unreachable-injection",
+      "contentious": true,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-05",
+      "owner": "inconclusive",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-missing-dep-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-06",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-timeout-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-07",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-08",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-INJ-09",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-injection",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-01",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-02",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-fix-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-03",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-echo-safe-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-04",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-unreachable-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-05",
+      "owner": "inconclusive",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-missing-dep-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-06",
+      "owner": "refuted",
+      "judge": "refuted",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-timeout-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-07",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-08",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    },
+    {
+      "item_id": "E0C-PAT-09",
+      "owner": "real",
+      "judge": "real",
+      "truth": "fixture_design",
+      "group": "rcg-fixture-vuln-path_traversal",
+      "contentious": false,
+      "poc_judgment": null
+    }
+  ],
+  "contentious": {
+    "items": [
+      "E0C-INJ-04"
+    ],
+    "note": "预期分歧项全量单列（不计失败、不剔除）"
+  }
+}

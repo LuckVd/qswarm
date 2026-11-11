@@ -1,0 +1,205 @@
+{
+  "items": [
+    {
+      "blind_id": "J22-253b14910e43",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-07",
+      "new_question_sha256": "f4b13409e36d3f9c6a24d457b5c83097c9c0caa50e545958464da17c7e46643f",
+      "old_blind_id": "J21-fe572671ce7d",
+      "old_question_sha256": "f4b13409e36d3f9c6a24d457b5c83097c9c0caa50e545958464da17c7e46643f"
+    },
+    {
+      "blind_id": "J22-605f80cca520",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-01",
+      "new_question_sha256": "ec659e1856588306ab11ddf3a5f810d443a1041e3909538b708cf84d89635557",
+      "old_blind_id": "J21-e5cd09291a73",
+      "old_question_sha256": "ec659e1856588306ab11ddf3a5f810d443a1041e3909538b708cf84d89635557"
+    },
+    {
+      "blind_id": "J22-1e9c9cd45dd9",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-07",
+      "new_question_sha256": "f1dc4c1a8f6defa28c10232b9767297a31ec1e236a2865e65f7a2fcd4fc7c5c8",
+      "old_blind_id": "J21-89623551b3e2",
+      "old_question_sha256": "f1dc4c1a8f6defa28c10232b9767297a31ec1e236a2865e65f7a2fcd4fc7c5c8"
+    },
+    {
+      "blind_id": "J22-77b12d0c87df",
+      "change": "v2.2 族别提示中性化（仅展示本标识符，主张/PoC/真值不变）：`/cmdi-00/…`→`/`×1；` executing cmdi - …`→` executing task - `×1",
+      "item_id": "E0C-BANK-SEED-0004",
+      "new_question_sha256": "9de14fc5dda4cceeaee38cff58ffcb58abf22bae010754b7c5d10f4969f7fbc2",
+      "old_blind_id": "J21-8d46bc0e7d34",
+      "old_question_sha256": "32ea54ee0ab171be668975c372876b5335afb7852ab26d2e67b821d63370ad1a"
+    },
+    {
+      "blind_id": "J22-c9fc64e74e5e",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-04",
+      "new_question_sha256": "2f24ef04440b24cdf8ed5321507ab657f14110b19629710efdd92e2c4c681195",
+      "old_blind_id": "J21-fd0d3fe1e4f4",
+      "old_question_sha256": "2f24ef04440b24cdf8ed5321507ab657f14110b19629710efdd92e2c4c681195"
+    },
+    {
+      "blind_id": "J22-716d146320ea",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-05",
+      "new_question_sha256": "bd4f015d5061a9f636786f007bdc085c18ade20cc491b7c43de75c404efe0f10",
+      "old_blind_id": "J21-e133078a4b20",
+      "old_question_sha256": "bd4f015d5061a9f636786f007bdc085c18ade20cc491b7c43de75c404efe0f10"
+    },
+    {
+      "blind_id": "J22-20c910a6be06",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-09",
+      "new_question_sha256": "19b0a156b60ebc85c5d3f9638ddcc1c92747c8124a59b28d258e27a918306f2c",
+      "old_blind_id": "J21-8e06737156b3",
+      "old_question_sha256": "19b0a156b60ebc85c5d3f9638ddcc1c92747c8124a59b28d258e27a918306f2c"
+    },
+    {
+      "blind_id": "J22-5e8bcf28d70d",
+      "change": "v2.2 族别提示中性化（仅展示本标识符，主张/PoC/真值不变）：`CWE23_Relative_Path_Traversal__char_environment_…`→`v2c7e913`×1；`CWE23_Relative_Path_Traversal__char_environment_…`→`v8d1b6a4_81`×2；`OMITBAD…`→`OMITGUARD`×1",
+      "item_id": "E0C-BANK-SEED-0051",
+      "new_question_sha256": "bf7a3b29a83b0079837a74f6e2b2a09e2d25506e76e1cececfe688d33fbd092a",
+      "old_blind_id": "J21-308627b9044a",
+      "old_question_sha256": "2b8ee91615a7a1cf74d6bce1febaf0862afc311c3fda3afde502e2c4092b020e"
+    },
+    {
+      "blind_id": "J22-9687f10676a9",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-08",
+      "new_question_sha256": "b06568b04425a81384565b92fe841146e34006f466045e1ad685a87307d6f19b",
+      "old_blind_id": "J21-5946a68863ac",
+      "old_question_sha256": "b06568b04425a81384565b92fe841146e34006f466045e1ad685a87307d6f19b"
+    },
+    {
+      "blind_id": "J22-eea48a82d450",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-08",
+      "new_question_sha256": "178f3f946f87638827c65b696b84436f5e1789d08099755f065867d8d993fff1",
+      "old_blind_id": "J21-9bea1b2f5b7c",
+      "old_question_sha256": "178f3f946f87638827c65b696b84436f5e1789d08099755f065867d8d993fff1"
+    },
+    {
+      "blind_id": "J22-0e99fabd2b55",
+      "change": "展示本与 v2.1 逐字节相同，仅换盲 ID 与乱序。",
+      "item_id": "E0C-BANK-SEED-0002",
+      "new_question_sha256": "544824c208d8ec68024021f10698f5b0267f03a2d662a36ae56ffc021c072fc6",
+      "old_blind_id": "J21-a493ce160d06",
+      "old_question_sha256": "544824c208d8ec68024021f10698f5b0267f03a2d662a36ae56ffc021c072fc6"
+    },
+    {
+      "blind_id": "J22-89ed7b6399ee",
+      "change": "v2.2 族别提示中性化（仅展示本标识符，主张/PoC/真值不变）：`/cmdi-00/…`→`/`×1；` executing cmdi - …`→` executing task - `×1",
+      "item_id": "E0C-BANK-SEED-0003",
+      "new_question_sha256": "7c650b074cce5538ecca2b967feeae479438689de3b717fce4350f82664f6dd0",
+      "old_blind_id": "J21-702eebb118a0",
+      "old_question_sha256": "c98f269504b309144e9a9f58a371e165b3cd658619b64c0c63d8200c5cb4cd83"
+    },
+    {
+      "blind_id": "J22-36e465e626bf",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-03",
+      "new_question_sha256": "b40d162eaa3309943e6b69a89c69e28eed18dc3e93a3a2575f89342f78e0eee9",
+      "old_blind_id": "J21-391e8a63ae6c",
+      "old_question_sha256": "b40d162eaa3309943e6b69a89c69e28eed18dc3e93a3a2575f89342f78e0eee9"
+    },
+    {
+      "blind_id": "J22-a10e12215e1b",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-05",
+      "new_question_sha256": "c7a411555b4182735bbe71b7607ca8f8c843193025a49a6668a7851199348447",
+      "old_blind_id": "J21-8a6bb92f8458",
+      "old_question_sha256": "c7a411555b4182735bbe71b7607ca8f8c843193025a49a6668a7851199348447"
+    },
+    {
+      "blind_id": "J22-64246acf8fb9",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-09",
+      "new_question_sha256": "876d0ee304d95d265527e0ca20f609eb231d2afe5f8874331399187014eb3eb2",
+      "old_blind_id": "J21-b28932088be6",
+      "old_question_sha256": "876d0ee304d95d265527e0ca20f609eb231d2afe5f8874331399187014eb3eb2"
+    },
+    {
+      "blind_id": "J22-d3a5404e8a88",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-03",
+      "new_question_sha256": "ddea7fc7ac25d3e9e092527b6d717b426e5018c3f19505408764b21f4c8623e0",
+      "old_blind_id": "J21-d75d053c7b46",
+      "old_question_sha256": "ddea7fc7ac25d3e9e092527b6d717b426e5018c3f19505408764b21f4c8623e0"
+    },
+    {
+      "blind_id": "J22-6bd66d19cd1a",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-06",
+      "new_question_sha256": "065947c5c5abcd5fc35c37208ba67968a54654eb7fc220d919e7033b0fd2d666",
+      "old_blind_id": "J21-f3ed82fe52d1",
+      "old_question_sha256": "065947c5c5abcd5fc35c37208ba67968a54654eb7fc220d919e7033b0fd2d666"
+    },
+    {
+      "blind_id": "J22-b389e022c980",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-02",
+      "new_question_sha256": "237100565275dd8fc29207c7d7dc3eb1bbb7c6b4721b8e6ee84953148bc50b6d",
+      "old_blind_id": "J21-925c9826f4ca",
+      "old_question_sha256": "237100565275dd8fc29207c7d7dc3eb1bbb7c6b4721b8e6ee84953148bc50b6d"
+    },
+    {
+      "blind_id": "J22-4db9bc6f6078",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-02",
+      "new_question_sha256": "f072f184d757f41ee0585af69472e8270f4c07a91038f2af0650d12c46a190ec",
+      "old_blind_id": "J21-dd949312d81a",
+      "old_question_sha256": "f072f184d757f41ee0585af69472e8270f4c07a91038f2af0650d12c46a190ec"
+    },
+    {
+      "blind_id": "J22-d5663c5570c4",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-PAT-04",
+      "new_question_sha256": "3a1391648404cc3cee0d22c43f7127accbd225631427b68e3343936312b75a62",
+      "old_blind_id": "J21-1a0cac59da95",
+      "old_question_sha256": "3a1391648404cc3cee0d22c43f7127accbd225631427b68e3343936312b75a62"
+    },
+    {
+      "blind_id": "J22-844c49773a36",
+      "change": "展示本与 v2.1 逐字节相同，仅换盲 ID 与乱序。",
+      "item_id": "E0C-BANK-SEED-0049",
+      "new_question_sha256": "3bef1e5c370c343da49ad668622404b9d7882148955980b7cc6b19ee2bd1d09f",
+      "old_blind_id": "J21-c66fd371176f",
+      "old_question_sha256": "3bef1e5c370c343da49ad668622404b9d7882148955980b7cc6b19ee2bd1d09f"
+    },
+    {
+      "blind_id": "J22-60cc86fb6ec0",
+      "change": "v2.2 族别提示中性化（仅展示本标识符，主张/PoC/真值不变）：`CWE23_Relative_Path_Traversal__char_connect_sock…`→`v3f9c2e7_81`×2；`OMITBAD…`→`OMITGUARD`×1",
+      "item_id": "E0C-BANK-SEED-0050",
+      "new_question_sha256": "666fa5e3d6f5da40e345ed23f79ac6d1cea115f885236f415942e53535a452e0",
+      "old_blind_id": "J21-4c5de811aa3c",
+      "old_question_sha256": "d734861569c69880f7b6ae3310a8465bcf7a14ff43b81ac7e74576c0150f2a6e"
+    },
+    {
+      "blind_id": "J22-478fc6082c58",
+      "change": "展示本与 v2.1 逐字节相同，仅换盲 ID 与乱序。",
+      "item_id": "E0C-BANK-SEED-0001",
+      "new_question_sha256": "cbb95aa5c4f04839a9150b39807a5f953dc856c53da19962a2821fc694b83445",
+      "old_blind_id": "J21-84b636f6a449",
+      "old_question_sha256": "cbb95aa5c4f04839a9150b39807a5f953dc856c53da19962a2821fc694b83445"
+    },
+    {
+      "blind_id": "J22-11160cd1bd26",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-06",
+      "new_question_sha256": "6e8f632d6d1ae3fd91eb15665b0510bfb845088c92275ff89ec9850232ed7704",
+      "old_blind_id": "J21-8ddac447efd1",
+      "old_question_sha256": "6e8f632d6d1ae3fd91eb15665b0510bfb845088c92275ff89ec9850232ed7704"
+    },
+    {
+      "blind_id": "J22-904022e828a7",
+      "change": "内容与 v2.1 逐字节相同（同目标源码、驱动、题面），仅换盲 ID 与乱序；root_cause_group 不变。",
+      "item_id": "E0C-INJ-01",
+      "new_question_sha256": "5e77b62641888a309f647e0c419574078113cdec51ebc1d8830035c8e99499f1",
+      "old_blind_id": "J21-4beeca843c16",
+      "old_question_sha256": "5e77b62641888a309f647e0c419574078113cdec51ebc1d8830035c8e99499f1"
+    }
+  ],
+  "version": "e0-cal-v2.2"
+}

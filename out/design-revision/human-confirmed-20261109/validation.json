@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scope": "Owner confirmation registration integrity, not cross-family agreement or actual PoC verification",
+  "checks": {
+    "25_unique_items": true,
+    "item_order_unchanged": true,
+    "only_three_owner_fields_changed": true,
+    "claim_counts_confirmed": true,
+    "accepted_labels_match_frozen_ai": true,
+    "18_poc_missing_preserved": true,
+    "7_poc_not_applicable_preserved": true,
+    "provenance_recorded_all_items": true,
+    "evidence_and_limits_retained": true,
+    "before_snapshot_original_hash": true,
+    "after_snapshot_current_hash": true,
+    "frozen_ai_unchanged": true,
+    "blind_materials_unchanged": true,
+    "owner_summary_hash": true,
+    "human_confirmation_not_blind_or_gate_pass": true,
+    "new_report_links_resolve": true
+  }
+}

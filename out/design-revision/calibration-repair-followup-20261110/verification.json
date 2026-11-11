@@ -1,0 +1,55 @@
+{
+  "scope": "repair handoff, not independent security judging or human confirmation",
+  "frozen_versions": {
+    "calibration_v2": {
+      "status": "pass",
+      "files": 10,
+      "frozen_inventory_sha256": "da39503b348d8e333a402b2d92652bc09de976da088062f6f6fe1bb1e2877b40"
+    },
+    "calibration_v2_1": {
+      "status": "pass",
+      "files": 13,
+      "frozen_inventory_sha256": "34dcb47f5022ca1a8c4cd45ecc2b72cef5893462a78555e4715f3a342975723a"
+    }
+  },
+  "fixture_runtime": {
+    "status": "pass",
+    "n_executed": 18,
+    "problems": []
+  },
+  "scoring_readiness": {
+    "counts": {
+      "items": 25,
+      "claim_questions": 25,
+      "poc_questions": 18,
+      "claim_only_items": 7,
+      "root_cause_groups": 19
+    },
+    "scoring_status": "incomplete",
+    "calibration_gate": {
+      "passed": false,
+      "status": "pending_owner_confirmation",
+      "reasons": [
+        "draft_design_labels",
+        "owner_confirmation_not_verified",
+        "genuinely_independent_judge_not_verified"
+      ],
+      "automatic_score_threshold": null
+    }
+  },
+  "regression_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest tests/test_calibration_v2_1_materials.py tests/test_calibration_v2_1_scoring.py tests/test_calibration_v2_2_scoring.py",
+    "passed": 152,
+    "xfailed": 1,
+    "exit_code": 0,
+    "known_issue": "Frozen v2.1 comment masker rstrip can change whitespace within arbitrary multiline literals; strict expected-failure regression records it. All five current Python bank inputs preserve AST and STRING tokens. Do not use the helper as a general semantics-preserving transformer without a new version and fix."
+  },
+  "independent_judge_run_performed": false,
+  "owner_blind_answers_read_or_modified": false,
+  "current_workspace_paper": "calibration_v2_2; continued elsewhere; this follow-up did not alter its frozen materials",
+  "notes": [
+    "18 complete PoC tasks, 7 explicit static-only tasks; not a 25-PoC execution suite",
+    "19 groups are design strata, not proof of 19 independent vulnerabilities",
+    "new design labels remain draft pending owner confirmation"
+  ]
+}

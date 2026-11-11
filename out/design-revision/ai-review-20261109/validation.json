@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scope": "Review artifact integrity, not calibration gate or PoC execution",
+  "checks": {
+    "25_unique_items_in_original_order": true,
+    "claim_counts": true,
+    "18_poc_missing_and_7_question_not_set": true,
+    "all_records_have_evidence_and_uncertainty": true,
+    "all_records_marked_ai_noncalibration": true,
+    "original_owner_fields_still_empty": true,
+    "frozen_inputs_unchanged": true,
+    "frozen_output_hash_matches": true,
+    "gate_not_verified": true,
+    "report_links_resolve": true,
+    "report_contains_all_25_item_refs": true
+  },
+  "report_sha256": "bf0711fee27ecfeb63b9c2caecd40279c55e1bf25e1666ff9a3fe436d45c444b"
+}

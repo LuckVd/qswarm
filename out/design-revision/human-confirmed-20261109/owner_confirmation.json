@@ -1,0 +1,34 @@
+{
+  "schema": "qswarm.owner_confirmation.v1",
+  "registered_at": "2026-11-09T23:18:11.715354+08:00",
+  "confirmation_source": "direct_top_level_human_message_in_current_session",
+  "confirmation_quote": "我审查过了  没问题 可以当作人工真值",
+  "confirmation_request_time_reference": "2026-11-09T23:16:41+08:00 (request context time sample, not a claimed exact signing time)",
+  "label_provenance": "human_reviewed_ai_assisted",
+  "accepted_as_owner_ground_truth": true,
+  "owner_claim_labels_registered": 25,
+  "claim_counts": {
+    "real": 10,
+    "refuted": 6,
+    "inconclusive": 9
+  },
+  "poc_counts": {
+    "pending_missing_materials": 18,
+    "not_applicable_question_not_set": 7
+  },
+  "owner_review_confirmation_complete": true,
+  "dual_question_labels_complete": false,
+  "independent_blind_human_label": false,
+  "cross_family_judge_agreement_verified": false,
+  "calibration_gate": "NOT_VERIFIED",
+  "claim_scope": "Owner accepts the explicitly scoped/inferred claims, evidence, inconclusive findings and limitations in the frozen AI review; no new exact claim or PoC evidence is inferred.",
+  "poc_null_meaning": "Owner-confirmed lack of supplied material, not an effective/ineffective/not_runnable label.",
+  "source_ai_judgments": "out/design-revision/ai-review-20261109/ai_judgments.jsonl",
+  "source_ai_judgments_sha256": "8bfe62a0d686c30e3a74e3c7aa7133afe4c1cb88b9bf61d60926e4a70f355329",
+  "sheet_before_sha256": "eb2871805269bf835d773244d3e15c8d17685da3c8cd37d13ce37f097a7c266b",
+  "sheet_after_sha256": "19a3c030116ce7e5f901d37b8f203bcc77ac0b426d234c3be7c2c116eef462e0",
+  "blind_materials_sha256": "64960a6e6c5463839afbd57177593235d7019559a02a5c48c9779f0aea41ee37",
+  "owner_judgments_sha256": "79e650a3c0f238a20eb2afa2843a4c1e0acdba79011b2ed90b258dc9ba094f94",
+  "original_design_truth_modified": false,
+  "new_model_calls_or_target_executions": false
+}

@@ -1,0 +1,16 @@
+{
+  "directory": "../calibration_v2",
+  "files_sha256": {
+    "ERRATA_v1.md": "0f70398c57fde819dfc34bd900490de359343800dd0838a64ef163a0479a029c",
+    "__pycache__/compute_agreement_v2.cpython-312.pyc": "aacd6b07503647a165ed9be01ef6e8f2d3d3bf2f718422f20525d24515f3d54e",
+    "compute_agreement_v2.py": "d94e31848e2ff2e640136f59dc2be9f4d9c3ae0eeb33b8af9e6dd6a3acf2ec36",
+    "gen_materials_v2.py": "c242e289b6549e414955968b8e6fbf675463c5691f197fe362a9cc1e2a1226fb",
+    "judge_materials_v2.jsonl": "64960a6e6c5463839afbd57177593235d7019559a02a5c48c9779f0aea41ee37",
+    "judge_results_v2.jsonl": "275bd0989ccb31849e9cc329f74e555d111ae740ab9edab8ace4cec9361163e9",
+    "judging_sheet_v2.jsonl": "19a3c030116ce7e5f901d37b8f203bcc77ac0b426d234c3be7c2c116eef462e0",
+    "materials_v2_manifest.json": "4be8c59e48622f1147345ebd9c4bf34280ac8f0bf219f230f7ac0062fd28af9d",
+    "out/sandbox-env/process/744d12da46f3f8f5/.qswarm-env-ok": "51956878c1790adac251734030177938f9aa1065e7b1084d9e283bf5b110224a",
+    "truth_map_v2.json": "e6ad4a779b19432b3bf7e82a7993464d9c03d68a875f4d290e91527c7bd754ec"
+  },
+  "policy": "byte-for-byte frozen; do not regenerate v2 or reuse its score as v2.1"
+}
